@@ -76,11 +76,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="dslight.h" />
     <ClInclude Include="dstexture.h" />
     <ClInclude Include="dstools.h" />
     <ClInclude Include="dsvector.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="dslight.cpp" />
     <ClCompile Include="dstexture.cpp" />
     <ClCompile Include="dstools.cpp" />
     <ClCompile Include="dsvector.cpp" />

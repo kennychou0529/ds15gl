@@ -3,6 +3,7 @@
 
 #include "dsvector.h"
 #include "dstexture.h"
+#include "dslight.h"
 
 void dsSet();
 void dsSpecialKeys(int key, int x, int y);

@@ -77,8 +77,8 @@ GLuint dsLoadTextureBMP2D(const char* file_name) {
 	// 如果纹理 y 坐标超出范围，则重复，默认值
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	// 用纹理的颜色代替原来的颜色，默认值
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+	// 用纹理的颜色代替原来的颜色
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	// 载入纹理
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0,
