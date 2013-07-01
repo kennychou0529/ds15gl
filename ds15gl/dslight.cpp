@@ -2,6 +2,7 @@
 
 void dsSetLight() {
 	// 创建光源
+
 	glEnable(GL_LIGHT0);
 
 	// 环境光
