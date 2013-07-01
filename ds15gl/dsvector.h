@@ -8,7 +8,7 @@ using std::sqrt;
 using std::sin;
 using std::cos;
 
-void dsSphereToOrtho3dv(const GLdouble sphere[3], GLdouble ortho[3]);
+void dsSphereToOrtho3dv(const GLdouble sphere[3], const GLdouble center[3],GLdouble ortho[3]);
 GLdouble dsLenth3dv(GLdouble vec[3]);
 void dsNormalize3dv(GLdouble vec[3]);
 void dsDiff3dv(const GLdouble v1[3], const GLdouble v2[3], GLdouble ret[3]);

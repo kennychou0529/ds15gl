@@ -1,9 +1,9 @@
 #include "dsvector.h"
 
-void dsSphereToOrtho3dv(const GLdouble sphere[3], GLdouble ortho[3]) {
-	ortho[0] = sphere[0] * sin(sphere[1]) * cos(sphere[2]);
-	ortho[1] = sphere[0] * sin(sphere[1]) * sin(sphere[2]);
-	ortho[2] = sphere[0] * cos(sphere[1]);
+void dsSphereToOrtho3dv(const GLdouble sphere[3],const GLdouble center[3], GLdouble ortho[3]) {
+	ortho[0] = center[0]+sphere[0] * sin(sphere[1]) * cos(sphere[2]);
+	ortho[1] = center[1]+sphere[0] * sin(sphere[1]) * sin(sphere[2]);
+	ortho[2] = center[2]+sphere[0] * cos(sphere[1]);
 }
 
 GLdouble dsLenth3dv(GLdouble vec[3]) {
