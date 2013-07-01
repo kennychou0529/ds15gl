@@ -43,6 +43,7 @@ local.properties
 
 *.sln
 *.vcxproj
+*.vcxproj.filters
 
 # Build results
 
