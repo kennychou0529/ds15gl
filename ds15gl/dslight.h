@@ -5,5 +5,6 @@
 
 void dsSetLight();
 void dsSetMaterial();
+void dsShowLightSource();
 
 #endif

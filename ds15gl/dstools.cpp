@@ -1,6 +1,6 @@
 #include "dstools.h"
 
-const double viewMoveSpeed=0.2;
+const double viewMoveSpeed = 0.2;
 static const GLdouble pi = 3.1415926;
 GLdouble eye_sphere[3] = {20.0, pi / 6, - pi / 2};
 /* 眼睛位置，用球坐标 (r, phi, theta) 表示
@@ -11,7 +11,8 @@ GLdouble eye_sphere[3] = {20.0, pi / 6, - pi / 2};
 GLdouble up[3] = {0.0, 0.0, 1.0};
 
 //视线中心点，球坐标的原点
-GLdouble center[3]={0,0,0};
+GLdouble center[3] = {0.0, 0.0, 0.0};
+
 //相机位置
 GLdouble eye[3];
 
@@ -29,7 +30,7 @@ void dsSet() {
 	glLoadIdentity();
 
 	
-	dsSphereToOrtho3dv(eye_sphere,center,eye);
+	dsSphereToOrtho3dv(eye_sphere, center, eye);
 	// 将球坐标转化为直角坐标
 
 
@@ -71,29 +72,29 @@ void dsSpecialKeys(int key, int x, int y)
 
 void keyFunc(unsigned char key,int x,int y){
 	//printf_s("%f,%f,%f",eye[0],eye[1],eye[2]);
-	vector2f dir=vector2f(center[0]-eye[0],center[1]-eye[1]);
+	vector2f dir = vector2f(center[0] - eye[0], center[1] - eye[1]);
 	dir.normalLise();
-	vector2f left=dir.turnLeft();
+	vector2f left = dir.turnLeft();
 	switch (key) {
 	case 'a':
 	case 'A':
-		center[0]+=left.x*viewMoveSpeed;
-		center[1]+=left.y*viewMoveSpeed;
+		center[0] += left.x * viewMoveSpeed;
+		center[1] += left.y * viewMoveSpeed;
 		break;
 	case 'w':
 	case 'W':
-		center[0]+=dir.x*viewMoveSpeed;
-		center[1]+=dir.y*viewMoveSpeed;
+		center[0] += dir.x * viewMoveSpeed;
+		center[1] += dir.y * viewMoveSpeed;
 		break;
 	case 'd':
 	case 'D':
-		center[0]-=left.x*viewMoveSpeed;
-		center[1]-=left.y*viewMoveSpeed;
+		center[0] -= left.x * viewMoveSpeed;
+		center[1] -= left.y * viewMoveSpeed;
 		break;
 	case 's':
 	case 'S':
-		center[0]-=dir.x*viewMoveSpeed;
-		center[1]-=dir.y*viewMoveSpeed;
+		center[0] -= dir.x * viewMoveSpeed;
+		center[1] -= dir.y * viewMoveSpeed;
 		break;
 	default:
 		break;
@@ -109,3 +110,29 @@ void keyFunc(unsigned char key,int x,int y){
 //		center[0]+=viewMoveSpeed;
 //	}
 //}
+
+
+// test
+void dsShowAxes(GLdouble lenth) {
+	glDisable(GL_TEXTURE_2D);
+	glDisable(GL_LIGHTING);
+	glBegin(GL_LINES);
+	{
+		glLineWidth(1.0);
+		glColor3d(1.0, 0.0, 0.0);
+		glVertex3d(0.0, 0.0, 0.0);
+		glVertex3d(lenth, 0.0, 0.0);
+
+		glColor3d(0.0, 1.0, 0.0);
+		glVertex3d(0.0, 0.0, 0.0);
+		glVertex3d(0.0, lenth, 0.0);
+
+		glColor3d(0.0, 0.0, 1.0);
+		glVertex3d(0.0, 0.0, 0.0);
+		glVertex3d(0.0, 0.0, lenth);
+	}
+	glEnd();
+	glEnable(GL_LIGHTING);
+	glEnable(GL_TEXTURE_2D);
+}
+
