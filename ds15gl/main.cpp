@@ -1,8 +1,8 @@
 #include "dstools.h"
-
+#include "dsScence.h"
 GLuint texGround;
 int width = 800, height = 600;
-
+dsScence scence;
 
 void display() {
 	dsSet(); // 这个函数需要修改
@@ -30,8 +30,9 @@ void display() {
 	}
 	glEnd();
 
+	scence.showScence();
 	dsShowAxes();
-
+	
 	glDisable(GL_TEXTURE_2D);
 	glutSolidTeapot(5.0);
 	glEnable(GL_TEXTURE_2D);
@@ -42,6 +43,7 @@ void display() {
 }
 
 void init() {
+	scence.initScence();
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_LIGHTING);
@@ -54,7 +56,7 @@ void reshapeFunc(int w, int h) {
 	height = h;
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(60, w / float(h), 1, 2000);
+	gluPerspective(60, w / float(h), 2, 2000);
 	glMatrixMode(GL_MODELVIEW);
 	glutPostRedisplay();
 }

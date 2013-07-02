@@ -1,6 +1,6 @@
 #include "dstools.h"
 
-const double viewMoveSpeed = 0.2;
+const double viewMoveSpeed = 4;
 static const GLdouble pi = 3.1415926;
 GLdouble eye_sphere[3] = {20.0, pi / 6, - pi / 2};
 /* 眼睛位置，用球坐标 (r, phi, theta) 表示
@@ -11,7 +11,7 @@ GLdouble eye_sphere[3] = {20.0, pi / 6, - pi / 2};
 GLdouble up[3] = {0.0, 0.0, 1.0};
 
 //视线中心点，球坐标的原点
-GLdouble center[3] = {0.0, 0.0, 0.0};
+GLdouble center[3] = {0.0, 4.0, 0.0};
 
 //相机位置
 GLdouble eye[3];
