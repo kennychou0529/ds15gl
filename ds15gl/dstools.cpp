@@ -1,6 +1,6 @@
 #include "dstools.h"
 
-const double viewMoveSpeed = 4;
+const double viewMoveSpeed = 5.0;
 static const GLdouble pi = 3.1415926;
 GLdouble eye_sphere[3] = {20.0, pi / 6, - pi / 2};
 /* 眼睛位置，用球坐标 (r, phi, theta) 表示
@@ -10,10 +10,10 @@ GLdouble eye_sphere[3] = {20.0, pi / 6, - pi / 2};
 
 GLdouble up[3] = {0.0, 0.0, 1.0};
 
-//视线中心点，球坐标的原点
-GLdouble center[3] = {0.0, 4.0, 0.0};
+// 视线中心点，球坐标的原点
+GLdouble center[3] = {0.0, 0.0, 20.0};
 
-//相机位置
+// 相机位置
 GLdouble eye[3];
 
 void dsSet() {
@@ -29,12 +29,11 @@ void dsSet() {
 	//glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	
 	dsSphereToOrtho3dv(eye_sphere, center, eye);
 	// 将球坐标转化为直角坐标
 
-
-	gluLookAt(eye[0], eye[1], eye[2], center[0],center[1],center[2], up[0], up[1], up[2]);
+	gluLookAt(eye[0], eye[1], eye[2], center[0], center[1], center[2], up[0], up[1], up[2]);
+	// 设置摄像头位置
 }
 
 
@@ -112,7 +111,7 @@ void keyFunc(unsigned char key,int x,int y){
 //}
 
 
-// test
+// 测试用的函数，花一个直角坐标系
 void dsShowAxes(GLdouble lenth) {
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);

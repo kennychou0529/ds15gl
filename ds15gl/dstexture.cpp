@@ -1,6 +1,6 @@
 #include "dstexture.h"
 
-GLuint dsLoadTextureBMP2D(const char* file_name) {
+GLuint dsLoadTextureBMP2D(const char* file_name, GLuint* pheight, GLuint* pwidth) {
 	const int BMP_Header_Length = 54;
 
 	GLint width, height, total_bytes;
@@ -88,6 +88,13 @@ GLuint dsLoadTextureBMP2D(const char* file_name) {
 	glBindTexture(GL_TEXTURE_2D, last_texture_ID);
 
 	delete[] pixels;
+
+	if (pwidth != nullptr) {
+		*pwidth = width;
+	}
+	if (pheight != nullptr) {
+		*pheight = height;
+	}
 
 	return texture_ID;
 }

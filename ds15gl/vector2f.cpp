@@ -2,35 +2,34 @@
 #include <cmath>
 
 
-vector2f::vector2f(float xx,float yy):x(vec[0]),y(vec[1])
-{
-	x=xx;
-	y=yy;
+vector2f::vector2f(float xx,float yy): x(vec[0]), y(vec[1]) {
+	x = xx;
+	y = yy;
 }
 
-const vector2f vector2f::operator +(const vector2f vec){
+const vector2f vector2f::operator+(const vector2f vec){
 	vector2f tem;
-	tem.x=vec.x+x;
-	tem.y=vec.y+y;
+	tem.x = vec.x + x;
+	tem.y = vec.y + y;
 	return tem;
 }
-const vector2f vector2f::operator -(const vector2f vec){
+const vector2f vector2f::operator-(const vector2f vec){
 	vector2f tem;
-	tem.x=x-vec.x;
-	tem.y=y-vec.y;
+	tem.x = x - vec.x;
+	tem.y = y - vec.y;
 	return tem;
 }
-const vector2f vector2f::operator *(const vector2f vec)//点积
+const vector2f vector2f::operator*(const vector2f vec) // 点积
 {
 	vector2f tem;
-	tem.x=vec.x*x;
-	tem.y=vec.y*y;
+	tem.x = vec.x * x;
+	tem.y = vec.y * y;
 	return tem;
 }
-const vector2f vector2f::turnLeft(){//返回一个逆时针旋转90度的向量
+const vector2f vector2f::turnLeft(){ // 返回一个逆时针旋转90度的向量
 	vector2f tem;
-	tem.x=-y;
-	tem.y=x;
+	tem.x = -y;
+	tem.y = x;
 	return tem;
 }
 
