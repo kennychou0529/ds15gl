@@ -94,7 +94,7 @@ void dsSkybox::load(GLuint index) {
 	GLdouble x = width / 2;
 
 	skybox = glGenLists(1);
-	glLoadIdentity();
+
 	glNewList(skybox, GL_COMPILE_AND_EXECUTE);
 	{
 		glDisable(GL_LIGHTING);
@@ -166,6 +166,7 @@ void dsSkybox::load(GLuint index) {
 		glEnd();
 
 		glEnable(GL_LIGHTING);
+
 	}
 	glEndList();
 }

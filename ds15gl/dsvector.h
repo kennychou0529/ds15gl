@@ -13,7 +13,7 @@ GLdouble dsLenth3dv(GLdouble vec[3]);
 void dsNormalize3dv(GLdouble vec[3]);
 void dsDiff3dv(const GLdouble v1[3], const GLdouble v2[3], GLdouble ret[3]);
 void dsCross3dv(const GLdouble v1[3], const GLdouble v2[3], GLdouble ret[3]);
-void dNormalVectorOfTriangle3dv(const GLdouble p1[3], const GLdouble p2[3], const GLdouble p3[3], GLdouble ret[3]);
+void dsNormalVectorOfTriangle3dv(const GLdouble p1[3], const GLdouble p2[3], const GLdouble p3[3], GLdouble ret[3]);
 
 
 #endif

@@ -1,4 +1,6 @@
 #include "dstexture.h"
+#include "gl/GLAUX.H"
+
 
 GLuint dsLoadTextureBMP2D(const char* file_name, GLuint* pheight, GLuint* pwidth) {
 	const int BMP_Header_Length = 54;
@@ -97,4 +99,20 @@ GLuint dsLoadTextureBMP2D(const char* file_name, GLuint* pheight, GLuint* pwidth
 	}
 
 	return texture_ID;
+}
+
+// 载入一张图片作为纹理，调用 aux 库
+bool LoadT8(char *filename, GLuint &texture)
+{	
+	AUX_RGBImageRec* pImage = nullptr;
+	pImage = auxDIBImageLoad(filename);
+	if (pImage == nullptr)
+		return false;
+	glGenTextures(1, &texture);	
+	glBindTexture    (GL_TEXTURE_2D, texture);
+	gluBuild2DMipmaps(GL_TEXTURE_2D, 4, pImage->sizeX, 
+				  pImage->sizeY, GL_RGB, GL_UNSIGNED_BYTE, pImage->data);
+	free(pImage->data);
+	free(pImage);
+	return true;
 }

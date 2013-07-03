@@ -37,7 +37,7 @@ void dsCross3dv(const GLdouble v1[3], const GLdouble v2[3], GLdouble ret[3]) {
 }
 
 // 输入 三角形的三个顶点，输出 单位法向量
-void dNormalVectorOfTriangle3dv(const GLdouble p1[3], const GLdouble p2[3], const GLdouble p3[3], GLdouble ret[3]) {
+void dsNormalVectorOfTriangle3dv(const GLdouble p1[3], const GLdouble p2[3], const GLdouble p3[3], GLdouble ret[3]) {
 	GLdouble vec1[3], vec2[3];
 	dsDiff3dv(p1, p2, vec1);
 	dsDiff3dv(p1, p3, vec2);

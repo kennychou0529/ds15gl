@@ -9,10 +9,11 @@ void display() {
 	dsSetLight();
 	dsSetMaterial();
 
-	//添加视口，为什么之前的视口不能占满窗口
+	// 添加视口，为什么之前的视口不能占满窗口
 	glViewport(0, 0, width, height);
 
 	scene.showScene();
+	
 	dsShowAxes();
 	
 	glDisable(GL_TEXTURE_2D);
@@ -38,7 +39,7 @@ void reshapeFunc(int w, int h) {
 	height = h;
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(60, w / float(h), 2, 2000);
+	gluPerspective(60, w / double(h), 2, 2000);
 	glMatrixMode(GL_MODELVIEW);
 	glutPostRedisplay();
 }

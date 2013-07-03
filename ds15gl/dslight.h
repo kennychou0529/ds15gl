@@ -8,6 +8,7 @@ void dsSetMaterial();
 void dsShowLightSource();
 
 class dsLight {
-
+	// °Ñ
 };
+
 #endif
