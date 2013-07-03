@@ -1,8 +1,10 @@
 #include "dstools.h"
 #include "dsScene.h"
+#include <ctime>
 
 int width = 800, height = 600;
 dsScene scene;
+const int mspf=33; //每帧时间
 
 void display() {
 	dsSet(); // 这个函数需要修改
@@ -21,6 +23,7 @@ void display() {
 	glEnable(GL_TEXTURE_2D);
 
 	dsShowLightSource();
+	
 
 	glutSwapBuffers();
 }
@@ -45,7 +48,15 @@ void reshapeFunc(int w, int h) {
 }
 
 void idle() {
+	static long t=clock();
+	long deltaT=clock()-t;
+	if(deltaT>0&&deltaT<mspf)
+		//阻塞该线程
+		Sleep(mspf-deltaT);
+	t=clock();
+
 	glutPostRedisplay();
+	
 }
 
 int main(int argc, char* argv[])

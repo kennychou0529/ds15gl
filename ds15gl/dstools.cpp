@@ -1,6 +1,6 @@
 #include "dstools.h"
 
-const double viewMoveSpeed = 5.0;
+const double viewMoveSpeed = 1.0;
 static const GLdouble pi = 3.1415926;
 GLdouble eye_sphere[3] = {20.0, pi / 6, - pi / 2};
 /* 眼睛位置，用球坐标 (r, phi, theta) 表示
@@ -40,29 +40,31 @@ void dsSet() {
 
 void dsSpecialKeys(int key, int x, int y)
 {
+	static float rotateSpeed=0.1;
+	static float scaleSpeed=0.5;
 	switch (key) {
 	case GLUT_KEY_UP:
-		if (eye_sphere[1] > 0.1) {
-			eye_sphere[1] -= 0.1;
+		if (eye_sphere[1] > rotateSpeed) {
+			eye_sphere[1] -= rotateSpeed;
 		}
 		break;
 	case GLUT_KEY_DOWN:
-		if (eye_sphere[1] < 3.1415926 - 0.1) {
-			eye_sphere[1] += 0.1;
+		if (eye_sphere[1] < 3.1415926 - rotateSpeed) {
+			eye_sphere[1] += rotateSpeed;
 		}
 		break;
 	case GLUT_KEY_LEFT:
-		eye_sphere[2] -= 0.1;
+		eye_sphere[2] -= rotateSpeed;
 		break;
 	case GLUT_KEY_RIGHT:
-		eye_sphere[2] += 0.1;
+		eye_sphere[2] += rotateSpeed;
 		break;
 	case GLUT_KEY_F1:
-		eye_sphere[0] += 0.1;
+		eye_sphere[0] += scaleSpeed;
 		break;
 	case GLUT_KEY_F2:
-		if (eye_sphere[0] > 0.1) {
-			eye_sphere[0] -= 0.1;
+		if (eye_sphere[0] > scaleSpeed) {
+			eye_sphere[0] -= scaleSpeed;
 		}
 	break;
 	}
@@ -111,7 +113,7 @@ void keyFunc(unsigned char key,int x,int y){
 //}
 
 
-// 测试用的函数，花一个直角坐标系
+// 测试用的函数，画一个直角坐标系
 void dsShowAxes(GLdouble lenth) {
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);

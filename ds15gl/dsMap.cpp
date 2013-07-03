@@ -18,7 +18,7 @@ dsMap::dsMap(char* fileName)
 			}
 		}
 	}
-	printf_s("%d\n",**data);
+	//printf_s("%d\n",**data);
 }
 
 
