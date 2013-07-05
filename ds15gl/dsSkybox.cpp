@@ -68,7 +68,7 @@ void dsSkybox::load(GLuint index) {
 		texture[4] = dsLoadTextureBMP2D("data/images/skybox3/up.bmp");
 		texture[5] = dsLoadTextureBMP2D("data/images/skybox3/down.bmp");
 		extern GLdouble center[3];
-		center[2] = 95.0;
+		center[2] = 950.0;
 
 		break;
 	case 4:
@@ -88,7 +88,7 @@ void dsSkybox::load(GLuint index) {
 	}
 
 	// 再创建显示列表
-	width = 200;
+	width = 2000;
 	height = width / (GLdouble)texture_width * (GLdouble)texture_height;
 	
 	GLdouble x = width / 2;
