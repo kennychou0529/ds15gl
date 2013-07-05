@@ -11,6 +11,6 @@ using std::ifstream;
 GLuint dsLoadTextureBMP2D(const char* file_name, GLuint* pheight = nullptr, GLuint* pwidth = nullptr);
 
 // 载入一张图片作为纹理，调用 aux 库
-bool LoadT8(char *filename, GLuint &texture);
+//bool LoadT8(char *filename, GLuint &texture);
 
 #endif

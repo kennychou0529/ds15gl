@@ -16,6 +16,9 @@ GLdouble center[3] = {0.0, 0.0, 20.0};
 // 相机位置
 GLdouble eye[3];
 
+//坐标轴长度
+GLfloat axeLength;
+
 void dsSet() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	/*这个不要老改，reshap时该就行了*/
@@ -68,6 +71,7 @@ void dsSpecialKeys(int key, int x, int y)
 		}
 	break;
 	}
+	axeLength=eye_sphere[0]*0.2f;
 }
 
 
@@ -114,26 +118,37 @@ void keyFunc(unsigned char key,int x,int y){
 
 
 // 测试用的函数，画一个直角坐标系
-void dsShowAxes(GLdouble lenth) {
+void dsShowAxes(void) {
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);
+	glPushMatrix();
+	glTranslatef(center[0],center[1],center[2]);
 	glBegin(GL_LINES);
 	{
 		glLineWidth(1.0);
 		glColor3d(1.0, 0.0, 0.0);
 		glVertex3d(0.0, 0.0, 0.0);
-		glVertex3d(lenth, 0.0, 0.0);
+		glVertex3f(axeLength, 0.0, 0.0);
 
 		glColor3d(0.0, 1.0, 0.0);
 		glVertex3d(0.0, 0.0, 0.0);
-		glVertex3d(0.0, lenth, 0.0);
+		glVertex3f(0.0, axeLength, 0.0);
 
 		glColor3d(0.0, 0.0, 1.0);
 		glVertex3d(0.0, 0.0, 0.0);
-		glVertex3d(0.0, 0.0, lenth);
+		glVertex3f(0.0, 0.0, axeLength);
 	}
 	glEnd();
+	glPopMatrix();
 	glEnable(GL_LIGHTING);
 	glEnable(GL_TEXTURE_2D);
 }
 
+void drawRectange(int x,int y,int width,int length,int height){
+	glBegin(GL_QUADS);
+		glVertex3d(x,y,height);
+		glVertex3d(x+width,y,height);
+		glVertex3d(x+width,y+length,height);
+		glVertex3d(x,y+length,height);
+	glEnd();
+}

@@ -18,12 +18,15 @@ GLfloat light_position[4] = {5.0f, 0.0f, 5.0f, 1.0f};
 void dsSetLight() {
 	// 创建光源
 	glEnable(GL_LIGHT0);
-
 	// 将数据载入光源 0
 	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
+	
+
+	
 
 	//// 聚光灯
 	//glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 60.0f);

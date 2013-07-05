@@ -2,6 +2,7 @@
 #include "dsMap.h"
 #include <GL/glut.h>
 #include "dsSkybox.h"
+#include "dstools.h"
 
 // 与场景有关的类
 // 所有绘图操作都应该转移到这个类
@@ -14,10 +15,14 @@ public:
 	// 天空盒的载入过程在 dsSkybox 类里了
 	// void initSkyBox();
 
-	void showScene();
+	void show();
+	void setSize(int width,int height);
+private:
+	int window_width;
+	int window_height;
 
 private:
-	dsMap dsmap; // 以后改名	
+	dsMap map; // 以后改名	
 	//显示列表
 
 	// 天空盒的显示列表在 dsSkybox 类里了

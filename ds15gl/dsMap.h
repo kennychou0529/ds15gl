@@ -10,7 +10,7 @@ public:
 		height = this->height;
 	}
 
-	const int getElement(int x, int y){
+	const int getTile(int x, int y){
 		//数组越界
 		if (x < 0 || x >= width || y < 0 || y >= height)
 			return 0;

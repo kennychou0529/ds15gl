@@ -119,9 +119,11 @@ void dsScene::initSkyBox() {
 }
 */
 
-void dsScene::showScene(){
+void dsScene::show(){
 	// glCallList(skyBox);
+	
 	dsskybox.show();
+	dsShowAxes();
 }
 
 
@@ -143,3 +145,7 @@ void dsScene::initScene() {
 	dsskybox.load();
 }
 
+void dsScene::setSize(int width,int height){
+	window_height=height;
+	window_width=width;
+}

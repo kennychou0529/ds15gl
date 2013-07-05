@@ -1,35 +1,61 @@
 #include "dstools.h"
-#include "dsScene.h"
+#include "dsFrame.h"
 #include <ctime>
 
 int width = 800, height = 600;
-dsScene scene;
+//dsScene scene;
+dsFrame frame;
 const int mspf=33; //每帧时间
 
 void display() {
+
+
 	dsSet(); // 这个函数需要修改
-	dsSetLight();
+	
 	dsSetMaterial();
 
 	// 添加视口，为什么之前的视口不能占满窗口
-	glViewport(0, 0, width, height);
-
-	scene.showScene();
+	glViewport(0, 0, width-200, height);
+	//dsShowAxes();
+	//scene.show();
+	frame.display();
 	
-	dsShowAxes();
 	
 	glDisable(GL_TEXTURE_2D);
 	glutSolidTeapot(5.0);
 	glEnable(GL_TEXTURE_2D);
 
-	dsShowLightSource();
+	//dsShowLightSource();
 	
+	//glMatrixMode(GL_PROJECTION);
+	//glPushMatrix();
+	//glLoadIdentity();
+	//glOrtho(0,100,0,200,0,100);	
+	//glMatrixMode(GL_MODELVIEW);
+	//
+	//glLoadIdentity();
+	//glViewport(width-200,0,200,height);
+	////glPushAttrib(GL_PROJECTION);
+
+	//gluLookAt(0,0,10,0,0,0,0,1,0);
+	//glColor3d(1,1,1);	
+	////glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
+	////drawRectange(0,0,100,window_height,0);
+	//
+	//glutSolidCube(100);
+
+	//glMatrixMode(GL_PROJECTION);
+	//glPopMatrix();
+	////glViewport(window_width-width,0,width,window_height);
+	//glMatrixMode(GL_MODELVIEW);
 
 	glutSwapBuffers();
 }
 
 void init() {
-	scene.initScene();
+	//scene.initScene();
+	dsSetLight();
+	frame.initializ();
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_LIGHTING);
@@ -40,11 +66,12 @@ void init() {
 void reshapeFunc(int w, int h) {
 	width = w;
 	height = h;
+	frame.setSize(w,h);
+//	glLoadIdentity();
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(60, w / double(h), 2, 20000);
+	gluPerspective(60, width / double(height), 2, 20000);
 	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
 	glutPostRedisplay();
 }
 
