@@ -21,7 +21,7 @@ void display() {
 	glutSolidTeapot(5.0);
 	glEnable(GL_TEXTURE_2D);*/
 
-	dsShowLightSource();
+	//dsShowLightSource();
 	glutSwapBuffers();
 }
 

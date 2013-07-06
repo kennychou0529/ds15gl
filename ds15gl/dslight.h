@@ -7,8 +7,8 @@ void dsSetLight();
 void dsSetMaterial();
 void dsShowLightSource();
 
-class dsLight {
-	// °Ñ
+class DSLight {
+
 };
 
 #endif
