@@ -27,7 +27,10 @@ private:
 	// 天空盒纹理编号
 	GLuint texture[6];
 
-	GLdouble width, height;
+	GLdouble width; // 天空盒宽度
+	GLdouble height; // 天空盒高度，这个将会根据纹理图片的大小计算
+	GLdouble depth; // 为了将眼睛放在大约 xy 平面，需要把天空盒底面放在 - depth 高度上
+
 };
 
 #endif

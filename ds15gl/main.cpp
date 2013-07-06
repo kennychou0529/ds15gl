@@ -10,17 +10,10 @@ const int mspf = 33; //每帧时间
 void display() {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	dsSet(); // 这个函数需要修改	
+	dsSet(); // 设置视角
 
-	//dsShowAxes();
 	frame.display();
-	
-	
-	/*glDisable(GL_TEXTURE_2D);
-	glutSolidTeapot(5.0);
-	glEnable(GL_TEXTURE_2D);*/
 
-	//dsShowLightSource();
 	glutSwapBuffers();
 }
 

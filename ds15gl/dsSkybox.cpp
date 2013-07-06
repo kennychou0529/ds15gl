@@ -32,8 +32,8 @@ void DSSkybox::load(GLuint index) {
 		texture[4] = dsLoadTextureBMP2D("data/images/skybox1/up.bmp");
 		texture[5] = dsLoadTextureBMP2D("data/images/skybox1/down.bmp");
 		extern GLdouble center[3];
-		center[2] = 95.0;
-
+		//center[2] = 95.0;
+		depth = 950.0;
 		break;
 	case 1:
 		// 锦绣壮丽山川天空盒
@@ -44,8 +44,8 @@ void DSSkybox::load(GLuint index) {
 		texture[4] = dsLoadTextureBMP2D("data/images/skybox0/lostvalley_up.bmp");
 		texture[5] = dsLoadTextureBMP2D("data/images/skybox0/lostvalley_down.bmp");
 		extern GLdouble center[3];
-		center[2] = 70.0;
-
+		//center[2] = 70.0;
+		depth = 700.0;
 		break;
 	case 2:
 		// 水天交接天空盒
@@ -56,8 +56,8 @@ void DSSkybox::load(GLuint index) {
 		texture[4] = dsLoadTextureBMP2D("data/images/skybox2/up.bmp");
 		texture[5] = dsLoadTextureBMP2D("data/images/skybox2/down.bmp");
 		extern GLdouble center[3];
-		center[2] = 100.0;
-
+		// center[2] = 1000.0;
+		depth = 970.0;
 		break;
 	case 3:
 		// 夕阳无限红霞天空盒
@@ -68,8 +68,8 @@ void DSSkybox::load(GLuint index) {
 		texture[4] = dsLoadTextureBMP2D("data/images/skybox3/up.bmp");
 		texture[5] = dsLoadTextureBMP2D("data/images/skybox3/down.bmp");
 		extern GLdouble center[3];
-		center[2] = 950.0;
-
+		// center[2] = 950.0;
+		depth = 950.0;
 		break;
 	case 4:
 		// 原来的天空盒
@@ -80,8 +80,8 @@ void DSSkybox::load(GLuint index) {
 		texture[4] = dsLoadTextureBMP2D("data/images/skybox4/up.bmp");
 		texture[5] = dsLoadTextureBMP2D("data/images/skybox4/down.bmp");
 		extern GLdouble center[3];
-		center[2] = 40.0;
-
+		// center[2] = 40.0;
+		depth = 400.0;
 		break;
 	default:
 		break;
@@ -103,10 +103,10 @@ void DSSkybox::load(GLuint index) {
 		glBindTexture(GL_TEXTURE_2D, texture[5]);
 		glBegin(GL_QUADS);
 		{
-			glTexCoord2d(1, 0); glVertex3d(- x, - x, - 2);
-			glTexCoord2d(1, 1); glVertex3d(x, - x, - 2);
-			glTexCoord2d(0, 1); glVertex3d(x, x, - 2);
-			glTexCoord2d(0, 0); glVertex3d(- x, x, - 2);
+			glTexCoord2d(1, 0); glVertex3d(- x, - x, - depth);
+			glTexCoord2d(1, 1); glVertex3d(x, - x, - depth);
+			glTexCoord2d(0, 1); glVertex3d(x, x, - depth);
+			glTexCoord2d(0, 0); glVertex3d(- x, x, - depth);
 		}
 		glEnd();
 
@@ -114,10 +114,10 @@ void DSSkybox::load(GLuint index) {
 		glBindTexture(GL_TEXTURE_2D, texture[0]);
 		glBegin(GL_QUADS);
 		{
-			glTexCoord2d(0, 0); glVertex3d(x, x, - 2);
-			glTexCoord2d(0, 1); glVertex3d(x, x, height - 2);
-			glTexCoord2d(1, 1); glVertex3d(x, - x, height - 2);
-			glTexCoord2d(1, 0); glVertex3d(x, - x, - 2);
+			glTexCoord2d(0, 0); glVertex3d(x, x, - depth);
+			glTexCoord2d(0, 1); glVertex3d(x, x, height - depth);
+			glTexCoord2d(1, 1); glVertex3d(x, - x, height - depth);
+			glTexCoord2d(1, 0); glVertex3d(x, - x, - depth);
 		}
 		glEnd();
 
@@ -125,10 +125,10 @@ void DSSkybox::load(GLuint index) {
 		glBindTexture(GL_TEXTURE_2D, texture[1]);
 		glBegin(GL_QUADS);
 		{
-			glTexCoord2d(0, 0); glVertex3d(- x, - x, -2);
-			glTexCoord2d(0, 1); glVertex3d(- x, - x, height - 2);
-			glTexCoord2d(1, 1); glVertex3d(- x, x, height - 2);
-			glTexCoord2d(1, 0); glVertex3d(- x, x, -2);
+			glTexCoord2d(0, 0); glVertex3d(- x, - x, - depth);
+			glTexCoord2d(0, 1); glVertex3d(- x, - x, height - depth);
+			glTexCoord2d(1, 1); glVertex3d(- x, x, height - depth);
+			glTexCoord2d(1, 0); glVertex3d(- x, x, - depth);
 		}
 		glEnd();
 
@@ -136,10 +136,10 @@ void DSSkybox::load(GLuint index) {
 		glBindTexture(GL_TEXTURE_2D, texture[2]);
 		glBegin(GL_QUADS);
 		{
-			glTexCoord2d(0, 0); glVertex3d(x, - x, -2);
-			glTexCoord2d(0, 1); glVertex3d(x, - x, height - 2);
-			glTexCoord2d(1, 1); glVertex3d(- x, - x, height - 2);
-			glTexCoord2d(1, 0); glVertex3d(- x, - x, -2);		
+			glTexCoord2d(0, 0); glVertex3d(x, - x, - depth);
+			glTexCoord2d(0, 1); glVertex3d(x, - x, height - depth);
+			glTexCoord2d(1, 1); glVertex3d(- x, - x, height - depth);
+			glTexCoord2d(1, 0); glVertex3d(- x, - x, - depth);		
 		}
 		glEnd();
 
@@ -147,10 +147,10 @@ void DSSkybox::load(GLuint index) {
 		glBindTexture(GL_TEXTURE_2D, texture[3]);
 		glBegin(GL_QUADS);
 		{
-			glTexCoord2d(0, 0); glVertex3d(- x, x, -2);
-			glTexCoord2d(0, 1); glVertex3d(- x, x, height - 2);
-			glTexCoord2d(1, 1); glVertex3d(x, x, height - 2);
-			glTexCoord2d(1, 0); glVertex3d(x, x, -2);		
+			glTexCoord2d(0, 0); glVertex3d(- x, x, - depth);
+			glTexCoord2d(0, 1); glVertex3d(- x, x, height - depth);
+			glTexCoord2d(1, 1); glVertex3d(x, x, height - depth);
+			glTexCoord2d(1, 0); glVertex3d(x, x, - depth);		
 		}
 		glEnd();
 
@@ -158,10 +158,10 @@ void DSSkybox::load(GLuint index) {
 		glBindTexture(GL_TEXTURE_2D, texture[4]);
 		glBegin(GL_QUADS);
 		{
-			glTexCoord2d(1, 1); glVertex3d(- x, -x, height - 2);
-			glTexCoord2d(1, 0); glVertex3d(x, -x, height - 2);
-			glTexCoord2d(0, 0); glVertex3d(x, x, height - 2);
-			glTexCoord2d(0, 1); glVertex3d(- x, x, height - 2);
+			glTexCoord2d(1, 1); glVertex3d(- x, -x, height - depth);
+			glTexCoord2d(1, 0); glVertex3d(x, -x, height - depth);
+			glTexCoord2d(0, 0); glVertex3d(x, x, height - depth);
+			glTexCoord2d(0, 1); glVertex3d(- x, x, height - depth);
 		}
 		glEnd();
 
