@@ -3,21 +3,21 @@
 #include "dsStatusBar.h"
 #include "dsMap.h"
 
-class dsFrame
+class DSFrame
 {
 public:
-	dsFrame(void);
-	~dsFrame(void);
+	DSFrame(void);
+	~DSFrame(void);
 public:
-	void initializ(void);
+	void initialize(void);
 	void display(void);
 	void setSize(int width,int height);
 private:
 	int window_width;
 	int window_height;
 private:
-	dsScene scene;
-	dsStatusBar statusBar;
-	dsMap map;
+	DSScene scene;
+	DSStatusBar statusBar;
+	DSMap map;
 };
 

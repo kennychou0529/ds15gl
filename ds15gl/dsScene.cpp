@@ -4,12 +4,12 @@
 
 // int test;
 
-dsScene::dsScene()
+DSScene::DSScene()
 {
 }
 
 
-dsScene::~dsScene()
+DSScene::~DSScene()
 {
 	// 天空盒的卸载工作已转入 dsSkybox 类
 	// 以下注释之，勿删
@@ -119,16 +119,16 @@ void dsScene::initSkyBox() {
 }
 */
 
-void dsScene::show(){
+void DSScene::show(){
 	// glCallList(skyBox);
-	
-	dsskybox.show();
+	glViewport(0, 0, window_width-200, window_height);
+	dsSkyBox.show();
 	dsShowAxes();
 }
 
 
 
-void dsScene::initScene() {
+void DSScene::initialize() {
 	// 载入天空盒纹理的工作已转入 dsSkybox 类
 	// 以下注释之，勿删
 	/*
@@ -142,10 +142,10 @@ void dsScene::initScene() {
 
 	initSkyBox();
 	*/
-	dsskybox.load();
+	dsSkyBox.load();
 }
 
-void dsScene::setSize(int width,int height){
+void DSScene::setSize(int width,int height){
 	window_height=height;
 	window_width=width;
 }

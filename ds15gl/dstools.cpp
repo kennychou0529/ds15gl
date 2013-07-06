@@ -2,7 +2,7 @@
 
 const double viewMoveSpeed = 1.0;
 static const GLdouble pi = 3.1415926;
-GLdouble eye_sphere[3] = {20.0, pi / 6, - pi / 2};
+GLdouble eye_sphere[3] = {20.0, pi / 4, - pi / 2};
 /* 眼睛位置，用球坐标 (r, phi, theta) 表示
  * 其中，phi 表示与 z 轴的夹角
  * theta 表示在 xy 平面的投影的旋转角
@@ -16,12 +16,11 @@ GLdouble center[3] = {0.0, 0.0, 20.0};
 // 相机位置
 GLdouble eye[3];
 
-//坐标轴长度
-GLfloat axeLength;
+float axeLength=eye_sphere[0]*0.5f;
 
 void dsSet() {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	/*这个不要老改，reshap时该就行了*/
+	
+	/*这个不要老改，reshap时改就行了*/
 
 	//glMatrixMode(GL_PROJECTION);
 	//glLoadIdentity();
@@ -71,7 +70,8 @@ void dsSpecialKeys(int key, int x, int y)
 		}
 	break;
 	}
-	axeLength=eye_sphere[0]*0.2f;
+	axeLength=eye_sphere[0]*0.5f;
+	
 }
 
 
@@ -104,6 +104,7 @@ void keyFunc(unsigned char key,int x,int y){
 	default:
 		break;
 	}
+	
 }
 //效果不理想
 //void dsPassiveMonitionFunc(int x,int y){
@@ -121,15 +122,17 @@ void keyFunc(unsigned char key,int x,int y){
 void dsShowAxes(void) {
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);
+	glViewport(0,0,100,100);
 	glPushMatrix();
 	glTranslatef(center[0],center[1],center[2]);
+	//glLoadIdentity();
 	glBegin(GL_LINES);
 	{
 		glLineWidth(1.0);
 		glColor3d(1.0, 0.0, 0.0);
 		glVertex3d(0.0, 0.0, 0.0);
 		glVertex3f(axeLength, 0.0, 0.0);
-
+		
 		glColor3d(0.0, 1.0, 0.0);
 		glVertex3d(0.0, 0.0, 0.0);
 		glVertex3f(0.0, axeLength, 0.0);
@@ -144,8 +147,18 @@ void dsShowAxes(void) {
 	glEnable(GL_TEXTURE_2D);
 }
 
-void drawRectange(int x,int y,int width,int length,int height){
+void fillRectange2D(int x,int y,int width,int length){
+	int height=-10;
 	glBegin(GL_QUADS);
+		glVertex3d(x,y,height);
+		glVertex3d(x+width,y,height);
+		glVertex3d(x+width,y+length,height);
+		glVertex3d(x,y+length,height);
+	glEnd();
+}
+void drawRectange2D(int x,int y,int width,int length){
+	int height=-10;
+	glBegin(GL_LINE_LOOP);
 		glVertex3d(x,y,height);
 		glVertex3d(x+width,y,height);
 		glVertex3d(x+width,y+length,height);

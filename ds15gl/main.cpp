@@ -4,61 +4,36 @@
 
 int width = 800, height = 600;
 //dsScene scene;
-dsFrame frame;
+DSFrame frame;
 const int mspf=33; //每帧时间
 
 void display() {
 
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	dsSet(); // 这个函数需要修改	
 
-	dsSet(); // 这个函数需要修改
-	
-	dsSetMaterial();
-
-	// 添加视口，为什么之前的视口不能占满窗口
-	glViewport(0, 0, width-200, height);
 	//dsShowAxes();
 	//scene.show();
 	frame.display();
 	
 	
-	glDisable(GL_TEXTURE_2D);
+	/*glDisable(GL_TEXTURE_2D);
 	glutSolidTeapot(5.0);
-	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_TEXTURE_2D);*/
 
-	//dsShowLightSource();
-	
-	//glMatrixMode(GL_PROJECTION);
-	//glPushMatrix();
-	//glLoadIdentity();
-	//glOrtho(0,100,0,200,0,100);	
-	//glMatrixMode(GL_MODELVIEW);
-	//
-	//glLoadIdentity();
-	//glViewport(width-200,0,200,height);
-	////glPushAttrib(GL_PROJECTION);
-
-	//gluLookAt(0,0,10,0,0,0,0,1,0);
-	//glColor3d(1,1,1);	
-	////glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
-	////drawRectange(0,0,100,window_height,0);
-	//
-	//glutSolidCube(100);
-
-	//glMatrixMode(GL_PROJECTION);
-	//glPopMatrix();
-	////glViewport(window_width-width,0,width,window_height);
-	//glMatrixMode(GL_MODELVIEW);
-
+	dsShowLightSource();
 	glutSwapBuffers();
 }
 
 void init() {
 	//scene.initScene();
+	dsSetMaterial();
 	dsSetLight();
-	frame.initializ();
+	frame.initialize();
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_LIGHTING);
+	//dsSet();
 	// texGround = dsLoadTextureBMP2D("ground.bmp");
 }
 

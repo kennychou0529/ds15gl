@@ -6,10 +6,10 @@
 
 // 天空盒类，已经将场景中绘制天空盒的部分都写在其中了
 
-class dsSkybox {
+class DSSkybox {
 public:
-	dsSkybox(): skybox(0) {}
-	~dsSkybox() { del(); }
+	DSSkybox(): skyBox(0) {}
+	~DSSkybox() { del(); }
 
 	// 载入天空盒 纹理 并分配 显示列表
 	void load(GLuint index = 3);
@@ -22,7 +22,7 @@ public:
 
 private:
 	// 显示列表编号
-	GLuint skybox;
+	GLuint skyBox;
 
 	// 天空盒纹理编号
 	GLuint texture[6];

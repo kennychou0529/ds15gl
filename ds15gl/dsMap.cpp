@@ -3,7 +3,7 @@
 using namespace std;
 
 //从文件初始化一张地图
-dsMap::dsMap(char* fileName)
+DSMap::DSMap(char* fileName)
 {
 	//如果没有传入文件名，则产生一张 100 * 100 的地图，且所有元素都是0
 	if (strlen(fileName) == 0) {
@@ -22,7 +22,7 @@ dsMap::dsMap(char* fileName)
 }
 
 
-dsMap::~dsMap()
+DSMap::~DSMap()
 {
 	for(int i = 0; i < height; i++){
 		delete[] data[i];

@@ -6,11 +6,11 @@
 
 // 与场景有关的类
 // 所有绘图操作都应该转移到这个类
-class dsScene {
+class DSScene {
 public:
-	dsScene();
-	~dsScene();
-	void initScene();
+	DSScene();
+	~DSScene();
+	void initialize();
 
 	// 天空盒的载入过程在 dsSkybox 类里了
 	// void initSkyBox();
@@ -22,7 +22,7 @@ private:
 	int window_height;
 
 private:
-	dsMap map; // 以后改名	
+	DSMap map; // 以后改名	
 	//显示列表
 
 	// 天空盒的显示列表在 dsSkybox 类里了
@@ -40,6 +40,6 @@ private:
 	// 天空盒的纹理编号在 dsSkybox 类里了
 	// GLuint tex[6]; //east,west,south,north,top
 
-	dsSkybox dsskybox;
+	DSSkybox dsSkyBox;
 };
 

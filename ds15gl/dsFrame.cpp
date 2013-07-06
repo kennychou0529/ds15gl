@@ -1,26 +1,26 @@
 #include "dsFrame.h"
 
 
-dsFrame::dsFrame(void)
+DSFrame::DSFrame(void)
 {	
 	setSize(800,600);
 }
 
-void dsFrame::initializ(void){
-	scene.initScene();
+void DSFrame::initialize(void){
+	scene.initialize();
 }
 
-dsFrame::~dsFrame(void)
+DSFrame::~DSFrame(void)
 {
 }
 
 
-void dsFrame::display(){
+void DSFrame::display(){
 	scene.show();
 	statusBar.show();
 }
 
-void dsFrame::setSize(int width,int height){
+void DSFrame::setSize(int width,int height){
 	window_height=height;
 	window_width=width;
 	statusBar.setSize(width,height);

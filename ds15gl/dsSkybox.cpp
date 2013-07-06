@@ -1,9 +1,9 @@
 #include "dsSkybox.h"
 
-void dsSkybox::del() {
+void DSSkybox::del() {
 	// 如果 显示列表 已存在，则删除之
-	if (glIsList(skybox)) {
-		glDeleteLists(skybox, 1);
+	if (glIsList(skyBox)) {
+		glDeleteLists(skyBox, 1);
 	}
 
 	// 清空原来的天空盒 纹理
@@ -13,7 +13,7 @@ void dsSkybox::del() {
 	}
 }
 
-void dsSkybox::load(GLuint index) {
+void DSSkybox::load(GLuint index) {
 
 	// 原来可能已经存在天空盒，需要清空
 	del();
@@ -93,9 +93,9 @@ void dsSkybox::load(GLuint index) {
 	
 	GLdouble x = width / 2;
 
-	skybox = glGenLists(1);
+	skyBox = glGenLists(1);
 
-	glNewList(skybox, GL_COMPILE_AND_EXECUTE);
+	glNewList(skyBox, GL_COMPILE_AND_EXECUTE);
 	{
 		glDisable(GL_LIGHTING);
 
@@ -171,6 +171,6 @@ void dsSkybox::load(GLuint index) {
 	glEndList();
 }
 
-void dsSkybox::show() {
-	glCallList(skybox);
+void DSSkybox::show() {
+	glCallList(skyBox);
 }

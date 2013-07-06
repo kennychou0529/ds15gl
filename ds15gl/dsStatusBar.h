@@ -1,11 +1,11 @@
 #pragma once
 #include <gl/glut.h>
 
-class dsStatusBar
+class DSStatusBar
 {
 public:
-	dsStatusBar(void);
-	~dsStatusBar(void);
+	DSStatusBar(void);
+	~DSStatusBar(void);
 public:
 	void show();
 	void setSize(int width,int height);

@@ -1,9 +1,9 @@
 #pragma once
 
-class dsMap {
+class DSMap {
 public:
-	dsMap(char* fileName = "");
-	~dsMap();
+	DSMap(char* fileName = "");
+	~DSMap();
 public:
 	const void getSize(int& width, int& height) {
 		width = this->width;
