@@ -1,14 +1,15 @@
-#pragma once
+#ifndef _DSSTATUSBAR_H
+#define _DSSTATUSBAR_H
+
 #include <gl/glut.h>
 
-class DSStatusBar
-{
+class DSStatusBar {
 public:
-	DSStatusBar(void);
-	~DSStatusBar(void);
+	DSStatusBar();
+	~DSStatusBar();
 public:
 	void show();
-	void setSize(int width,int height);
+	void setSize(int width, int height);
 private:
 	//´°¿Ú´óÐ¡
 	int window_width;
@@ -17,3 +18,4 @@ private:
 	int width;
 };
 
+#endif

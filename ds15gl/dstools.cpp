@@ -19,15 +19,6 @@ GLdouble eye[3];
 float axeLength=eye_sphere[0]*0.5f;
 
 void dsSet() {
-	
-	/*这个不要老改，reshap时改就行了*/
-
-	//glMatrixMode(GL_PROJECTION);
-	//glLoadIdentity();
-	//int window_height = glutGet(GLUT_WINDOW_HEIGHT);
-	//int window_width = glutGet(GLUT_WINDOW_WIDTH);
-	//gluPerspective(60, (double)window_width / window_height, 0.01, 20000.0);
-
 	//glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
@@ -42,8 +33,8 @@ void dsSet() {
 
 void dsSpecialKeys(int key, int x, int y)
 {
-	static float rotateSpeed=0.1;
-	static float scaleSpeed=0.5;
+	static float rotateSpeed = 0.1;
+	static float scaleSpeed = 0.5;
 	switch (key) {
 	case GLUT_KEY_UP:
 		if (eye_sphere[1] > rotateSpeed) {
@@ -70,12 +61,12 @@ void dsSpecialKeys(int key, int x, int y)
 		}
 	break;
 	}
-	axeLength=eye_sphere[0]*0.5f;
+	axeLength = eye_sphere[0] * 0.5f;
 	
 }
 
 
-void keyFunc(unsigned char key,int x,int y){
+void keyFunc(unsigned char key, int x, int y){
 	//printf_s("%f,%f,%f",eye[0],eye[1],eye[2]);
 	vector2f dir = vector2f(center[0] - eye[0], center[1] - eye[1]);
 	dir.normalLise();
@@ -119,12 +110,12 @@ void keyFunc(unsigned char key,int x,int y){
 
 
 // 测试用的函数，画一个直角坐标系
-void dsShowAxes(void) {
+void dsShowAxes() {
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);
-	glViewport(0,0,100,100);
+	glViewport(0, 0, 100, 100);
 	glPushMatrix();
-	glTranslatef(center[0],center[1],center[2]);
+	glTranslatef(center[0], center[1], center[2]);
 	//glLoadIdentity();
 	glBegin(GL_LINES);
 	{
@@ -147,21 +138,23 @@ void dsShowAxes(void) {
 	glEnable(GL_TEXTURE_2D);
 }
 
-void fillRectange2D(int x,int y,int width,int length){
-	int height=-10;
+void fillRectange2D(int x, int y, int width, int length){
+	int height = -10;
 	glBegin(GL_QUADS);
-		glVertex3d(x,y,height);
-		glVertex3d(x+width,y,height);
-		glVertex3d(x+width,y+length,height);
-		glVertex3d(x,y+length,height);
+		glVertex3d(x, y, height);
+		glVertex3d(x + width, y, height);
+		glVertex3d(x + width, y + length, height);
+		glVertex3d(x, y + length, height);
 	glEnd();
 }
-void drawRectange2D(int x,int y,int width,int length){
-	int height=-10;
+void drawRectange2D(int x, int y, int width, int length){
+	int height = -10;
 	glBegin(GL_LINE_LOOP);
-		glVertex3d(x,y,height);
-		glVertex3d(x+width,y,height);
-		glVertex3d(x+width,y+length,height);
-		glVertex3d(x,y+length,height);
+	{
+		glVertex3d(x, y, height);
+		glVertex3d(x + width, y, height);
+		glVertex3d(x + width, y + length, height);
+		glVertex3d(x, y + length, height);
+	}
 	glEnd();
 }

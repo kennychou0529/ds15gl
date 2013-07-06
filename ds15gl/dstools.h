@@ -1,5 +1,3 @@
-
-
 #include <gl/glut.h>
 #include "dsvector.h"
 #include "dstexture.h"
@@ -25,4 +23,5 @@ void dsShowAxes();
 
 void drawRectange2D(int x,int y,int width,int length);
 void fillRectange2D(int x,int y,int width,int length);
+
 #endif

@@ -5,7 +5,7 @@
 int width = 800, height = 600;
 //dsScene scene;
 DSFrame frame;
-const int mspf=33; //每帧时间
+const int mspf = 33; //每帧时间
 
 void display() {
 
@@ -13,7 +13,6 @@ void display() {
 	dsSet(); // 这个函数需要修改	
 
 	//dsShowAxes();
-	//scene.show();
 	frame.display();
 	
 	
@@ -51,12 +50,12 @@ void reshapeFunc(int w, int h) {
 }
 
 void idle() {
-	static long t=clock();
-	long deltaT=clock()-t;
-	if(deltaT>0&&deltaT<mspf)
+	static long t = clock();
+	long deltaT = clock() - t;
+	if(deltaT > 0 && deltaT < mspf)
 		//阻塞该线程
-		Sleep(mspf-deltaT);
-	t=clock();
+		Sleep(mspf - deltaT);
+	t = clock();
 
 	glutPostRedisplay();
 	

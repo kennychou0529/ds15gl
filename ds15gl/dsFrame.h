@@ -6,12 +6,12 @@
 class DSFrame
 {
 public:
-	DSFrame(void);
-	~DSFrame(void);
+	DSFrame();
+	~DSFrame();
 public:
-	void initialize(void);
-	void display(void);
-	void setSize(int width,int height);
+	void initialize();
+	void display();
+	void setSize(int width, int height);
 private:
 	int window_width;
 	int window_height;

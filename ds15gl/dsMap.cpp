@@ -24,7 +24,7 @@ DSMap::DSMap(char* fileName)
 
 DSMap::~DSMap()
 {
-	for(int i = 0; i < height; i++){
+	for (int i = 0; i < height; i++) {
 		delete[] data[i];
 	}
 	delete[] data;
