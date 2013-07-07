@@ -39,6 +39,7 @@ void DSStatusBar::show() {
 	
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_LIGHTING);
+
 	//回到透视投影
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();

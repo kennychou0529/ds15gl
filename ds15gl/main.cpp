@@ -3,6 +3,16 @@
 #include <ctime>
 #include <iostream>
 
+//目前只支持WIN32和Linux
+#ifdef WIN32
+#define SLEEP(mm) Sleep(mm)
+#else
+//这个还不知道行不行
+#include <unistd.h>
+#define SLEEP(mm) usleep(mm*1000)
+#endif // WIN32
+
+
 int width = 800, height = 600;
 //dsScene scene;
 DSFrame frame;
@@ -58,7 +68,7 @@ void idle() {
 	long deltaT = clock() - t;
 	if(deltaT > 0 && deltaT < mspf)
 		//阻塞该线程
-		Sleep(mspf - deltaT);
+		SLEEP(mspf - deltaT);
 	t = clock();
 
 	glutPostRedisplay();

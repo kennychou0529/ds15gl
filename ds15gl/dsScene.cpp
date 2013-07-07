@@ -31,7 +31,8 @@ void DSScene::show(){
 
 	// 以下是诡异的文字
 	glRasterPos2d(2.0, 2.0);
-	drawString("Hello");
+	//glTranslatef(10,10,10);
+	drawString("Hello\nWorld!");
 
 	glEnable(GL_LIGHTING);
 
