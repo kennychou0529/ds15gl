@@ -1,6 +1,7 @@
 #include "dstools.h"
 #include "dsFrame.h"
 #include <ctime>
+#include <iostream>
 
 int width = 800, height = 600;
 //dsScene scene;
@@ -15,6 +16,16 @@ void display() {
 	frame.display();
 
 	glutSwapBuffers();
+
+	//¥Ú”°GL¥ÌŒÛ
+	GLenum errCode;
+	const GLubyte *errString;
+
+	while((errCode=glGetError()) != GL_NO_ERROR){
+		errString = gluErrorString(errCode);
+		std::cerr<<errString<<std::endl;
+	}
+
 }
 
 void init() {

@@ -65,9 +65,12 @@ void dsShowLightSource() {
 		glVertex3fv(position);
 	}
 	glEnd();*/
+	glPushMatrix();
 	glColor3d(1.0, 1.0, 1.0);
 	glTranslated(light_position[0], light_position[1], light_position[2]);
 	glutSolidSphere(0.5, 20, 20);
+	glPopMatrix();
+
 	glEnable(GL_LIGHTING);
 	glEnable(GL_TEXTURE_2D);
 }

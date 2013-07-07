@@ -114,12 +114,15 @@ void dsShowAxes() {
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);
 	glViewport(0, 0, 100, 100);
-	glPushMatrix();
-	glTranslatef(center[0], center[1], center[2]);
+	//glPushMatrix();
 	//glLoadIdentity();
+	glTranslatef(center[0], center[1], center[2]);
+	
+	//glutSolidCube(1);
+	glLineWidth(1.0);
 	glBegin(GL_LINES);
 	{
-		glLineWidth(1.0);
+		
 		glColor3d(1.0, 0.0, 0.0);
 		glVertex3d(0.0, 0.0, 0.0);
 		glVertex3f(axeLength, 0.0, 0.0);
@@ -133,7 +136,8 @@ void dsShowAxes() {
 		glVertex3f(0.0, 0.0, axeLength);
 	}
 	glEnd();
-	glPopMatrix();
+	//glPopMatrix();
+	
 	glEnable(GL_LIGHTING);
 	glEnable(GL_TEXTURE_2D);
 }
