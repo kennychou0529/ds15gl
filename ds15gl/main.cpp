@@ -37,7 +37,7 @@ void reshapeFunc(int w, int h) {
 //	glLoadIdentity();
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(60, width / double(height), 2, 20000);
+	gluPerspective(60, (width - 200) / double(height), 2, 20000);
 	glMatrixMode(GL_MODELVIEW);
 	glutPostRedisplay();
 }
