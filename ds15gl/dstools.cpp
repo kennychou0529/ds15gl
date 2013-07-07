@@ -8,15 +8,17 @@ GLdouble eye_sphere[3] = {20.0, pi / 4, - pi / 2};
  * theta 表示在 xy 平面的投影的旋转角
  */
 
+// GLdouble center_sphere[3] = {20.0, 3 * pi / 4, - pi / 2};
+
 GLdouble up[3] = {0.0, 0.0, 1.0};
 
 // 视线中心点，球坐标的原点
-GLdouble center[3] = {0.0, 0.0, 20.0};
+GLdouble center[3] = {0.0, 0.0, 0.0};
 
 // 相机位置
 GLdouble eye[3];
 
-float axeLength=eye_sphere[0]*0.5f;
+float axeLength = eye_sphere[0] * 0.5f;
 
 void dsSet() {
 	//glMatrixMode(GL_MODELVIEW);
@@ -29,28 +31,26 @@ void dsSet() {
 	// 设置摄像头位置
 }
 
-
-
 void dsSpecialKeys(int key, int x, int y)
 {
 	static float rotateSpeed = 0.1;
 	static float scaleSpeed = 0.5;
 	switch (key) {
 	case GLUT_KEY_UP:
-		if (eye_sphere[1] > rotateSpeed) {
-			eye_sphere[1] -= rotateSpeed;
-		}
-		break;
-	case GLUT_KEY_DOWN:
 		if (eye_sphere[1] < 3.1415926 - rotateSpeed) {
 			eye_sphere[1] += rotateSpeed;
 		}
 		break;
+	case GLUT_KEY_DOWN:
+		if (eye_sphere[1] > rotateSpeed) {
+			eye_sphere[1] -= rotateSpeed;
+		}
+		break;
 	case GLUT_KEY_LEFT:
-		eye_sphere[2] -= rotateSpeed;
+		eye_sphere[2] += rotateSpeed;
 		break;
 	case GLUT_KEY_RIGHT:
-		eye_sphere[2] += rotateSpeed;
+		eye_sphere[2] -= rotateSpeed;
 		break;
 	case GLUT_KEY_F1:
 		eye_sphere[0] += scaleSpeed;
@@ -62,8 +62,8 @@ void dsSpecialKeys(int key, int x, int y)
 	break;
 	}
 	axeLength = eye_sphere[0] * 0.5f;
-	
 }
+
 
 
 void keyFunc(unsigned char key, int x, int y){

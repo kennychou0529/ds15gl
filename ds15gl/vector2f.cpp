@@ -40,7 +40,7 @@ const float vector2f::lenth() {
 }
 
 int vector2f::normalLise() {
-	if (x < 1e-4 && y < 1e-4)
+	if (std::fabs(x) < 1e-4 && std::fabs(y) < 1e-4)
 		return 0;
 	float len = lenth();
 	x /= len;

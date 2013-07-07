@@ -7,6 +7,13 @@ void dsSphereToOrtho3dv(const GLdouble sphere[3], const GLdouble center[3], GLdo
 	ortho[2] = center[2] + sphere[0] * cos(sphere[1]);
 }
 
+// 输入 点的直角坐标 和点相对于球心的球坐标，输出 球心的直角坐标
+void dsFindSphereCenter(const GLdouble sphere[3], const GLdouble ortho[3], GLdouble center[3]) {
+	center[0] = sphere[0] * sin(sphere[1]) * cos(sphere[2]) - ortho[0];
+	center[1] = sphere[0] * sin(sphere[1]) * sin(sphere[2]) - ortho[1];
+	center[2] = sphere[0] * cos(sphere[1]) - ortho[2];
+}
+
 // 返回向量的长度
 GLdouble dsLenth3dv(GLdouble vec[3]) {
 	return sqrt(vec[0] * vec[0] + vec[1] * vec[1] + vec[2] * vec[2]);
