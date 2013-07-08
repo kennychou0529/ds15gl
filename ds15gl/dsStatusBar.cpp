@@ -1,6 +1,9 @@
 #include "dsStatusBar.h"
 #include "dstools.h"
 #include "dsText.h"
+#include <sstream>
+#include <iomanip>
+
 DSStatusBar::DSStatusBar() : width(200) {}
 
 
@@ -37,6 +40,16 @@ void DSStatusBar::show() {
 	glutSolidTeapot(50);
 	glPopMatrix();
 	
+	// 让我们在这里写一下眼睛位置
+	glRasterPos2d(8.0, 8.0);
+	std::ostringstream os;
+	// os.unsetf(std::scientific);
+	os << "(" << std::fixed << std::setprecision(2) << eye[0] << ", " << eye[1] << ", " << eye[2] << ")";
+	drawString(os.str().c_str());
+	
+	glRasterPos2d(40.0, 24.0);
+	drawString("Eye position");
+
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_LIGHTING);
 

@@ -13,7 +13,7 @@ DSScene::~DSScene() {
 
 void DSScene::show(){
 	glViewport(0, 0, window_width - 200, window_height);
-	glColor3d(1,1,1);
+	glColor3d(1, 1, 1);
 	dsSkyBox.show();
 
 	// glDisable(GL_TEXTURE_2D);
@@ -30,7 +30,7 @@ void DSScene::show(){
 	glDisable(GL_LIGHTING);
 
 	// 以下是诡异的文字
-	glRasterPos2d(2.0, 2.0);
+	glRasterPos2d(4.0, 2.0);
 	//glTranslatef(10,10,10);
 	drawString("Hello\nWorld!");
 

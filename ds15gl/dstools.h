@@ -14,7 +14,7 @@ extern GLdouble eye[3];
 
 void dsSet();
 void dsSpecialKeys(int key, int x, int y);
-void keyFunc(unsigned char key,int x,int y);
+void keyFunc(unsigned char key, int x, int y);
 //void dsMouseFunc(int key,int x,int y,int);
 //void dsPassiveMonitionFunc(int x,int y);
 

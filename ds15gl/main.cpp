@@ -31,9 +31,9 @@ void display() {
 	GLenum errCode;
 	const GLubyte *errString;
 
-	while((errCode=glGetError()) != GL_NO_ERROR){
+	while ((errCode = glGetError()) != GL_NO_ERROR){
 		errString = gluErrorString(errCode);
-		std::cerr<<errString<<std::endl;
+		std::cerr << errString << std::endl;
 	}
 
 }
