@@ -120,6 +120,7 @@ void dsShowAxes() {
 	
 	//glutSolidCube(1);
 	glLineWidth(1.0);
+	glEnable(GL_LINE_SMOOTH);
 	glBegin(GL_LINES);
 	{
 		
