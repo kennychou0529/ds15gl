@@ -1,7 +1,7 @@
 #ifndef _DSSTATUSBAR_H
 #define _DSSTATUSBAR_H
 
-#include <gl/glut.h>
+#include <GL/glut.h>
 
 class DSStatusBar {
 public:
