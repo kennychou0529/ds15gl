@@ -5,8 +5,7 @@
 DSScene::DSScene() {}
 
 DSScene::~DSScene() {
-	if (groud != NULL) {
-		glIsList(groud);
+	if (glIsList(groud)) {
 		glDeleteLists(groud, 1);
 	}
 }
