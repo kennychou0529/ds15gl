@@ -34,6 +34,7 @@ void DSScene::show(){
 	glEnable(GL_LIGHTING);
 
 	dsShowLightSource();
+
 	dsShowAxes();
 }
 

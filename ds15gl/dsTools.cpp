@@ -124,6 +124,13 @@ void dsKeys(unsigned char key, int x, int y){
 void dsShowAxes() {
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);
+
+	glMatrixMode(GL_PROJECTION);
+		glPushMatrix();
+		glLoadIdentity();
+		gluPerspective(60,1,2,1000);
+	glMatrixMode(GL_MODELVIEW);
+	
 	glViewport(0, 0, 100, 100);
 	//glPushMatrix();
 	//glLoadIdentity();
@@ -150,6 +157,10 @@ void dsShowAxes() {
 	glEnd();
 	//glPopMatrix();
 	
+	glMatrixMode(GL_PROJECTION);
+		glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
+
 	glEnable(GL_LIGHTING);
 	glEnable(GL_TEXTURE_2D);
 }
