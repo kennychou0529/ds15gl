@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _DSMAP_H
+#define _DSMAP_H
 
 class DSMap {
 public:
@@ -27,3 +28,4 @@ private:
 	int** data;
 };
 
+#endif

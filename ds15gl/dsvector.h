@@ -23,6 +23,15 @@ void dsNormalize3dv(GLdouble vec[3]);
 // 向量的减法
 void dsDiff3dv(const GLdouble v1[3], const GLdouble v2[3], GLdouble ret[3]);
 
+// 向量的加法
+void dsAdd3dv(const GLdouble v1[3], const GLdouble v2[3], GLdouble ret[3]);
+
+// 向量的数乘
+void dsScalarMulti3dv(const GLdouble v[3], const GLdouble multiplier, GLdouble ret[3]);
+
+// 向量的点积
+GLdouble dsDot3dv(const GLdouble v1[3], const GLdouble v2[3]);
+
 // 向量的叉积
 void dsCross3dv(const GLdouble v1[3], const GLdouble v2[3], GLdouble ret[3]);
 
