@@ -1,5 +1,5 @@
 #include "dsStatusBar.h"
-#include "dstools.h"
+#include "dsTools.h"
 #include "dsText.h"
 #include <sstream>
 #include <iomanip>

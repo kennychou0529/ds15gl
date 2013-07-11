@@ -4,13 +4,13 @@
 #include "dsMap.h"
 #include <GL/glut.h>
 #include "dsSkybox.h"
-#include "dstools.h"
+#include "dsTools.h"
 
 // 与场景有关的类
 // 所有绘图操作都应该转移到这个类
 class DSScene {
 public:
-	DSScene();
+    DSScene();
 	~DSScene();
 	void initialize();
 	void show();

@@ -7,8 +7,8 @@
 
 class DSFrame {
 public:
-	DSFrame();
-	~DSFrame();
+    DSFrame() {}
+	~DSFrame() {}
 	void initialize();
 	void display();
 

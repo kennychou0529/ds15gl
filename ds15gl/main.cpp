@@ -1,4 +1,4 @@
-#include "dstools.h"
+#include "dsTools.h"
 #include "dsFrame.h"
 #include <ctime>
 #include <iostream>

@@ -1,5 +1,5 @@
 #include "dsScene.h"
-#include "dstexture.h"
+#include "dsTexture.h"
 #include "dsText.h"
 
 DSScene::DSScene() {}
