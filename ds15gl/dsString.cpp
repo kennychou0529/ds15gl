@@ -1,5 +1,11 @@
 #include "dsString.h"
 
+#ifdef WIN32
+#define SONGTI "C:/windows/fonts/STSONG.TTF"
+#endif // WIN32
+
+
+
 const int MAX=pow(2,sizeof(unsigned long));
 
 unsigned long DSString::Hash(wchar_t * key)
@@ -104,7 +110,7 @@ int DSString::init(){
 		return 1;
 	}
 
-	ftError = FT_New_Face( library, "STSONG.TTF", 0, &face ); 
+	ftError = FT_New_Face( library, SONGTI, 0, &face ); 
 	if(ftError==FT_Err_Unknown_File_Format){
 		printf_s("Unsupport Font File.\n");
 		return 1;
