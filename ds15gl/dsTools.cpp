@@ -13,6 +13,8 @@ int window_width = 1280;
 int window_height = 720;
 int status_bar_width = 200;
 
+DSString str;
+
 // ÎğÓÃ
 // GLdouble center_sphere[3] = {20.0, 3 * pi / 4, - pi / 2};
 
