@@ -36,7 +36,8 @@ void DSScene::show(){
 	str.drawString(L"English Test",32);
 	glRasterPos2d(8.0, 30.0);
 	str.drawString(L"中文测试测试中文",32);
-
+	glRasterPos2d(8.0, 40.0);
+	str.drawString(L"中文English混合",32);
 
 	glEnable(GL_LIGHTING);
 

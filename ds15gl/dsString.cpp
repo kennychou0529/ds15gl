@@ -30,7 +30,17 @@ DSString::DSString()
 
 DSString::~DSString()
 {
+	map<int,FT_GlyphSlot>::iterator it;
+	for(it=bitmaps.begin();it!=bitmaps.end();++it)
+		delete it->second;
 	bitmaps.clear();
+	map<unsigned long, GLint>::iterator itl;
+	for(itl=lists.begin();itl!=lists.end();++itl){
+		if (glIsList(itl->second)){
+			glDeleteLists(itl->second,1);
+		}
+	}
+	lists.clear();
 };
 
 int DSString::resize(int size){
@@ -47,7 +57,8 @@ int DSString::resize(int size){
 void DSString::drawString(wchar_t* str,int size){
 
 	map<unsigned long, GLint>::const_iterator temp=lists.find(Hash(str));
-
+	
+	//如果画过这句话
 	if (temp!=lists.end())
 	{
 		glPushMatrix();
@@ -70,6 +81,7 @@ void DSString::drawString(wchar_t* str,int size){
 		{
 			if ((str[i]>>8)==0)
 			{
+				//英文
 				glutBitmapCharacter(FONT, str[i]);
 				continue;
 			}
@@ -161,6 +173,11 @@ int DSString::init(){
 FT_GlyphSlot DSString::copy(FT_GlyphSlot slot){
 	//拷贝源字形
 	FT_GlyphSlot newSlot=new FT_GlyphSlotRec(*slot);
-	newSlot->bitmap = *(new FT_Bitmap(slot->bitmap));
+
+	int len=slot->bitmap.pitch*slot->bitmap.rows;
+	newSlot->bitmap.buffer = new unsigned char[len];
+	for (int i=0;i<len;i++){
+		newSlot->bitmap.buffer[i]=slot->bitmap.buffer[i];
+	}
 	return newSlot;
 }
