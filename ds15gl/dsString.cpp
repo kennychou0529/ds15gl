@@ -1,6 +1,7 @@
 #include "dsString.h"
 
 #ifdef WIN32
+//宋体
 #define SONGTI "C:/windows/fonts/STSONG.TTF"
 #endif // WIN32
 
@@ -31,8 +32,10 @@ DSString::DSString()
 DSString::~DSString()
 {
 	map<int,FT_GlyphSlot>::iterator it;
-	for(it=bitmaps.begin();it!=bitmaps.end();++it)
+	for(it=bitmaps.begin();it!=bitmaps.end();++it){
+		delete[] it->second->bitmap.buffer;
 		delete it->second;
+	}
 	bitmaps.clear();
 	map<unsigned long, GLint>::iterator itl;
 	for(itl=lists.begin();itl!=lists.end();++itl){
@@ -61,10 +64,7 @@ void DSString::drawString(wchar_t* str,int size){
 	//如果画过这句话
 	if (temp!=lists.end())
 	{
-		glPushMatrix();
-		glRotated(180,0,0,1);
 		glCallList(temp->second);
-		glPopMatrix();
 		return;
 	}
 	GLint newList=glGenLists(1);
@@ -92,10 +92,7 @@ void DSString::drawString(wchar_t* str,int size){
 		
 	}
 	glEndList();
-	glPushMatrix();
-	glRotated(180,0,0,1);
 	glCallList(newList);
-	glPopMatrix();
 	lists[Hash(str)]=newList;
 }
 
