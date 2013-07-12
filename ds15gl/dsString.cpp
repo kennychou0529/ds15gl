@@ -4,7 +4,7 @@
 #define SONGTI "C:/windows/fonts/STSONG.TTF"
 #endif // WIN32
 
-
+#define FONT GLUT_BITMAP_HELVETICA_18
 
 const int MAX=pow(2,sizeof(unsigned long));
 
@@ -68,6 +68,11 @@ void DSString::drawString(wchar_t* str,int size){
 		
 		for (int i=0;i<len;i++)
 		{
+			if ((str[i]>>8)==0)
+			{
+				glutBitmapCharacter(FONT, str[i]);
+				continue;
+			}
 			const FT_GlyphSlot& slot=getChar(str[i]);
 			FT_Bitmap bitmap = slot->bitmap;
 			glBitmap(bitmap.width,bitmap.rows,slot->bitmap_left,slot->bitmap_top,bitmap.width * 1.2f,0,bitmap.buffer);
@@ -82,7 +87,7 @@ void DSString::drawString(wchar_t* str,int size){
 	lists[Hash(str)]=newList;
 }
 
-const FT_GlyphSlot& DSString::getChar(wchar_t Char){
+const FT_GlyphSlot DSString::getChar(wchar_t Char){
 	//map<int, FT_GlyphSlot*>::const_iterator temp=;
 	if(bitmaps.find((Char<<8)+size)==bitmaps.end()){
 		glyph_index = FT_Get_Char_Index( face, Char);
@@ -96,7 +101,7 @@ const FT_GlyphSlot& DSString::getChar(wchar_t Char){
 
 		ftError = FT_Render_Glyph(face->glyph, FT_RENDER_MODE_MONO);
 
-		bitmaps[(Char<<8)+size] = face->glyph;
+		bitmaps[(Char<<8)+size] = copy(face->glyph);
 		return face->glyph;
 	}else{
 		return bitmaps[(Char<<8)+size];
@@ -151,4 +156,11 @@ int DSString::init(){
 
 	return 0;
 
+}
+
+FT_GlyphSlot DSString::copy(FT_GlyphSlot slot){
+	//¿½±´Ô´×ÖÐÎ
+	FT_GlyphSlot newSlot=new FT_GlyphSlotRec(*slot);
+	newSlot->bitmap = *(new FT_Bitmap(slot->bitmap));
+	return newSlot;
 }

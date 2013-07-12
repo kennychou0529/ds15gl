@@ -16,8 +16,9 @@ public:
 	int resize(int size);
 	int init();
 	void drawString(wchar_t* str, int size);
-	const FT_GlyphSlot& getChar(wchar_t Char);
+	const FT_GlyphSlot getChar(wchar_t Char);
 	unsigned long Hash(wchar_t * key);
+	FT_GlyphSlot copy(FT_GlyphSlot slot);
 private:
 	FT_Library library; 
 	FT_Face face;
