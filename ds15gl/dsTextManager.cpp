@@ -1,55 +1,54 @@
 #include "dsTextManager.h"
 
-inline int findNextPowerOf2(int a)
-{
+inline int findNextPowerOf2(int num) {
 	int result = 1;
-	while (result < a)
+	while (result < num)
 		result <<= 1;
 	return result;
 }
 
 void dsTextManager::makeList(wchar_t ch) {
-	// If the list already exists, then return.
+	// 如果显示列表已经存在，直接返回。
 	if (lists.find(ch) != lists.end()) {
 		return;
 	}
 
-	//The first thing we do is get FreeType to render our character
-	//into a bitmap.  This actually requires a couple of FreeType commands:
+	// The first thing we do is get FreeType to render our character
+	// into a bitmap.  This actually requires a couple of FreeType commands:
 
-	//Load the Glyph for our character.
+	// Load the Glyph for our character.
 	if (FT_Load_Glyph(face, FT_Get_Char_Index(face, ch), FT_LOAD_DEFAULT))
 		throw std::runtime_error("FT_Load_Glyph failed");
 
-	//Move the face's glyph into a Glyph object.
+	// Move the face's glyph into a Glyph object.
 	FT_Glyph glyph;
 	if (FT_Get_Glyph(face->glyph, &glyph))
 		throw std::runtime_error("FT_Get_Glyph failed");
 
-	//Convert the glyph to a bitmap.
+	// Convert the glyph to a bitmap.
 	FT_Glyph_To_Bitmap(&glyph, FT_RENDER_MODE_NORMAL, 0, 1);
 	FT_BitmapGlyph bitmap_glyph = (FT_BitmapGlyph)glyph;
 
-	//This reference will make accessing the bitmap easier
+	// This reference will make accessing the bitmap easier
 	FT_Bitmap& bitmap = bitmap_glyph->bitmap;
 
-	//Use our helper function to get the widths of
-	//the bitmap data that we will need in order to create
-	//our texture.
+	// Use our helper function to get the widths of
+	// the bitmap data that we will need in order to create
+	// our texture.
 	int texture_width = findNextPowerOf2(bitmap.width);
 	int texture_height = findNextPowerOf2(bitmap.rows);
 
-	//Allocate memory for the texture data.
+	// Allocate memory for the texture data.
 	GLubyte* expanded_data = new GLubyte[2 * texture_width * texture_height];
 
-	//Here we fill in the data for the expanded bitmap.
-	//Notice that we are using two channel bitmap (one for
-	//luminocity and one for alpha), but we assign
-	//both luminocity and alpha to the value that we
-	//find in the FreeType bitmap. 
-	//We use the ?: operator so that value which we use
-	//will be 0 if we are in the padding zone, and whatever
-	//is the the Freetype bitmap otherwise.
+	// Here we fill in the data for the expanded bitmap.
+	// Notice that we are using two channel bitmap (one for
+	// luminocity and one for alpha), but we assign
+	// both luminocity and alpha to the value that we
+	// find in the FreeType bitmap. 
+	// We use the ?: operator so that value which we use
+	// will be 0 if we are in the padding zone, and whatever
+	// is the the Freetype bitmap otherwise.
 	for (int j = 0; j < texture_height; j++) {
 		for (int i = 0; i < texture_width; i++) {
 			expanded_data[2 * (i + j * texture_width)]
@@ -128,36 +127,41 @@ void dsTextManager::makeList(wchar_t ch) {
 void dsTextManager::init(const char* font_file_name, unsigned int height) {
 	font_height = height;
 
-	//Create and initilize a freetype font library.
-	//FT_Library library;
+	// Initilize the freetype font library.
 	if (FT_Init_FreeType(&library)) 
 		throw std::runtime_error("FT_Init_FreeType failed");
 
-	//The object in which Freetype holds information on a given
-	//font is called a "face".
-	//FT_Face face;
+	// The object in which Freetype holds information on a given
+	// font is called a "face".
 
-	//This is where we load in the font information from the file.
-	//Of all the places where the code might die, this is the most likely,
-	//as FT_New_Face will die if the font file does not exist or is somehow broken.
+	// This is where we load in the font information from the file.
+	// Of all the places where the code might die, this is the most likely,
+	// as FT_New_Face will die if the font file does not exist or is somehow broken.
 	if (FT_New_Face(library, font_file_name, 0, &face)) 
 		throw std::runtime_error("FT_New_Face failed (there is probably a problem with your font file)");
 
 	// For some twisted reason, Freetype measures font size
 	// in terms of 1/64ths of pixels.  Thus, to make a font
-	// h pixels high, we need to request a size of h*64.
-	// (h << 6 is just a prettier way of writting h*64)
+	// h pixels high, we need to request a size of h * 64.
+	// (h << 6 is just a prettier way of writting h * 64)
 	FT_Set_Char_Size(face, height << 6, height << 6, 96, 96);
 }
 
 void dsTextManager::clean() {
-	// toto: clear all textures and lists
+	// 清除 map 中的所有 纹理 和 显示列表
+	for (auto texture_pair : textures) {
+		glDeleteTextures(1, &(texture_pair.second));
+	}
 
-	//We don't need the face information now that the display
-	//lists have been created, so we free the assosiated resources.
+	for (auto list_pair : lists) {
+		glDeleteLists(list_pair.second, 1);
+	}
+
+	// We don't need the face information now that the display
+	// lists have been created, so we free the assosiated resources.
 	FT_Done_Face(face);
 
-	//Ditto for the library.
+	// Ditto for the library.
 	FT_Done_FreeType(library);
 }
 
@@ -173,6 +177,7 @@ inline void pushScreenCoordinateMatrix() {
 	glLoadIdentity();
 	// gluOrtho2D(viewport[0], viewport[2], viewport[1], viewport[3]);
 	gluOrtho2D(0, viewport[2], 0, viewport[3]);
+	// 我历经千辛万苦修改了这行，它是关键的一行
 	glPopAttrib();
 }
 
@@ -185,11 +190,12 @@ inline void pop_projection_matrix() {
 	glPopAttrib();
 }
 
-void dsTextManager::print(float x, float y, const std::wstring& str) {
+void dsTextManager::print(GLfloat x, GLfloat y, const std::wstring& str) {
 	// We want a coordinate system where things coresponding to window pixels.
 	pushScreenCoordinateMatrix();					
 
-	float h = font_height / 0.63f;						//We make the height about 1.5* that of
+	// We make the height about 1.5 * that of font_height
+	GLfloat h = font_height / 0.63f;
 
 	// 接下来是分行程序
 	std::vector<std::wstring> lines;
@@ -214,17 +220,17 @@ void dsTextManager::print(float x, float y, const std::wstring& str) {
 	float modelview_matrix[16];	
 	glGetFloatv(GL_MODELVIEW_MATRIX, modelview_matrix);
 
-	//This is where the text display actually happens.
-	//For each line of text we reset the modelview matrix
-	//so that the line's text will start in the correct position.
-	//Notice that we need to reset the matrix, rather than just translating
-	//down by h. This is because when each character is
-	//draw it modifies the current matrix so that the next character
-	//will be drawn immediatly after it.  
+	// This is where the text display actually happens.
+	// For each line of text we reset the modelview matrix
+	// so that the line's text will start in the correct position.
+	// Notice that we need to reset the matrix, rather than just translating
+	// down by h. This is because when each character is
+	// draw it modifies the current matrix so that the next character
+	// will be drawn immediatly after it.  
 	for (int i = 0; i < lines.size(); i++) {
 		glPushMatrix();
 		glLoadIdentity();
-		glTranslatef(x, y - h * i, 0);
+		glTranslatef(x, y - h * (GLfloat)i, 0);
 		glMultMatrixf(modelview_matrix);
 		for (auto ch = lines[i].cbegin(); ch != lines[i].cend(); ++ch) {
 			makeList(*ch);

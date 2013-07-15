@@ -53,8 +53,10 @@ void DSStatusBar::show() {
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_LIGHTING);
 
+	glPushMatrix();
 	glLoadIdentity();
 	dstext.print(5, 400, L"您好");
+	glPopMatrix();
 
 	//回到透视投影
 	glMatrixMode(GL_PROJECTION);

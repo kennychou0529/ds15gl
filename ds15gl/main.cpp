@@ -15,7 +15,7 @@
 
 //dsScene scene;
 DSFrame frame;
-dsTextManager dstext;
+
 
 // √ø÷° ±º‰£¨∫¡√Î
 static const int mspf = 33;

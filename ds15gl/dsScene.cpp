@@ -42,8 +42,10 @@ void DSScene::show(){
 	glRasterPos2d(8.0, 40.0);
 	str.drawString(L"中文English混合",32);
 	
+	glPushMatrix();
 	glLoadIdentity();
-	dstext.print(600, 300, L"您好，谈至勋。\n众所周知，您是一个NB的人物。\n您是否愿意接受我们的采访，\n告诉我们，您为什么这么NB呢？");
+	dstext.print(5, 400, L"您好，谈至勋。\n众所周知，您是一个NB的人物。\n您是否愿意接受我们的采访，\n告诉我们，您为什么这么NB呢？");
+	glPopMatrix();
 
 	glEnable(GL_LIGHTING);
 

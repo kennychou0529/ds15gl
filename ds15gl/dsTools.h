@@ -7,6 +7,7 @@
 #include "dsLight.h"
 #include "vector2f.h"
 #include "dsString.h"
+#include "dsTextManager.h"
 
 extern GLdouble eye_sphere[3];
 extern GLdouble up[3];
@@ -18,6 +19,7 @@ extern int window_height;
 extern int status_bar_width;
 
 extern DSString str;
+extern dsTextManager dstext;
 
 void dsSet();
 void dsSpecialKeys(int key, int x, int y);
