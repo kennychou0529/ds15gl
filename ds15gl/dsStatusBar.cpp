@@ -3,7 +3,9 @@
 #include "dsText.h"
 #include <sstream>
 #include <iomanip>
+#include "dsTextManager.h"
 
+extern dsTextManager dstext;
 DSStatusBar::DSStatusBar() {}
 
 DSStatusBar::~DSStatusBar() {}
@@ -20,6 +22,8 @@ void DSStatusBar::show() {
 	glViewport(window_width - status_bar_width, 0, status_bar_width, window_height);
 	glDisable(GL_LIGHTING);
 	glDisable(GL_TEXTURE_2D);
+
+
 
 	gluLookAt(0.0, 0.0, 200.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 	glColor3d(1.0, 1.0, 1.0);
@@ -48,6 +52,9 @@ void DSStatusBar::show() {
 
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_LIGHTING);
+
+	glLoadIdentity();
+	dstext.print(5, 400, L"您好");
 
 	//回到透视投影
 	glMatrixMode(GL_PROJECTION);

@@ -2,7 +2,7 @@
 
 #ifdef WIN32
 //ËÎÌו
-#define SONGTI "C:/windows/fonts/STSONG.TTF"
+#define SONGTI "C:/Windows/fonts/msyhbd.ttc"
 #endif // WIN32
 
 #define FONT GLUT_BITMAP_HELVETICA_18

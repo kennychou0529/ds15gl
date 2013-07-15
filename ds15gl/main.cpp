@@ -1,5 +1,6 @@
 #include "dsTools.h"
 #include "dsFrame.h"
+#include "dsTextManager.h"
 #include <ctime>
 #include <iostream>
 
@@ -14,7 +15,7 @@
 
 //dsScene scene;
 DSFrame frame;
-
+dsTextManager dstext;
 
 // 每帧时间，毫秒
 static const int mspf = 33;
@@ -45,6 +46,10 @@ void dsInit() {
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_LIGHTING);
+	glShadeModel(GL_SMOOTH); // why
+	glDepthFunc(GL_LEQUAL); // why
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); // why
+	dstext.init("C:/Windows/fonts/msyhbd.ttc", 16);
 }
 
 // 当窗口大小被修改时自动调用此函数

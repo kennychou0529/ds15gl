@@ -1,6 +1,9 @@
 #include "dsScene.h"
 #include "dsTexture.h"
 #include "dsText.h"
+#include "dsTextManager.h"
+
+extern dsTextManager dstext;
 
 DSScene::DSScene() {}
 
@@ -38,6 +41,9 @@ void DSScene::show(){
 	str.drawString(L"中文测试测试中文",32);
 	glRasterPos2d(8.0, 40.0);
 	str.drawString(L"中文English混合",32);
+	
+	glLoadIdentity();
+	dstext.print(600, 300, L"您好，谈至勋。\n众所周知，您是一个NB的人物。\n您是否愿意接受我们的采访，\n告诉我们，您为什么这么NB呢？");
 
 	glEnable(GL_LIGHTING);
 
