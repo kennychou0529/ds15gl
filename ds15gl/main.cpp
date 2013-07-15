@@ -32,7 +32,7 @@ void dsDisplay() {
 	GLenum errCode;
 	const GLubyte* errString;
 
-	while ((errCode = glGetError()) != GL_NO_ERROR){
+	while ((errCode = glGetError()) != GL_NO_ERROR) {
 		errString = gluErrorString(errCode);
 		std::cerr << errString << std::endl;
 	}
@@ -49,7 +49,7 @@ void dsInit() {
 	glShadeModel(GL_SMOOTH); // why
 	glDepthFunc(GL_LEQUAL); // why
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); // why
-	dstext.init("C:/Windows/fonts/msyhbd.ttc", 16);
+	dstext.init(font_file_name, 16);
 }
 
 // 当窗口大小被修改时自动调用此函数

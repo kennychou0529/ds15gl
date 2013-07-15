@@ -44,7 +44,7 @@ void DSScene::show(){
 	
 	glPushMatrix();
 	glLoadIdentity();
-	dstext.print(5, 400, L"您好，谈至勋。\n众所周知，您是一个NB的人物。\n您是否愿意接受我们的采访，\n告诉我们，您为什么这么NB呢？");
+	dstext.print(5, 400, L"您好，伟大的谈至勋。\n众所周知，您是无所不能的，但是：\n您能不能告诉我们，为什么您这么厉害呢？");
 	glPopMatrix();
 
 	glEnable(GL_LIGHTING);

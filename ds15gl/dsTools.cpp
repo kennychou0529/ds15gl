@@ -16,6 +16,8 @@ int status_bar_width = 200;
 DSString str;
 dsTextManager dstext;
 
+const char* font_file_name = "C:/Windows/Fonts/msyhbd.ttc";
+
 // ÎðÓÃ
 // GLdouble center_sphere[3] = {20.0, 3 * pi / 4, - pi / 2};
 

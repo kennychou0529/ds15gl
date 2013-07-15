@@ -21,6 +21,8 @@ extern int status_bar_width;
 extern DSString str;
 extern dsTextManager dstext;
 
+extern const char* font_file_name;
+
 void dsSet();
 void dsSpecialKeys(int key, int x, int y);
 void dsKeys(unsigned char key, int x, int y);

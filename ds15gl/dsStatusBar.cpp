@@ -64,7 +64,7 @@ void DSStatusBar::show() {
 	glMatrixMode(GL_MODELVIEW);
 }
 
-void DSStatusBar::setSize(int width, int height){
-	window_height = height;
-	window_width = width;
-}
+//void DSStatusBar::setSize(int width, int height){
+//	window_height = height;
+//	window_width = width;
+//}
