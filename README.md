@@ -1,6 +1,14 @@
 队式 15 展示组
 ======
 
+显示文字：
+* 显示文字的功能现在被包装到了 class dsTextManager 中，该类在 dsTextManager.h 中有声明。
+* 每个 dsTextManager 只能使用一种字体，一种大小。
+* 在 dsTools.cpp 中定义了一个全局的 dsTextManager dstext，并有 font_file_name 和 font_height。
+* 首先要调用 init，这个工作已在 main.cpp 中的 dsInit() 里完成。
+* 在 dsScene::show() 中和 DSStatusBar::show() 中都有显示文字的代码。
+* 显示文字的代码的使用方式见 dsTextManager.h 中 对 dsTextManager::print() 的说明。
+
 注意：
 * 在使用平移、旋转画图时，请使用 glPushMatrix, glPopMatrix 包围，以免影响后续的画图
 
