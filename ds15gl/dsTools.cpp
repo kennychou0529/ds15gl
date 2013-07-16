@@ -17,6 +17,7 @@ DSString str;
 dsTextManager dstext;
 
 const char* font_file_name = "C:/Windows/Fonts/msyhbd.ttc";
+const int font_height = 16;
 
 // ÎðÓÃ
 // GLdouble center_sphere[3] = {20.0, 3 * pi / 4, - pi / 2};
@@ -86,7 +87,6 @@ void dsSpecialKeys(int key, int x, int y)
 
 
 void dsKeys(unsigned char key, int x, int y){
-	//printf_s("%f,%f,%f",eye[0],eye[1],eye[2]);
 	vector2f dir = vector2f(center[0] - eye[0], center[1] - eye[1]);
 	dir.normalLise();
 	vector2f left = dir.turnLeft();
@@ -133,7 +133,7 @@ void dsShowAxes() {
 	glMatrixMode(GL_PROJECTION);
 		glPushMatrix();
 		glLoadIdentity();
-		gluPerspective(60,1,2,1000);
+		gluPerspective(60, 1, 2, 1000);
 	glMatrixMode(GL_MODELVIEW);
 	
 	glViewport(0, 0, 100, 100);

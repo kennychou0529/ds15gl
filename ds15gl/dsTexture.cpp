@@ -34,7 +34,7 @@ GLuint dsLoadTextureBMP2D(const char* file_name, GLuint* pheight, GLuint* pwidth
 
 	// 根据总像素字节数分配内存
 	pixels = new GLubyte[total_bytes];
-	if (pixels == nullptr){
+	if (pixels == nullptr) {
 		is.close();
 		return 0;
 	}

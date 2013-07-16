@@ -22,6 +22,7 @@ extern DSString str;
 extern dsTextManager dstext;
 
 extern const char* font_file_name;
+extern const int font_height;
 
 void dsSet();
 void dsSpecialKeys(int key, int x, int y);

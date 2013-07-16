@@ -13,9 +13,7 @@
   #define SLEEP(mm) usleep(mm*1000)
 #endif // WIN32
 
-//dsScene scene;
 DSFrame frame;
-
 
 // 每帧时间，毫秒
 static const int mspf = 33;
@@ -49,7 +47,7 @@ void dsInit() {
 	glShadeModel(GL_SMOOTH); // why
 	glDepthFunc(GL_LEQUAL); // why
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); // why
-	dstext.init(font_file_name, 16);
+	dstext.init(font_file_name, font_height);
 }
 
 // 当窗口大小被修改时自动调用此函数
@@ -58,7 +56,7 @@ void dsReshape(int w, int h) {
 	window_height = h;
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(60, (window_width - status_bar_width) / double(window_height), 2, 20000);
+	gluPerspective(60, (window_width - status_bar_width) / double(window_height), 0.2, 20000);
 	glMatrixMode(GL_MODELVIEW);
 	glutPostRedisplay();
 }
