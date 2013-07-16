@@ -65,10 +65,11 @@ void dsTextManager::makeList(wchar_t ch) {
 	// is the the Freetype bitmap otherwise.
 	for (int j = 0; j < texture_height; j++) {
 		for (int i = 0; i < texture_width; i++) {
-			expanded_data[2 * (i + j * texture_width)]
-			= expanded_data[2 * (i + j * texture_width) + 1]
+			expanded_data[2 * (i + j * texture_width)] = 255;
+			expanded_data[2 * (i + j * texture_width) + 1]
 			= (i >= bitmap.width || j >= bitmap.rows) ?
 				0 : bitmap.buffer[i + bitmap.width * j];
+			// NeHe 教程中的 Bug
 		}
 	}
 	
