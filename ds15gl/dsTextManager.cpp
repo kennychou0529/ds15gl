@@ -1,4 +1,4 @@
-#include "dsTextManager.h"
+﻿#include "dsTextManager.h"
 #include <stdexcept>
 
 // 此函数返回一个不小于输入值的最小的 2 的次方

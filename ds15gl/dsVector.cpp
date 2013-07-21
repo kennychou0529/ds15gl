@@ -1,4 +1,4 @@
-#include "dsVector.h"
+﻿#include "dsVector.h"
 
 // 输入 点相对于球心的球坐标 和 球心的直角坐标，输出 点的直角坐标
 void dsSphereToOrtho3dv(const GLdouble sphere[3], const GLdouble center[3], GLdouble ortho[3]) {

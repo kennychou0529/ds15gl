@@ -1,4 +1,4 @@
-#include "vector2f.h"
+﻿#include "vector2f.h"
 #include <cmath>
 
 vector2f::vector2f(float xx,float yy): x(vec[0]), y(vec[1]) {

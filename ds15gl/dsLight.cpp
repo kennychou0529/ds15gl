@@ -1,4 +1,4 @@
-#include "dsLight.h"
+﻿#include "dsLight.h"
 
 // 环境光，能保证光源找不到的地方也看得到，这个得设置得暗一些，我们设成暗淡的白色
 GLfloat light_ambient[4]  = {0.1f, 0.1f, 0.1f, 1.0f};

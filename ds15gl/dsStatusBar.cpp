@@ -1,4 +1,4 @@
-#include "dsStatusBar.h"
+﻿#include "dsStatusBar.h"
 #include "dsTools.h"
 #include "dsText.h"
 #include <sstream>
@@ -41,21 +41,28 @@ void DSStatusBar::show() {
 
 	// 让我们在这里写一下眼睛位置
 	glRasterPos2d(8.0, 8.0);
-	std::ostringstream os;
+	std::wostringstream os;
 	// os.unsetf(std::scientific);
 
 	os << "(" << std::fixed << std::setprecision(2) << eye[0] << ", " << eye[1] << ", " << eye[2] << ")";
-	drawString(os.str().c_str());
 
-	glRasterPos2d(40.0, 24.0);
-	drawString("Eye position");
+	//drawString(os.str().c_str());
 
-	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_LIGHTING);
+	glLoadIdentity();
+	//glScaled(0.75, 0.75, 0.75);
+	dstext_small.print(8.0, 8.0, os.str());
+	dstext_small.print(40.0, 30.0, L"Eye position");
+	//glRasterPos2d(40.0, 24.0);
+	//drawString("Eye position");
+
+	
 	glPushMatrix();
 	glLoadIdentity();
 	dstext.print(5, 400, L"您好");
 	glPopMatrix();
+
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_LIGHTING);
 
 	//回到透视投影
 	glMatrixMode(GL_PROJECTION);

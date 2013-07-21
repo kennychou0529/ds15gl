@@ -1,4 +1,4 @@
-#ifndef _DSTEXTURE_H
+﻿#ifndef _DSTEXTURE_H
 #define _DSTEXTURE_H
 
 #include <GL/glut.h>

@@ -1,4 +1,4 @@
-#include <GL/glut.h>
-#include <cstring>
-
-void drawString(const char* str);
+﻿//#include <GL/glut.h>
+//#include <cstring>
+//
+//void drawString(const char* str);

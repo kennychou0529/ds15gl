@@ -1,4 +1,4 @@
-#ifndef _VECTOR2f_H
+﻿#ifndef _VECTOR2f_H
 #define _VECTOR2f_H
 
 class vector2f

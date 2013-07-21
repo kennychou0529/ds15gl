@@ -1,4 +1,4 @@
-#ifndef _DSSKYBOX_H
+﻿#ifndef _DSSKYBOX_H
 #define _DSSKYBOX_H
 
 #include <GL/glut.h>

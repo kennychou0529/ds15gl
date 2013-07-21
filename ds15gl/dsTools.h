@@ -1,4 +1,4 @@
-#ifndef _DSTOOLS_H
+﻿#ifndef _DSTOOLS_H
 #define _DSTOOLS_H
 
 #include <GL/glut.h>
@@ -18,11 +18,13 @@ extern int window_width;
 extern int window_height;
 extern int status_bar_width;
 
-extern DSString str;
+// extern DSString str;
 extern dsTextManager dstext;
+extern dsTextManager dstext_small;
 
 extern const char* font_file_name;
 extern const int font_height;
+extern const int font_height_small;
 
 void dsSet();
 void dsSpecialKeys(int key, int x, int y);

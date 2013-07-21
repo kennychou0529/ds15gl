@@ -1,4 +1,4 @@
-#ifndef _DSSTATUSBAR_H
+﻿#ifndef _DSSTATUSBAR_H
 #define _DSSTATUSBAR_H
 
 #include <GL/glut.h>

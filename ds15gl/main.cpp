@@ -1,4 +1,4 @@
-#include "dsTools.h"
+﻿#include "dsTools.h"
 #include "dsFrame.h"
 #include "dsTextManager.h"
 #include <ctime>
@@ -50,6 +50,7 @@ void dsInit() {
 	glDepthFunc(GL_LEQUAL); // why
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); // why
 	dstext.init(font_file_name, font_height);
+	dstext_small.init(font_file_name, font_height_small);
 }
 
 // 当窗口大小被修改时自动调用此函数

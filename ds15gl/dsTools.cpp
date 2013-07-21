@@ -1,4 +1,4 @@
-#include "dsTools.h"
+﻿#include "dsTools.h"
 
 static const double viewMoveSpeed = 1.0;
 static const GLdouble pi = 3.1415926;
@@ -13,16 +13,18 @@ int window_width = 1280;
 int window_height = 720;
 int status_bar_width = 200;
 
-DSString str;
+// DSString str;
 dsTextManager dstext;
+dsTextManager dstext_small;
+
 #ifdef WIN32
 const char* font_file_name = "C:/Windows/Fonts/msyhbd.ttc";
-#endif
-
-#ifdef __unix__
+#elif defined __unix__
 const char* font_file_name = "/usr/share/fonts/truetype/wqy/wqy-microhei.ttc";
 #endif
+
 const int font_height = 16;
+const int font_height_small = 11;
 
 // 勿用
 // GLdouble center_sphere[3] = {20.0, 3 * pi / 4, - pi / 2};
@@ -49,8 +51,7 @@ void dsSet() {
 
 }
 
-void dsSpecialKeys(int key, int x, int y)
-{
+void dsSpecialKeys(int key, int x, int y) {
 	static GLdouble rotateSpeed = 0.1;
 	static GLdouble scaleSpeed = 0.5;
 	GLdouble direction[3];
@@ -84,15 +85,15 @@ void dsSpecialKeys(int key, int x, int y)
 		center[0] -= direction[0] * viewMoveSpeed;
 		center[1] -= direction[1] * viewMoveSpeed;
 		center[2] -= direction[2] * viewMoveSpeed;
-	break;
+		break;
 	}
 	axeLength = eye_sphere[0] * 0.5;
 }
 
 
 
-void dsKeys(unsigned char key, int x, int y){
-	vector2f dir = vector2f(center[0] - eye[0], center[1] - eye[1]);
+void dsKeys(unsigned char key, int x, int y) {
+	vector2f dir = vector2f(GLfloat(center[0] - eye[0]), GLfloat(center[1] - eye[1]));
 	dir.normalLise();
 	vector2f left = dir.turnLeft();
 	switch (key) {
@@ -136,9 +137,9 @@ void dsShowAxes() {
 	glDisable(GL_LIGHTING);
 
 	glMatrixMode(GL_PROJECTION);
-		glPushMatrix();
-		glLoadIdentity();
-		gluPerspective(60, 1, 2, 1000);
+	glPushMatrix();
+	glLoadIdentity();
+	gluPerspective(60, 1, 2, 1000);
 	glMatrixMode(GL_MODELVIEW);
 
 	glViewport(0, 0, 100, 100);
@@ -168,7 +169,7 @@ void dsShowAxes() {
 	//glPopMatrix();
 
 	glMatrixMode(GL_PROJECTION);
-		glPopMatrix();
+	glPopMatrix();
 	glMatrixMode(GL_MODELVIEW);
 
 	glEnable(GL_LIGHTING);
@@ -178,10 +179,12 @@ void dsShowAxes() {
 void fillRectange2D(int x, int y, int width, int length){
 	int height = -10;
 	glBegin(GL_QUADS);
+	{
 		glVertex3d(x, y, height);
 		glVertex3d(x + width, y, height);
 		glVertex3d(x + width, y + length, height);
 		glVertex3d(x, y + length, height);
+	}
 	glEnd();
 }
 

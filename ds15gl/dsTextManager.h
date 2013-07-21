@@ -1,4 +1,4 @@
-#ifndef _DSTEXTMANAGER_H
+﻿#ifndef _DSTEXTMANAGER_H
 #define _DSTEXTMANAGER_H
 
 // FreeType2 Headers
