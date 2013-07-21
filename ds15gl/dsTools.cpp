@@ -3,31 +3,36 @@
 static const double viewMoveSpeed = 1.0;
 static const GLdouble pi = 3.1415926;
 
-// ÑÛ¾¦Î»ÖÃ£¬ÓÃÇò×ø±ê (r, phi, theta) ±íÊ¾
-// ÆäÖĞ£¬phi ±íÊ¾Óë z ÖáµÄ¼Ğ½Ç
-// theta ±íÊ¾ÔÚ xy Æ½ÃæµÄÍ¶Ó°µÄĞı×ª½Ç
+// çœ¼ç›ä½ç½®ï¼Œç”¨çƒåæ ‡ (r, phi, theta) è¡¨ç¤º
+// å…¶ä¸­ï¼Œphi è¡¨ç¤ºä¸ z è½´çš„å¤¹è§’
+// theta è¡¨ç¤ºåœ¨ xy å¹³é¢çš„æŠ•å½±çš„æ—‹è½¬è§’
 GLdouble eye_sphere[3] = {20.0, pi / 4, - pi / 2};
 
-// È«¾ÖÊ¹ÓÃ
+// å…¨å±€ä½¿ç”¨
 int window_width = 1280;
 int window_height = 720;
 int status_bar_width = 200;
 
 DSString str;
 dsTextManager dstext;
-
+#ifdef WIN32
 const char* font_file_name = "C:/Windows/Fonts/msyhbd.ttc";
+#endif
+
+#ifdef __unix__
+const char* font_file_name = "/usr/share/fonts/truetype/wqy/wqy-microhei.ttc";
+#endif
 const int font_height = 16;
 
-// ÎğÓÃ
+// å‹¿ç”¨
 // GLdouble center_sphere[3] = {20.0, 3 * pi / 4, - pi / 2};
 
 GLdouble up[3] = {0.0, 0.0, 1.0};
 
-// ÊÓÏßÖĞĞÄµã£¬Çò×ø±êµÄÔ­µã
+// è§†çº¿ä¸­å¿ƒç‚¹ï¼Œçƒåæ ‡çš„åŸç‚¹
 GLdouble center[3] = {0.0, 0.0, 0.0};
 
-// Ïà»úÎ»ÖÃ£¬²»Ö±½ÓĞŞ¸Ä£¬Í¨¹ıÇò×ø±ê¼ä½Ó²Ù×÷
+// ç›¸æœºä½ç½®ï¼Œä¸ç›´æ¥ä¿®æ”¹ï¼Œé€šè¿‡çƒåæ ‡é—´æ¥æ“ä½œ
 GLdouble eye[3];
 
 GLdouble axeLength = eye_sphere[0] * 0.5;
@@ -36,12 +41,12 @@ void dsSet() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	// ½«Çò×ø±ê×ª»¯ÎªÖ±½Ç×ø±ê
+	// å°†çƒåæ ‡è½¬åŒ–ä¸ºç›´è§’åæ ‡
 	dsSphereToOrtho3dv(eye_sphere, center, eye);
-	
-	// ÉèÖÃÉãÏñÍ·Î»ÖÃ
+
+	// è®¾ç½®æ‘„åƒå¤´ä½ç½®
 	gluLookAt(eye[0], eye[1], eye[2], center[0], center[1], center[2], up[0], up[1], up[2]);
-	
+
 }
 
 void dsSpecialKeys(int key, int x, int y)
@@ -110,10 +115,10 @@ void dsKeys(unsigned char key, int x, int y){
 	default:
 		break;
 	}
-	
+
 }
 
-//Ğ§¹û²»ÀíÏë
+//æ•ˆæœä¸ç†æƒ³
 //void dsPassiveMonitionFunc(int x,int y){
 //	extern int width;
 //	extern int height;
@@ -125,7 +130,7 @@ void dsKeys(unsigned char key, int x, int y){
 //}
 
 
-// ²âÊÔÓÃµÄº¯Êı£¬»­Ò»¸öÖ±½Ç×ø±êÏµ
+// æµ‹è¯•ç”¨çš„å‡½æ•°ï¼Œç”»ä¸€ä¸ªç›´è§’åæ ‡ç³»
 void dsShowAxes() {
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);
@@ -135,22 +140,22 @@ void dsShowAxes() {
 		glLoadIdentity();
 		gluPerspective(60, 1, 2, 1000);
 	glMatrixMode(GL_MODELVIEW);
-	
+
 	glViewport(0, 0, 100, 100);
 	//glPushMatrix();
 	//glLoadIdentity();
 	glTranslated(center[0], center[1], center[2]);
-	
+
 	//glutSolidCube(1);
 	glLineWidth(1.0);
 	glEnable(GL_LINE_SMOOTH);
 	glBegin(GL_LINES);
 	{
-		
+
 		glColor3d(1.0, 0.0, 0.0);
 		glVertex3d(0.0, 0.0, 0.0);
 		glVertex3d(axeLength, 0.0, 0.0);
-		
+
 		glColor3d(0.0, 1.0, 0.0);
 		glVertex3d(0.0, 0.0, 0.0);
 		glVertex3d(0.0, axeLength, 0.0);
@@ -161,7 +166,7 @@ void dsShowAxes() {
 	}
 	glEnd();
 	//glPopMatrix();
-	
+
 	glMatrixMode(GL_PROJECTION);
 		glPopMatrix();
 	glMatrixMode(GL_MODELVIEW);

@@ -1,6 +1,7 @@
 #include "dsTextManager.h"
+#include <stdexcept>
 
-// ´Ëº¯Êı·µ»ØÒ»¸ö²»Ğ¡ÓÚÊäÈëÖµµÄ×îĞ¡µÄ 2 µÄ´Î·½
+// æ­¤å‡½æ•°è¿”å›ä¸€ä¸ªä¸å°äºè¾“å…¥å€¼çš„æœ€å°çš„ 2 çš„æ¬¡æ–¹
 inline int findNextPowerOf2(int num) {
 	int result = 1;
 	while (result < num)
@@ -8,58 +9,58 @@ inline int findNextPowerOf2(int num) {
 	return result;
 }
 
-// ÊäÈëÒ»¸ö¿í×Ö·û£¬ÎªÆä´´½¨ÏÔÊ¾ÁĞ±í
+// è¾“å…¥ä¸€ä¸ªå®½å­—ç¬¦ï¼Œä¸ºå…¶åˆ›å»ºæ˜¾ç¤ºåˆ—è¡¨
 void dsTextManager::makeList(wchar_t ch) {
-	// Èç¹ûÏÔÊ¾ÁĞ±íÒÑ¾­´æÔÚ£¬Ö±½Ó·µ»Ø¡£
+	// å¦‚æœæ˜¾ç¤ºåˆ—è¡¨å·²ç»å­˜åœ¨ï¼Œç›´æ¥è¿”å›ã€‚
 	if (lists.find(ch) != lists.end()) {
 		return;
 	}
 
-	// ÎÒÃÇÊ×ÏÈÒª×öµÄ¾ÍÊÇÈÃ FreeType °Ñ×Ö·û»­³ÉÒ»·ùÎ»Í¼¡£ÕâĞèÒªÈçÏÂ¼¸²½²Ù×÷£º
+	// æˆ‘ä»¬é¦–å…ˆè¦åšçš„å°±æ˜¯è®© FreeType æŠŠå­—ç¬¦ç”»æˆä¸€å¹…ä½å›¾ã€‚è¿™éœ€è¦å¦‚ä¸‹å‡ æ­¥æ“ä½œï¼š
 	// The first thing we do is get FreeType to render our character
 	// into a bitmap.  This actually requires a couple of FreeType commands:
 
-	// ÔØÈë×Ö·ûµÄÂÖÀª¡£
+	// è½½å…¥å­—ç¬¦çš„è½®å»“ã€‚
 	// Load the Glyph for our character.
 	if (FT_Load_Glyph(face, FT_Get_Char_Index(face, ch), FT_LOAD_DEFAULT))
 		throw std::runtime_error("FT_Load_Glyph failed");
 
-	// ½« face ÖĞµÄÂÖÀªÔØÈëµ½ÎÒÃÇ×Ô¼º´´½¨µÄÒ»¸öÂÖÀª¶ÔÏó¡£
+	// å°† face ä¸­çš„è½®å»“è½½å…¥åˆ°æˆ‘ä»¬è‡ªå·±åˆ›å»ºçš„ä¸€ä¸ªè½®å»“å¯¹è±¡ã€‚
 	// Move the face's glyph into a Glyph object.
 	FT_Glyph glyph;
 	if (FT_Get_Glyph(face->glyph, &glyph))
 		throw std::runtime_error("FT_Get_Glyph failed");
 
-	// ½«ÂÖÀª×ª»¯ÎªÎ»Í¼¡£
+	// å°†è½®å»“è½¬åŒ–ä¸ºä½å›¾ã€‚
 	// Convert the glyph to a bitmap.
 	FT_Glyph_To_Bitmap(&glyph, FT_RENDER_MODE_NORMAL, nullptr, true);
 	FT_BitmapGlyph bitmap_glyph = (FT_BitmapGlyph)glyph;
 
-	// Õâ¸öÒıÓÃ¿ÉÒÔÊ¹ÎÒÃÇ¸üÈİÒ×µØ·ÃÎÊÎ»Í¼¡£
+	// è¿™ä¸ªå¼•ç”¨å¯ä»¥ä½¿æˆ‘ä»¬æ›´å®¹æ˜“åœ°è®¿é—®ä½å›¾ã€‚
 	// This reference will make accessing the bitmap easier
 	FT_Bitmap& bitmap = bitmap_glyph->bitmap;
 
-	// Ê¹ÓÃÎÒÃÇµÄ¸¨Öúº¯ÊıÀ´»ñÈ¡ÎÆÀíµÄ´óĞ¡
+	// ä½¿ç”¨æˆ‘ä»¬çš„è¾…åŠ©å‡½æ•°æ¥è·å–çº¹ç†çš„å¤§å°
 	// Use our helper function to get the widths of
 	// the bitmap data that we will need in order to create
 	// our texture.
 	int texture_width = findNextPowerOf2(bitmap.width);
 	int texture_height = findNextPowerOf2(bitmap.rows);
 
-	// ÎªÎÆÀíÊı¾İ·ÖÅäÄÚ´æ¿Õ¼ä¡£
+	// ä¸ºçº¹ç†æ•°æ®åˆ†é…å†…å­˜ç©ºé—´ã€‚
 	// Allocate memory for the texture data.
 	GLubyte* expanded_data = new GLubyte[2 * texture_width * texture_height];
 
-	// ÏÖÔÚÎÒÃÇÌîÈëÀ©Õ¹ºóµÄÎ»Í¼¡£
-	// ×¢Òâ£¬ÎÒÃÇÊ¹ÓÃÁËË«Í¨µÀÎ»Í¼£¨Ò»¸ö luminocity Öµ¡¢Ò»¸ö alpha Öµ£©£¬
-	// µ«ÎÒÃÇ°ÑÁ½¸öÖµ¶¼ÉèÎªÔ­ FreeType Î»Í¼ÖĞµÄÄÇ¸öÖµ¡£
-	// ÎÒÃÇÊ¹ÓÃ ? : ÔËËã·ûÀ´Ê¹À©Õ¹ºóµÄÎ»Í¼ÖĞÄÇĞ©³¬³ö FreeType Î»Í¼·¶Î§
-	// µÄÄÇĞ©ÇøÓò¶¼Îª 0¡£
+	// ç°åœ¨æˆ‘ä»¬å¡«å…¥æ‰©å±•åçš„ä½å›¾ã€‚
+	// æ³¨æ„ï¼Œæˆ‘ä»¬ä½¿ç”¨äº†åŒé€šé“ä½å›¾ï¼ˆä¸€ä¸ª luminocity å€¼ã€ä¸€ä¸ª alpha å€¼ï¼‰ï¼Œ
+	// ä½†æˆ‘ä»¬æŠŠä¸¤ä¸ªå€¼éƒ½è®¾ä¸ºåŸ FreeType ä½å›¾ä¸­çš„é‚£ä¸ªå€¼ã€‚
+	// æˆ‘ä»¬ä½¿ç”¨ ? : è¿ç®—ç¬¦æ¥ä½¿æ‰©å±•åçš„ä½å›¾ä¸­é‚£äº›è¶…å‡º FreeType ä½å›¾èŒƒå›´
+	// çš„é‚£äº›åŒºåŸŸéƒ½ä¸º 0ã€‚
 	// Here we fill in the data for the expanded bitmap.
 	// Notice that we are using two channel bitmap (one for
 	// luminocity and one for alpha), but we assign
 	// both luminocity and alpha to the value that we
-	// find in the FreeType bitmap. 
+	// find in the FreeType bitmap.
 	// We use the ?: operator so that value which we use
 	// will be 0 if we are in the padding zone, and whatever
 	// is the the Freetype bitmap otherwise.
@@ -69,75 +70,75 @@ void dsTextManager::makeList(wchar_t ch) {
 			expanded_data[2 * (i + j * texture_width) + 1]
 			= (i >= bitmap.width || j >= bitmap.rows) ?
 				0 : bitmap.buffer[i + bitmap.width * j];
-			// NeHe ½Ì³ÌÖĞµÄ Bug
+			// NeHe æ•™ç¨‹ä¸­çš„ Bug
 		}
 	}
-	
-	// ÉêÇëÒ»¸öĞÂÎÆÀí±àºÅ£¬²¢´æÈë map¡£
+
+	// ç”³è¯·ä¸€ä¸ªæ–°çº¹ç†ç¼–å·ï¼Œå¹¶å­˜å…¥ mapã€‚
 	GLuint new_texture;
 	glGenTextures(1, &new_texture);
 	textures.insert(std::make_pair(ch, new_texture));
 
-	// ÏÖÔÚÎÒÃÇÉèÖÃÒ»ÏÂÎÆÀí²ÎÊı¡£
+	// ç°åœ¨æˆ‘ä»¬è®¾ç½®ä¸€ä¸‹çº¹ç†å‚æ•°ã€‚
 	// Now we just setup some texture paramaters.
 	glBindTexture(GL_TEXTURE_2D, new_texture);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-	// ÏÖÔÚÎÒÃÇÕıÊ½´´½¨ÎÆÀí¡£×¢ÒâÎÒÃÇÊ¹ÓÃÁË GL_LUMINANCE_ALPHA À´±íÃ÷
-	// ÎÒÃÇÓÃµÄÊÇË«Í¨µÀµÄÎ»Í¼Êı¾İ¡£
+	// ç°åœ¨æˆ‘ä»¬æ­£å¼åˆ›å»ºçº¹ç†ã€‚æ³¨æ„æˆ‘ä»¬ä½¿ç”¨äº† GL_LUMINANCE_ALPHA æ¥è¡¨æ˜
+	// æˆ‘ä»¬ç”¨çš„æ˜¯åŒé€šé“çš„ä½å›¾æ•°æ®ã€‚
 	// Here we actually create the texture itself, notice
 	// that we are using GL_LUMINANCE_ALPHA to indicate that
 	// we are using 2 channel data.
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height,
 		0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, expanded_data);
 
-	// ÎÆÀíÒÑ¾­´´½¨£¬ÎÒÃÇ¾Í²»ĞèÒªÀ©Õ¹µÄÎ»Í¼Êı¾İÁË¡£
+	// çº¹ç†å·²ç»åˆ›å»ºï¼Œæˆ‘ä»¬å°±ä¸éœ€è¦æ‰©å±•çš„ä½å›¾æ•°æ®äº†ã€‚
 	// With the texture created, we don't need to expanded data anymore
 	delete[] expanded_data;
 
-	// ÉêÇëĞÂµÄÏÔÊ¾ÁĞ±í±àºÅ¡£
+	// ç”³è¯·æ–°çš„æ˜¾ç¤ºåˆ—è¡¨ç¼–å·ã€‚
 	GLuint new_list = glGenLists(1);
 	lists.insert(std::make_pair(ch, new_list));
 
-	// ½ÓÏÂÀ´ÎÒÃÇ¾Í¿ÉÒÔ´´½¨ÏÔÊ¾ÁĞ±íÁË¡£
+	// æ¥ä¸‹æ¥æˆ‘ä»¬å°±å¯ä»¥åˆ›å»ºæ˜¾ç¤ºåˆ—è¡¨äº†ã€‚
 	// So now we can create the display list
 
 	glNewList(new_list, GL_COMPILE);
 	{
 		glBindTexture(GL_TEXTURE_2D, new_texture);
 
-		// Ê×ÏÈÎÒÃÇÏòÓÒÒÆ¶¯Ò»µã£¬ÕâÑù×Ö·û¿ÉÒÔºÍÉÏÒ»¸öÓĞÕıÈ·µÄ¾àÀë¡£
+		// é¦–å…ˆæˆ‘ä»¬å‘å³ç§»åŠ¨ä¸€ç‚¹ï¼Œè¿™æ ·å­—ç¬¦å¯ä»¥å’Œä¸Šä¸€ä¸ªæœ‰æ­£ç¡®çš„è·ç¦»ã€‚
 		// first we need to move over a little so that
 		// the character has the right amount of space
 		// between it and the one before it.
 		glTranslatef((GLfloat)bitmap_glyph->left, 0, 0);
 
-		// È»ºóÎÒÃÇÔÙÏòÏÂÒÆ¶¯Ò»µã£¬ÒòÎªÓĞĞ©×Ö·û£¨ÕâÖ»×÷ÓÃÓÚ g »ò y ÕâÖÖ×Ö·û£©¡£
+		// ç„¶åæˆ‘ä»¬å†å‘ä¸‹ç§»åŠ¨ä¸€ç‚¹ï¼Œå› ä¸ºæœ‰äº›å­—ç¬¦ï¼ˆè¿™åªä½œç”¨äº g æˆ– y è¿™ç§å­—ç¬¦ï¼‰ã€‚
 		// Now we move down a little in the case that the
-		// bitmap extends past the bottom of the line 
+		// bitmap extends past the bottom of the line
 		// (this is only true for characters like 'g' or 'y'.
 		glPushMatrix();
 		glTranslatef(0, (GLfloat)bitmap_glyph->top - bitmap.rows, 0);
 
-		// ½ÓÏÂÀ´ÎÒÃÇ¾ÍÒª´¦ÀíÎÆÀíÖĞ´æÔÚ¿Õ°×ÇøÓòÕâ¸öÎÊÌâÁË¡£
-		// ÎÒÃÇÏÈËã³öÎÆÀíÖĞÕæÕı»­ÓĞ×Ö·ûµÄÇøÓòËùÕ¼µÄ±ÈÀı£¬
-		// È»ºóÔÚ»­³öµÄ·½¿éÖĞÖ»ÌùÉÏÕâÆ¬ÇøÓò¡£
+		// æ¥ä¸‹æ¥æˆ‘ä»¬å°±è¦å¤„ç†çº¹ç†ä¸­å­˜åœ¨ç©ºç™½åŒºåŸŸè¿™ä¸ªé—®é¢˜äº†ã€‚
+		// æˆ‘ä»¬å…ˆç®—å‡ºçº¹ç†ä¸­çœŸæ­£ç”»æœ‰å­—ç¬¦çš„åŒºåŸŸæ‰€å çš„æ¯”ä¾‹ï¼Œ
+		// ç„¶ååœ¨ç”»å‡ºçš„æ–¹å—ä¸­åªè´´ä¸Šè¿™ç‰‡åŒºåŸŸã€‚
 		// Now we need to account for the fact that many of
 		// our textures are filled with empty padding space.
-		// We figure what portion of the texture is used by 
-		// the actual character and store that information in 
+		// We figure what portion of the texture is used by
+		// the actual character and store that information in
 		// the x and y variables, then when we draw the
 		// quad, we will only reference the parts of the texture
 		// that we contain the character itself.
 		GLfloat x = (GLfloat)bitmap.width / (GLfloat)texture_width;
 		GLfloat y = (GLfloat)bitmap.rows / (GLfloat)texture_height;
 
-		// ÏÖÔÚÎÒÃÇÀ´»­´øÓĞÎÆÀíµÄ·½¿é¡£
-		// ÎÒÃÇ¶ÔÎÆÀí×ø±êµÄ¹æ¶¨ÒìºõÑ°³££¬ÕâÊÇÒòÎª FreeType »­³öµÄÎÄ×Ö
-		// µÄ·½ÏòÓëÎÒÃÇËùĞèµÄ²»Í¬¡£
+		// ç°åœ¨æˆ‘ä»¬æ¥ç”»å¸¦æœ‰çº¹ç†çš„æ–¹å—ã€‚
+		// æˆ‘ä»¬å¯¹çº¹ç†åæ ‡çš„è§„å®šå¼‚ä¹å¯»å¸¸ï¼Œè¿™æ˜¯å› ä¸º FreeType ç”»å‡ºçš„æ–‡å­—
+		// çš„æ–¹å‘ä¸æˆ‘ä»¬æ‰€éœ€çš„ä¸åŒã€‚
 		// Here we draw the texturemaped quads.
-		// The bitmap that we got from FreeType was not 
+		// The bitmap that we got from FreeType was not
 		// oriented quite like we would like it to be,
 		// so we need to link the texture to the quad
 		// so that the result will be properly aligned.
@@ -153,28 +154,28 @@ void dsTextManager::makeList(wchar_t ch) {
 		glTranslatef((GLfloat)(face->glyph->advance.x >> 6), 0, 0);
 	}
 	glEndList();
-	FT_Done_Glyph(glyph); // ÎÒ¼ÓµÄ£¬²»ÖªµÀ»á²»»á³ö´í¡£
+	FT_Done_Glyph(glyph); // æˆ‘åŠ çš„ï¼Œä¸çŸ¥é“ä¼šä¸ä¼šå‡ºé”™ã€‚
 }
 
-// ³õÊ¼»¯ÎÄ×Ö¹ÜÀíÆ÷¶ÔÏó£¬ÕâÊÇ±ØĞë×öµÄÒ»²½¡£
+// åˆå§‹åŒ–æ–‡å­—ç®¡ç†å™¨å¯¹è±¡ï¼Œè¿™æ˜¯å¿…é¡»åšçš„ä¸€æ­¥ã€‚
 void dsTextManager::init(const char* font_file_name, unsigned int height) {
 	font_height = (GLfloat)height;
 
-	// ³õÊ¼»¯ FreeType Library¡£
+	// åˆå§‹åŒ– FreeType Libraryã€‚
 	// Initilize the freetype font library.
-	if (FT_Init_FreeType(&library)) 
+	if (FT_Init_FreeType(&library))
 		throw std::runtime_error("FT_Init_FreeType failed");
 
-	// FreeType ÖĞ°üº¬×ÖÌåĞÅÏ¢µÄ¶ÔÏó½Ğ×ö face¡£
+	// FreeType ä¸­åŒ…å«å­—ä½“ä¿¡æ¯çš„å¯¹è±¡å«åš faceã€‚
 	// The object in which Freetype holds information on a given
 	// font is called a "face".
 
-	// ÎÒÃÇÔÚÕâÀï´ÓÎÄ¼şÖĞÔØÈë×ÖÌåĞÅÏ¢¡£
-	// ÕâÒ»²½ÊÇ×îÈİÒ×±¨´íµÄµØ·½£¬ÒòÎª×ÖÌåÎÄ¼ş¿ÉÄÜ²»´æÔÚ»òÎŞ·¨¶ÁÈ¡¡£
+	// æˆ‘ä»¬åœ¨è¿™é‡Œä»æ–‡ä»¶ä¸­è½½å…¥å­—ä½“ä¿¡æ¯ã€‚
+	// è¿™ä¸€æ­¥æ˜¯æœ€å®¹æ˜“æŠ¥é”™çš„åœ°æ–¹ï¼Œå› ä¸ºå­—ä½“æ–‡ä»¶å¯èƒ½ä¸å­˜åœ¨æˆ–æ— æ³•è¯»å–ã€‚
 	// This is where we load in the font information from the file.
 	// Of all the places where the code might die, this is the most likely,
 	// as FT_New_Face will die if the font file does not exist or is somehow broken.
-	if (FT_New_Face(library, font_file_name, 0, &face)) 
+	if (FT_New_Face(library, font_file_name, 0, &face))
 		throw std::runtime_error("FT_New_Face failed (there is probably a problem with your font file)");
 
 	// For some twisted reason, Freetype measures font size
@@ -185,7 +186,7 @@ void dsTextManager::init(const char* font_file_name, unsigned int height) {
 }
 
 void dsTextManager::clean() {
-	// Çå³ı map ÖĞµÄËùÓĞ ÎÆÀí ºÍ ÏÔÊ¾ÁĞ±í
+	// æ¸…é™¤ map ä¸­çš„æ‰€æœ‰ çº¹ç† å’Œ æ˜¾ç¤ºåˆ—è¡¨
 	for (auto& texture_pair : textures) {
 		glDeleteTextures(1, &(texture_pair.second));
 	}
@@ -205,7 +206,7 @@ void dsTextManager::clean() {
 }
 
 /// A fairly straight forward function that pushes
-/// a projection matrix that will make object world 
+/// a projection matrix that will make object world
 /// coordinates identical to window coordinates.
 inline void pushScreenCoordinateMatrix() {
 	glPushAttrib(GL_TRANSFORM_BIT);
@@ -216,7 +217,7 @@ inline void pushScreenCoordinateMatrix() {
 	glLoadIdentity();
 	// gluOrtho2D(viewport[0], viewport[2], viewport[1], viewport[3]);
 	gluOrtho2D(0, viewport[2], 0, viewport[3]);
-	// ÎÒÀú¾­Ç§ĞÁÍò¿àĞŞ¸ÄÁËÕâĞĞ£¬ËüÊÇ¹Ø¼üµÄÒ»ĞĞ
+	// æˆ‘å†ç»åƒè¾›ä¸‡è‹¦ä¿®æ”¹äº†è¿™è¡Œï¼Œå®ƒæ˜¯å…³é”®çš„ä¸€è¡Œ
 	glPopAttrib();
 }
 
@@ -231,12 +232,12 @@ inline void pop_projection_matrix() {
 
 void dsTextManager::print(GLfloat x, GLfloat y, const std::wstring& str) {
 	// We want a coordinate system where things coresponding to window pixels.
-	pushScreenCoordinateMatrix();					
+	pushScreenCoordinateMatrix();
 
 	// We make the height about 1.5 * that of font_height
 	GLfloat h = font_height * 1.5f; // 0.63f;
 
-	// ½ÓÏÂÀ´ÊÇ·ÖĞĞ³ÌĞò
+	// æ¥ä¸‹æ¥æ˜¯åˆ†è¡Œç¨‹åº
 	std::vector<std::wstring> lines;
 	std::wstring::size_type start = 0;
 	std::wstring::size_type nfind = 0;
@@ -247,7 +248,7 @@ void dsTextManager::print(GLfloat x, GLfloat y, const std::wstring& str) {
 	if (start < str.size()) {
 		lines.push_back(str.substr(start, str.size() - start));
 	}
-	// ·ÖĞĞÍê³É
+	// åˆ†è¡Œå®Œæˆ
 
 	glPushAttrib(GL_LIST_BIT | GL_CURRENT_BIT | GL_ENABLE_BIT | GL_TRANSFORM_BIT);
 	glMatrixMode(GL_MODELVIEW);
@@ -266,7 +267,7 @@ void dsTextManager::print(GLfloat x, GLfloat y, const std::wstring& str) {
 	// Notice that we need to reset the matrix, rather than just translating
 	// down by h. This is because when each character is
 	// draw it modifies the current matrix so that the next character
-	// will be drawn immediatly after it.  
+	// will be drawn immediatly after it.
 	for (std::vector<std::wstring>::size_type i = 0; i < lines.size(); ++i) {
 		glPushMatrix();
 		glLoadIdentity();
@@ -278,6 +279,6 @@ void dsTextManager::print(GLfloat x, GLfloat y, const std::wstring& str) {
 		}
 		glPopMatrix();
 	}
-	glPopAttrib();		
+	glPopAttrib();
 	pop_projection_matrix();
 }

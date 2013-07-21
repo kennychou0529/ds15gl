@@ -11,7 +11,7 @@ DSStatusBar::DSStatusBar() {}
 DSStatusBar::~DSStatusBar() {}
 
 void DSStatusBar::show() {
-	// ¸ü¸ÄÍ¶Ó°·½Ê½Îª 2D Æ½ĞĞÍ¶Ó°
+	// æ›´æ”¹æŠ•å½±æ–¹å¼ä¸º 2D å¹³è¡ŒæŠ•å½±
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
 	glLoadIdentity();
@@ -30,23 +30,23 @@ void DSStatusBar::show() {
 
 	//fillRectange2D(0,0,width,window_height);
 
-	//ÕâÀï»­Ğ¡µØÍ¼£¬Õ½³¡£¬ÈËÎïµÈ×´Ì¬ĞÅÏ¢
-	//ÀıÈç
+	//è¿™é‡Œç”»å°åœ°å›¾ï¼Œæˆ˜åœºï¼Œäººç‰©ç­‰çŠ¶æ€ä¿¡æ¯
+	//ä¾‹å¦‚
 	glPushMatrix();
 	glTranslated(status_bar_width / 2, status_bar_width / 2, 0.0);
-	glColor3f(1.0f, 1.0f, 1.0f);	
+	glColor3f(1.0f, 1.0f, 1.0f);
 	glutSolidTeapot(50);
 	glPopMatrix();
-	
-	
-	// ÈÃÎÒÃÇÔÚÕâÀïĞ´Ò»ÏÂÑÛ¾¦Î»ÖÃ
+
+
+	// è®©æˆ‘ä»¬åœ¨è¿™é‡Œå†™ä¸€ä¸‹çœ¼ç›ä½ç½®
 	glRasterPos2d(8.0, 8.0);
 	std::ostringstream os;
 	// os.unsetf(std::scientific);
-	
+
 	os << "(" << std::fixed << std::setprecision(2) << eye[0] << ", " << eye[1] << ", " << eye[2] << ")";
 	drawString(os.str().c_str());
-	
+
 	glRasterPos2d(40.0, 24.0);
 	drawString("Eye position");
 
@@ -54,10 +54,10 @@ void DSStatusBar::show() {
 	glEnable(GL_LIGHTING);
 	glPushMatrix();
 	glLoadIdentity();
-	dstext.print(5, 400, L"ÄúºÃ");
+	dstext.print(5, 400, L"æ‚¨å¥½");
 	glPopMatrix();
 
-	//»Øµ½Í¸ÊÓÍ¶Ó°
+	//å›åˆ°é€è§†æŠ•å½±
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
 	glMatrixMode(GL_MODELVIEW);

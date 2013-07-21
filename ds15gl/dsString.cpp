@@ -1,13 +1,19 @@
 #include "dsString.h"
+#include <cmath>
 
 #ifdef WIN32
-//ËÎÌå
+//å®‹ä½“
 #define SONGTI "C:/Windows/fonts/msyhbd.ttc"
 #endif // WIN32
 
+#ifdef __unix__
+#define SONGTI "/usr/share/fonts/truetype/wqy/wqy-microhei.ttc"
+#define printf_s printf
+#endif
+
 #define FONT GLUT_BITMAP_HELVETICA_18
 
-const int MAX = pow(2, sizeof(unsigned long));
+const int MAX = std::pow(2, sizeof(unsigned long));
 
 unsigned long DSString::Hash(wchar_t* key) {
 	unsigned long h = 0;
@@ -55,8 +61,8 @@ int DSString::resize(int size) {
 void DSString::drawString(wchar_t* str, int size) {
 
 	map<unsigned long, GLint>::const_iterator temp = lists.find(Hash(str));
-	
-	//Èç¹û»­¹ýÕâ¾ä»°
+
+	//å¦‚æžœç”»è¿‡è¿™å¥è¯
 	if (temp != lists.end()) {
 		glCallList(temp->second);
 		return;
@@ -70,10 +76,10 @@ void DSString::drawString(wchar_t* str, int size) {
 				cerr << "resize error" << endl;
 			this->size = size;
 		}
-		
+
 		for (int i = 0; i < len; i++) {
 			if ((str[i] >> 8) == 0) {
-				//Ó¢ÎÄ
+				//è‹±æ–‡
 				glutBitmapCharacter(FONT, str[i]);
 				continue;
 			}
@@ -91,7 +97,7 @@ const FT_GlyphSlot DSString::getChar(wchar_t Char) {
 	//map<int, FT_GlyphSlot*>::const_iterator temp=;
 	if (bitmaps.find((Char << 8) + size) == bitmaps.end()){
 		glyph_index = FT_Get_Char_Index(face, Char);
-		ftError = FT_Load_Glyph(face, glyph_index, 0); 
+		ftError = FT_Load_Glyph(face, glyph_index, 0);
 		if (ftError) {
 			cerr << "Load Glyph Error.\n";
 		}
@@ -112,7 +118,7 @@ int DSString::init() {
 		return 1;
 	}
 
-	ftError = FT_New_Face(library, SONGTI, 0, &face); 
+	ftError = FT_New_Face(library, SONGTI, 0, &face);
 	if (ftError == FT_Err_Unknown_File_Format){
 		printf_s("Unsupport Font File.\n");
 		return 1;
@@ -128,16 +134,16 @@ int DSString::init() {
 		printf_s("Set size Error.\n");
 	}
 
-	FT_Matrix matrix; /* ±ä»»¾ØÕó */ 
-	FT_Vector pen; 
+	FT_Matrix matrix; /* å˜æ¢çŸ©é˜µ */
+	FT_Vector pen;
 
-	matrix.xx = (FT_Fixed)0x10000L; 
-	matrix.xy = 0; 
-	matrix.yx = 0; 
-	matrix.yy = (FT_Fixed)-0x10000L; 
+	matrix.xx = (FT_Fixed)0x10000L;
+	matrix.xy = 0;
+	matrix.yx = 0;
+	matrix.yy = (FT_Fixed)-0x10000L;
 
-	pen.x = 0; 
-	pen.y = 0; 
+	pen.x = 0;
+	pen.y = 0;
 
 	FT_Set_Transform(face, &matrix, &pen);
 	printf_s("DSString init Success.\n");
@@ -146,7 +152,7 @@ int DSString::init() {
 }
 
 FT_GlyphSlot DSString::copy(FT_GlyphSlot slot) {
-	//¿½±´Ô´×ÖÐÎ
+	//æ‹·è´æºå­—å½¢
 	FT_GlyphSlot newSlot = new FT_GlyphSlotRec(*slot);
 
 	int len = slot->bitmap.pitch * slot->bitmap.rows;

@@ -51,21 +51,21 @@ void DSScene::show(){
 
 	glDisable(GL_LIGHTING);
 
-	// ÒÔÏÂÊÇ¹îÒìµÄÎÄ×Ö
+	// ä»¥ä¸‹æ˜¯è¯¡å¼‚çš„æ–‡å­—
 	glRasterPos2d(4.0, 2.0);
 	drawString("Hello, world!");
 
-	//Ó¢ÎÄ²»Õı³£
+	//è‹±æ–‡ä¸æ­£å¸¸
 	glRasterPos2d(8.0, 20.0);
 	str.drawString(L"English Test",32);
 	glRasterPos2d(8.0, 30.0);
-	str.drawString(L"ÖĞÎÄ²âÊÔ²âÊÔÖĞÎÄ",32);
+	str.drawString(L"ä¸­æ–‡æµ‹è¯•æµ‹è¯•ä¸­æ–‡",32);
 	glRasterPos2d(8.0, 40.0);
-	str.drawString(L"ÖĞÎÄEnglish»ìºÏ",32);
-	
+	str.drawString(L"ä¸­æ–‡Englishæ··åˆ",32);
+
 	glPushMatrix();
 	glLoadIdentity();
-	dstext.print(5, 400, L"ÄúºÃ£¬Î°´óµÄÌ¸ÖÁÑ«¡£\nÖÚËùÖÜÖª£¬ÄúÊÇÎŞËù²»ÄÜµÄ£¬µ«ÊÇ£º\nÄúÄÜ²»ÄÜ¸æËßÎÒÃÇ£¬ÎªÊ²Ã´ÄúÕâÃ´À÷º¦ÄØ£¿");
+	dstext.print(5, 400, L"æ‚¨å¥½ï¼Œä¼Ÿå¤§çš„è°ˆè‡³å‹‹ã€‚\nä¼—æ‰€å‘¨çŸ¥ï¼Œæ‚¨æ˜¯æ— æ‰€ä¸èƒ½çš„ï¼Œä½†æ˜¯ï¼š\næ‚¨èƒ½ä¸èƒ½å‘Šè¯‰æˆ‘ä»¬ï¼Œä¸ºä»€ä¹ˆæ‚¨è¿™ä¹ˆå‰å®³å‘¢ï¼Ÿ");
 	glPopMatrix();
 
 	glEnable(GL_LIGHTING);
