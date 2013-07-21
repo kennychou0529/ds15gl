@@ -1,6 +1,11 @@
 队式 15 展示组
 ======
 
+Linux 下使用 FreeType：
+* 安装 FreeType：`sudo apt-get install libfreetype6-dev`
+* 在 /usr/include 中发现 freetype2 文件夹，将其中的 freetype 文件夹复制到 /usr/include 下
+* 编译时需要链接：`-lfreetype`
+
 显示文字：
 * 显示文字的功能现在被包装到了 class dsTextManager 中，该类在 dsTextManager.h 中有声明。
 * 每个 dsTextManager 只能使用一种字体，一种大小。
