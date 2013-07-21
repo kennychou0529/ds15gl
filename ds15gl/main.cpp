@@ -5,30 +5,30 @@
 #include <iostream>
 #include <thread>
 
-////Ä¿Ç°Ö»Ö§³Ö WIN32 ºÍ Linux
+////ç›®å‰åªæ”¯æŒ WIN32 å’Œ Linux
 //#ifdef WIN32
 //  #define SLEEP(mm) Sleep(mm)
 //#else
-//  //Õâ¸ö»¹²»ÖªµÀĞĞ²»ĞĞ
+//  //è¿™ä¸ªè¿˜ä¸çŸ¥é“è¡Œä¸è¡Œ
 //  #include <unistd.h>
 //  #define SLEEP(mm) usleep(mm*1000)
 //#endif // WIN32
 
 DSFrame frame;
 
-// Ã¿Ö¡Ê±¼ä£¬ºÁÃë
+// æ¯å¸§æ—¶é—´ï¼Œæ¯«ç§’
 //static const int mspf = 33;
 static auto sleep_time = std::chrono::milliseconds(33);
 
 void dsDisplay() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	dsSet(); // ÉèÖÃÊÓ½Ç
+	dsSet(); // è®¾ç½®è§†è§’
 
 	frame.display();
 
 	glutSwapBuffers();
 
-	// ´òÓ¡ GL ´íÎó
+	// æ‰“å° GL é”™è¯¯
 	GLenum errCode;
 	const GLubyte* errString;
 
@@ -52,7 +52,7 @@ void dsInit() {
 	dstext.init(font_file_name, font_height);
 }
 
-// µ±´°¿Ú´óĞ¡±»ĞŞ¸ÄÊ±×Ô¶¯µ÷ÓÃ´Ëº¯Êı
+// å½“çª—å£å¤§å°è¢«ä¿®æ”¹æ—¶è‡ªåŠ¨è°ƒç”¨æ­¤å‡½æ•°
 void dsReshape(int w, int h) {
 	window_width = w;
 	window_height = h;
@@ -67,7 +67,7 @@ void dsIdle() {
 	//static long t = clock();
 	//long deltaT = clock() - t;
 	//if (deltaT > 0 && deltaT < mspf)
-	//	// ×èÈû¸ÃÏß³Ì
+	//	// é˜»å¡è¯¥çº¿ç¨‹
 	//	SLEEP(mspf - deltaT);
 	//t = clock();
 	std::this_thread::sleep_for(sleep_time);

@@ -20,7 +20,7 @@ const vector2f vector2f::operator-(const vector2f vec) {
 	return tem;
 }
 
-// µã»ı
+// ç‚¹ç§¯
 const vector2f vector2f::operator*(const vector2f vec) { 
 	vector2f tem;
 	tem.x = vec.x * x;
@@ -28,7 +28,7 @@ const vector2f vector2f::operator*(const vector2f vec) {
 	return tem;
 }
 
-// ·µ»ØÒ»¸öÄæÊ±ÕëĞı×ª90¶ÈµÄÏòÁ¿
+// è¿”å›ä¸€ä¸ªé€†æ—¶é’ˆæ—‹è½¬90åº¦çš„å‘é‡
 const vector2f vector2f::turnLeft() {
 	vector2f tem;
 	tem.x = -y;

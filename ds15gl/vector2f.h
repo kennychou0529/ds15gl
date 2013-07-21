@@ -9,8 +9,8 @@ public:
 	const float lenth();
 	const vector2f operator+(const vector2f vec);
 	const vector2f operator-(const vector2f vec);
-	const vector2f operator*(const vector2f vec); // µã»ı
-	const vector2f turnLeft(); // ·µ»ØÒ»¸öÄæÊ±ÕëĞı×ª 90 ¶ÈµÄÏòÁ¿
+	const vector2f operator*(const vector2f vec); // ç‚¹ç§¯
+	const vector2f turnLeft(); // è¿”å›ä¸€ä¸ªé€†æ—¶é’ˆæ—‹è½¬ 90 åº¦çš„å‘é‡
 	const float operator[](int index);
 	int normalLise();
 

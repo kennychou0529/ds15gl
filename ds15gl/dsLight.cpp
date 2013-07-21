@@ -1,24 +1,24 @@
 #include "dsLight.h"
 
-// »·¾³¹â£¬ÄÜ±£Ö¤¹âÔ´ÕÒ²»µ½µÄµØ·½Ò²¿´µÃµ½£¬Õâ¸öµÃÉèÖÃµÃ°µÒ»Ğ©£¬ÎÒÃÇÉè³É°µµ­µÄ°×É«
+// ç¯å¢ƒå…‰ï¼Œèƒ½ä¿è¯å…‰æºæ‰¾ä¸åˆ°çš„åœ°æ–¹ä¹Ÿçœ‹å¾—åˆ°ï¼Œè¿™ä¸ªå¾—è®¾ç½®å¾—æš—ä¸€äº›ï¼Œæˆ‘ä»¬è®¾æˆæš—æ·¡çš„ç™½è‰²
 GLfloat light_ambient[4]  = {0.1f, 0.1f, 0.1f, 1.0f};
 
-// ÂşÉä¹â
+// æ¼«å°„å…‰
 GLfloat light_diffuse[4]  = {0.5f, 250.0f / 255 / 2, 200.0f / 255 / 2, 0.5f};
 
-// ¾µÃæ¹â£¬²úÉúÁÁ°ß
+// é•œé¢å…‰ï¼Œäº§ç”Ÿäº®æ–‘
 GLfloat light_specular[4] = {0.5f, 250.0f / 255 / 2, 200.0f / 255 / 2, 2.0f};
 // GLfloat specular[4] = {1.0f, 1.0f, 0.0f, 1.0f};
 // GLfloat specular[4] = {0.0f, 0.0f, 0.0f, 1.0f};
 
-// ¹âÔ´Î»ÖÃ
+// å…‰æºä½ç½®
 GLfloat light_position[4] = {5.0f, 0.0f, 5.0f, 1.0f};
 // GLfloat position[4] = {5.0f, 0.0f, 5.0f, 1.0f};
 
 void dsSetLight() {
-	// ´´½¨¹âÔ´
+	// åˆ›å»ºå…‰æº
 	glEnable(GL_LIGHT0);
-	// ½«Êı¾İÔØÈë¹âÔ´ 0
+	// å°†æ•°æ®è½½å…¥å…‰æº 0
 	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
@@ -28,7 +28,7 @@ void dsSetLight() {
 
 	
 
-	//// ¾Û¹âµÆ
+	//// èšå…‰ç¯
 	//glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 60.0f);
 	//GLfloat spot_direction[] = {- light_position[0], - light_position[1], - light_position[2]};
 	//// GLfloat spot_direction[] = {0.0, 0.0, -1};
@@ -37,18 +37,18 @@ void dsSetLight() {
 }
 
 void dsSetMaterial() {
-	// »·¾³¹â
+	// ç¯å¢ƒå…‰
 	GLfloat ambient[4]  = {1.0f, 1.0f, 1.0f, 10.0f};
 
-	// ÂşÉä¹â
+	// æ¼«å°„å…‰
 	GLfloat diffuse[4]  = {1.0f, 1.0f, 1.0f, 10.0f};
 
-	// ¾µÃæ¹â£¬²úÉúÁÁ°ß
+	// é•œé¢å…‰ï¼Œäº§ç”Ÿäº®æ–‘
 	GLfloat specular[4] = {1.0f, 1.0f, 1.0f, 10.0f};
 	
 	GLfloat shinness = 5.0;
 	
-	// ½«Êı¾İÔØÈë²ÄÖÊ
+	// å°†æ•°æ®è½½å…¥æè´¨
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ambient);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular);

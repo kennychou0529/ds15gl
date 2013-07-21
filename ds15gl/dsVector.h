@@ -8,34 +8,34 @@ using std::sqrt;
 using std::sin;
 using std::cos;
 
-// ÊäÈë µãÏà¶ÔÓÚÇòĞÄµÄÇò×ø±ê ºÍ ÇòĞÄµÄÖ±½Ç×ø±ê£¬Êä³ö µãµÄÖ±½Ç×ø±ê
+// è¾“å…¥ ç‚¹ç›¸å¯¹äºçƒå¿ƒçš„çƒåæ ‡ å’Œ çƒå¿ƒçš„ç›´è§’åæ ‡ï¼Œè¾“å‡º ç‚¹çš„ç›´è§’åæ ‡
 void dsSphereToOrtho3dv(const GLdouble sphere[3], const GLdouble center[3], GLdouble ortho[3]);
 
-// ÊäÈë µãÏà¶ÔÓÚÇòĞÄµÄÇò×ø±ê ºÍ µãµÄÖ±½Ç×ø±ê£¬Êä³ö ÇòĞÄµÄÖ±½Ç×ø±ê
+// è¾“å…¥ ç‚¹ç›¸å¯¹äºçƒå¿ƒçš„çƒåæ ‡ å’Œ ç‚¹çš„ç›´è§’åæ ‡ï¼Œè¾“å‡º çƒå¿ƒçš„ç›´è§’åæ ‡
 void dsFindSphereCenter(const GLdouble sphere[3], const GLdouble ortho[3], GLdouble center[3]);
 
-// ·µ»ØÏòÁ¿µÄ³¤¶È
+// è¿”å›å‘é‡çš„é•¿åº¦
 GLdouble dsLenth3dv(GLdouble vec[3]);
 
-// ÏòÁ¿µÄµ¥Î»»¯
+// å‘é‡çš„å•ä½åŒ–
 void dsNormalize3dv(GLdouble vec[3]);
 
-// ÏòÁ¿µÄ¼õ·¨
+// å‘é‡çš„å‡æ³•
 void dsDiff3dv(const GLdouble v1[3], const GLdouble v2[3], GLdouble ret[3]);
 
-// ÏòÁ¿µÄ¼Ó·¨
+// å‘é‡çš„åŠ æ³•
 void dsAdd3dv(const GLdouble v1[3], const GLdouble v2[3], GLdouble ret[3]);
 
-// ÏòÁ¿µÄÊı³Ë
+// å‘é‡çš„æ•°ä¹˜
 void dsScalarMulti3dv(const GLdouble v[3], const GLdouble multiplier, GLdouble ret[3]);
 
-// ÏòÁ¿µÄµã»ı
+// å‘é‡çš„ç‚¹ç§¯
 GLdouble dsDot3dv(const GLdouble v1[3], const GLdouble v2[3]);
 
-// ÏòÁ¿µÄ²æ»ı
+// å‘é‡çš„å‰ç§¯
 void dsCross3dv(const GLdouble v1[3], const GLdouble v2[3], GLdouble ret[3]);
 
-// ÊäÈë Èı½ÇĞÎµÄÈı¸ö¶¥µã£¬Êä³ö µ¥Î»·¨ÏòÁ¿
+// è¾“å…¥ ä¸‰è§’å½¢çš„ä¸‰ä¸ªé¡¶ç‚¹ï¼Œè¾“å‡º å•ä½æ³•å‘é‡
 void dsNormalVectorOfTriangle3dv(const GLdouble p1[3], const GLdouble p2[3], const GLdouble p3[3], GLdouble ret[3]);
 
 

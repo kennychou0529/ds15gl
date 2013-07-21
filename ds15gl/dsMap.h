@@ -12,14 +12,14 @@ public:
 	}
 
 	const int getTile(int x, int y) {
-		//Êı×éÔ½½ç
+		//æ•°ç»„è¶Šç•Œ
 		if (x < 0 || x >= width || y < 0 || y >= height)
 			return 0;
 
 		return data[y][x];
 	}
 public:
-	// µØÍ¼Ã¿¿éµÄ´óĞ¡
+	// åœ°å›¾æ¯å—çš„å¤§å°
 	static const int ElementSize = 4;
 	
 private:

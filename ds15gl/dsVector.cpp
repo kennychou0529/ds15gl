@@ -1,25 +1,25 @@
 #include "dsVector.h"
 
-// ÊäÈë µãÏà¶ÔÓÚÇòĞÄµÄÇò×ø±ê ºÍ ÇòĞÄµÄÖ±½Ç×ø±ê£¬Êä³ö µãµÄÖ±½Ç×ø±ê
+// è¾“å…¥ ç‚¹ç›¸å¯¹äºçƒå¿ƒçš„çƒåæ ‡ å’Œ çƒå¿ƒçš„ç›´è§’åæ ‡ï¼Œè¾“å‡º ç‚¹çš„ç›´è§’åæ ‡
 void dsSphereToOrtho3dv(const GLdouble sphere[3], const GLdouble center[3], GLdouble ortho[3]) {
 	ortho[0] = center[0] + sphere[0] * sin(sphere[1]) * cos(sphere[2]);
 	ortho[1] = center[1] + sphere[0] * sin(sphere[1]) * sin(sphere[2]);
 	ortho[2] = center[2] + sphere[0] * cos(sphere[1]);
 }
 
-// ÊäÈë µãµÄÖ±½Ç×ø±ê ºÍµãÏà¶ÔÓÚÇòĞÄµÄÇò×ø±ê£¬Êä³ö ÇòĞÄµÄÖ±½Ç×ø±ê
+// è¾“å…¥ ç‚¹çš„ç›´è§’åæ ‡ å’Œç‚¹ç›¸å¯¹äºçƒå¿ƒçš„çƒåæ ‡ï¼Œè¾“å‡º çƒå¿ƒçš„ç›´è§’åæ ‡
 void dsFindSphereCenter(const GLdouble sphere[3], const GLdouble ortho[3], GLdouble center[3]) {
 	center[0] = sphere[0] * sin(sphere[1]) * cos(sphere[2]) - ortho[0];
 	center[1] = sphere[0] * sin(sphere[1]) * sin(sphere[2]) - ortho[1];
 	center[2] = sphere[0] * cos(sphere[1]) - ortho[2];
 }
 
-// ·µ»ØÏòÁ¿µÄ³¤¶È
+// è¿”å›å‘é‡çš„é•¿åº¦
 GLdouble dsLenth3dv(GLdouble vec[3]) {
 	return sqrt(vec[0] * vec[0] + vec[1] * vec[1] + vec[2] * vec[2]);
 }
 
-// ÏòÁ¿µÄµ¥Î»»¯
+// å‘é‡çš„å•ä½åŒ–
 void dsNormalize3dv(GLdouble vec[3]) {
 	GLdouble len = dsLenth3dv(vec);
 	if (len) {
@@ -29,40 +29,40 @@ void dsNormalize3dv(GLdouble vec[3]) {
 	}
 }
 
-// ÏòÁ¿µÄ¼Ó·¨
+// å‘é‡çš„åŠ æ³•
 void dsAdd3dv(const GLdouble v1[3], const GLdouble v2[3], GLdouble ret[3]) {
 	ret[0] = v1[0] + v2[0];
 	ret[1] = v1[1] + v2[1];
 	ret[2] = v1[2] + v2[2];
 }
 
-// ÏòÁ¿µÄÊı³Ë
+// å‘é‡çš„æ•°ä¹˜
 void dsScalarMulti3dv(const GLdouble v[3], const GLdouble multiplier, GLdouble ret[3]) {
 	ret[0] = v[0] * multiplier;
 	ret[1] = v[1] * multiplier;
 	ret[2] = v[2] * multiplier;
 }
 
-// ÏòÁ¿µÄµã»ı
+// å‘é‡çš„ç‚¹ç§¯
 GLdouble dsDot3dv(const GLdouble v1[3], const GLdouble v2[3]) {
 	return v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2];
 }
 
-// ÏòÁ¿µÄ¼õ·¨
+// å‘é‡çš„å‡æ³•
 void dsDiff3dv(const GLdouble v1[3], const GLdouble v2[3], GLdouble ret[3]) {
 	ret[0] = v1[0] - v2[0];
 	ret[1] = v1[1] - v2[1];
 	ret[2] = v1[2] - v2[2];
 }
 
-// ÏòÁ¿µÄ²æ»ı
+// å‘é‡çš„å‰ç§¯
 void dsCross3dv(const GLdouble v1[3], const GLdouble v2[3], GLdouble ret[3]) {
 	ret[0] = v1[1] * v2[2] - v1[2] * v2[1];
 	ret[1] = v1[2] * v2[0] - v1[0] * v2[2];
 	ret[2] = v1[0] * v2[1] - v1[1] * v2[0];
 }
 
-// ÊäÈë Èı½ÇĞÎµÄÈı¸ö¶¥µã£¬Êä³ö µ¥Î»·¨ÏòÁ¿
+// è¾“å…¥ ä¸‰è§’å½¢çš„ä¸‰ä¸ªé¡¶ç‚¹ï¼Œè¾“å‡º å•ä½æ³•å‘é‡
 void dsNormalVectorOfTriangle3dv(const GLdouble p1[3], const GLdouble p2[3], const GLdouble p3[3], GLdouble ret[3]) {
 	GLdouble vec1[3], vec2[3];
 	dsDiff3dv(p1, p2, vec1);

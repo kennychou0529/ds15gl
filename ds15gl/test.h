@@ -22,12 +22,12 @@ public:
 private:
 	FT_Library library; 
 	FT_Face face;
-	//ÏÂÃæÁ½¸ö¿´×÷ÁÙÊ±±äÁ¿
+	//ä¸‹é¢ä¸¤ä¸ªçœ‹ä½œä¸´æ—¶å˜é‡
 	FT_Error ftError;
 	FT_UInt  glyph_index;
-	//×ÖÌå´óĞ¡
+	//å­—ä½“å¤§å°
 	int size;
-	//´æ·ÅÎ»Í¼µÄMap
+	//å­˜æ”¾ä½å›¾çš„Map
 	map<int, FT_GlyphSlot> bitmaps;
 	map<unsigned long,GLint> lists;
 };
@@ -103,9 +103,9 @@ const FT_GlyphSlot& DSString::getChar(wchar_t Char){
 	if(bitmaps.find((Char<<8)+size)==bitmaps.end()){
 		glyph_index = FT_Get_Char_Index( face, Char);
 		ftError = FT_Load_Glyph( 
-				face, /* face¶ÔÏóµÄ¾ä±ú */ 
-				glyph_index, /* ×ÖĞÎË÷Òı */ 
-				0 ); /* ×°ÔØ±êÖ¾£¬²Î¿¼ÏÂÃæ */ 
+				face, /* faceå¯¹è±¡çš„å¥æŸ„ */ 
+				glyph_index, /* å­—å½¢ç´¢å¼• */ 
+				0 ); /* è£…è½½æ ‡å¿—ï¼Œå‚è€ƒä¸‹é¢ */ 
 		if(ftError){
 			cerr<<"Load Glyph Error.\n";
 		}
@@ -138,7 +138,7 @@ int DSString::init(){
 	printf_s("Total Glyphs: %d\n",face->num_glyphs);
 
 	ftError = FT_Set_Pixel_Sizes( 
-		face, /* face¶ÔÏóµÄ¾ä±ú */ 0,size);
+		face, /* faceå¯¹è±¡çš„å¥æŸ„ */ 0,size);
 
 	if (ftError)	{
 		printf_s("Set size Error.\n");
@@ -198,13 +198,13 @@ int DSString::init(){
 //		//cout<<"Index of "<<str[0]<< " is "<<glyph_index<<endl;
 //
 //		ftError = FT_Load_Glyph( 
-//			face, /* face¶ÔÏóµÄ¾ä±ú */ 
-//			glyph_index, /* ×ÖĞÎË÷Òı */ 
-//			0 ); /* ×°ÔØ±êÖ¾£¬²Î¿¼ÏÂÃæ */ 
+//			face, /* faceå¯¹è±¡çš„å¥æŸ„ */ 
+//			glyph_index, /* å­—å½¢ç´¢å¼• */ 
+//			0 ); /* è£…è½½æ ‡å¿—ï¼Œå‚è€ƒä¸‹é¢ */ 
 //
 //		if(face->glyph->format!=ft_glyph_format_bitmap){
-//			fterror = ft_render_glyph( face->glyph, /* ×ÖĞÎ²Û */ 
-//				ft_render_mode_normal ); /* äÖÈ¾Ä£Ê½ */ 
+//			fterror = ft_render_glyph( face->glyph, /* å­—å½¢æ§½ */ 
+//				ft_render_mode_normal ); /* æ¸²æŸ“æ¨¡å¼ */ 
 //		}
 ////
 //		FT_Bitmap bitmap=face->glyph->bitmap;
@@ -219,5 +219,5 @@ int DSString::init(){
 
 //int main(){
 //	DSString dsString;
-//	dsString.drawString(L"ABCS Íõ¿µ",32);
+//	dsString.drawString(L"ABCS ç‹åº·",32);
 //}

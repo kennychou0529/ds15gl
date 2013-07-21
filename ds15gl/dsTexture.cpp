@@ -8,14 +8,14 @@ GLuint dsLoadTextureBMP2D(const char* file_name, GLuint* pheight, GLuint* pwidth
 	GLint width, height, total_bytes;
 	GLubyte* pixels = nullptr;
 	
-	// ´ò¿ªÎÄ¼ş
+	// æ‰“å¼€æ–‡ä»¶
 	ifstream is;
 	is.open(file_name, is.in | is.binary);
 	if (!is) {
 		return 0;
 	}
 
-	// ¶ÁÈ¡Í¼ÏñµÄ¿í¶ÈºÍ¸ß¶È
+	// è¯»å–å›¾åƒçš„å®½åº¦å’Œé«˜åº¦
 	is.seekg(0x0012, is.beg);
 	is.read((char*)&width, sizeof(width));
 
@@ -24,7 +24,7 @@ GLuint dsLoadTextureBMP2D(const char* file_name, GLuint* pheight, GLuint* pwidth
 
 	is.seekg(BMP_Header_Length, is.beg);
 
-	// ¼ÆËãÃ¿ĞĞÏñËØËùÕ¼×Ö½ÚÊı£¬²¢¸ù¾İ´ËÊı¾İ¼ÆËã×ÜÏñËØ×Ö½ÚÊı
+	// è®¡ç®—æ¯è¡Œåƒç´ æ‰€å å­—èŠ‚æ•°ï¼Œå¹¶æ ¹æ®æ­¤æ•°æ®è®¡ç®—æ€»åƒç´ å­—èŠ‚æ•°
 	{
 		GLint line_bytes = width * 3;
 		while (line_bytes % 4 != 0)
@@ -32,14 +32,14 @@ GLuint dsLoadTextureBMP2D(const char* file_name, GLuint* pheight, GLuint* pwidth
 		total_bytes = line_bytes * height;
 	}
 
-	// ¸ù¾İ×ÜÏñËØ×Ö½ÚÊı·ÖÅäÄÚ´æ
+	// æ ¹æ®æ€»åƒç´ å­—èŠ‚æ•°åˆ†é…å†…å­˜
 	pixels = new GLubyte[total_bytes];
 	if (pixels == nullptr) {
 		is.close();
 		return 0;
 	}
 	
-	// ¶ÁÈ¡ÎÆÀíÍ¼Æ¬Êı¾İ
+	// è¯»å–çº¹ç†å›¾ç‰‡æ•°æ®
 	if (is.read((char*)pixels, total_bytes) <= 0) {
 		delete[] pixels;
 		is.close();
@@ -47,9 +47,9 @@ GLuint dsLoadTextureBMP2D(const char* file_name, GLuint* pheight, GLuint* pwidth
 	}
 	is.close();
 
-	// ÔÚÕâÀïÎÒÃÇ²»¶ÔÎÆÀí½øĞĞËõ·Å
+	// åœ¨è¿™é‡Œæˆ‘ä»¬ä¸å¯¹çº¹ç†è¿›è¡Œç¼©æ”¾
 
-	// È¡µÃĞÂµÄÎÆÀí±àºÅ
+	// å–å¾—æ–°çš„çº¹ç†ç¼–å·
 	GLuint texture_ID = 0;
 	glGenTextures(1, &texture_ID);
 	if (texture_ID == 0) {
@@ -58,35 +58,35 @@ GLuint dsLoadTextureBMP2D(const char* file_name, GLuint* pheight, GLuint* pwidth
 		return 0;
 	}
 
-	// °ó¶¨ĞÂµÄÎÆÀí£¬ÔØÈëÎÆÀí²¢ÉèÖÃÎÆÀí²ÎÊı
+	// ç»‘å®šæ–°çš„çº¹ç†ï¼Œè½½å…¥çº¹ç†å¹¶è®¾ç½®çº¹ç†å‚æ•°
 	
-	// ±£´æÔ­À´°ó¶¨µÄÎÆÀí±àºÅ
+	// ä¿å­˜åŸæ¥ç»‘å®šçš„çº¹ç†ç¼–å·
 	GLuint last_texture_ID;
 	glGetIntegerv(GL_TEXTURE_BINDING_2D, (GLint*)&last_texture_ID);
 
-	// °ó¶¨ĞÂµÄÎÆÀí£¬ÒÔ±ã½øĞĞ²Ù×÷
+	// ç»‘å®šæ–°çš„çº¹ç†ï¼Œä»¥ä¾¿è¿›è¡Œæ“ä½œ
 	glBindTexture(GL_TEXTURE_2D, texture_ID);
 
-	// Èç¹û´óÎÆÀí·Åµ½Ğ¡ĞÎ×´£¬ÔòÏßĞÔ²åÖµ
+	// å¦‚æœå¤§çº¹ç†æ”¾åˆ°å°å½¢çŠ¶ï¼Œåˆ™çº¿æ€§æ’å€¼
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-	// Èç¹ûĞ¡ÎÆÀí·Åµ½´óĞÎ×´Ê±£¬ÔòÏßĞÔ²åÖµ
+	// å¦‚æœå°çº¹ç†æ”¾åˆ°å¤§å½¢çŠ¶æ—¶ï¼Œåˆ™çº¿æ€§æ’å€¼
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	// Èç¹ûÎÆÀí x ×ø±ê³¬³ö·¶Î§£¬ÔòÖØ¸´£¬Ä¬ÈÏÖµ
+	// å¦‚æœçº¹ç† x åæ ‡è¶…å‡ºèŒƒå›´ï¼Œåˆ™é‡å¤ï¼Œé»˜è®¤å€¼
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 
-	// Èç¹ûÎÆÀí y ×ø±ê³¬³ö·¶Î§£¬ÔòÖØ¸´£¬Ä¬ÈÏÖµ
+	// å¦‚æœçº¹ç† y åæ ‡è¶…å‡ºèŒƒå›´ï¼Œåˆ™é‡å¤ï¼Œé»˜è®¤å€¼
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	// ÎÆÀíºÍ¹âÕÕ¹²´æ
+	// çº¹ç†å’Œå…‰ç…§å…±å­˜
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-	// ÔØÈëÎÆÀí
+	// è½½å…¥çº¹ç†
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0,
 				 GL_BGR_EXT, GL_UNSIGNED_BYTE, pixels);
 
-	// ÔÙ°Ñµ±Ç°ÎÆÀí°ó¶¨»ØÔ­À´µÄÄÇ¸ö£¬µ±È»ĞÂµÄÎÆÀíÒÑ¾­±»´¢´æÆğÀ´ÁË
+	// å†æŠŠå½“å‰çº¹ç†ç»‘å®šå›åŸæ¥çš„é‚£ä¸ªï¼Œå½“ç„¶æ–°çš„çº¹ç†å·²ç»è¢«å‚¨å­˜èµ·æ¥äº†
 	glBindTexture(GL_TEXTURE_2D, last_texture_ID);
 
 	delete[] pixels;
@@ -101,7 +101,7 @@ GLuint dsLoadTextureBMP2D(const char* file_name, GLuint* pheight, GLuint* pwidth
 	return texture_ID;
 }
 
-// ÔØÈëÒ»ÕÅÍ¼Æ¬×÷ÎªÎÆÀí£¬µ÷ÓÃ aux ¿â
+// è½½å…¥ä¸€å¼ å›¾ç‰‡ä½œä¸ºçº¹ç†ï¼Œè°ƒç”¨ aux åº“
 //bool LoadT8(char *filename, GLuint &texture)
 //{	
 //	AUX_RGBImageRec* pImage = nullptr;

@@ -6,8 +6,8 @@
 #include "dsSkybox.h"
 #include "dsTools.h"
 
-// Óë³¡¾°ÓĞ¹ØµÄÀà
-// ËùÓĞ»æÍ¼²Ù×÷¶¼Ó¦¸Ã×ªÒÆµ½Õâ¸öÀà
+// ä¸åœºæ™¯æœ‰å…³çš„ç±»
+// æ‰€æœ‰ç»˜å›¾æ“ä½œéƒ½åº”è¯¥è½¬ç§»åˆ°è¿™ä¸ªç±»
 class DSScene {
 public:
     DSScene();
@@ -16,10 +16,10 @@ public:
 	void show();
 
 private:
-	DSMap map; // ÒÔºó¸ÄÃû	
+	DSMap map; // ä»¥åæ”¹å	
 	DSSkybox dsSkyBox;
 
-	//ÏÔÊ¾ÁĞ±í
+	//æ˜¾ç¤ºåˆ—è¡¨
 	GLuint groud;
 };
 

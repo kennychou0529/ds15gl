@@ -30,7 +30,7 @@ void dsKeys(unsigned char key, int x, int y);
 //void dsMouseFunc(int key,int x,int y,int);
 //void dsPassiveMonitionFunc(int x,int y);
 
-// ÏÔÊ¾Ò»¸öÈıÎ¬×ø±êÏµ£¬xyz Öá·Ö±ğÎªºìÂÌÀ¶
+// æ˜¾ç¤ºä¸€ä¸ªä¸‰ç»´åæ ‡ç³»ï¼Œxyz è½´åˆ†åˆ«ä¸ºçº¢ç»¿è“
 void dsShowAxes();
 
 void drawRectange2D(int x,int y,int width,int length);

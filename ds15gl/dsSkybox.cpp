@@ -1,12 +1,12 @@
 #include "dsSkybox.h"
 
 void DSSkybox::del() {
-	// Èç¹û ÏÔÊ¾ÁÐ±í ÒÑ´æÔÚ£¬ÔòÉ¾³ýÖ®
+	// å¦‚æžœ æ˜¾ç¤ºåˆ—è¡¨ å·²å­˜åœ¨ï¼Œåˆ™åˆ é™¤ä¹‹
 	if (glIsList(skyBox)) {
 		glDeleteLists(skyBox, 1);
 	}
 
-	// Çå¿ÕÔ­À´µÄÌì¿ÕºÐ ÎÆÀí
+	// æ¸…ç©ºåŽŸæ¥çš„å¤©ç©ºç›’ çº¹ç†
 	for (GLuint i = 0; i < 6; ++i) {
 		if (glIsTexture(texture[i]))
 			glDeleteTextures(1, texture + i);
@@ -15,16 +15,16 @@ void DSSkybox::del() {
 
 void DSSkybox::load(GLuint index) {
 
-	// Ô­À´¿ÉÄÜÒÑ¾­´æÔÚÌì¿ÕºÐ£¬ÐèÒªÇå¿Õ
+	// åŽŸæ¥å¯èƒ½å·²ç»å­˜åœ¨å¤©ç©ºç›’ï¼Œéœ€è¦æ¸…ç©º
 	del();
 
 	GLuint texture_height, texture_width;
 
-	// ÏÈÔØÈëÎÆÀí£¬½«ÎÆÀí±àºÅ´æÈë texture[]
-	// ÎÒËÑ¼¯ÁË¼¸ÖÖÌì¿ÕºÐ
+	// å…ˆè½½å…¥çº¹ç†ï¼Œå°†çº¹ç†ç¼–å·å­˜å…¥ texture[]
+	// æˆ‘æœé›†äº†å‡ ç§å¤©ç©ºç›’
 	switch (index) {
 	case 0:
-		// ¾«ÃÀ¾øÂ×»¨Ô°Ìì¿ÕºÐ
+		// ç²¾ç¾Žç»ä¼¦èŠ±å›­å¤©ç©ºç›’
 		texture[0] = dsLoadTextureBMP2D("data/images/skybox1/east.bmp", &texture_height, &texture_width);
 		texture[1] = dsLoadTextureBMP2D("data/images/skybox1/west.bmp");
 		texture[2] = dsLoadTextureBMP2D("data/images/skybox1/south.bmp");
@@ -36,7 +36,7 @@ void DSSkybox::load(GLuint index) {
 		depth = 950.0;
 		break;
 	case 1:
-		// ½õÐå×³ÀöÉ½´¨Ìì¿ÕºÐ
+		// é”¦ç»£å£®ä¸½å±±å·å¤©ç©ºç›’
 		texture[0] = dsLoadTextureBMP2D("data/images/skybox0/lostvalley_east.bmp", &texture_height, &texture_width);
 		texture[1] = dsLoadTextureBMP2D("data/images/skybox0/lostvalley_west.bmp");
 		texture[2] = dsLoadTextureBMP2D("data/images/skybox0/lostvalley_south.bmp");
@@ -48,7 +48,7 @@ void DSSkybox::load(GLuint index) {
 		depth = 700.0;
 		break;
 	case 2:
-		// Ë®Ìì½»½ÓÌì¿ÕºÐ
+		// æ°´å¤©äº¤æŽ¥å¤©ç©ºç›’
 		texture[0] = dsLoadTextureBMP2D("data/images/skybox2/east.bmp", &texture_height, &texture_width);
 		texture[1] = dsLoadTextureBMP2D("data/images/skybox2/west.bmp");
 		texture[2] = dsLoadTextureBMP2D("data/images/skybox2/south.bmp");
@@ -60,7 +60,7 @@ void DSSkybox::load(GLuint index) {
 		depth = 970.0;
 		break;
 	case 3:
-		// Ï¦ÑôÎÞÏÞºìÏ¼Ìì¿ÕºÐ
+		// å¤•é˜³æ— é™çº¢éœžå¤©ç©ºç›’
 		texture[0] = dsLoadTextureBMP2D("data/images/skybox3/east.bmp", &texture_height, &texture_width);
 		texture[1] = dsLoadTextureBMP2D("data/images/skybox3/west.bmp");
 		texture[2] = dsLoadTextureBMP2D("data/images/skybox3/south.bmp");
@@ -72,7 +72,7 @@ void DSSkybox::load(GLuint index) {
 		depth = 950.0;
 		break;
 	case 4:
-		// Ô­À´µÄÌì¿ÕºÐ
+		// åŽŸæ¥çš„å¤©ç©ºç›’
 		texture[0] = dsLoadTextureBMP2D("data/images/skybox4/east.bmp", &texture_height, &texture_width);
 		texture[1] = dsLoadTextureBMP2D("data/images/skybox4/west.bmp");
 		texture[2] = dsLoadTextureBMP2D("data/images/skybox4/south.bmp");
@@ -87,7 +87,7 @@ void DSSkybox::load(GLuint index) {
 		break;
 	}
 
-	// ÔÙ´´½¨ÏÔÊ¾ÁÐ±í
+	// å†åˆ›å»ºæ˜¾ç¤ºåˆ—è¡¨
 	width = 2000;
 	height = width / (GLdouble)texture_width * (GLdouble)texture_height;
 	
@@ -99,7 +99,7 @@ void DSSkybox::load(GLuint index) {
 	{
 		glDisable(GL_LIGHTING);
 
-		// µØÃæ
+		// åœ°é¢
 		glBindTexture(GL_TEXTURE_2D, texture[5]);
 		glBegin(GL_QUADS);
 		{
@@ -110,7 +110,7 @@ void DSSkybox::load(GLuint index) {
 		}
 		glEnd();
 
-		// ¶«Ãæ
+		// ä¸œé¢
 		glBindTexture(GL_TEXTURE_2D, texture[0]);
 		glBegin(GL_QUADS);
 		{
@@ -121,7 +121,7 @@ void DSSkybox::load(GLuint index) {
 		}
 		glEnd();
 
-		// Î÷Ãæ
+		// è¥¿é¢
 		glBindTexture(GL_TEXTURE_2D, texture[1]);
 		glBegin(GL_QUADS);
 		{
@@ -132,7 +132,7 @@ void DSSkybox::load(GLuint index) {
 		}
 		glEnd();
 
-		// ÄÏÃæ
+		// å—é¢
 		glBindTexture(GL_TEXTURE_2D, texture[2]);
 		glBegin(GL_QUADS);
 		{
@@ -143,7 +143,7 @@ void DSSkybox::load(GLuint index) {
 		}
 		glEnd();
 
-		// ±±Ãæ
+		// åŒ—é¢
 		glBindTexture(GL_TEXTURE_2D, texture[3]);
 		glBegin(GL_QUADS);
 		{
@@ -154,7 +154,7 @@ void DSSkybox::load(GLuint index) {
 		}
 		glEnd();
 
-		// ¶¥Ãæ
+		// é¡¶é¢
 		glBindTexture(GL_TEXTURE_2D, texture[4]);
 		glBegin(GL_QUADS);
 		{

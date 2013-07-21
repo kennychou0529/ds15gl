@@ -22,12 +22,12 @@ public:
 private:
 	FT_Library library; 
 	FT_Face face;
-	//ÏÂÃæÁ½¸ö¿´×÷ÁÙÊ±±äÁ¿
+	//ä¸‹é¢ä¸¤ä¸ªçœ‹ä½œä¸´æ—¶å˜é‡
 	FT_Error ftError;
 	FT_UInt  glyph_index;
-	//×ÖÌå´óĞ¡
+	//å­—ä½“å¤§å°
 	int size;
-	//´æ·ÅÎ»Í¼µÄMap
+	//å­˜æ”¾ä½å›¾çš„Map
 	map<int, FT_GlyphSlot> bitmaps;
 	map<unsigned long,GLint> lists;
 };
@@ -81,13 +81,13 @@ private:
 //		//cout<<"Index of "<<str[0]<< " is "<<glyph_index<<endl;
 //
 //		ftError = FT_Load_Glyph( 
-//			face, /* face¶ÔÏóµÄ¾ä±ú */ 
-//			glyph_index, /* ×ÖĞÎË÷Òı */ 
-//			0 ); /* ×°ÔØ±êÖ¾£¬²Î¿¼ÏÂÃæ */ 
+//			face, /* faceå¯¹è±¡çš„å¥æŸ„ */ 
+//			glyph_index, /* å­—å½¢ç´¢å¼• */ 
+//			0 ); /* è£…è½½æ ‡å¿—ï¼Œå‚è€ƒä¸‹é¢ */ 
 //
 //		if(face->glyph->format!=ft_glyph_format_bitmap){
-//			fterror = ft_render_glyph( face->glyph, /* ×ÖĞÎ²Û */ 
-//				ft_render_mode_normal ); /* äÖÈ¾Ä£Ê½ */ 
+//			fterror = ft_render_glyph( face->glyph, /* å­—å½¢æ§½ */ 
+//				ft_render_mode_normal ); /* æ¸²æŸ“æ¨¡å¼ */ 
 //		}
 ////
 //		FT_Bitmap bitmap=face->glyph->bitmap;

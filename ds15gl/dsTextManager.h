@@ -17,12 +17,12 @@
 // GLUT Header
 #include <GL/glut.h>
 
-// һ�� dsTextManager ֻ����һ�����壬һ�ִ�С
+// 一个 dsTextManager 只能用一种字体，一种大小
 class dsTextManager {
 public:
 	~dsTextManager() { clean(); }
 
-	// ��ʼ�����ֹ������������Ǳ�������һ����
+	// 初始化文字管理器对象，这是必须做的一步。
 	void init(const char* font_file_name, unsigned int height);
 
 	void clean();
@@ -32,24 +32,24 @@ public:
 	 * dsTextManager::print
 	 *
 	 * <Description>-----------------------------------------------------------
-	 * ��ʾһ���ַ�����֧�ֶ��У����� x, y ָ�� [�ַ����ĵ�һ�е����½�] ��λ�ã�
-	 * (x, y) ��һ���������꣬����ʾ [�õ������[��ǰ�ӿڵ����½�]] ��λ�á�
-	 * ���磬�� (x, y) == (0, 0) ���ַ����ĵ�һ�н����ӿ����½���ʾ��
-	 * ���������������˵��x, y �ƺ����Թ涨Ϊ������
-	 * ��ʹ�øú���ǰ��Ӧ������ ModelView �� glLoadIdentity(); ��������ܵĴ���
+	 * 显示一个字符串，支持多行，参数 x, y 指定 [字符串的第一行的左下角] 的位置；
+	 * (x, y) 是一个像素坐标，它表示 [该点相对于[当前视口的左下角]] 的位置。
+	 * 例如，若 (x, y) == (0, 0) 则字符串的第一行紧贴视口左下角显示。
+	 * （从这个意义上来说，x, y 似乎可以规定为整数）
+	 * 在使用该函数前，应该先在 ModelView 中 glLoadIdentity(); 来避免可能的错误。
 	 * 
 	 * <Example>---------------------------------------------------------------
 	 * ...
-	 * // �������ֹ���������
+	 * // 创建文字管理器对象。
 	 * dsTextManager mytext;
 	 * ...
-	 * // ��ʼ����΢���ź����壬��С 16��
+	 * // 初始化：微软雅黑字体，大小 16。
 	 * mytext.init("C:/Windows/Fonts/msyh.ttc", 16); 
 	 * ...
-	 * // �ڵ�ǰ�ӿ����½����� 200 ���أ����� 300 ���أ���ʾ���֡�
+	 * // 在当前视口左下角以右 200 像素，以上 300 像素，显示文字。
 	 * glPushMatrix();
 	 * glLoadIdentity();
-	 * mytext.print(200, 300, L"Hello!\n���ã�");
+	 * mytext.print(200, 300, L"Hello!\n您好！");
 	 * glPopMatrix();
 	 * ...
 	 *                                                                       */

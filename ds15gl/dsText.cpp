@@ -1,31 +1,31 @@
 #include "dsText.h"
-// ÓĞ¶àÖÖ×ÖÌå¿ÉÒÔÑ¡Ôñ
+// æœ‰å¤šç§å­—ä½“å¯ä»¥é€‰æ‹©
 #define FONT GLUT_BITMAP_HELVETICA_18
 // #define FONT GLUT_BITMAP_TIMES_ROMAN_24
 // #define FONT GLUT_BITMAP_8_BY_13
 
 //static bool dsTextGenerated = false;
-//static GLuint texts; // ÏÔÊ¾ÁĞ±í
+//static GLuint texts; // æ˜¾ç¤ºåˆ—è¡¨
 //static const GLuint MAX_CHAR = 128;
 //
 //void drawString(const char* str) {
-//	if (!dsTextGenerated) { // Èç¹ûÊÇµÚÒ»´Îµ÷ÓÃ£¬Ö´ĞĞ³õÊ¼»¯
-//		// ÎªÃ¿Ò»¸öASCII×Ö·û²úÉúÒ»¸öÏÔÊ¾ÁĞ±í
+//	if (!dsTextGenerated) { // å¦‚æœæ˜¯ç¬¬ä¸€æ¬¡è°ƒç”¨ï¼Œæ‰§è¡Œåˆå§‹åŒ–
+//		// ä¸ºæ¯ä¸€ä¸ªASCIIå­—ç¬¦äº§ç”Ÿä¸€ä¸ªæ˜¾ç¤ºåˆ—è¡¨
 //		dsTextGenerated = true;
 //
-//		// ÉêÇëMAX_CHAR¸öÁ¬ĞøµÄÏÔÊ¾ÁĞ±í±àºÅ
+//		// ç”³è¯·MAX_CHARä¸ªè¿ç»­çš„æ˜¾ç¤ºåˆ—è¡¨ç¼–å·
 //		texts = glGenLists(MAX_CHAR);
 //
-//		// °ÑÃ¿¸ö×Ö·ûµÄ»æÖÆÃüÁî¶¼×°µ½¶ÔÓ¦µÄÏÔÊ¾ÁĞ±íÖĞ
+//		// æŠŠæ¯ä¸ªå­—ç¬¦çš„ç»˜åˆ¶å‘½ä»¤éƒ½è£…åˆ°å¯¹åº”çš„æ˜¾ç¤ºåˆ—è¡¨ä¸­
 //		wglUseFontBitmaps(wglGetCurrentDC(), 0, MAX_CHAR, texts);
 //	}
-//	// µ÷ÓÃÃ¿¸ö×Ö·û¶ÔÓ¦µÄÏÔÊ¾ÁĞ±í£¬»æÖÆÃ¿¸ö×Ö·û
+//	// è°ƒç”¨æ¯ä¸ªå­—ç¬¦å¯¹åº”çš„æ˜¾ç¤ºåˆ—è¡¨ï¼Œç»˜åˆ¶æ¯ä¸ªå­—ç¬¦
 //	for(; *str != '\0'; ++str)
 //		glCallList(texts + *str);
 //}
 
-// Ö±½ÓÓÃ glut »­£¬glutBitmapString ÊÇ´æÔÚµÄ£¬µ«²»ÖªµÀÎªÊ²Ã´²»ÄÜÓÃ
-// Ö»ÄÜ»­Ó¢ÎÄ×ÖÄ¸
+// ç›´æ¥ç”¨ glut ç”»ï¼ŒglutBitmapString æ˜¯å­˜åœ¨çš„ï¼Œä½†ä¸çŸ¥é“ä¸ºä»€ä¹ˆä¸èƒ½ç”¨
+// åªèƒ½ç”»è‹±æ–‡å­—æ¯
 void drawString(const char* str){
 	for (unsigned int i = 0; i < std::strlen(str); i++){
 		glutBitmapCharacter(FONT, str[i]);
