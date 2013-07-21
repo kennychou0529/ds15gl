@@ -52,7 +52,6 @@ void DSStatusBar::show() {
 
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_LIGHTING);
-
 	glPushMatrix();
 	glLoadIdentity();
 	dstext.print(5, 400, L"ฤ๚บร");

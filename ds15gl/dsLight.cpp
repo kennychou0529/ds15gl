@@ -44,7 +44,7 @@ void dsSetMaterial() {
 	GLfloat diffuse[4]  = {1.0f, 1.0f, 1.0f, 10.0f};
 
 	// 镜面光，产生亮斑
-	GLfloat specular[4] = {0.0f, 0.0f, 0.0f, 1.0f};
+	GLfloat specular[4] = {1.0f, 1.0f, 1.0f, 10.0f};
 	
 	GLfloat shinness = 5.0;
 	

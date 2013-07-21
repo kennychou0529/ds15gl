@@ -19,14 +19,35 @@ void DSScene::show(){
 
 	glDisable(GL_TEXTURE_2D);
 	glEnable(GL_LIGHTING);
-	glBegin(GL_TRIANGLES);
+	/*glBegin(GL_TRIANGLES);
 	{
 		glNormal3d(0.0, 0.0, 1.0);
 		glVertex3d(10.0, 0.0, 0.0);
 		glVertex3d(0.0, 10.0, 0.0);
 		glVertex3d(-10.0, 0.0, 0.0);
 	}
-	glEnd();
+	glEnd();*/
+
+	GLdouble len = 20.0;
+	GLuint n = 10.0;
+
+	GLdouble delta_x = len / n;
+
+	for (GLdouble x = - len; x < len - 0.5 * delta_x; x += delta_x) {
+		for (GLdouble y = - len; y < len - 0.5 * delta_x; y += delta_x) {
+			glBegin(GL_QUADS);
+			{
+				glNormal3d(0.0, 0.0, 1.0);
+				glVertex3d(x, y, 0);
+				glVertex3d(x + delta_x, y, 0);
+				glVertex3d(x + delta_x, y + delta_x, 0);
+				glVertex3d(x, y + delta_x, 0);
+			}
+			glEnd();
+		}
+
+	}
+
 
 	glDisable(GL_LIGHTING);
 

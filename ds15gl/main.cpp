@@ -3,20 +3,22 @@
 #include "dsTextManager.h"
 #include <ctime>
 #include <iostream>
+#include <thread>
 
-//目前只支持 WIN32 和 Linux
-#ifdef WIN32
-  #define SLEEP(mm) Sleep(mm)
-#else
-  //这个还不知道行不行
-  #include <unistd.h>
-  #define SLEEP(mm) usleep(mm*1000)
-#endif // WIN32
+////目前只支持 WIN32 和 Linux
+//#ifdef WIN32
+//  #define SLEEP(mm) Sleep(mm)
+//#else
+//  //这个还不知道行不行
+//  #include <unistd.h>
+//  #define SLEEP(mm) usleep(mm*1000)
+//#endif // WIN32
 
 DSFrame frame;
 
 // 每帧时间，毫秒
-static const int mspf = 33;
+//static const int mspf = 33;
+static auto sleep_time = std::chrono::milliseconds(33);
 
 void dsDisplay() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -62,13 +64,13 @@ void dsReshape(int w, int h) {
 }
 
 void dsIdle() {
-	static long t = clock();
-	long deltaT = clock() - t;
-	if (deltaT > 0 && deltaT < mspf)
-		// 阻塞该线程
-		SLEEP(mspf - deltaT);
-	t = clock();
-
+	//static long t = clock();
+	//long deltaT = clock() - t;
+	//if (deltaT > 0 && deltaT < mspf)
+	//	// 阻塞该线程
+	//	SLEEP(mspf - deltaT);
+	//t = clock();
+	std::this_thread::sleep_for(sleep_time);
 	glutPostRedisplay();
 }
 
