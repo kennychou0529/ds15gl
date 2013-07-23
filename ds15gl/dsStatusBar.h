@@ -9,7 +9,6 @@ public:
 	~DSStatusBar();
 public:
 	void show();
-	// void setSize(int width, int height);
 };
 
 #endif

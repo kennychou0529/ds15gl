@@ -5,8 +5,7 @@
 #include "dsVector.h"
 #include "dsTexture.h"
 #include "dsLight.h"
-#include "vector2f.h"
-#include "dsString.h"
+#include "dsVector2f.h"
 #include "dsTextManager.h"
 
 extern GLdouble eye_sphere[3];

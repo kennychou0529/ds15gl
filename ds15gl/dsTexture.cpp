@@ -1,7 +1,4 @@
 ﻿#include "dsTexture.h"
-//#include "gl/GLAUX.H"
-
-
 GLuint dsLoadTextureBMP2D(const char* file_name, GLuint* pheight, GLuint* pwidth) {
 	const int BMP_Header_Length = 54;
 

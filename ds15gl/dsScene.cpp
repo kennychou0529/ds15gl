@@ -1,6 +1,5 @@
 ﻿#include "dsScene.h"
 #include "dsTexture.h"
-#include "dsText.h"
 #include "dsTextManager.h"
 
 extern dsTextManager dstext;
@@ -47,20 +46,7 @@ void DSScene::show(){
 		}
 	}
 
-
 	glDisable(GL_LIGHTING);
-
-	//// 以下是诡异的文字
-	//glRasterPos2d(4.0, 2.0);
-	//drawString("Hello, world!");
-
-	////英文不正常
-	//glRasterPos2d(8.0, 20.0);
-	//str.drawString(L"English Test",32);
-	//glRasterPos2d(8.0, 30.0);
-	//str.drawString(L"中文测试测试中文",32);
-	//glRasterPos2d(8.0, 40.0);
-	//str.drawString(L"中文English混合",32);
 
 	std::wstring my_str = L"您好，伟大的谈至勋。\n众所周知，您是无所不能的，但是：\n您能不能告诉我们，为什么您这么厉害呢？";
 	glPushMatrix();

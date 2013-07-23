@@ -1,6 +1,5 @@
 ﻿#include "dsStatusBar.h"
 #include "dsTools.h"
-#include "dsText.h"
 #include <sstream>
 #include <iomanip>
 #include "dsTextManager.h"
@@ -69,8 +68,3 @@ void DSStatusBar::show() {
 	glPopMatrix();
 	glMatrixMode(GL_MODELVIEW);
 }
-
-//void DSStatusBar::setSize(int width, int height){
-//	window_height = height;
-//	window_width = width;
-//}

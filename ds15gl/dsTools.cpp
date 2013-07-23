@@ -93,9 +93,9 @@ void dsSpecialKeys(int key, int x, int y) {
 
 
 void dsKeys(unsigned char key, int x, int y) {
-	vector2f dir = vector2f(GLfloat(center[0] - eye[0]), GLfloat(center[1] - eye[1]));
-	dir.normalLise();
-	vector2f left = dir.turnLeft();
+	dsVector2f dir = dsVector2f(GLfloat(center[0] - eye[0]), GLfloat(center[1] - eye[1]));
+	dir.normalise();
+	dsVector2f left = dir.turnLeft();
 	switch (key) {
 	case 'a': case 'A':
 		center[0] += left.x * viewMoveSpeed;
