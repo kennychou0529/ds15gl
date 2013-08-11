@@ -1,4 +1,5 @@
 ﻿#include "dsTools.h"
+#include "dsModel.h"
 
 static const double viewMoveSpeed = 1.0;
 static const GLdouble pi = 3.1415926;
@@ -6,25 +7,28 @@ static const GLdouble pi = 3.1415926;
 // 眼睛位置，用球坐标 (r, phi, theta) 表示
 // 其中，phi 表示与 z 轴的夹角
 // theta 表示在 xy 平面的投影的旋转角
-GLdouble eye_sphere[3] = {20.0, pi / 4, - pi / 2};
+GLdouble eye_sphere[3] = {100.0, pi / 4, - pi / 2};
 
 // 全局使用
 int window_width = 1280;
 int window_height = 720;
 int status_bar_width = 200;
 
+MD2Model model;
+
 // DSString str;
 dsTextManager dstext;
 dsTextManager dstext_small;
 
 #ifdef WIN32
-const char* font_file_name = "C:/Windows/Fonts/msyhbd.ttc";
+// const char* font_file_name = "C:/Windows/Fonts/msyhbd.ttc";
+const char* font_file_name = "C:/Windows/Fonts/wqy-zenhei.ttc";
 #elif defined __unix__
 const char* font_file_name = "/usr/share/fonts/truetype/wqy/wqy-microhei.ttc";
 #endif
 
-const int font_height = 16;
-const int font_height_small = 11;
+const int font_height = 32;
+const int font_height_small = 13;
 
 // 勿用
 // GLdouble center_sphere[3] = {20.0, 3 * pi / 4, - pi / 2};

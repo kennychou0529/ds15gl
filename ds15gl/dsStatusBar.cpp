@@ -57,7 +57,7 @@ void DSStatusBar::show() {
 	
 	glPushMatrix();
 	glLoadIdentity();
-	dstext.print(5, 400, L"您好");
+	dstext.print(5, 400, L"操作面板");
 	glPopMatrix();
 
 	glEnable(GL_TEXTURE_2D);

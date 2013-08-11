@@ -4,6 +4,7 @@
 #include <ctime>
 #include <iostream>
 #include <thread>
+#include "dsModel.h"
 
 ////目前只支持 WIN32 和 Linux
 //#ifdef WIN32
@@ -16,6 +17,7 @@
 
 DSFrame frame;
 
+
 // 每帧时间，毫秒
 //static const int mspf = 33;
 static auto sleep_time = std::chrono::milliseconds(33);
@@ -23,8 +25,10 @@ static auto sleep_time = std::chrono::milliseconds(33);
 void dsDisplay() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	dsSet(); // 设置视角
-
+    
+    
 	frame.display();
+    
 
 	glutSwapBuffers();
 
@@ -51,6 +55,7 @@ void dsInit() {
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); // why
 	dstext.init(font_file_name, font_height);
 	dstext_small.init(font_file_name, font_height_small);
+    model.load("data/sword_man/tris.md2", "data/sword_man/knight_white.bmp");
 }
 
 // 当窗口大小被修改时自动调用此函数

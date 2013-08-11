@@ -7,6 +7,7 @@
 #include "dsLight.h"
 #include "dsVector2f.h"
 #include "dsTextManager.h"
+#include "dsModel.h"
 
 extern GLdouble eye_sphere[3];
 extern GLdouble up[3];
@@ -16,6 +17,8 @@ extern GLdouble eye[3];
 extern int window_width;
 extern int window_height;
 extern int status_bar_width;
+
+extern MD2Model model;
 
 // extern DSString str;
 extern dsTextManager dstext;

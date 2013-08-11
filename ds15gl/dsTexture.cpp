@@ -71,18 +71,19 @@ GLuint dsLoadTextureBMP2D(const char* file_name, GLuint* pheight, GLuint* pwidth
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	// 如果纹理 x 坐标超出范围，则重复，默认值
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP); // GL_REPEAT?
 
 	// 如果纹理 y 坐标超出范围，则重复，默认值
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
 	// 纹理和光照共存
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	// 载入纹理
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0,
-				 GL_BGR_EXT, GL_UNSIGNED_BYTE, pixels);
-
+	/*glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0,
+				 GL_BGR_EXT, GL_UNSIGNED_BYTE, pixels);*/
+    gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB, width, height,
+                      GL_BGR_EXT, GL_UNSIGNED_BYTE, pixels);
 	// 再把当前纹理绑定回原来的那个，当然新的纹理已经被储存起来了
 	glBindTexture(GL_TEXTURE_2D, last_texture_ID);
 

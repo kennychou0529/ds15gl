@@ -15,9 +15,11 @@ DSScene::~DSScene() {
 void DSScene::show(){
 	glViewport(0, 0, window_width - status_bar_width, window_height);
 	dsSkyBox.show();
+    //glEnable(GL_LIGHTING);
+    model.renderFrame(5);
 
 	glDisable(GL_TEXTURE_2D);
-	glEnable(GL_LIGHTING);
+	
 	//glBegin(GL_TRIANGLES);
 	//{
 	//	glNormal3d(0.0, 0.0, 1.0);
@@ -26,6 +28,8 @@ void DSScene::show(){
 	//	glVertex3d(-10.0, 0.0, 0.0);
 	//}
 	//glEnd();
+
+    
 
 	GLdouble len = 20.0;
 	GLuint n = 10;
@@ -48,7 +52,7 @@ void DSScene::show(){
 
 	glDisable(GL_LIGHTING);
 
-	std::wstring my_str = L"您好，伟大的谈至勋。\n众所周知，您是无所不能的，但是：\n您能不能告诉我们，为什么您这么厉害呢？";
+	std::wstring my_str = L"(测试文字显示)\n您好，伟大的谈至勋。\n众所周知，您是无所不能的，但是：\n您能不能告诉我们，为什么您这么厉害呢？";
 	glPushMatrix();
 	glLoadIdentity();
 	dstext.print(5, 400, my_str);
