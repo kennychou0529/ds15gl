@@ -3,35 +3,40 @@
 
 #include <GL/glut.h>
 
+// float 点坐标
 typedef struct {
     float v[3];
 } Vertex3f;
 
-// 纹理坐标
+// MD2 文件中的纹理坐标
+// 以 像素值 储存，而不是 0 ~ 1 之间的数
+// 所以我们今后需要手动用这个数除以 纹理宽高像素值
 typedef struct {
     short u;
     short v;
-} TexCoord2s;
+} MD2TexCoord2s;
 
-// 纹理坐标
+// 纹理坐标，为 0 ~ 1 之间的数
 typedef struct {
     float u;
     float v;
 } TexCoord2f;
 
-// 什么东西？
+// MD2 文件中的顶点
+// 每个点还附带一个法向量编号，用于在 Quake II 中的法向量列表中搜索
+// 但我们要在确定三角形时手动计算法向量，所以这个法向量编号用不上
 typedef struct {
     unsigned char v[3];
-    unsigned char normal_index;
-} FramePoint;
+    unsigned char normal_index; // 这个我们用不上
+} MD2Vertex;
 
-// 帧信息
+// MD2 文件中的帧
 typedef struct {
     float scale[3];
     float translate[3];
-    char name[16];
-    FramePoint fp[1];
-} Frame;
+    char name[16];          // 看起来每个帧还有个名字
+    MD2Vertex vertex_list[1];       // 其实有 num_vertices 个 MD2Vertex，vertex_list 只是当指针用
+} MD2Frame;
 
 // 每个三角形中 点坐标 和 纹理坐标 的编号
 typedef struct {
@@ -40,22 +45,22 @@ typedef struct {
 } Mesh;
 
 typedef struct {
-    int identifier;         // 一个表明自己是 MD2 的神奇数字
-    int version;            // 版本，貌似是8
-    int skin_width;         // 纹理宽度
-    int skin_height;        // 纹理高度
+    int identifier;         // 一个表明自己是 MD2 的神奇数字, 它永远是 0x32504449("IDP2")
+    int version;            // 版本，永远是 8
+    int skin_width;         // 纹理宽度 (像素值), 通常是 256
+    int skin_height;        // 纹理高度 (像素值), 通常是 256
     int frame_size;         // 每个帧占用多少 bytes
     int num_skins;          // 纹理数量？
-    int num_vertices;       // 点的数量
+    int num_vertices;       // 每个帧有多少顶点
     int num_tex_coords;     // 纹理坐标数量
     int num_triangles;      // 三角形数量
-    int num_GLcommands;     // ？
+    int num_GLcommands;     // GL 命令的数量，我们没用到
     int num_frames;         // 帧的数量
-    int offset_skins;       // 皮肤内容位置
-    int offset_tex_coord;   // 纹理坐标位置
-    int offset_triangles;   // 三角形位置
-    int offset_frames;      // 帧数据位置
-    int offset_GLcommands;  // OpenGL 命令位置
+    int offset_textures;    // 纹理文件名 (们) 起始位置
+    int offset_tex_coord;   // 纹理坐标起始位置
+    int offset_triangles;   // 三角形起始位置
+    int offset_frames;      // 帧数据起始位置
+    int offset_GLcommands;  // OpenGL 命令起始位置，我们没用到
     int offset_eof;         // 文件结尾位置
 } MD2Header;
 
