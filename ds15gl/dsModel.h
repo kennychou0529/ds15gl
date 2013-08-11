@@ -1,79 +1,85 @@
-#ifndef _DSMODEL_H
+ï»¿#ifndef _DSMODEL_H
 #define _DSMODEL_H
 
 #include <GL/glut.h>
-
-// float µã×ø±ê
+// è¯´æ˜: ç±»å‹å çš„å‘½åè§„åˆ™ï¼šå‡¡æ˜¯ MD2 æ–‡ä»¶å†…çš„è§„å®šæ•°æ®æ ¼å¼
+//       éƒ½æ·»åŠ äº† MD2 å‰ç¼€
+// float ç‚¹åæ ‡
 typedef struct {
     float v[3];
 } Vertex3f;
 
-// MD2 ÎÄ¼şÖĞµÄÎÆÀí×ø±ê
-// ÒÔ ÏñËØÖµ ´¢´æ£¬¶ø²»ÊÇ 0 ~ 1 Ö®¼äµÄÊı
-// ËùÒÔÎÒÃÇ½ñºóĞèÒªÊÖ¶¯ÓÃÕâ¸öÊı³ıÒÔ ÎÆÀí¿í¸ßÏñËØÖµ
+// MD2 æ–‡ä»¶ä¸­çš„çº¹ç†åæ ‡
+// ä»¥ åƒç´ å€¼ å‚¨å­˜ï¼Œè€Œä¸æ˜¯ 0 ~ 1 ä¹‹é—´çš„æ•°
+// æ‰€ä»¥æˆ‘ä»¬ä»Šåéœ€è¦æ‰‹åŠ¨ç”¨è¿™ä¸ªæ•°é™¤ä»¥ çº¹ç†å®½é«˜åƒç´ å€¼
 typedef struct {
     short u;
     short v;
 } MD2TexCoord2s;
 
-// ÎÆÀí×ø±ê£¬Îª 0 ~ 1 Ö®¼äµÄÊı
+// çº¹ç†åæ ‡ï¼Œä¸º 0 ~ 1 ä¹‹é—´çš„æ•°
 typedef struct {
     float u;
     float v;
 } TexCoord2f;
 
-// MD2 ÎÄ¼şÖĞµÄ¶¥µã
-// Ã¿¸öµã»¹¸½´øÒ»¸ö·¨ÏòÁ¿±àºÅ£¬ÓÃÓÚÔÚ Quake II ÖĞµÄ·¨ÏòÁ¿ÁĞ±íÖĞËÑË÷
-// µ«ÎÒÃÇÒªÔÚÈ·¶¨Èı½ÇĞÎÊ±ÊÖ¶¯¼ÆËã·¨ÏòÁ¿£¬ËùÒÔÕâ¸ö·¨ÏòÁ¿±àºÅÓÃ²»ÉÏ
+// MD2 æ–‡ä»¶ä¸­çš„é¡¶ç‚¹
+// æ¯ä¸ªç‚¹è¿˜é™„å¸¦ä¸€ä¸ªæ³•å‘é‡ç¼–å·ï¼Œç”¨äºåœ¨ Quake II ä¸­çš„æ³•å‘é‡åˆ—è¡¨ä¸­æœç´¢
+// ä½†æˆ‘ä»¬è¦åœ¨ç¡®å®šä¸‰è§’å½¢æ—¶æ‰‹åŠ¨è®¡ç®—æ³•å‘é‡ï¼Œæ‰€ä»¥è¿™ä¸ªæ³•å‘é‡ç¼–å·ç”¨ä¸ä¸Š
 typedef struct {
     unsigned char v[3];
-    unsigned char normal_index; // Õâ¸öÎÒÃÇÓÃ²»ÉÏ
+    unsigned char normal_index; // è¿™ä¸ªæˆ‘ä»¬ç”¨ä¸ä¸Š
 } MD2Vertex;
 
-// MD2 ÎÄ¼şÖĞµÄÖ¡
+// MD2 æ–‡ä»¶ä¸­çš„å¸§ï¼Œå¤´éƒ¨æœ‰ä¸‰ä¸ªå˜é‡
+// å…¶åæ˜¯ num_vertices ä¸ª MD2Vertex
+// æ¯ä¸ª MD2Vertex å¹¶ä¸æ˜¯ç‚¹çš„çœŸæ­£åæ ‡
+// çœŸæ­£åæ ‡æ˜¯ MD2Vertex * scale + translate
+// æ‰€ä»¥æˆ‘ä»¬éœ€è¦æ‰‹åŠ¨è®¡ç®—çœŸæ­£åæ ‡ï¼Œç„¶åå­˜å…¥ Vertex3f ä¸­
 typedef struct {
     float scale[3];
     float translate[3];
-    char name[16];          // ¿´ÆğÀ´Ã¿¸öÖ¡»¹ÓĞ¸öÃû×Ö
-    MD2Vertex vertex_list[1];       // ÆäÊµÓĞ num_vertices ¸ö MD2Vertex£¬vertex_list Ö»ÊÇµ±Ö¸ÕëÓÃ
+    char name[16];          // çœ‹èµ·æ¥æ¯ä¸ªå¸§è¿˜æœ‰ä¸ªåå­—
+    MD2Vertex vertex_list[1]; // å…¶å®æœ‰ num_vertices ä¸ª MD2Vertexï¼Œvertex_list åªæ˜¯å½“æŒ‡é’ˆç”¨
+
 } MD2Frame;
 
-// Ã¿¸öÈı½ÇĞÎÖĞ µã×ø±ê ºÍ ÎÆÀí×ø±ê µÄ±àºÅ
+// æ¯ä¸ªä¸‰è§’å½¢ä¸­ ç‚¹åæ ‡ å’Œ çº¹ç†åæ ‡ çš„ç¼–å·
 typedef struct {
     unsigned short mesh_index[3];
     unsigned short tex_coord_index[3];
 } Mesh;
 
 typedef struct {
-    int identifier;         // Ò»¸ö±íÃ÷×Ô¼ºÊÇ MD2 µÄÉñÆæÊı×Ö, ËüÓÀÔ¶ÊÇ 0x32504449("IDP2")
-    int version;            // °æ±¾£¬ÓÀÔ¶ÊÇ 8
-    int skin_width;         // ÎÆÀí¿í¶È (ÏñËØÖµ), Í¨³£ÊÇ 256
-    int skin_height;        // ÎÆÀí¸ß¶È (ÏñËØÖµ), Í¨³£ÊÇ 256
-    int frame_size;         // Ã¿¸öÖ¡Õ¼ÓÃ¶àÉÙ bytes
-    int num_skins;          // ÎÆÀíÊıÁ¿£¿
-    int num_vertices;       // Ã¿¸öÖ¡ÓĞ¶àÉÙ¶¥µã
-    int num_tex_coords;     // ÎÆÀí×ø±êÊıÁ¿
-    int num_triangles;      // Èı½ÇĞÎÊıÁ¿
-    int num_GLcommands;     // GL ÃüÁîµÄÊıÁ¿£¬ÎÒÃÇÃ»ÓÃµ½
-    int num_frames;         // Ö¡µÄÊıÁ¿
-    int offset_textures;    // ÎÆÀíÎÄ¼şÃû (ÃÇ) ÆğÊ¼Î»ÖÃ
-    int offset_tex_coord;   // ÎÆÀí×ø±êÆğÊ¼Î»ÖÃ
-    int offset_triangles;   // Èı½ÇĞÎÆğÊ¼Î»ÖÃ
-    int offset_frames;      // Ö¡Êı¾İÆğÊ¼Î»ÖÃ
-    int offset_GLcommands;  // OpenGL ÃüÁîÆğÊ¼Î»ÖÃ£¬ÎÒÃÇÃ»ÓÃµ½
-    int offset_eof;         // ÎÄ¼ş½áÎ²Î»ÖÃ
+    int identifier;         // ä¸€ä¸ªè¡¨æ˜è‡ªå·±æ˜¯ MD2 çš„ç¥å¥‡æ•°å­—, å®ƒæ°¸è¿œæ˜¯ 0x32504449("IDP2")
+    int version;            // ç‰ˆæœ¬ï¼Œæ°¸è¿œæ˜¯ 8
+    int skin_width;         // çº¹ç†å®½åº¦ (åƒç´ å€¼), é€šå¸¸æ˜¯ 256
+    int skin_height;        // çº¹ç†é«˜åº¦ (åƒç´ å€¼), é€šå¸¸æ˜¯ 256
+    int frame_size;         // æ¯ä¸ªå¸§å ç”¨å¤šå°‘ bytes
+    int num_skins;          // çº¹ç†æ•°é‡ï¼Ÿ
+    int num_vertices;       // æ¯ä¸ªå¸§æœ‰å¤šå°‘é¡¶ç‚¹
+    int num_tex_coords;     // çº¹ç†åæ ‡æ•°é‡
+    int num_triangles;      // ä¸‰è§’å½¢æ•°é‡
+    int num_GLcommands;     // GL å‘½ä»¤çš„æ•°é‡ï¼Œæˆ‘ä»¬æ²¡ç”¨åˆ°
+    int num_frames;         // å¸§çš„æ•°é‡
+    int offset_textures;    // çº¹ç†æ–‡ä»¶å (ä»¬) èµ·å§‹ä½ç½®
+    int offset_tex_coord;   // çº¹ç†åæ ‡èµ·å§‹ä½ç½®
+    int offset_triangles;   // ä¸‰è§’å½¢èµ·å§‹ä½ç½®
+    int offset_frames;      // å¸§æ•°æ®èµ·å§‹ä½ç½®
+    int offset_GLcommands;  // OpenGL å‘½ä»¤èµ·å§‹ä½ç½®ï¼Œæˆ‘ä»¬æ²¡ç”¨åˆ°
+    int offset_eof;         // æ–‡ä»¶ç»“å°¾ä½ç½®
 } MD2Header;
 
 class MD2Model {
 private:
-    int num_frames;         // Ö¡µÄÊıÁ¿
-    int num_vertices;       // µãµÄÊıÁ¿
-    int num_triangles;      // Èı½ÇĞÎÊıÁ¿
-    int num_tex_coords;     // ÎÆÀí×ø±êÊıÁ¿
-    int frame_size;         // Ã¿¸öÖ¡Õ¼ÓÃ¶àÉÙ bytes
-    int current_frame;      // µ±Ç°Ö¡±àºÅ
-    int next_frame;         // ÏÂÒ»Ö¡±àºÅ
-    float interpol;         // Ê²Ã´ÍæÒâ£¿
+    int num_frames;         // å¸§çš„æ•°é‡
+    int num_vertices;       // ç‚¹çš„æ•°é‡
+    int num_triangles;      // ä¸‰è§’å½¢æ•°é‡
+    int num_tex_coords;     // çº¹ç†åæ ‡æ•°é‡
+    int frame_size;         // æ¯ä¸ªå¸§å ç”¨å¤šå°‘ bytes
+    int current_frame;      // å½“å‰å¸§ç¼–å·
+    int next_frame;         // ä¸‹ä¸€å¸§ç¼–å·
+    float interpol;         // ä»€ä¹ˆç©æ„ï¼Ÿ
     Mesh* triangle_list;
     TexCoord2f* tex_coord_list;
     Vertex3f* vertex_list;
@@ -84,9 +90,9 @@ public:
 
     int load(char* model_file, char* skin_file);
 
-    int loadModel(char* model_file);
+    //int loadModel(char* model_file);
 
-    int loadSkin(char* skin_file);
+    //int loadSkin(char* skin_file);
 
     int renderFrame(int frame_index);
 };

@@ -1,4 +1,4 @@
-#include "dsModel.h"
+ï»¿#include "dsModel.h"
 #include "dsTexture.h"
 #include <fstream>
 
@@ -47,49 +47,49 @@ int MD2Model::load(char* model_file, char* skin_file) {
         return -1;
     }
 
-    // È·ÈÏÎÄ¼ş³¤¶È
+    // ç¡®è®¤æ–‡ä»¶é•¿åº¦
     is.seekg(0, is.end);
     size_t file_length = is.tellg();
     is.seekg(0, is.beg);
 
-    // ½«Õû¸öÎÄ¼şÈ«²¿ÔØÈë buffer£¬È»ºóÎÄ¼ş¾Í¿ÉÒÔ¹Ø±ÕÁË
+    // å°†æ•´ä¸ªæ–‡ä»¶å…¨éƒ¨è½½å…¥ bufferï¼Œç„¶åæ–‡ä»¶å°±å¯ä»¥å…³é—­äº†
     char* file_buffer = new char[file_length + 1];
     is.read(file_buffer, file_length);
     is.close();
 
-    // ½ÓÏÂÀ´´Ó buffer ÖĞ»ñÈ¡ MD2 ÎÄ¼şÍ·
+    // æ¥ä¸‹æ¥ä» buffer ä¸­è·å– MD2 æ–‡ä»¶å¤´
     MD2Header* model_header = (MD2Header*)file_buffer;
 
-    // »ñÈ¡ÎÄ¼şÍ·ÖĞÎÒÃÇ±È½Ï¸ĞĞËÈ¤µÄÄÚÈİ
+    // è·å–æ–‡ä»¶å¤´ä¸­æˆ‘ä»¬æ¯”è¾ƒæ„Ÿå…´è¶£çš„å†…å®¹
     num_frames = model_header->num_frames;
     num_vertices = model_header->num_vertices;
     frame_size = model_header->frame_size;
     num_tex_coords = model_header->num_tex_coords;
     num_triangles = model_header->num_triangles;
 
-    // ÔØÈëµãÊı¾İ
-    // ÎÄ¼şÍ·ÖĞÌáÊ¾£¬Ã¿Ö¡¶¼ÓĞ num_vertices ¸ö¶¥µã
-    // ËùÒÔÎÒÃÇĞèÒª·ÖÅä num_vertices * num_frames ¸öµã
+    // è½½å…¥ç‚¹æ•°æ®
+    // æ–‡ä»¶å¤´ä¸­æç¤ºï¼Œæ¯å¸§éƒ½æœ‰ num_vertices ä¸ªé¡¶ç‚¹
+    // æ‰€ä»¥æˆ‘ä»¬éœ€è¦åˆ†é… num_vertices * num_frames ä¸ªç‚¹
     vertex_list = new Vertex3f[num_vertices * num_frames];
-    Vertex3f* vertex_ptr;
+    Vertex3f* vertex_list_ptr;
     MD2Frame* frame_ptr;
     for (int frame_index = 0; frame_index < num_frames; ++frame_index) {
         frame_ptr = (MD2Frame*)&file_buffer[model_header->offset_frames + frame_size * frame_index];
-        vertex_ptr = (Vertex3f*)&vertex_list[num_vertices * frame_index];
+        vertex_list_ptr = (Vertex3f*)&vertex_list[num_vertices * frame_index];
 
         for (int vertex_index = 0; vertex_index < num_vertices; ++ vertex_index) {
-            vertex_ptr[vertex_index].v[0] = frame_ptr->vertex_list[vertex_index].v[0] * frame_ptr->scale[0] + frame_ptr->translate[0];
-            vertex_ptr[vertex_index].v[1] = frame_ptr->vertex_list[vertex_index].v[1] * frame_ptr->scale[1] + frame_ptr->translate[1];
-            vertex_ptr[vertex_index].v[2] = frame_ptr->vertex_list[vertex_index].v[2] * frame_ptr->scale[2] + frame_ptr->translate[2];
+            vertex_list_ptr[vertex_index].v[0] = frame_ptr->vertex_list[vertex_index].v[0] * frame_ptr->scale[0] + frame_ptr->translate[0];
+            vertex_list_ptr[vertex_index].v[1] = frame_ptr->vertex_list[vertex_index].v[1] * frame_ptr->scale[1] + frame_ptr->translate[1];
+            vertex_list_ptr[vertex_index].v[2] = frame_ptr->vertex_list[vertex_index].v[2] * frame_ptr->scale[2] + frame_ptr->translate[2];
         }
     }
 
-    // ÔØÈëÎÆÀíÎÄ¼ş£¬»ñÈ¡ÎÆÀí±àºÅ texture_ID
-    // ÕâÀïÊ¹ÓÃÁË dsTexture ÖĞµÄº¯Êı
+    // è½½å…¥çº¹ç†æ–‡ä»¶ï¼Œè·å–çº¹ç†ç¼–å· texture_ID
+    // è¿™é‡Œä½¿ç”¨äº† dsTexture ä¸­çš„å‡½æ•°
     unsigned int texture_height, texture_width;
-    texture_ID = dsLoadTextureBMP2D(skin_file, &texture_height, &texture_width); // modify it!
+    texture_ID = dsLoadTextureBMP2D(skin_file, &texture_height, &texture_width);
 
-    // ÔØÈëÎÆÀí×ø±ê
+    // è½½å…¥çº¹ç†åæ ‡
     tex_coord_list = new TexCoord2f[num_tex_coords];
     MD2TexCoord2s* tex_coord_2s_ptr = (MD2TexCoord2s*)(&file_buffer[model_header->offset_tex_coord]);
     for (int tex_coord_index = 0; tex_coord_index < num_tex_coords; ++tex_coord_index) {
@@ -97,7 +97,7 @@ int MD2Model::load(char* model_file, char* skin_file) {
         tex_coord_list[tex_coord_index].v = (float)tex_coord_2s_ptr[tex_coord_index].v / (float)texture_height;
     }
 
-    // ÔØÈëÈı½ÇĞÎ
+    // è½½å…¥ä¸‰è§’å½¢
     triangle_list = new Mesh[num_triangles];
     Mesh* triangle_ptr = (Mesh*)&file_buffer[model_header->offset_triangles];
     for (int triangle_index = 0; triangle_index < num_triangles; ++ triangle_index) {
