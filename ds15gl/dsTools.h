@@ -18,7 +18,7 @@ extern int window_width;
 extern int window_height;
 extern int status_bar_width;
 
-extern MD2Model model;
+//extern MD2Model model;
 
 // extern DSString str;
 extern dsTextManager dstext;

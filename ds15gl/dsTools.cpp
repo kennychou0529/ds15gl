@@ -7,14 +7,14 @@ static const GLdouble pi = 3.1415926;
 // 眼睛位置，用球坐标 (r, phi, theta) 表示
 // 其中，phi 表示与 z 轴的夹角
 // theta 表示在 xy 平面的投影的旋转角
-GLdouble eye_sphere[3] = {100.0, pi / 4, - pi / 2};
+GLdouble eye_sphere[3] = {10.0, pi / 4, - pi / 2};
 
 // 全局使用
 int window_width = 1280;
 int window_height = 720;
 int status_bar_width = 200;
 
-MD2Model model;
+
 
 // DSString str;
 dsTextManager dstext;

@@ -1,9 +1,13 @@
-﻿#ifndef _DSMODEL_H
+﻿// Written by phisiart
+
+#ifndef _DSMODEL_H
 #define _DSMODEL_H
 
 #include <GL/glut.h>
+
 // 说明: 类型名 的命名规则：凡是 MD2 文件内的规定数据格式
 //       都添加了 MD2 前缀
+
 // float 点坐标
 typedef struct {
     float v[3];
@@ -19,8 +23,8 @@ typedef struct {
 
 // 纹理坐标，为 0 ~ 1 之间的数
 typedef struct {
-    float u;
-    float v;
+    GLfloat u;
+    GLfloat v;
 } TexCoord2f;
 
 // MD2 文件中的顶点
@@ -81,6 +85,7 @@ private:
     int next_frame;         // 下一帧编号
     float interpol;         // 什么玩意？
     Mesh* triangle_list;
+    Vertex3f* normal_vec_list;
     TexCoord2f* tex_coord_list;
     Vertex3f* vertex_list;
     GLuint texture_ID;
@@ -89,10 +94,6 @@ public:
     ~MD2Model();
 
     int load(char* model_file, char* skin_file);
-
-    //int loadModel(char* model_file);
-
-    //int loadSkin(char* skin_file);
 
     int renderFrame(int frame_index);
 };

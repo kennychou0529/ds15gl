@@ -1,6 +1,7 @@
 ﻿#include "dsScene.h"
 #include "dsTexture.h"
 #include "dsTextManager.h"
+#include "dsModel.h"
 
 extern dsTextManager dstext;
 
@@ -15,8 +16,14 @@ DSScene::~DSScene() {
 void DSScene::show(){
 	glViewport(0, 0, window_width - status_bar_width, window_height);
 	dsSkyBox.show();
-    //glEnable(GL_LIGHTING);
-    model.renderFrame(5);
+    glEnable(GL_LIGHTING);
+
+    glPushMatrix();
+    glTranslated(0, 0, 2.0);
+    glScaled(0.1, 0.1, 0.1);
+    model.renderFrame(50);
+    //glScaled(10.0, 10.0, 10.0);
+    glPopMatrix();
 
 	glDisable(GL_TEXTURE_2D);
 	
@@ -66,5 +73,7 @@ void DSScene::show(){
 }
 
 void DSScene::initialize() {
+        model.load("data/sword_man/tris.md2", "data/sword_man/knight_white.bmp");
+
 	dsSkyBox.load(3);
 }
