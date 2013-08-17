@@ -21,7 +21,7 @@ void DSScene::show(){
     glPushMatrix();
     glTranslated(0, 0, 2.0);
     glScaled(0.1, 0.1, 0.1);
-    model.renderFrame(50);
+    model.renderFrame((int)(model.time_manager.getDurationSecd() * 20) % 40);
     //glScaled(10.0, 10.0, 10.0);
     glPopMatrix();
 
@@ -39,7 +39,7 @@ void DSScene::show(){
     
 
 	GLdouble len = 20.0;
-	GLuint n = 10;
+	GLuint n = 100;
 
 	GLdouble delta_x = len / n;
 
@@ -73,7 +73,7 @@ void DSScene::show(){
 }
 
 void DSScene::initialize() {
-        model.load("data/sword_man/tris.md2", "data/sword_man/knight_white.bmp");
-
+    model.load("data/sword_man/tris.md2", "data/sword_man/knight_white.bmp");
+    model.time_manager.recordTime();
 	dsSkyBox.load(3);
 }

@@ -9,10 +9,10 @@
 #include <freetype/fttrigon.h>
 
 // STL Headers
-#include <vector>
+
 #include <string>
 #include <map>
-#include <utility>
+
 
 // GLUT Header
 #include <GL/glut.h>

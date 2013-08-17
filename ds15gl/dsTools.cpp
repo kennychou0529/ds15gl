@@ -1,5 +1,9 @@
 ﻿#include "dsTools.h"
 #include "dsModel.h"
+#include <mutex>
+#include <thread>
+#include <iostream>
+#include <iomanip>
 
 static const double viewMoveSpeed = 1.0;
 static const GLdouble pi = 3.1415926;
@@ -14,15 +18,14 @@ int window_width = 1280;
 int window_height = 720;
 int status_bar_width = 200;
 
-
-
-// DSString str;
+// 文字管理器
 dsTextManager dstext;
 dsTextManager dstext_small;
 
 #ifdef WIN32
 // const char* font_file_name = "C:/Windows/Fonts/msyhbd.ttc";
-const char* font_file_name = "C:/Windows/Fonts/wqy-zenhei.ttc";
+// const char* font_file_name = "C:/Windows/Fonts/wqy-zenhei.ttc";
+const char* font_file_name = "data/xhei_bold.ttf";
 #elif defined __unix__
 const char* font_file_name = "/usr/share/fonts/truetype/wqy/wqy-microhei.ttc";
 #endif
@@ -43,7 +46,7 @@ GLdouble eye[3];
 
 GLdouble axeLength = eye_sphere[0] * 0.5;
 
-void dsSet() {
+void dsSetEye() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
@@ -93,8 +96,6 @@ void dsSpecialKeys(int key, int x, int y) {
 	}
 	axeLength = eye_sphere[0] * 0.5;
 }
-
-
 
 void dsKeys(unsigned char key, int x, int y) {
 	dsVector2f dir = dsVector2f(GLfloat(center[0] - eye[0]), GLfloat(center[1] - eye[1]));

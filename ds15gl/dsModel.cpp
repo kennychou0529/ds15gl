@@ -4,7 +4,8 @@
 #include <cstring>
 #include "dsVector.h"
 
-void CalculateNormal(GLfloat* p1, GLfloat* p2, GLfloat* p3) {
+void CalculateNormal(const GLfloat* p1, const GLfloat* p2, const GLfloat* p3) {
+    // 把教程中的代码换成了我的
     //float a[3], b[3], result[3];
     //float length;
 
@@ -40,9 +41,9 @@ MD2Model::MD2Model():
     current_frame(0),
     next_frame(1),
     interpol(0),
-    triangle_list(nullptr),
-    tex_coord_list(nullptr),
-    vertex_list(nullptr) {}
+    triangles(nullptr),
+    tex_coords(nullptr),
+    vertices(nullptr) {}
 
 MD2Model::~MD2Model() {}
 
@@ -76,18 +77,18 @@ int MD2Model::load(char* model_file, char* skin_file) {
     // 载入点数据
     // 文件头中提示，每帧都有 num_vertices 个顶点
     // 所以我们需要分配 num_vertices * num_frames 个点
-    vertex_list = new Vertex3f[num_vertices * num_frames];
+    vertices = new Vertex3f[num_vertices * num_frames];
     Vertex3f* vertex_list_ptr;
     MD2Frame* frame_ptr;
 
-    for (int frame_index = 0; frame_index < num_frames; ++frame_index) {
+    for (size_t frame_index = 0; frame_index < num_frames; ++frame_index) {
         frame_ptr = (MD2Frame*)&file_buffer[model_header->offset_frames + frame_size * frame_index];
-        vertex_list_ptr = (Vertex3f*)&vertex_list[num_vertices * frame_index];
+        vertex_list_ptr = (Vertex3f*)&vertices[num_vertices * frame_index];
 
-        for (int vertex_index = 0; vertex_index < num_vertices; ++ vertex_index) {
-            vertex_list_ptr[vertex_index].v[0] = frame_ptr->vertex_list[vertex_index].v[0] * frame_ptr->scale[0] + frame_ptr->translate[0];
-            vertex_list_ptr[vertex_index].v[1] = frame_ptr->vertex_list[vertex_index].v[1] * frame_ptr->scale[1] + frame_ptr->translate[1];
-            vertex_list_ptr[vertex_index].v[2] = frame_ptr->vertex_list[vertex_index].v[2] * frame_ptr->scale[2] + frame_ptr->translate[2];
+        for (size_t vertex_index = 0; vertex_index < num_vertices; ++ vertex_index) {
+            vertex_list_ptr[vertex_index].v[0] = frame_ptr->vertices[vertex_index].v[0] * frame_ptr->scale[0] + frame_ptr->translate[0];
+            vertex_list_ptr[vertex_index].v[1] = frame_ptr->vertices[vertex_index].v[1] * frame_ptr->scale[1] + frame_ptr->translate[1];
+            vertex_list_ptr[vertex_index].v[2] = frame_ptr->vertices[vertex_index].v[2] * frame_ptr->scale[2] + frame_ptr->translate[2];
         }
     }
 
@@ -97,39 +98,39 @@ int MD2Model::load(char* model_file, char* skin_file) {
     texture_ID = dsLoadTextureBMP2D(skin_file, &texture_height, &texture_width);
 
     // 载入纹理坐标
-    tex_coord_list = new TexCoord2f[num_tex_coords];
+    tex_coords = new TexCoord2f[num_tex_coords];
     MD2TexCoord2s* tex_coord_2s_ptr = (MD2TexCoord2s*)(&file_buffer[model_header->offset_tex_coord]);
 
     // MD2 文件中的纹理坐标都是像素值，所以我们要用它除以纹理图片的宽高值
-    for (int tex_coord_index = 0; tex_coord_index < num_tex_coords; ++tex_coord_index) {
-        tex_coord_list[tex_coord_index].u = (float)tex_coord_2s_ptr[tex_coord_index].u / (float)texture_width;
-        tex_coord_list[tex_coord_index].v = (float)tex_coord_2s_ptr[tex_coord_index].v / (float)texture_height;
+    for (size_t tex_coord_index = 0; tex_coord_index < num_tex_coords; ++tex_coord_index) {
+        tex_coords[tex_coord_index].u = (float)tex_coord_2s_ptr[tex_coord_index].u / (float)texture_width;
+        tex_coords[tex_coord_index].v = (float)tex_coord_2s_ptr[tex_coord_index].v / (float)texture_height;
     }
 
     // 载入三角形
-    triangle_list = new Mesh[num_triangles];
+    triangles = new Mesh[num_triangles];
     Mesh* triangle_ptr = (Mesh*)&file_buffer[model_header->offset_triangles];
     
     // 一个 memcpy 替代了下面的循环 -- phisiart
-    std::memcpy(triangle_list, triangle_ptr, sizeof(Mesh) * num_triangles);
+    std::memcpy(triangles, triangle_ptr, sizeof(Mesh) * num_triangles);
     //for (int triangle_index = 0; triangle_index < num_triangles; ++triangle_index) {
-    //    triangle_list[triangle_index].mesh_index[0] = triangle_ptr[triangle_index].mesh_index[0];
-    //    triangle_list[triangle_index].mesh_index[1] = triangle_ptr[triangle_index].mesh_index[1];
-    //    triangle_list[triangle_index].mesh_index[2] = triangle_ptr[triangle_index].mesh_index[2];
+    //    triangles[triangle_index].mesh_index[0] = triangle_ptr[triangle_index].mesh_index[0];
+    //    triangles[triangle_index].mesh_index[1] = triangle_ptr[triangle_index].mesh_index[1];
+    //    triangles[triangle_index].mesh_index[2] = triangle_ptr[triangle_index].mesh_index[2];
 
-    //    triangle_list[triangle_index].tex_coord_index[0] = triangle_ptr[triangle_index].tex_coord_index[0];
-    //    triangle_list[triangle_index].tex_coord_index[1] = triangle_ptr[triangle_index].tex_coord_index[1];
-    //    triangle_list[triangle_index].tex_coord_index[2] = triangle_ptr[triangle_index].tex_coord_index[2];
+    //    triangles[triangle_index].tex_coord_index[0] = triangle_ptr[triangle_index].tex_coord_index[0];
+    //    triangles[triangle_index].tex_coord_index[1] = triangle_ptr[triangle_index].tex_coord_index[1];
+    //    triangles[triangle_index].tex_coord_index[2] = triangle_ptr[triangle_index].tex_coord_index[2];
     //}
 
     // 计算法向量 testing
-    normal_vec_list = new Vertex3f[num_triangles * num_frames];
+    normal_vecs = new Vertex3f[num_triangles * num_frames];
     for (size_t frame_index = 0; frame_index < num_frames; ++frame_index) {
         for (size_t triangle_index = 0; triangle_index < num_triangles; ++triangle_index) {
-            dsNormalVectorOfTriangle3fv(vertex_list[frame_index * num_vertices + triangle_list[triangle_index].mesh_index[0]].v,
-                                        vertex_list[frame_index * num_vertices + triangle_list[triangle_index].mesh_index[1]].v,
-                                        vertex_list[frame_index * num_vertices + triangle_list[triangle_index].mesh_index[2]].v,
-                                        normal_vec_list[frame_index * num_triangles + triangle_index].v);
+            dsNormalVectorOfTriangle3fv(vertices[frame_index * num_vertices + triangles[triangle_index].mesh_index[0]].v,
+                                        vertices[frame_index * num_vertices + triangles[triangle_index].mesh_index[1]].v,
+                                        vertices[frame_index * num_vertices + triangles[triangle_index].mesh_index[2]].v,
+                                        normal_vecs[frame_index * num_triangles + triangle_index].v);
         }
 
     }
@@ -144,25 +145,25 @@ int MD2Model::load(char* model_file, char* skin_file) {
 }
 
 int MD2Model::renderFrame(int frame_index) {
-    Vertex3f* vertex_base = &vertex_list[num_vertices * frame_index];
-    Vertex3f* normal_vec_base = &normal_vec_list[frame_index * num_triangles];
+    Vertex3f* vertex_base = &vertices[num_vertices * frame_index];
+    Vertex3f* normal_vec_base = &normal_vecs[frame_index * num_triangles];
     glBindTexture(GL_TEXTURE_2D, texture_ID);
 
     glBegin(GL_TRIANGLES);
     {
-        for (int triangle_index = 0; triangle_index < num_triangles; ++triangle_index) {
+        for (size_t triangle_index = 0; triangle_index < num_triangles; ++triangle_index) {
             // 使用储存下来的法向量，而不是临时计算
             glNormal3fv(normal_vec_base[triangle_index].v);
-            /*CalculateNormal(vertex_base[triangle_list[triangle_index].mesh_index[0]].v,
-                            vertex_base[triangle_list[triangle_index].mesh_index[1]].v,
-                            vertex_base[triangle_list[triangle_index].mesh_index[2]].v);*/
+            /*CalculateNormal(vertex_base[triangles[triangle_index].mesh_index[0]].v,
+                            vertex_base[triangles[triangle_index].mesh_index[1]].v,
+                            vertex_base[triangles[triangle_index].mesh_index[2]].v);*/
             
 
-            for (int point_index = 0; point_index < 3; ++point_index) {
-                glTexCoord2f(tex_coord_list[triangle_list[triangle_index].tex_coord_index[point_index]].u,
-                             tex_coord_list[triangle_list[triangle_index].tex_coord_index[point_index]].v);
+            for (size_t point_index = 0; point_index < 3; ++point_index) {
+                glTexCoord2f(tex_coords[triangles[triangle_index].tex_coord_index[point_index]].u,
+                             tex_coords[triangles[triangle_index].tex_coord_index[point_index]].v);
                 
-                glVertex3fv(vertex_base[triangle_list[triangle_index].mesh_index[point_index]].v);
+                glVertex3fv(vertex_base[triangles[triangle_index].mesh_index[point_index]].v);
             }
         }
     }

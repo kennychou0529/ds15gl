@@ -5,6 +5,7 @@
 #include <GL/glut.h>
 #include "dsSkybox.h"
 #include "dsTools.h"
+#include "dsModel.h"
 
 // 与场景有关的类
 // 所有绘图操作都应该转移到这个类

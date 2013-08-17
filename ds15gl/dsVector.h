@@ -2,11 +2,7 @@
 #define _DSVECTOR_H
 
 #include <GL/glut.h>
-#include <cmath>
 
-using std::sqrt;
-using std::sin;
-using std::cos;
 
 // 输入 点相对于球心的球坐标 和 球心的直角坐标，输出 点的直角坐标 GLdouble
 void dsSphereToOrtho3dv(const GLdouble sphere[3], const GLdouble center[3], GLdouble ortho[3]);

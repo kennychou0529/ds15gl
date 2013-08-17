@@ -2,7 +2,6 @@
 #define _DSSKYBOX_H
 
 #include <GL/glut.h>
-#include "dsTexture.h"
 
 // 天空盒类，已经将场景中绘制天空盒的部分都写在其中了
 

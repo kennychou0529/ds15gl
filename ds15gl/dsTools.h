@@ -2,6 +2,7 @@
 #define _DSTOOLS_H
 
 #include <GL/glut.h>
+#include <chrono>
 #include "dsVector.h"
 #include "dsTexture.h"
 #include "dsLight.h"
@@ -28,7 +29,7 @@ extern const char* font_file_name;
 extern const int font_height;
 extern const int font_height_small;
 
-void dsSet();
+void dsSetEye();
 void dsSpecialKeys(int key, int x, int y);
 void dsKeys(unsigned char key, int x, int y);
 //void dsMouseFunc(int key,int x,int y,int);

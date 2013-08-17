@@ -4,6 +4,7 @@
 #include <ctime>
 #include <iostream>
 #include <thread>
+#include <mutex>
 #include "dsModel.h"
 
 ////目前只支持 WIN32 和 Linux
@@ -17,21 +18,21 @@
 
 DSFrame frame;
 
+std::mutex mutex_main;
 
 // 每帧时间，毫秒
 //static const int mspf = 33;
 static auto sleep_time = std::chrono::milliseconds(33);
 
 void dsDisplay() {
+    //mutex_main.lock();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	dsSet(); // 设置视角
-    
+	dsSetEye(); // 设置视角
     
 	frame.display();
     
-
 	glutSwapBuffers();
-
+    //mutex_main.unlock();
 	// 打印 GL 错误
 	GLenum errCode;
 	const GLubyte* errString;
@@ -40,7 +41,6 @@ void dsDisplay() {
 		errString = gluErrorString(errCode);
 		std::cerr << errString << std::endl;
 	}
-
 }
 
 void dsInit() {
@@ -55,6 +55,7 @@ void dsInit() {
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); // why
 	dstext.init(font_file_name, font_height);
 	dstext_small.init(font_file_name, font_height_small);
+    // dsRecordTime();
 }
 
 // 当窗口大小被修改时自动调用此函数
@@ -75,14 +76,15 @@ void dsIdle() {
 	//	// 阻塞该线程
 	//	SLEEP(mspf - deltaT);
 	//t = clock();
-	std::this_thread::sleep_for(sleep_time);
+
+	// std::this_thread::sleep_for(sleep_time);
 	glutPostRedisplay();
 }
 
 int main(int argc, char* argv[])
 {
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutInitWindowPosition(0, 0);
 	glutInitWindowSize(window_width, window_height);
 	glutCreateWindow("DS 15th");
