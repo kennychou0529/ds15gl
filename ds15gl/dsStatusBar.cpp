@@ -10,61 +10,61 @@ DSStatusBar::DSStatusBar() {}
 DSStatusBar::~DSStatusBar() {}
 
 void DSStatusBar::show() {
-	// 更改投影方式为 2D 平行投影
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glLoadIdentity();
-	glOrtho(0, status_bar_width, 0, window_height, 0.01, 1000);
+    // 更改投影方式为 2D 平行投影
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glOrtho(0, status_bar_width, 0, window_height, 0.01, 1000);
 
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glViewport(window_width - status_bar_width, 0, status_bar_width, window_height);
-	glDisable(GL_LIGHTING);
-	glDisable(GL_TEXTURE_2D);
-
-
-
-	gluLookAt(0.0, 0.0, 200.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-	glColor3d(1.0, 1.0, 1.0);
-
-	//fillRectange2D(0,0,width,window_height);
-
-	//这里画小地图，战场，人物等状态信息
-	//例如
-	glPushMatrix();
-	glTranslated(status_bar_width / 2, status_bar_width / 2, 0.0);
-	glColor3f(1.0f, 1.0f, 1.0f);
-	glutSolidTeapot(50);
-	glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glViewport(window_width - status_bar_width, 0, status_bar_width, window_height);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_TEXTURE_2D);
 
 
-	// 让我们在这里写一下眼睛位置
-	glRasterPos2d(8.0, 8.0);
-	std::wostringstream os;
-	// os.unsetf(std::scientific);
 
-	os << "(" << std::fixed << std::setprecision(2) << eye[0] << ", " << eye[1] << ", " << eye[2] << ")";
+    gluLookAt(0.0, 0.0, 200.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    glColor3d(1.0, 1.0, 1.0);
 
-	//drawString(os.str().c_str());
+    //fillRectange2D(0,0,width,window_height);
 
-	glLoadIdentity();
-	//glScaled(0.75, 0.75, 0.75);
-	dstext_small.print(8.0, 8.0, os.str());
-	dstext_small.print(40.0, 30.0, L"Eye position");
-	//glRasterPos2d(40.0, 24.0);
-	//drawString("Eye position");
+    //这里画小地图，战场，人物等状态信息
+    //例如
+    glPushMatrix();
+    glTranslated(status_bar_width / 2, status_bar_width / 2, 0.0);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glutSolidTeapot(50);
+    glPopMatrix();
 
-	
-	glPushMatrix();
-	glLoadIdentity();
-	dstext.print(5, 400, L"操作面板");
-	glPopMatrix();
 
-	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_LIGHTING);
+    // 让我们在这里写一下眼睛位置
+    glRasterPos2d(8.0, 8.0);
+    std::wostringstream os;
+    // os.unsetf(std::scientific);
 
-	//回到透视投影
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
-	glMatrixMode(GL_MODELVIEW);
+    os << "(" << std::fixed << std::setprecision(2) << eye[0] << ", " << eye[1] << ", " << eye[2] << ")";
+
+    //drawString(os.str().c_str());
+
+    glLoadIdentity();
+    //glScaled(0.75, 0.75, 0.75);
+    dstext_small.print(8.0, 8.0, os.str());
+    dstext_small.print(40.0, 30.0, L"Eye position");
+    //glRasterPos2d(40.0, 24.0);
+    //drawString("Eye position");
+
+
+    glPushMatrix();
+    glLoadIdentity();
+    dstext.print(5, 400, L"操作面板");
+    glPopMatrix();
+
+    glEnable(GL_TEXTURE_2D);
+    glEnable(GL_LIGHTING);
+
+    //回到透视投影
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
 }

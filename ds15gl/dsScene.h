@@ -12,18 +12,17 @@
 class DSScene {
 public:
     DSScene();
-	~DSScene();
-	void initialize();
-	void show();
+    ~DSScene();
+    void initialize();
+    void show();
 
 private:
-	DSMap map; // 以后改名	
-	DSSkybox dsSkyBox;
-
+    DSMap map; // 以后改名
+    DSSkybox dsSkyBox;
     MD2Model model;
 
-	//显示列表
-	GLuint groud;
+    //显示列表
+    GLuint groud;
 };
 
 #endif

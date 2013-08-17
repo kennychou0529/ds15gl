@@ -5,10 +5,10 @@
 
 class DSStatusBar {
 public:
-	DSStatusBar();
-	~DSStatusBar();
+    DSStatusBar();
+    ~DSStatusBar();
 public:
-	void show();
+    void show();
 };
 
 #endif

@@ -50,6 +50,7 @@ MD2Model::~MD2Model() {}
 int MD2Model::load(char* model_file, char* skin_file) {
     std::ifstream is;
     is.open(model_file, is.in | is.binary);
+
     if (!is) {
         return -1;
     }
@@ -110,7 +111,7 @@ int MD2Model::load(char* model_file, char* skin_file) {
     // 载入三角形
     triangles = new Mesh[num_triangles];
     Mesh* triangle_ptr = (Mesh*)&file_buffer[model_header->offset_triangles];
-    
+
     // 一个 memcpy 替代了下面的循环 -- phisiart
     std::memcpy(triangles, triangle_ptr, sizeof(Mesh) * num_triangles);
     //for (int triangle_index = 0; triangle_index < num_triangles; ++triangle_index) {
@@ -125,6 +126,7 @@ int MD2Model::load(char* model_file, char* skin_file) {
 
     // 计算法向量 testing
     normal_vecs = new Vertex3f[num_triangles * num_frames];
+
     for (size_t frame_index = 0; frame_index < num_frames; ++frame_index) {
         for (size_t triangle_index = 0; triangle_index < num_triangles; ++triangle_index) {
             dsNormalVectorOfTriangle3fv(vertices[frame_index * num_vertices + triangles[triangle_index].mesh_index[0]].v,
@@ -132,15 +134,9 @@ int MD2Model::load(char* model_file, char* skin_file) {
                                         vertices[frame_index * num_vertices + triangles[triangle_index].mesh_index[2]].v,
                                         normal_vecs[frame_index * num_triangles + triangle_index].v);
         }
-
     }
 
     delete[] file_buffer;
-    
-    current_frame = 0;
-    next_frame = 1;
-    interpol = 0.0;
-
     return 0;
 }
 
@@ -157,12 +153,12 @@ int MD2Model::renderFrame(int frame_index) {
             /*CalculateNormal(vertex_base[triangles[triangle_index].mesh_index[0]].v,
                             vertex_base[triangles[triangle_index].mesh_index[1]].v,
                             vertex_base[triangles[triangle_index].mesh_index[2]].v);*/
-            
+
 
             for (size_t point_index = 0; point_index < 3; ++point_index) {
                 glTexCoord2f(tex_coords[triangles[triangle_index].tex_coord_index[point_index]].u,
                              tex_coords[triangles[triangle_index].tex_coord_index[point_index]].v);
-                
+
                 glVertex3fv(vertex_base[triangles[triangle_index].mesh_index[point_index]].v);
             }
         }

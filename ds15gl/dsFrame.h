@@ -8,14 +8,14 @@
 class DSFrame {
 public:
     DSFrame() {}
-	~DSFrame() {}
-	void initialize();
-	void display();
+    ~DSFrame() {}
+    void initialize();
+    void display();
 
 private:
-	DSScene scene;
-	DSStatusBar statusBar;
-	DSMap map;
+    DSScene scene;
+    DSStatusBar statusBar;
+    DSMap map;
 };
 
 #endif
