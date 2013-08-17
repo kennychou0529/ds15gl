@@ -23,9 +23,9 @@ dsTextManager dstext;
 dsTextManager dstext_small;
 
 #ifdef WIN32
-// const char* font_file_name = "C:/Windows/Fonts/msyhbd.ttc";
+const char* font_file_name = "C:/Windows/Fonts/msyhbd.ttc";
 // const char* font_file_name = "C:/Windows/Fonts/wqy-zenhei.ttc";
-const char* font_file_name = "data/xhei_bold.ttf";
+// const char* font_file_name = "data/xhei_bold.ttf";
 #elif defined __unix__
 const char* font_file_name = "/usr/share/fonts/truetype/wqy/wqy-microhei.ttc";
 #endif
