@@ -75,5 +75,5 @@ void DSScene::show(){
 void DSScene::initialize() {
     model.load("data/sword_man/tris.md2", "data/sword_man/knight_white.bmp");
     model.time_manager.recordTime();
-	dsSkyBox.load(3);
+    dsSkyBox.load(3);
 }
