@@ -19,8 +19,6 @@ extern int window_width;
 extern int window_height;
 extern int status_bar_width;
 
-//extern MD2Model model;
-
 // extern DSString str;
 extern dsTextManager dstext;
 extern dsTextManager dstext_small;
@@ -28,6 +26,10 @@ extern dsTextManager dstext_small;
 extern const char* font_file_name;
 extern const int font_height;
 extern const int font_height_small;
+
+extern dsTimeManager time_manager;
+extern unsigned int frame_count;
+extern unsigned int fps;
 
 void dsSetEye();
 void dsSpecialKeys(int key, int x, int y);

@@ -2,7 +2,7 @@
 #include "dsTexture.h"
 #include "dsTextManager.h"
 #include "dsModel.h"
-
+#include <sstream>
 
 extern dsTextManager dstext;
 
@@ -17,8 +17,9 @@ DSScene::~DSScene() {
 void DSScene::show() {
     glViewport(0, 0, window_width - status_bar_width, window_height);
     dsSkyBox.show();
+    
     glEnable(GL_LIGHTING);
-
+    
     glPushMatrix();
     glTranslated(0, 0, 2.0);
     glScaled(0.1, 0.1, 0.1);
@@ -44,38 +45,40 @@ void DSScene::show() {
     //}
     //glEnd();
 
-
-
     GLdouble len = 20.0;
     GLuint n = 100;
 
     GLdouble delta_x = len / n;
 
-    for (GLdouble x = - len; x < len - 0.5 * delta_x; x += delta_x) {
-        for (GLdouble y = - len; y < len - 0.5 * delta_x; y += delta_x) {
-            glBegin(GL_QUADS);
-            {
-                glNormal3d(0.0, 0.0, 1.0);
-                glVertex3d(x, y, 0);
-                glVertex3d(x + delta_x, y, 0);
-                glVertex3d(x + delta_x, y + delta_x, 0);
-                glVertex3d(x, y + delta_x, 0);
-            }
-            glEnd();
-        }
-    }
+    //for (GLdouble x = - len; x < len - 0.5 * delta_x; x += delta_x) {
+    //    for (GLdouble y = - len; y < len - 0.5 * delta_x; y += delta_x) {
+    //        glBegin(GL_QUADS);
+    //        {
+    //            glNormal3d(0.0, 0.0, 1.0);
+    //            glVertex3d(x, y, 0);
+    //            glVertex3d(x + delta_x, y, 0);
+    //            glVertex3d(x + delta_x, y + delta_x, 0);
+    //            glVertex3d(x, y + delta_x, 0);
+    //        }
+    //        glEnd();
+    //    }
+    //}
 
     glDisable(GL_LIGHTING);
 
-    std::wstring my_str = L"(测试文字显示)\n您好，伟大的谈至勋。\n众所周知，您是无所不能的，但是：\n您能不能告诉我们，为什么您这么厉害呢？";
+    std::wstringstream os;
+    os << L"FPS: " << fps;
+    // std::wstring my_str = L"FPS:";
+    // time_manager.getDurationSecf();
     glPushMatrix();
     glLoadIdentity();
-    dstext.print(5, 400, my_str);
+    dstext.print(5, 400, os.str());
+    
     glPopMatrix();
 
     glEnable(GL_LIGHTING);
 
-    dsShowLightSource();
+    //dsShowLightSource();
 
     dsShowAxes();
 }

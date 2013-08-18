@@ -14,6 +14,13 @@ DSFrame frame;
 static auto sleep_time = std::chrono::milliseconds(33);
 
 void dsDisplay() {
+    ++frame_count;
+    if (time_manager.getDurationSecf() > 1.0f) {
+        fps = (unsigned int)((float)frame_count / time_manager.getDurationSecf());
+        frame_count = 0;
+        time_manager.recordTime();
+    }
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     dsSetEye(); // 设置视角
     frame.display();
@@ -41,6 +48,7 @@ void dsInit() {
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); // why
     dstext.init(font_file_name, font_height);
     dstext_small.init(font_file_name, font_height_small);
+    time_manager.recordTime();
 }
 
 // 当窗口大小被修改时自动调用此函数

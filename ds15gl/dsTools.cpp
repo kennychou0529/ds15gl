@@ -18,6 +18,10 @@ int window_width = 1280;
 int window_height = 720;
 int status_bar_width = 200;
 
+dsTimeManager time_manager;
+unsigned int frame_count;
+unsigned int fps;
+
 // 文字管理器
 dsTextManager dstext;
 dsTextManager dstext_small;
