@@ -6,6 +6,7 @@
 #include "dsSkybox.h"
 #include "dsTools.h"
 #include "dsModel.h"
+#include "dsSoldier.h"
 
 // 与场景有关的类
 // 所有绘图操作都应该转移到这个类
@@ -19,8 +20,10 @@ public:
 private:
     DSMap map; // 以后改名
     DSSkybox dsSkyBox;
-    MD2Model model;
+    // MD2Model model;
+    // MD2Model weapon;
 
+    dsSoldier soldier;
     //显示列表
     GLuint groud;
 };

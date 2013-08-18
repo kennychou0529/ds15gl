@@ -47,7 +47,7 @@ MD2Model::MD2Model():
 
 MD2Model::~MD2Model() {}
 
-int MD2Model::load(char* model_file, char* skin_file) {
+int MD2Model::load(const char* model_file, const char* skin_file) {
     std::ifstream is;
     is.open(model_file, is.in | is.binary);
 
@@ -167,3 +167,36 @@ int MD2Model::renderFrame(int frame_index) {
     return 0;
 }
 
+int MD2Model::renderSmoothly(int frame1_index, int frame2_index, GLfloat percentage) {
+    Vertex3f* vertex_base1 = &vertices[num_vertices * frame1_index];
+    Vertex3f* vertex_base2 = &vertices[num_vertices * frame2_index];
+    glBindTexture(GL_TEXTURE_2D, texture_ID);
+
+    Vertex3f points[3];
+    glBegin(GL_TRIANGLES);
+    {
+        for (size_t triangle_index = 0; triangle_index < num_triangles; ++triangle_index) {
+            // 线性计算点坐标，存在 points 中
+            for (size_t point_index = 0; point_index < 3; ++point_index) {
+                for (size_t axis_index = 0; axis_index < 3; ++axis_index) {
+                    points[point_index].v[axis_index] = (1.0f - percentage) * vertex_base1[triangles[triangle_index].mesh_index[point_index]].v[axis_index]
+                                                       + percentage * vertex_base2[triangles[triangle_index].mesh_index[point_index]].v[axis_index];
+                }
+            }
+
+            // 计算法向量
+            CalculateNormal(points[0].v, points[1].v, points[2].v);
+
+            // 绘制三角形
+            for (size_t point_index = 0; point_index < 3; ++point_index) {
+                glTexCoord2f(tex_coords[triangles[triangle_index].tex_coord_index[point_index]].u,
+                             tex_coords[triangles[triangle_index].tex_coord_index[point_index]].v);
+
+                glVertex3fv(points[point_index].v);
+            }
+
+        }
+    }
+    glEnd();
+    return 0;
+}

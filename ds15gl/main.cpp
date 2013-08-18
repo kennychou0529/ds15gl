@@ -7,32 +7,18 @@
 #include <mutex>
 #include "dsModel.h"
 
-////目前只支持 WIN32 和 Linux
-//#ifdef WIN32
-//  #define SLEEP(mm) Sleep(mm)
-//#else
-//  //这个还不知道行不行
-//  #include <unistd.h>
-//  #define SLEEP(mm) usleep(mm*1000)
-//#endif // WIN32
-
 DSFrame frame;
-
-std::mutex mutex_main;
 
 // 每帧时间，毫秒
 //static const int mspf = 33;
 static auto sleep_time = std::chrono::milliseconds(33);
 
 void dsDisplay() {
-    //mutex_main.lock();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     dsSetEye(); // 设置视角
-
     frame.display();
-
     glutSwapBuffers();
-    //mutex_main.unlock();
+
     // 打印 GL 错误
     GLenum errCode;
     const GLubyte* errString;
@@ -55,7 +41,6 @@ void dsInit() {
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); // why
     dstext.init(font_file_name, font_height);
     dstext_small.init(font_file_name, font_height_small);
-    // dsRecordTime();
 }
 
 // 当窗口大小被修改时自动调用此函数
@@ -70,13 +55,6 @@ void dsReshape(int w, int h) {
 }
 
 void dsIdle() {
-    //static long t = clock();
-    //long deltaT = clock() - t;
-    //if (deltaT > 0 && deltaT < mspf)
-    //  // 阻塞该线程
-    //  SLEEP(mspf - deltaT);
-    //t = clock();
-
     // std::this_thread::sleep_for(sleep_time);
     glutPostRedisplay();
 }

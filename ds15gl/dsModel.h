@@ -7,6 +7,14 @@
 #include "dsTimeManager.h"
 
 class MD2Model {
+public:
+    MD2Model();
+    ~MD2Model();
+    int load(const char* model_file, const char* skin_file);
+    int renderFrame(int frame_index);
+    int renderSmoothly(int frame1_index, int frame2_index, GLfloat percentage);
+    dsTimeManager time_manager;
+
 private:
     // 以下定义了一些 struct
     // 之所以定义在 class MD2Model 之内是为了避免其它地方的使用
@@ -93,17 +101,6 @@ private:
     TexCoord2f* tex_coords;
     Vertex3f* vertices;
     GLuint texture_ID;
-
-    
-public:
-    MD2Model();
-    ~MD2Model();
-
-    int load(char* model_file, char* skin_file);
-
-    int renderFrame(int frame_index);
-
-    dsTimeManager time_manager;
 };
 
 #endif

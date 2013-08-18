@@ -3,6 +3,7 @@
 #include "dsTextManager.h"
 #include "dsModel.h"
 
+
 extern dsTextManager dstext;
 
 DSScene::DSScene() {}
@@ -21,7 +22,14 @@ void DSScene::show() {
     glPushMatrix();
     glTranslated(0, 0, 2.0);
     glScaled(0.1, 0.1, 0.1);
-    model.renderFrame((int)(model.time_manager.getDurationSecd() * 20) % 40);
+    //model.renderFrame((int)(model.time_manager.getDurationSecd() * 20) % 40);
+    //weapon.renderFrame((int)(model.time_manager.getDurationSecd() * 20) % 40);
+
+    // soldier.renderFrame((int)(soldier.time_manager.getDurationSecd() * 20) % 40);
+    glPushMatrix();
+    glTranslatef(10.0, 0, 0);
+    soldier.renderSmoothly(soldier.time_manager.getDurationSecf() * 5);
+    glPopMatrix();
     //glScaled(10.0, 10.0, 10.0);
     glPopMatrix();
 
@@ -73,7 +81,13 @@ void DSScene::show() {
 }
 
 void DSScene::initialize() {
-    model.load("data/sword_man/tris.md2", "data/sword_man/knight_white.bmp");
-    model.time_manager.recordTime();
+    //model.load("data/sword_man/tris.md2", "data/sword_man/knight_white.bmp");
+    //weapon.load("data/sword_man/weapon.md2", "data/sword_man/weapon.bmp");
+    //model.time_manager.recordTime();
+    soldier.load("data/sword_man/tris.md2",
+                 "data/sword_man/knight_white.bmp",
+                 "data/sword_man/weapon.md2",
+                 "data/sword_man/weapon.bmp");
+    soldier.time_manager.recordTime();
     dsSkyBox.load(3);
 }

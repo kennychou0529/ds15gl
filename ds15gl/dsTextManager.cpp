@@ -293,9 +293,9 @@ void dsTextManager::print(GLfloat x, GLfloat y, const std::wstring& str) {
         glTranslatef(x, y - h * (GLfloat)i, 0);
         glMultMatrixf(modelview_matrix);
 
-        for (auto ch = lines[i].cbegin(); ch != lines[i].cend(); ++ch) {
-            makeList(*ch);
-            glCallList(lists[*ch]);
+        for (auto& ch : lines[i]) {
+            makeList(ch);
+            glCallList(lists[ch]);
         }
 
         glPopMatrix();

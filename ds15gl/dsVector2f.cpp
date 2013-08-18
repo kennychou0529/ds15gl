@@ -5,7 +5,7 @@
 dsVector2f::dsVector2f(GLfloat _x, GLfloat _y): x(_x), y(_y) {}
 
 GLfloat dsVector2f::getLenth() {
-    return std::sqrtf(x * x + y * y);
+    return std::sqrt(x * x + y * y);
 }
 
 dsVector2f dsVector2f::operator+(const dsVector2f& rhs) const {
@@ -20,7 +20,6 @@ dsVector2f dsVector2f::operator-(const dsVector2f& rhs) const {
 GLfloat dsVector2f::operator*(const dsVector2f& rhs) const {
     return x * rhs.x + y * rhs.y;
 }
-
 
 // 返回一个逆时针旋转 90 度的向量
 dsVector2f dsVector2f::turnLeft() const {
