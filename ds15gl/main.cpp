@@ -6,6 +6,7 @@
 #include <thread>
 #include <mutex>
 #include "dsModel.h"
+#include <Windows.h>
 
 DSFrame frame;
 

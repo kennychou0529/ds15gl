@@ -1,4 +1,8 @@
 ﻿#include "dsTexture.h"
+#include <fstream>
+
+using std::ifstream;
+
 GLuint dsLoadTextureBMP2D(const char* file_name, GLuint* pheight, GLuint* pwidth) {
     const int BMP_Header_Length = 54;
 
@@ -74,14 +78,14 @@ GLuint dsLoadTextureBMP2D(const char* file_name, GLuint* pheight, GLuint* pwidth
     // 如果大纹理放到小形状，则线性插值
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-    // 如果小纹理放到大形状时，则线性插值
+    // 如果小纹理放到大形状，则线性插值
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     // 如果纹理 x 坐标超出范围，则重复，默认值
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP); // GL_REPEAT?
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // GL_CLAMP?
 
     // 如果纹理 y 坐标超出范围，则重复，默认值
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
     // 纹理和光照共存
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);

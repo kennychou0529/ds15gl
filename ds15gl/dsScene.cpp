@@ -66,15 +66,15 @@ void DSScene::show() {
 
     glDisable(GL_LIGHTING);
 
-    std::wstringstream os;
-    os << L"FPS: " << fps;
-    // std::wstring my_str = L"FPS:";
-    // time_manager.getDurationSecf();
-    glPushMatrix();
-    glLoadIdentity();
-    dstext.print(5, 400, os.str());
-    
-    glPopMatrix();
+    //std::wstringstream os;
+    //os << L"FPS: " << fps;
+    //// std::wstring my_str = L"FPS:";
+    //// time_manager.getDurationSecf();
+    //glPushMatrix();
+    //glLoadIdentity();
+    //dstext.print(5, 400, os.str());
+    //
+    //glPopMatrix();
 
     glEnable(GL_LIGHTING);
 

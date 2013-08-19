@@ -3,6 +3,7 @@
 #include <fstream>
 #include <cstring>
 #include "dsVector.h"
+#include <iostream>
 
 void CalculateNormal(const GLfloat* p1, const GLfloat* p2, const GLfloat* p3) {
     // 把教程中的代码换成了我的
@@ -38,10 +39,8 @@ MD2Model::MD2Model():
     num_vertices(0),
     num_tex_coords(0),
     frame_size(0),
-    current_frame(0),
-    next_frame(1),
-    interpol(0),
     triangles(nullptr),
+    normal_vecs(nullptr),
     tex_coords(nullptr),
     vertices(nullptr) {}
 
@@ -57,17 +56,18 @@ int MD2Model::load(const char* model_file, const char* skin_file) {
 
     // 确认文件长度
     is.seekg(0, is.end);
-    int file_length = is.tellg();
+    size_t file_length = is.tellg();
     is.seekg(0, is.beg);
 
     // 将整个文件全部载入 buffer，然后文件就可以关闭了
-    char* file_buffer = new char[file_length + 1];
+    char* file_buffer = new char[file_length];
     is.read(file_buffer, file_length);
     is.close();
 
     // 接下来从 buffer 中获取 MD2 文件头
     MD2Header* model_header = (MD2Header*)file_buffer;
 
+    std::cout << model_header->offset_eof << std::endl << file_length << std::endl;
     // 获取文件头中我们比较感兴趣的内容
     num_frames = model_header->num_frames;
     num_vertices = model_header->num_vertices;
@@ -104,8 +104,8 @@ int MD2Model::load(const char* model_file, const char* skin_file) {
 
     // MD2 文件中的纹理坐标都是像素值，所以我们要用它除以纹理图片的宽高值
     for (size_t tex_coord_index = 0; tex_coord_index < num_tex_coords; ++tex_coord_index) {
-        tex_coords[tex_coord_index].u = (float)tex_coord_2s_ptr[tex_coord_index].u / (float)texture_width;
-        tex_coords[tex_coord_index].v = (float)tex_coord_2s_ptr[tex_coord_index].v / (float)texture_height;
+        tex_coords[tex_coord_index].u = (GLfloat)tex_coord_2s_ptr[tex_coord_index].u / (GLfloat)texture_width;
+        tex_coords[tex_coord_index].v = (GLfloat)tex_coord_2s_ptr[tex_coord_index].v / (GLfloat)texture_height;
     }
 
     // 载入三角形
@@ -140,7 +140,14 @@ int MD2Model::load(const char* model_file, const char* skin_file) {
     return 0;
 }
 
-int MD2Model::renderFrame(int frame_index) {
+void MD2Model::clear() {
+    delete[] triangles;
+    delete[] normal_vecs;
+    delete[] tex_coords;
+    delete[] vertices;
+}
+
+int MD2Model::renderFrame(size_t frame_index) {
     Vertex3f* vertex_base = &vertices[num_vertices * frame_index];
     Vertex3f* normal_vec_base = &normal_vecs[frame_index * num_triangles];
     glBindTexture(GL_TEXTURE_2D, texture_ID);
@@ -167,7 +174,7 @@ int MD2Model::renderFrame(int frame_index) {
     return 0;
 }
 
-int MD2Model::renderSmoothly(int frame1_index, int frame2_index, GLfloat percentage) {
+int MD2Model::renderSmoothly(size_t frame1_index, size_t frame2_index, GLfloat percentage) {
     Vertex3f* vertex_base1 = &vertices[num_vertices * frame1_index];
     Vertex3f* vertex_base2 = &vertices[num_vertices * frame2_index];
     glBindTexture(GL_TEXTURE_2D, texture_ID);

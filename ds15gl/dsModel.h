@@ -11,8 +11,9 @@ public:
     MD2Model();
     ~MD2Model();
     int load(const char* model_file, const char* skin_file);
-    int renderFrame(int frame_index);
-    int renderSmoothly(int frame1_index, int frame2_index, GLfloat percentage);
+    void clear();
+    int renderFrame(size_t frame_index);
+    int renderSmoothly(size_t frame1_index, size_t frame2_index, GLfloat percentage);
     dsTimeManager time_manager;
 
 private:
@@ -93,9 +94,6 @@ private:
     unsigned int num_triangles;      // 三角形数量
     unsigned int num_tex_coords;     // 纹理坐标数量
     unsigned int frame_size;         // 每个帧占用多少 bytes
-    unsigned int current_frame;      // 当前帧编号
-    unsigned int next_frame;         // 下一帧编号
-    float interpol;         // 什么玩意？
     Mesh* triangles;
     Vertex3f* normal_vecs;
     TexCoord2f* tex_coords;

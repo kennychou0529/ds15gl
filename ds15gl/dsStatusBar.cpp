@@ -49,6 +49,15 @@ void DSStatusBar::show() {
     dstext.print(5, 400, L"操作面板");
     glPopMatrix();
 
+    //std::wstringstream os;
+    os.str(L"");
+    os << L"FPS " << fps;
+    glPushMatrix();
+    glLoadIdentity();
+    glScalef(0.5, 0.5, 0.5);
+    dstext.print(5, window_height - 20, os.str());
+    glPopMatrix();
+
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_LIGHTING);
 

@@ -1,24 +1,23 @@
 #include "dsSoldier.h"
 #include <cmath>
 
-dsSoldier::dsSoldier() : frame_beg(40), frame_end(45) {}
+dsSoldier::dsSoldier() : frame_beg(0), frame_end(39) {}
 
-void dsSoldier::renderFrame(unsigned int frame_index) {
+void dsSoldier::renderFrame(size_t frame_index) {
     person.renderFrame(frame_index);
     weapon.renderFrame(frame_index);
 }
 
-void dsSoldier::renderSmoothly(int frame1_index, int frame2_index, GLfloat percentage) {
+void dsSoldier::renderSmoothly(size_t frame1_index, size_t frame2_index, GLfloat percentage) {
     person.renderSmoothly(frame1_index, frame2_index, percentage);
     weapon.renderSmoothly(frame1_index, frame2_index, percentage);
 }
 
-void dsSoldier::renderSmoothly(float progress) {
-    unsigned int frame1_index = std::floor(progress);
-    float percentage = progress - frame1_index;
-    // unsigned int frame2_index = std::ceil(percentage);
+void dsSoldier::renderSmoothly(GLfloat progress) {
+    size_t frame1_index = static_cast<size_t>(std::floor(progress));
+    GLfloat percentage = progress - frame1_index;
     frame1_index %= (frame_end - frame_beg + 1);
-    unsigned int frame2_index = (frame1_index + 1) % (frame_end - frame_beg + 1);
+    size_t frame2_index = (frame1_index + 1) % (frame_end - frame_beg + 1);
     frame1_index += frame_beg;
     frame2_index += frame_beg;
     renderSmoothly(frame1_index, frame2_index, percentage);

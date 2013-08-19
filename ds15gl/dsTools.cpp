@@ -178,7 +178,6 @@ void dsShowAxes() {
     glEnable(GL_LINE_SMOOTH);
     glBegin(GL_LINES);
     {
-
         glColor3d(1.0, 0.0, 0.0);
         glVertex3d(0.0, 0.0, 0.0);
         glVertex3d(axeLength, 0.0, 0.0);
