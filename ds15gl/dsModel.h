@@ -6,6 +6,9 @@
 #include <GL/glut.h>
 #include "dsTimeManager.h"
 
+// MD2Model 类不必直接使用，已经封装到 dsSoldier 类里了
+// dsSoldier 用法详见 dsSoldier.h
+
 class MD2Model {
 public:
     MD2Model();

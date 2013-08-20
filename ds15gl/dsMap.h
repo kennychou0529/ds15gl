@@ -25,18 +25,20 @@ public:
 		return data[y][x];
 	}
     
+    // 绘制地图网格
     void renderGrid();
 
+    // 输入格子坐标，给出绘图实际坐标
     void getCoords(size_t x_index, size_t y_index, GLfloat* px, GLfloat* py) const;
 
 public:
 	// 地图每块的大小
-	static const int ElementSize = 4;
+	//static const int ElementSize = 4;
 	
 private:
 	size_t width;
 	size_t height;
-    GLfloat grid_size;
+    GLfloat grid_size; // 地图每块的大小
 	int** data;
 };
 

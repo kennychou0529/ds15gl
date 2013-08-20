@@ -68,6 +68,5 @@ void dsShowLightSource() {
 
     glutSolidSphere(0.5, 20, 20);
     glPopMatrix();
-
     glPopAttrib();
 }
