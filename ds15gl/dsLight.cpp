@@ -2,10 +2,10 @@
 #include <GL/glut.h>
 
 // 环境光，能保证光源找不到的地方也看得到，这个得设置得暗一些，我们设成暗淡的白色
-GLfloat light_ambient[4]  = {0.1f, 0.1f, 0.1f, 0.1f};
+GLfloat light_ambient[4]  = {0.2f, 0.2f, 0.2f, 1.0f};
 
 // 漫射光
-GLfloat light_diffuse[4]  = {0.5f, 250.0f / 255 / 2, 200.0f / 255 / 2, 0.1f};
+GLfloat light_diffuse[4]  = {0.5f, 250.0f / 255 / 2, 200.0f / 255 / 2, 1.0f};
 
 // 镜面光，产生亮斑
 GLfloat light_specular[4] = {0.5f, 250.0f / 255 / 2, 200.0f / 255 / 2, 2000.0f};
@@ -37,7 +37,7 @@ void dsSetMaterial() {
     GLfloat ambient[4]  = {1.0f, 1.0f, 1.0f, 1.0f};
 
     // 漫射光
-    GLfloat diffuse[4]  = {1.0f, 1.0f, 1.0f, 10.0f};
+    GLfloat diffuse[4]  = {1.0f, 1.0f, 1.0f, 1.0f};
 
     // 镜面光，产生亮斑
     GLfloat specular[4] = {0.0f, 0.0f, 0.0f, 1000.0f};
