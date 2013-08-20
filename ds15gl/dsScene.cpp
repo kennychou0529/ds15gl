@@ -20,67 +20,21 @@ void DSScene::show() {
     
     glEnable(GL_LIGHTING);
     
-    
-
     glPushMatrix();
-    glTranslated(0, 0, 2.0);
-    glScaled(0.1, 0.1, 0.1);
-    //model.renderFrame((int)(model.time_manager.getDurationSecd() * 20) % 40);
-    //weapon.renderFrame((int)(model.time_manager.getDurationSecd() * 20) % 40);
-
-    // soldier.renderFrame((int)(soldier.time_manager.getDurationSecd() * 20) % 40);
-    glPushMatrix();
-    // glTranslatef(0.0, 0, 0);
-    soldier.renderSmoothly(soldier.time_manager.getDurationSecf() * 5);
-    glTranslatef(60.0, 0, 0);
-    soldier2.renderSmoothly(soldier2.time_manager.getDurationSecf() * 5);
-    glPopMatrix();
-    //glScaled(10.0, 10.0, 10.0);
+    {
+        glTranslated(0, 0, 2.0);
+        glScaled(0.1, 0.1, 0.1);
+        glPushMatrix();
+        {
+            soldier.renderSmoothly(soldier.time_manager.getDurationSecf() * 5);
+            glTranslatef(100.0f, 0, 0);
+            soldier2.renderSmoothly(soldier2.time_manager.getDurationSecf() * 5);
+        }
+        glPopMatrix();
+    }
     glPopMatrix();
 
-    glDisable(GL_TEXTURE_2D);
-
-    //glBegin(GL_TRIANGLES);
-    //{
-    //  glNormal3d(0.0, 0.0, 1.0);
-    //  glVertex3d(10.0, 0.0, 0.0);
-    //  glVertex3d(0.0, 10.0, 0.0);
-    //  glVertex3d(-10.0, 0.0, 0.0);
-    //}
-    //glEnd();
-
-    //GLdouble len = 20.0;
-    //GLuint n = 100;
-
-    //GLdouble delta_x = len / n;
-
-    //for (GLdouble x = - len; x < len - 0.5 * delta_x; x += delta_x) {
-    //    for (GLdouble y = - len; y < len - 0.5 * delta_x; y += delta_x) {
-    //        glBegin(GL_QUADS);
-    //        {
-    //            glNormal3d(0.0, 0.0, 1.0);
-    //            glVertex3d(x, y, 0);
-    //            glVertex3d(x + delta_x, y, 0);
-    //            glVertex3d(x + delta_x, y + delta_x, 0);
-    //            glVertex3d(x, y + delta_x, 0);
-    //        }
-    //        glEnd();
-    //    }
-    //}
     map.renderGrid();
-    glDisable(GL_LIGHTING);
-
-    //std::wstringstream os;
-    //os << L"FPS: " << fps;
-    //// std::wstring my_str = L"FPS:";
-    //// time_manager.getDurationSecf();
-    //glPushMatrix();
-    //glLoadIdentity();
-    //dstext.print(5, 400, os.str());
-    //
-    //glPopMatrix();
-
-    glEnable(GL_LIGHTING);
 
     //dsShowLightSource();
 
