@@ -15,7 +15,7 @@ public:
 private:
     DSScene scene;
     DSStatusBar statusBar;
-    DSMap map;
+    //DSMap map;
 };
 
 #endif

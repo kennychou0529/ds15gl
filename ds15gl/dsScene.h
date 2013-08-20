@@ -24,6 +24,7 @@ private:
     // MD2Model weapon;
 
     dsSoldier soldier;
+    dsSoldier soldier2;
     //显示列表
     GLuint groud;
 };

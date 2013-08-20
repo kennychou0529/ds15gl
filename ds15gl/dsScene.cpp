@@ -20,6 +20,8 @@ void DSScene::show() {
     
     glEnable(GL_LIGHTING);
     
+    
+
     glPushMatrix();
     glTranslated(0, 0, 2.0);
     glScaled(0.1, 0.1, 0.1);
@@ -28,8 +30,10 @@ void DSScene::show() {
 
     // soldier.renderFrame((int)(soldier.time_manager.getDurationSecd() * 20) % 40);
     glPushMatrix();
-    glTranslatef(10.0, 0, 0);
+    // glTranslatef(0.0, 0, 0);
     soldier.renderSmoothly(soldier.time_manager.getDurationSecf() * 5);
+    glTranslatef(60.0, 0, 0);
+    soldier2.renderSmoothly(soldier2.time_manager.getDurationSecf() * 5);
     glPopMatrix();
     //glScaled(10.0, 10.0, 10.0);
     glPopMatrix();
@@ -45,10 +49,10 @@ void DSScene::show() {
     //}
     //glEnd();
 
-    GLdouble len = 20.0;
-    GLuint n = 100;
+    //GLdouble len = 20.0;
+    //GLuint n = 100;
 
-    GLdouble delta_x = len / n;
+    //GLdouble delta_x = len / n;
 
     //for (GLdouble x = - len; x < len - 0.5 * delta_x; x += delta_x) {
     //    for (GLdouble y = - len; y < len - 0.5 * delta_x; y += delta_x) {
@@ -63,7 +67,7 @@ void DSScene::show() {
     //        glEnd();
     //    }
     //}
-
+    map.renderGrid();
     glDisable(GL_LIGHTING);
 
     //std::wstringstream os;
@@ -92,5 +96,10 @@ void DSScene::initialize() {
                  "data/sword_man/weapon.md2",
                  "data/sword_man/weapon.bmp");
     soldier.time_manager.recordTime();
+    soldier2.load("data/bat/tris.md2",
+                 "data/bat/tris.bmp",
+                 "data/bat/weapon.md2",
+                 "data/bat/weapon.bmp");
+    soldier2.time_manager.recordTime();
     dsSkyBox.load(3);
 }
