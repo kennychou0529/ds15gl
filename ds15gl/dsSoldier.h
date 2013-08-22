@@ -7,6 +7,10 @@
 // 士兵
 class dsSoldier {
 public:
+    enum Status {
+        idle, running
+    };
+
     dsSoldier();
 
     // 绘制帧 frame_index
@@ -31,6 +35,29 @@ public:
     // 当 progress 为 39.5 时，renderSmoothly(49, 10, 0.5)。
     void renderSmoothly(GLfloat progress);
 
+    void enterStatus(Status status_to_enter) {
+        status = status_to_enter;
+        time_manager.recordTime();
+        switch (status) {
+        case idle:
+            frame_beg = 0;
+            frame_end = 39;
+            fps = 10;
+            break;
+        case running:
+            frame_beg = 40;
+            frame_end = 35;
+            fps = 5;
+            break;
+        }
+    }
+
+    void animate() {
+        glPushMatrix();
+        renderSmoothly(time_manager.getDurationSecf() * fps);
+        glPopMatrix();
+    }
+
     // 载入士兵模型文件，只支持 bmp 类型的纹理图片
     void load(const char* person_model_file,
               const char* person_skin_file,
@@ -39,6 +66,8 @@ public:
 
     dsTimeManager time_manager;
 private:
+    size_t fps;
+    Status status;
     MD2Model person;
     MD2Model weapon;
     size_t frame_beg;

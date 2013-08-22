@@ -2,13 +2,15 @@
 #define _DSSTATUSBAR_H
 
 #include <GL/glut.h>
+#include "dsTimeManager.h"
 
 class DSStatusBar {
 public:
     DSStatusBar();
     ~DSStatusBar();
-public:
     void show();
+    void init();
+private:
 };
 
 #endif

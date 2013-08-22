@@ -1,7 +1,7 @@
 #include "dsSoldier.h"
 #include <cmath>
 
-dsSoldier::dsSoldier() : frame_beg(40), frame_end(45) {}
+dsSoldier::dsSoldier() : frame_beg(40), frame_end(45), fps(5) {}
 
 void dsSoldier::renderFrame(size_t frame_index) {
     person.renderFrame(frame_index);

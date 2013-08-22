@@ -4,8 +4,6 @@
 #include "dsMap.h"
 #include <GL/glut.h>
 #include "dsSkybox.h"
-#include "dsTools.h"
-#include "dsModel.h"
 #include "dsSoldier.h"
 
 // 与场景有关的类

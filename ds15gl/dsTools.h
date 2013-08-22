@@ -3,12 +3,8 @@
 
 #include <GL/glut.h>
 #include <chrono>
-#include "dsVector.h"
-#include "dsTexture.h"
-#include "dsLight.h"
-#include "dsVector2f.h"
+
 #include "dsTextManager.h"
-#include "dsModel.h"
 
 extern GLdouble eye_sphere[3];
 extern GLdouble up[3];
@@ -27,9 +23,10 @@ extern const char* font_file_name;
 extern const int font_height;
 extern const int font_height_small;
 
-extern dsTimeManager time_manager;
-extern unsigned int frame_count;
-extern unsigned int fps;
+//extern dsTimeManager time_manager;
+//extern dsTimeManager time_manager2;
+//extern unsigned int frame_count;
+//extern unsigned int fps;
 
 void dsSetEye();
 void dsSpecialKeys(int key, int x, int y);

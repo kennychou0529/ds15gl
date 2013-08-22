@@ -7,15 +7,21 @@
 
 class DSFrame {
 public:
-    DSFrame() {}
+    DSFrame();
     ~DSFrame() {}
     void initialize();
     void display();
-
+    size_t getFPS() { return fps; }
 private:
+    void calculateFPS();
     DSScene scene;
     DSStatusBar statusBar;
     //DSMap map;
+
+    // For FPS
+    size_t num_frames;
+    size_t fps;
+    dsTimeManager time_manager;
 };
 
 #endif

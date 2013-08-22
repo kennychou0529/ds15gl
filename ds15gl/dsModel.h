@@ -4,7 +4,6 @@
 #define _DSMODEL_H
 
 #include <GL/glut.h>
-#include "dsTimeManager.h"
 
 // MD2Model 类不必直接使用，已经封装到 dsSoldier 类里了
 // dsSoldier 用法详见 dsSoldier.h
@@ -17,7 +16,6 @@ public:
     void clear();
     int renderFrame(size_t frame_index);
     int renderSmoothly(size_t frame1_index, size_t frame2_index, GLfloat percentage);
-    dsTimeManager time_manager;
 
 private:
     // 以下定义了一些 struct

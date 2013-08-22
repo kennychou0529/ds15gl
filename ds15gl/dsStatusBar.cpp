@@ -3,10 +3,15 @@
 #include <sstream>
 #include <iomanip>
 #include "dsTextManager.h"
+#include "dsFrame.h"
+
+extern DSFrame frame;
 
 DSStatusBar::DSStatusBar() {}
 
 DSStatusBar::~DSStatusBar() {}
+
+void DSStatusBar::init() {}
 
 void DSStatusBar::show() {
     // 更改投影方式为 2D 平行投影
@@ -51,11 +56,11 @@ void DSStatusBar::show() {
 
     //std::wstringstream os;
     os.str(L"");
-    os << L"FPS " << fps;
+    os << L"FPS " << frame.getFPS();
     glPushMatrix();
     glLoadIdentity();
     glScalef(0.5, 0.5, 0.5);
-    dstext.print(5, window_height - 20, os.str());
+    dstext.print(5, (GLfloat)window_height - 20, os.str());
     glPopMatrix();
 
     glEnable(GL_TEXTURE_2D);

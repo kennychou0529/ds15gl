@@ -1,10 +1,11 @@
 ﻿#include "dsTools.h"
-#include "dsModel.h"
 #include <mutex>
 #include <thread>
 #include <iostream>
 #include <iomanip>
-
+#include "dsLight.h"
+#include "dsVector2f.h"
+#include "dsVector.h"
 static const double viewMoveSpeed = 1.0;
 static const GLdouble pi = 3.1415926;
 
@@ -18,9 +19,10 @@ int window_width = 1280;
 int window_height = 720;
 int status_bar_width = 200;
 
-dsTimeManager time_manager;
-unsigned int frame_count;
-unsigned int fps;
+//dsTimeManager time_manager;
+//dsTimeManager time_manager2;
+//unsigned int frame_count;
+//unsigned int fps;
 
 // 文字管理器
 dsTextManager dstext;
