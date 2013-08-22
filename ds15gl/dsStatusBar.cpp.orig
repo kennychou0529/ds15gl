@@ -3,16 +3,22 @@
 #include <sstream>
 #include <iomanip>
 #include "dsTextManager.h"
+<<<<<<< origin/Sound
+=======
 #include "dsFrame.h"
 
 extern DSFrame frame;
+>>>>>>> local
 
 DSStatusBar::DSStatusBar() {}
 
 DSStatusBar::~DSStatusBar() {}
 
+<<<<<<< origin/Sound
+=======
 void DSStatusBar::init() {}
 
+>>>>>>> local
 void DSStatusBar::show() {
     // 更改投影方式为 2D 平行投影
     glMatrixMode(GL_PROJECTION);
@@ -56,11 +62,19 @@ void DSStatusBar::show() {
 
     //std::wstringstream os;
     os.str(L"");
+<<<<<<< origin/Sound
+    os << L"FPS " << fps;
+    glPushMatrix();
+    glLoadIdentity();
+    glScalef(0.5, 0.5, 0.5);
+    dstext.print(5, window_height - 20, os.str());
+=======
     os << L"FPS " << frame.getFPS();
     glPushMatrix();
     glLoadIdentity();
     glScalef(0.5, 0.5, 0.5);
     dstext.print(5, (GLfloat)window_height - 20, os.str());
+>>>>>>> local
     glPopMatrix();
 
     glEnable(GL_TEXTURE_2D);

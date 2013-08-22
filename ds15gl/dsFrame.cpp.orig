@@ -1,4 +1,8 @@
 ﻿#include "dsFrame.h"
+<<<<<<< origin/Sound
+
+void DSFrame::initialize() {
+=======
 DSFrame::DSFrame() {}
 
 void DSFrame::initialize() {
@@ -6,10 +10,16 @@ void DSFrame::initialize() {
     fps = 0;
     time_manager.recordTime();
 
+>>>>>>> local
     scene.initialize();
 }
 
 void DSFrame::display() {
+<<<<<<< origin/Sound
+    scene.show();
+    statusBar.show();
+}
+=======
     // 计算 FPS，每秒统计一次
     calculateFPS();
     scene.show();
@@ -24,3 +34,4 @@ void DSFrame::calculateFPS() {
         time_manager.recordTime();
     }
 }
+>>>>>>> local
