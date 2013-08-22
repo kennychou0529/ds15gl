@@ -44,7 +44,7 @@ void DSScene::show() {
 
 void DSScene::initialize() {
     soldier.load("data/sword_man/tris.md2",
-                 "data/sword_man/knight_white.bmp",
+                 "data/sword_man/tris.bmp",
                  "data/sword_man/weapon.md2",
                  "data/sword_man/weapon.bmp");
     soldier.time_manager.recordTime();
