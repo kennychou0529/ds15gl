@@ -6,6 +6,7 @@
 #include "dsLight.h"
 #include "dsVector2f.h"
 #include "dsVector.h"
+
 #include "dsSoundManager.h"
 
 static const double viewMoveSpeed = 1.0;
@@ -30,8 +31,10 @@ int status_bar_width = 200;
 dsTextManager dstext;
 dsTextManager dstext_small;
 
+
 //声音管理
 DSSoundManager* soundManager = DSSoundManager::getSoundManager();
+
 
 #ifdef WIN32
 const char* font_file_name = "C:/Windows/Fonts/msyhbd.ttc";
@@ -66,6 +69,7 @@ void dsSetEye() {
 
     // 设置摄像头位置
     gluLookAt(eye[0], eye[1], eye[2], center[0], center[1], center[2], up[0], up[1], up[2]);
+
 
 	// 监听者位置
 	soundManager->setListenerPosition(eye[0], eye[1], eye[2]);
