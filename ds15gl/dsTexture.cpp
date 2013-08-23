@@ -46,7 +46,7 @@ GLuint dsLoadTextureBMP2D(const char* file_name, GLuint* pheight, GLuint* pwidth
     }
 
     // 读取纹理图片数据
-    if (is.read((char*)pixels, total_bytes) <= 0) {
+    if (!is.read((char*)pixels, total_bytes)) {
         delete[] pixels;
         is.close();
         return 0;
