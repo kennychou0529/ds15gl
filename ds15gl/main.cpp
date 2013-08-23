@@ -5,10 +5,11 @@
 #include "dsTextManager.h"
 #include "dsModel.h"
 
-// 这可以避免在 Windows 下出现命令行窗口
-#ifdef WIN32
-#pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"") 
-#endif
+//
+//// 这可以避免在 Windows 下出现命令行窗口
+//#ifdef WIN32
+//#pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"") 
+//#endif
 
 DSFrame frame;
 
