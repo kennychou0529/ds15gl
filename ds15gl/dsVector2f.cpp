@@ -12,8 +12,20 @@ dsVector2f dsVector2f::operator+(const dsVector2f& rhs) const {
     return dsVector2f(x + rhs.x, y + rhs.y);
 }
 
+dsVector2f& dsVector2f::operator+=(const dsVector2f& rhs) {
+    x += rhs.x;
+    y += rhs.y;
+    return *this;
+}
+
 dsVector2f dsVector2f::operator-(const dsVector2f& rhs) const {
     return dsVector2f(x - rhs.x, y - rhs.y);
+}
+
+dsVector2f& dsVector2f::operator-=(const dsVector2f& rhs) {
+    x -= rhs.x;
+    y -= rhs.y;
+    return *this;
 }
 
 // 点积

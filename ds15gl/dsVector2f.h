@@ -10,7 +10,8 @@ public:
     GLfloat getLenth();
     dsVector2f operator+(const dsVector2f& rhs) const;
     dsVector2f operator-(const dsVector2f& rhs) const;
-
+    dsVector2f& operator+=(const dsVector2f& rhs);
+    dsVector2f& operator-=(const dsVector2f& rhs);
     // 点积
     GLfloat operator*(const dsVector2f& rhs) const;
 

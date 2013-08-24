@@ -6,35 +6,37 @@
 #include "dsLight.h"
 #include "dsVector2f.h"
 #include "dsVector.h"
-
+#include "dsTimeManager.h"
 #include "dsSoundManager.h"
 
-static const double viewMoveSpeed = 0.5;
+static const double viewMoveSpeed = 20;
 static const GLdouble pi = 3.1415926;
 
 // 眼睛位置，用球坐标 (r, phi, theta) 表示
 // 其中，phi 表示与 z 轴的夹角
 // theta 表示在 xy 平面的投影的旋转角 
-GLdouble eye_sphere[3] = {10.0, pi / 4, - pi / 2};
+GLdouble eye_sphere[3] = { 10.0, pi / 4, -pi / 2 };
+
+GLdouble up[3] = { 0.0, 0.0, 1.0 };
+
+// 视线中心点，球坐标的原点
+GLdouble center[3] = { 0.0, 0.0, 0.0 };
+GLdouble center_saved[3] = { 0.0, 0.0, 0.0 };
+
+// 相机位置，不直接修改，通过球坐标间接操作
+GLdouble eye[3];
 
 // 全局使用
 int window_width = 1280;
 int window_height = 720;
 int status_bar_width = 200;
 
-//dsTimeManager time_manager;
-//dsTimeManager time_manager2;
-//unsigned int frame_count;
-//unsigned int fps;
-
 // 文字管理器
 dsTextManager dstext;
 dsTextManager dstext_small;
 
-
 //声音管理
 DSSoundManager* soundManager = DSSoundManager::getSoundManager();
-
 
 #ifdef WIN32
 const char* font_file_name = "C:/Windows/Fonts/msyhbd.ttc";
@@ -47,23 +49,12 @@ const char* font_file_name = "/usr/share/fonts/truetype/wqy/wqy-microhei.ttc";
 const int font_height = 32;
 const int font_height_small = 13;
 
-// 勿用
-// GLdouble center_sphere[3] = {20.0, 3 * pi / 4, - pi / 2};
-
-GLdouble up[3] = {0.0, 0.0, 1.0};
-
-// 视线中心点，球坐标的原点
-GLdouble center[3] = {0.0, 0.0, 0.0};
-
-// 相机位置，不直接修改，通过球坐标间接操作
-GLdouble eye[3];
-
 GLdouble axeLength = eye_sphere[0] * 0.5;
 
 void dsSetEye() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-	
+
     // 将球坐标转化为直角坐标
     dsSphereToOrtho3dv(eye_sphere, center, eye);
 
@@ -71,11 +62,9 @@ void dsSetEye() {
     gluLookAt(eye[0], eye[1], eye[2], center[0], center[1], center[2], up[0], up[1], up[2]);
 
 
-	// 监听者位置
-	soundManager->setListenerPosition(eye[0], eye[1], eye[2]);
+    // 监听者位置
+    soundManager->setListenerPosition(eye[0], eye[1], eye[2]);
 }
-
-
 
 void dsSpecialKeys(int key, int x, int y) {
     static GLdouble rotateSpeed = 0.1;
@@ -124,161 +113,131 @@ void dsSpecialKeys(int key, int x, int y) {
 
     axeLength = eye_sphere[0] * 0.5;
 }
-enum Direction
-{
-	STOP = 0,
-	UP = 1,
-	DOWN = 1<<1,
-	LEFT = 1<<2,
-	RIGHT = 1<<3,
+
+enum Direction {
+    STOP = 0,
+    UP = 1,
+    DOWN = 1 << 1,
+    LEFT = 1 << 2,
+    RIGHT = 1 << 3,
 };
 
-int idir=STOP;
+int idir = STOP;
+static dsTimeManager time_manager_for_eye;
 
 void dsKeyUP(unsigned char key, int x, int y){
-	switch (key) {
-	case 'a':
-	case 'A':
-		idir &= ~LEFT;
-		break;
+    time_manager_for_eye.recordTime();
+    center_saved[0] = center[0];
+    center_saved[1] = center[1];
+    center_saved[2] = center[2];
 
-	case 'w':
-	case 'W':
-		idir &= ~UP;
-		break;
-
-	case 'd':
-	case 'D':
-		idir &= ~RIGHT;
-		break;
-
-	case 's':
-	case 'S':
-		idir &= ~DOWN;
-		break;
-
-	default:
-		break;
-	}
-}
-
-void dsKeyDown(unsigned char key, int x, int y) {
     switch (key) {
-	case 'a':
-	case 'A':
-		idir |= LEFT;
-		break;
+    case 'a': case 'A':
+        idir &= ~LEFT;
+        break;
 
-	case 'w':
-	case 'W':
-		idir |= UP;
-		break;
+    case 'w': case 'W':
+        idir &= ~UP;
+        break;
 
-	case 'd':
-	case 'D':
-		idir |= RIGHT;
-		break;
+    case 'd': case 'D':
+        idir &= ~RIGHT;
+        break;
 
-	case 's':
-	case 'S':
-		idir |= DOWN;
-		break;
-	//test
-	case 'm':
-		void centerMoveTo(float,float);
-		centerMoveTo(100,100);
-		break;
+    case 's': case 'S':
+        idir &= ~DOWN;
+        break;
+
     default:
         break;
     }
 }
+
+void dsKeyDown(unsigned char key, int x, int y) {
+    time_manager_for_eye.recordTime();
+    center_saved[0] = center[0];
+    center_saved[1] = center[1];
+    center_saved[2] = center[2];
+
+    switch (key) {
+    case 'a': case 'A':
+        idir |= LEFT;
+        break;
+
+    case 'w': case 'W':
+        idir |= UP;
+        break;
+
+    case 'd': case 'D':
+        idir |= RIGHT;
+        break;
+
+    case 's': case 'S':
+        idir |= DOWN;
+        break;
+        //test
+    case 'm':
+        void centerMoveTo(float, float);
+        centerMoveTo(100, 100);
+        break;
+    default:
+        break;
+    }
+}
+
 bool moving = false;
-float targetX,targetY;
+float targetX, targetY;
 
 
-void centerMoveTo(float x,float y){
-	targetX = x;
-	targetY = y;
-	moving = true;
+void centerMoveTo(float x, float y){
+    targetX = x;
+    targetY = y;
+    moving = true;
 }
 
-void moveTo(){
-	dsVector2f dir = dsVector2f(GLfloat(targetX - center[0]), 
-		GLfloat(targetY - center[1]));
+void moveTo() {
+    dsVector2f dir = dsVector2f(GLfloat(targetX - center[0]),
+        GLfloat(targetY - center[1]));
 
-	if(dir.getLenth() <= viewMoveSpeed){
-		center[0] += dir.x;
-		center[1] += dir.y;
-		moving = false;
-		return;
-	}
-	
-	dir.normalise();
-	center[0] += dir.x;
-	center[1] += dir.y;	
+    if (dir.getLenth() <= viewMoveSpeed){
+        center[0] += dir.x;
+        center[1] += dir.y;
+        moving = false;
+        return;
+    }
+
+    dir.normalise();
+    center[0] += dir.x;
+    center[1] += dir.y;
 }
 
-void dsCenterMove(){
+void dsCenterMove() {
+    if (moving == true) {
+        moveTo();
+        return;
+    }
 
-	if (moving ==  true)
-	{
-		moveTo();
-		return;
-	}
+    if (idir == 0)
+        return;
 
-	if(idir==0)
-		return;
+    dsVector2f dir_up(GLfloat(center[0] - eye[0]), GLfloat(center[1] - eye[1]));
+    dsVector2f dir_left = dir_up.turnLeft();
+    dsVector2f dir_move(0.0f, 0.0f); // Moving direction
 
-	dsVector2f dir = dsVector2f(GLfloat(center[0] - eye[0]), GLfloat(center[1] - eye[1]));
-	dir.normalise();
-	dsVector2f left = dir.turnLeft();
-	dsVector2f upleft =dir.turn45d();
-	dsVector2f downleft = upleft.turnLeft();
+    if (idir & UP)
+        dir_move += dir_up;
+    if (idir & DOWN)
+        dir_move -= dir_up;
+    if (idir & LEFT)
+        dir_move += dir_left;
+    if (idir & RIGHT)
+        dir_move -= dir_left;
+    dir_move.normalise();
 
-	switch (idir ) {
-	case LEFT:
-		center[0] += left.x * viewMoveSpeed;
-		center[1] += left.y * viewMoveSpeed;
-		break;
-
-	case UP:
-		center[0] += dir.x * viewMoveSpeed;
-		center[1] += dir.y * viewMoveSpeed;
-		break;
-
-	case RIGHT:
-		center[0] -= left.x * viewMoveSpeed;
-		center[1] -= left.y * viewMoveSpeed;
-		break;
-
-	case DOWN:
-		center[0] -= dir.x * viewMoveSpeed;
-		center[1] -= dir.y * viewMoveSpeed;
-		break;
-	case UP|LEFT:
-		center[0] += upleft.x * viewMoveSpeed;
-		center[1] += upleft.y * viewMoveSpeed;
-		break;
-	case DOWN|LEFT:
-		center[0] += downleft.x * viewMoveSpeed;
-		center[1] += downleft.y * viewMoveSpeed;
-		break;
-	case DOWN|RIGHT:
-		center[0] -= upleft.x * viewMoveSpeed;
-		center[1] -= upleft.y * viewMoveSpeed;
-		break;
-	case UP|RIGHT:		
-		center[0] -= downleft.x * viewMoveSpeed;
-		center[1] -= downleft.y * viewMoveSpeed;
-		break;
-
-
-	default:
-		break;
-	}
+    double duration = time_manager_for_eye.getDurationSecd();
+    center[0] = center_saved[0] + dir_move.x * viewMoveSpeed * (duration);
+    center[1] = center_saved[1] + dir_move.y * viewMoveSpeed * (duration);
 }
-
-
 
 //效果不理想
 //void dsPassiveMonitionFunc(int x,int y){
