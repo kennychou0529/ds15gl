@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <alut.h>
 #include <stdio.h>
@@ -15,10 +15,7 @@
 #pragma comment (lib, "./openal/lib/OpenAL32.lib")
 #pragma comment (lib, "./openal/lib/alut.lib")
 
-//multimap�ļ������ظ�
-
-
-//��������࣬Ŀǰ��֧��wav
+// 注释待添加
 
 class Clip{
 public:
@@ -47,16 +44,15 @@ public:
 
 	DSSoundManager(void);
 	~DSSoundManager(void);
-	//���ļ��е������������n��ʾ��Ҫn��������Դ�Ա�ʹ��,���ص�һ��source��Index
+	// 注释待添加
 	void addSound(unsigned int id, char* fileName);
-	//����ָ��ID��Դ����Ӧָ��Դ��λ�ú��ٶ�
-	//idӦΪ�����ߵ����ͺ��������͵����?
+	// 注释待添加
 	void playSound(unsigned int id);
-	//������Ƶ,���尴ʲô���ش���
+	// 注释待添加
 	void loadSounds();
 	
 	void setListenerPosition(ALfloat x, ALfloat y, ALfloat z=8.f);
-	//������
+	// 注释待添加
 	static void displayALError(char* func,ALenum alError);
 
 	

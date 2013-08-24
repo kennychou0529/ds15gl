@@ -1,11 +1,11 @@
-#include "dsSoundManager.h"
+﻿#include "dsSoundManager.h"
 
 void Clip::append(){
 	alGetError();
 
 	ALuint sourceIndex = 0;
 
-	//����buffuer
+	// 注释待添加
 	ALuint tempBuffer ;
 	alGenBuffers(1,&tempBuffer);
 	if((alError = alGetError())!= AL_NO_ERROR){
@@ -38,7 +38,7 @@ void Clip::append(){
 			return ;
 		}
 
-		//����source
+		// 注释待添加
 		ALuint tempSource;
 		alGenSources(1,&tempSource);
 		if((alError = alGetError())!= AL_NO_ERROR){
@@ -326,14 +326,14 @@ void DSSoundManager::displayALError(char* func,ALenum alError){
 
 void DSSoundManager::loadSounds(){
 	/**/
-///* ��ʱ�����ñ������֣�wav �ı������ֻ�ǳ���?
+//	// 注释待添加
 //	*/
 //	addSound(0,"data/sound/test.mp3");
 //	/*alSourcePlay(backgroundSound);*/
 //
 //	addSound(1,"data/sound/Footsteps.wav");
 //
-//	//����
+//	// 注释待添加
 //	
 //		playSound(0);
 //		playSound(1);
