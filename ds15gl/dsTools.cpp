@@ -9,12 +9,12 @@
 
 #include "dsSoundManager.h"
 
-static const double viewMoveSpeed = 1.0;
+static const double viewMoveSpeed = 0.5;
 static const GLdouble pi = 3.1415926;
 
 // 眼睛位置，用球坐标 (r, phi, theta) 表示
 // 其中，phi 表示与 z 轴的夹角
-// theta 表示在 xy 平面的投影的旋转角
+// theta 表示在 xy 平面的投影的旋转角 
 GLdouble eye_sphere[3] = {10.0, pi / 4, - pi / 2};
 
 // 全局使用
@@ -63,7 +63,7 @@ GLdouble axeLength = eye_sphere[0] * 0.5;
 void dsSetEye() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-
+	
     // 将球坐标转化为直角坐标
     dsSphereToOrtho3dv(eye_sphere, center, eye);
 
@@ -74,6 +74,8 @@ void dsSetEye() {
 	// 监听者位置
 	soundManager->setListenerPosition(eye[0], eye[1], eye[2]);
 }
+
+
 
 void dsSpecialKeys(int key, int x, int y) {
     static GLdouble rotateSpeed = 0.1;
@@ -122,41 +124,122 @@ void dsSpecialKeys(int key, int x, int y) {
 
     axeLength = eye_sphere[0] * 0.5;
 }
+enum Direction
+{
+	STOP = 0,
+	UP = 1,
+	DOWN = 1<<1,
+	LEFT = 1<<2,
+	RIGHT = 1<<3,
+};
 
-void dsKeys(unsigned char key, int x, int y) {
-    dsVector2f dir = dsVector2f(GLfloat(center[0] - eye[0]), GLfloat(center[1] - eye[1]));
-    dir.normalise();
-    dsVector2f left = dir.turnLeft();
+int idir=STOP;
 
+void dsKeyUP(unsigned char key, int x, int y){
+	switch (key) {
+	case 'a':
+	case 'A':
+		idir &= ~LEFT;
+		break;
+
+	case 'w':
+	case 'W':
+		idir &= ~UP;
+		break;
+
+	case 'd':
+	case 'D':
+		idir &= ~RIGHT;
+		break;
+
+	case 's':
+	case 'S':
+		idir &= ~DOWN;
+		break;
+
+	default:
+		break;
+	}
+}
+
+void dsKeyDown(unsigned char key, int x, int y) {
     switch (key) {
-    case 'a':
-    case 'A':
-        center[0] += left.x * viewMoveSpeed;
-        center[1] += left.y * viewMoveSpeed;
-        break;
+	case 'a':
+	case 'A':
+		idir |= LEFT;
+		break;
 
-    case 'w':
-    case 'W':
-        center[0] += dir.x * viewMoveSpeed;
-        center[1] += dir.y * viewMoveSpeed;
-        break;
+	case 'w':
+	case 'W':
+		idir |= UP;
+		break;
 
-    case 'd':
-    case 'D':
-        center[0] -= left.x * viewMoveSpeed;
-        center[1] -= left.y * viewMoveSpeed;
-        break;
+	case 'd':
+	case 'D':
+		idir |= RIGHT;
+		break;
 
-    case 's':
-    case 'S':
-        center[0] -= dir.x * viewMoveSpeed;
-        center[1] -= dir.y * viewMoveSpeed;
-        break;
+	case 's':
+	case 'S':
+		idir |= DOWN;
+		break;
 
     default:
         break;
     }
 }
+
+void dsCenterMove(){
+	dsVector2f dir = dsVector2f(GLfloat(center[0] - eye[0]), GLfloat(center[1] - eye[1]));
+	dir.normalise();
+	dsVector2f left = dir.turnLeft();
+	dsVector2f upleft =dir.turn45d();
+	dsVector2f downleft = upleft.turnLeft();
+
+	switch (idir ) {
+	case LEFT:
+		center[0] += left.x * viewMoveSpeed;
+		center[1] += left.y * viewMoveSpeed;
+		break;
+
+	case UP:
+		center[0] += dir.x * viewMoveSpeed;
+		center[1] += dir.y * viewMoveSpeed;
+		break;
+
+	case RIGHT:
+		center[0] -= left.x * viewMoveSpeed;
+		center[1] -= left.y * viewMoveSpeed;
+		break;
+
+	case DOWN:
+		center[0] -= dir.x * viewMoveSpeed;
+		center[1] -= dir.y * viewMoveSpeed;
+		break;
+	case UP|LEFT:
+		center[0] += upleft.x * viewMoveSpeed;
+		center[1] += upleft.y * viewMoveSpeed;
+		break;
+	case DOWN|LEFT:
+		center[0] += downleft.x * viewMoveSpeed;
+		center[1] += downleft.y * viewMoveSpeed;
+		break;
+	case DOWN|RIGHT:
+		center[0] -= upleft.x * viewMoveSpeed;
+		center[1] -= upleft.y * viewMoveSpeed;
+		break;
+	case UP|RIGHT:		
+		center[0] -= downleft.x * viewMoveSpeed;
+		center[1] -= downleft.y * viewMoveSpeed;
+		break;
+
+
+	default:
+		break;
+	}
+}
+
+
 
 //效果不理想
 //void dsPassiveMonitionFunc(int x,int y){

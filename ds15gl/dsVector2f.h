@@ -16,6 +16,9 @@ public:
 
     // 返回一个逆时针旋转 90 度的向量
     dsVector2f turnLeft() const;
+	// 返回一个逆时针旋转 45 度的向量
+	dsVector2f turn45d() const;
+
 
     GLfloat& operator[](size_t index);
 

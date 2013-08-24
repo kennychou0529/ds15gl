@@ -325,18 +325,19 @@ void DSSoundManager::displayALError(char* func,ALenum alError){
 
 
 void DSSoundManager::loadSounds(){
-/* ��ʱ�����ñ������֣�wav �ı������ֻ�ǳ���?
-	*/
-	addSound(0,"data/sound/test.mp3");
-	/*alSourcePlay(backgroundSound);*/
-
-	addSound(1,"data/sound/Footsteps.wav");
-
-	//����
-	
-		playSound(0);
-		playSound(1);
-		//alutSleep(1);
+	/**/
+///* ��ʱ�����ñ������֣�wav �ı������ֻ�ǳ���?
+//	*/
+//	addSound(0,"data/sound/test.mp3");
+//	/*alSourcePlay(backgroundSound);*/
+//
+//	addSound(1,"data/sound/Footsteps.wav");
+//
+//	//����
+//	
+//		playSound(0);
+//		playSound(1);
+//		//alutSleep(1);
 
 	
 }

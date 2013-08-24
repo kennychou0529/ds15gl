@@ -19,7 +19,8 @@ DSFrame frame;
 
 void dsDisplay() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    dsSetEye(); // 设置视角
+	dsCenterMove();
+	dsSetEye(); // 设置视角
     frame.display();
     glutSwapBuffers();
 
@@ -76,7 +77,8 @@ int main(int argc, char* argv[]) {
     glutSpecialFunc(dsSpecialKeys);
     glutReshapeFunc(dsReshape);
     glutIdleFunc(dsIdle);
-    glutKeyboardFunc(dsKeys);
+    glutKeyboardFunc(dsKeyDown);
+	glutKeyboardUpFunc(dsKeyUP);
     dsInit();
     glutMainLoop();
     return 0;

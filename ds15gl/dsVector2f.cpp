@@ -26,6 +26,11 @@ dsVector2f dsVector2f::turnLeft() const {
     return dsVector2f(-y, x);
 }
 
+dsVector2f dsVector2f::turn45d() const{
+	static float temp = cos(45);
+	return dsVector2f((x - y)*temp, (x + y)*temp);
+}
+
 int dsVector2f::normalise() {
     if (std::fabs(x) < 1e-4 && std::fabs(y) < 1e-4) {
         return 0;
