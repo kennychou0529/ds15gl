@@ -183,13 +183,52 @@ void dsKeyDown(unsigned char key, int x, int y) {
 	case 'S':
 		idir |= DOWN;
 		break;
-
+	//test
+	case 'm':
+		void centerMoveTo(float,float);
+		centerMoveTo(100,100);
+		break;
     default:
         break;
     }
 }
+bool moving = false;
+float targetX,targetY;
+
+
+void centerMoveTo(float x,float y){
+	targetX = x;
+	targetY = y;
+	moving = true;
+}
+
+void moveTo(){
+	dsVector2f dir = dsVector2f(GLfloat(targetX - center[0]), 
+		GLfloat(targetY - center[1]));
+
+	if(dir.getLenth() <= viewMoveSpeed){
+		center[0] += dir.x;
+		center[1] += dir.y;
+		moving = false;
+		return;
+	}
+	
+	dir.normalise();
+	center[0] += dir.x;
+	center[1] += dir.y;	
+}
 
 void dsCenterMove(){
+
+	if (moving ==  true)
+	{
+		moveTo();
+		return;
+	}
+
+	if(idir==0)
+		return;
+
 	dsVector2f dir = dsVector2f(GLfloat(center[0] - eye[0]), GLfloat(center[1] - eye[1]));
 	dir.normalise();
 	dsVector2f left = dir.turnLeft();
