@@ -4,6 +4,7 @@
 #include "dsFrame.h"
 #include "dsTextManager.h"
 #include "dsModel.h"
+#include "dsEye.h"
 
 //
 //// 这可以避免在 Windows 下出现命令行窗口
@@ -19,8 +20,7 @@ DSFrame frame;
 
 void dsDisplay() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	dsCenterMove();
-    dsEyeRotate();
+
 	dsSetEye(); // 设置视角
     frame.display();
     glutSwapBuffers();
@@ -75,12 +75,12 @@ int main(int argc, char* argv[]) {
     glutDisplayFunc(dsDisplay);
     // glutMouseFunc(dsMouseFunc);
     // glutPassiveMotionFunc(dsPassiveMonitionFunc);
-    glutSpecialFunc(dsSpecialKeys);
-    glutSpecialUpFunc(dsSpecialKeysUp);
+    glutSpecialFunc(dsSpecialKeyDown);
+    glutSpecialUpFunc(dsSpecialKeyUp);
     glutReshapeFunc(dsReshape);
     glutIdleFunc(dsIdle);
     glutKeyboardFunc(dsKeyDown);
-	glutKeyboardUpFunc(dsKeyUP);
+	glutKeyboardUpFunc(dsKeyUp);
     dsInit();
     glutMainLoop();
     return 0;

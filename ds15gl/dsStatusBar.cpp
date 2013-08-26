@@ -4,6 +4,7 @@
 #include <iomanip>
 #include "dsTextManager.h"
 #include "dsFrame.h"
+#include "dsEye.h"
 
 extern DSFrame frame;
 

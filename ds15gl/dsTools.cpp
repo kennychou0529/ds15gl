@@ -6,27 +6,8 @@
 #include "dsLight.h"
 #include "dsVector2f.h"
 #include "dsVector.h"
-#include "dsTimeManager.h"
 #include "dsSoundManager.h"
-
-static const double viewMoveSpeed = 20;
-static const GLdouble pi = 3.1415926;
-
-// 眼睛位置，用球坐标 (r, phi, theta) 表示
-// 其中，phi 表示与 z 轴的夹角
-// theta 表示在 xy 平面的投影的旋转角 
-GLdouble eye_sphere[3] = { 10.0, pi / 4, -pi / 2 };
-GLdouble eye_sphere_saved[3];
-
-GLdouble up[3] = { 0.0, 0.0, 1.0 };
-
-// 视线中心点，球坐标的原点
-GLdouble center[3] = { 0.0, 0.0, 0.0 };
-GLdouble center_saved[3] = { 0.0, 0.0, 0.0 };
-
-// 相机位置，不直接修改，通过球坐标间接操作
-GLdouble eye[3];
-GLdouble eye_saved[3];
+#include "dsEye.h"
 
 // 全局使用
 int window_width = 1280;
@@ -37,7 +18,7 @@ int status_bar_width = 200;
 dsTextManager dstext;
 dsTextManager dstext_small;
 
-//声音管理
+// 声音管理
 DSSoundManager* soundManager = DSSoundManager::getSoundManager();
 
 #ifdef WIN32
@@ -53,43 +34,9 @@ const int font_height_small = 13;
 
 GLdouble axeLength = eye_sphere[0] * 0.5;
 
-void dsSetEye() {
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+void dsSpecialKeyDown(int key, int x, int y) {
+    saveEyeSphere();
 
-    // 将球坐标转化为直角坐标
-    dsSphereToOrtho3dv(eye_sphere, center, eye);
-
-    // 设置摄像头位置
-    gluLookAt(eye[0], eye[1], eye[2], center[0], center[1], center[2], up[0], up[1], up[2]);
-
-
-    // 监听者位置
-    soundManager->setListenerPosition(eye[0], eye[1], eye[2]);
-}
-
-dsTimeManager time_manager_for_special;
-
-enum Direction {
-    STOP = 0,
-    UP = 1,
-    DOWN = 1 << 1,
-    LEFT = 1 << 2,
-    RIGHT = 1 << 3,
-};
-
-// 眼睛旋转方向
-int rdir = STOP;
-
-void dsSpecialKeys(int key, int x, int y) {
-    time_manager_for_special.recordTime();
-    eye_sphere_saved[0] = eye_sphere[0];
-    eye_sphere_saved[1] = eye_sphere[1];
-    eye_sphere_saved[2] = eye_sphere[2];
-
-    eye_saved[0] = eye[0];
-    eye_saved[1] = eye[1];
-    eye_saved[2] = eye[2];
     switch (key) {
     case GLUT_KEY_UP:
         rdir |= UP;
@@ -145,20 +92,12 @@ void dsSpecialKeys(int key, int x, int y) {
         center[2] -= direction[2] * viewMoveSpeed;
         break;
     }*/
-    /*if (key == GLUT_KEY_UP || key == GLUT_KEY_DOWN || key == GLUT_KEY_LEFT || key == GLUT_KEY_RIGHT) {
-        dsSphereToOrtho3dv(eye_sphere, center, eye);
-        center[0] += eye_saved[0] - eye[0];
-        center[1] += eye_saved[1] - eye[1];
-        center[2] += eye_saved[2] - eye[2];
-    }*/
+
     axeLength = eye_sphere[0] * 0.5;
 }
 
-void dsSpecialKeysUp(int key, int x, int y) {
-    time_manager_for_special.recordTime();
-    eye_sphere_saved[0] = eye_sphere[0];
-    eye_sphere_saved[1] = eye_sphere[1];
-    eye_sphere_saved[2] = eye_sphere[2];
+void dsSpecialKeyUp(int key, int x, int y) {
+    saveEyeSphere();
 
     switch (key) {
     case GLUT_KEY_UP:
@@ -178,62 +117,43 @@ void dsSpecialKeysUp(int key, int x, int y) {
     }
 }
 
-// 眼睛位置平移方向
-int idir = STOP;
-
-static dsTimeManager time_manager_for_eye;
-
-void dsKeyUP(unsigned char key, int x, int y){
-    time_manager_for_eye.recordTime();
-    center_saved[0] = center[0];
-    center_saved[1] = center[1];
-    center_saved[2] = center[2];
+void dsKeyUp(unsigned char key, int x, int y){
+    saveCenter();
 
     switch (key) {
     case 'a': case 'A':
         idir &= ~LEFT;
         break;
-
     case 'w': case 'W':
         idir &= ~UP;
         break;
-
     case 'd': case 'D':
         idir &= ~RIGHT;
         break;
-
     case 's': case 'S':
         idir &= ~DOWN;
         break;
-
     default:
         break;
     }
 }
 
 void dsKeyDown(unsigned char key, int x, int y) {
-    time_manager_for_eye.recordTime();
-    center_saved[0] = center[0];
-    center_saved[1] = center[1];
-    center_saved[2] = center[2];
+    saveCenter();
 
     switch (key) {
     case 'a': case 'A':
         idir |= LEFT;
         break;
-
     case 'w': case 'W':
         idir |= UP;
         break;
-
     case 'd': case 'D':
         idir |= RIGHT;
         break;
-
     case 's': case 'S':
         idir |= DOWN;
         break;
-        //test
     case 'm':
         void centerMoveTo(float, float);
         centerMoveTo(100, 100);
@@ -241,89 +161,6 @@ void dsKeyDown(unsigned char key, int x, int y) {
     default:
         break;
     }
-}
-
-bool moving = false;
-float targetX, targetY;
-
-
-void centerMoveTo(float x, float y){
-    targetX = x;
-    targetY = y;
-    moving = true;
-}
-
-void moveTo() {
-    dsVector2f dir = dsVector2f(GLfloat(targetX - center[0]),
-        GLfloat(targetY - center[1]));
-
-    if (dir.getLenth() <= viewMoveSpeed){
-        center[0] += dir.x;
-        center[1] += dir.y;
-        moving = false;
-        return;
-    }
-
-    dir.normalise();
-    center[0] += dir.x;
-    center[1] += dir.y;
-}
-
-void dsCenterMove() {
-    if (moving == true) {
-        moveTo();
-        return;
-    }
-
-    if (idir == 0)
-        return;
-
-    dsVector2f dir_up(GLfloat(center[0] - eye[0]), GLfloat(center[1] - eye[1]));
-    dsVector2f dir_left = dir_up.turnLeft();
-    dsVector2f dir_move(0.0f, 0.0f); // Moving direction
-
-    if (idir & UP)
-        dir_move += dir_up;
-    if (idir & DOWN)
-        dir_move -= dir_up;
-    if (idir & LEFT)
-        dir_move += dir_left;
-    if (idir & RIGHT)
-        dir_move -= dir_left;
-    dir_move.normalise();
-
-    double duration = time_manager_for_eye.getDurationSecd();
-    center[0] = center_saved[0] + dir_move.x * viewMoveSpeed * duration;
-    center[1] = center_saved[1] + dir_move.y * viewMoveSpeed * duration;
-}
-
-void dsEyeRotate() {
-    if (rdir == 0) {
-        return;
-    }
-    static GLdouble rotateSpeed = 1;
-    static GLdouble scaleSpeed = 0.5;
-    //GLdouble direction[3];
-    double duration = time_manager_for_special.getDurationSecd();
-
-    int dir1 = 0, dir2 = 0;
-    if (rdir & UP)
-        ++dir1;
-    if (rdir & DOWN)
-        --dir1;
-    if (rdir & LEFT)
-        ++dir2;
-    if (rdir & RIGHT)
-        --dir2;
-
-    eye_sphere[1] = eye_sphere_saved[1] + dir1 * rotateSpeed * duration;
-    if (eye_sphere[1] > pi - 0.01) {
-        eye_sphere[1] = pi - 0.01;
-    }
-    if (eye_sphere[1] < 0.01) {
-        eye_sphere[1] = 0.01;
-    }
-    eye_sphere[2] = eye_sphere_saved[2] + dir2 * rotateSpeed * duration;
 }
 
 //效果不理想
@@ -336,7 +173,6 @@ void dsEyeRotate() {
 //      center[0]+=viewMoveSpeed;
 //  }
 //}
-
 
 // 测试用的函数，画一个直角坐标系
 void dsShowAxes() {
