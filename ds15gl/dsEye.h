@@ -33,11 +33,10 @@ extern int rdir;
 // 视线中心位置平移方向
 extern int idir;
 
-// 保存眼睛球坐标，在 dsTools 中的键盘操作函数中用到
-void saveEyeSphere();
+extern int mdir;
 
-// 保存视线中心点坐标，在 dsTools 中的键盘操作函数中用到
-void saveCenter();
+// 保存当前视角信息，在 dsTools 中的键盘操作函数中用到
+void saveEyeInfo();
 
 // 设置视角，每次绘图时用到
 void dsSetEye();

@@ -34,8 +34,10 @@ const int font_height_small = 13;
 
 GLdouble axeLength = eye_sphere[0] * 0.5;
 
+// bool keyboard_enabled = true;
+
 void dsSpecialKeyDown(int key, int x, int y) {
-    saveEyeSphere();
+    saveEyeInfo();
 
     switch (key) {
     case GLUT_KEY_UP:
@@ -50,54 +52,21 @@ void dsSpecialKeyDown(int key, int x, int y) {
     case GLUT_KEY_RIGHT:
         rdir |= RIGHT;
         break;
+    case GLUT_KEY_F1:
+        mdir |= UP;
+        break;
+    case GLUT_KEY_F2:
+        mdir |= DOWN;
+        break;
     default:
         break;
     }
-    /*switch (key) {
-    case GLUT_KEY_UP:
-        if (eye_sphere[1] < 3.1415926 - rotateSpeed) {
-            eye_sphere[1] += rotateSpeed;
-        }
-
-        break;
-
-    case GLUT_KEY_DOWN:
-        if (eye_sphere[1] > rotateSpeed) {
-            eye_sphere[1] -= rotateSpeed;
-        }
-
-        break;
-
-    case GLUT_KEY_LEFT:
-        eye_sphere[2] += rotateSpeed;
-        break;
-
-    case GLUT_KEY_RIGHT:
-        eye_sphere[2] -= rotateSpeed;
-        break;
-
-    case GLUT_KEY_F1:
-        dsDiff3dv(center, eye, direction);
-        dsNormalize3dv(direction);
-        center[0] += direction[0] * viewMoveSpeed;
-        center[1] += direction[1] * viewMoveSpeed;
-        center[2] += direction[2] * viewMoveSpeed;
-        break;
-
-    case GLUT_KEY_F2:
-        dsDiff3dv(center, eye, direction);
-        dsNormalize3dv(direction);
-        center[0] -= direction[0] * viewMoveSpeed;
-        center[1] -= direction[1] * viewMoveSpeed;
-        center[2] -= direction[2] * viewMoveSpeed;
-        break;
-    }*/
 
     axeLength = eye_sphere[0] * 0.5;
 }
 
 void dsSpecialKeyUp(int key, int x, int y) {
-    saveEyeSphere();
+    saveEyeInfo();
 
     switch (key) {
     case GLUT_KEY_UP:
@@ -112,13 +81,19 @@ void dsSpecialKeyUp(int key, int x, int y) {
     case GLUT_KEY_RIGHT:
         rdir &= ~RIGHT;
         break;
+    case GLUT_KEY_F1:
+        mdir &= ~UP;
+        break;
+    case GLUT_KEY_F2:
+        mdir &= ~DOWN;
+        break;
     default:
         break;
     }
 }
 
 void dsKeyUp(unsigned char key, int x, int y){
-    saveCenter();
+    saveEyeInfo();
 
     switch (key) {
     case 'a': case 'A':
@@ -139,7 +114,7 @@ void dsKeyUp(unsigned char key, int x, int y){
 }
 
 void dsKeyDown(unsigned char key, int x, int y) {
-    saveCenter();
+    saveEyeInfo();
 
     switch (key) {
     case 'a': case 'A':
