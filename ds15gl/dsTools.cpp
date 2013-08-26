@@ -16,6 +16,7 @@ static const GLdouble pi = 3.1415926;
 // 其中，phi 表示与 z 轴的夹角
 // theta 表示在 xy 平面的投影的旋转角 
 GLdouble eye_sphere[3] = { 10.0, pi / 4, -pi / 2 };
+GLdouble eye_sphere_saved[3];
 
 GLdouble up[3] = { 0.0, 0.0, 1.0 };
 
@@ -25,6 +26,7 @@ GLdouble center_saved[3] = { 0.0, 0.0, 0.0 };
 
 // 相机位置，不直接修改，通过球坐标间接操作
 GLdouble eye[3];
+GLdouble eye_saved[3];
 
 // 全局使用
 int window_width = 1280;
@@ -66,12 +68,45 @@ void dsSetEye() {
     soundManager->setListenerPosition(eye[0], eye[1], eye[2]);
 }
 
-void dsSpecialKeys(int key, int x, int y) {
-    static GLdouble rotateSpeed = 0.1;
-    static GLdouble scaleSpeed = 0.5;
-    GLdouble direction[3];
+dsTimeManager time_manager_for_special;
 
+enum Direction {
+    STOP = 0,
+    UP = 1,
+    DOWN = 1 << 1,
+    LEFT = 1 << 2,
+    RIGHT = 1 << 3,
+};
+
+// 眼睛旋转方向
+int rdir = STOP;
+
+void dsSpecialKeys(int key, int x, int y) {
+    time_manager_for_special.recordTime();
+    eye_sphere_saved[0] = eye_sphere[0];
+    eye_sphere_saved[1] = eye_sphere[1];
+    eye_sphere_saved[2] = eye_sphere[2];
+
+    eye_saved[0] = eye[0];
+    eye_saved[1] = eye[1];
+    eye_saved[2] = eye[2];
     switch (key) {
+    case GLUT_KEY_UP:
+        rdir |= UP;
+        break;
+    case GLUT_KEY_DOWN:
+        rdir |= DOWN;
+        break;
+    case GLUT_KEY_LEFT:
+        rdir |= LEFT;
+        break;
+    case GLUT_KEY_RIGHT:
+        rdir |= RIGHT;
+        break;
+    default:
+        break;
+    }
+    /*switch (key) {
     case GLUT_KEY_UP:
         if (eye_sphere[1] < 3.1415926 - rotateSpeed) {
             eye_sphere[1] += rotateSpeed;
@@ -109,20 +144,43 @@ void dsSpecialKeys(int key, int x, int y) {
         center[1] -= direction[1] * viewMoveSpeed;
         center[2] -= direction[2] * viewMoveSpeed;
         break;
-    }
-
+    }*/
+    /*if (key == GLUT_KEY_UP || key == GLUT_KEY_DOWN || key == GLUT_KEY_LEFT || key == GLUT_KEY_RIGHT) {
+        dsSphereToOrtho3dv(eye_sphere, center, eye);
+        center[0] += eye_saved[0] - eye[0];
+        center[1] += eye_saved[1] - eye[1];
+        center[2] += eye_saved[2] - eye[2];
+    }*/
     axeLength = eye_sphere[0] * 0.5;
 }
 
-enum Direction {
-    STOP = 0,
-    UP = 1,
-    DOWN = 1 << 1,
-    LEFT = 1 << 2,
-    RIGHT = 1 << 3,
-};
+void dsSpecialKeysUp(int key, int x, int y) {
+    time_manager_for_special.recordTime();
+    eye_sphere_saved[0] = eye_sphere[0];
+    eye_sphere_saved[1] = eye_sphere[1];
+    eye_sphere_saved[2] = eye_sphere[2];
 
+    switch (key) {
+    case GLUT_KEY_UP:
+        rdir &= ~UP;
+        break;
+    case GLUT_KEY_DOWN:
+        rdir &= ~DOWN;
+        break;
+    case GLUT_KEY_LEFT:
+        rdir &= ~LEFT;
+        break;
+    case GLUT_KEY_RIGHT:
+        rdir &= ~RIGHT;
+        break;
+    default:
+        break;
+    }
+}
+
+// 眼睛位置平移方向
 int idir = STOP;
+
 static dsTimeManager time_manager_for_eye;
 
 void dsKeyUP(unsigned char key, int x, int y){
@@ -235,8 +293,37 @@ void dsCenterMove() {
     dir_move.normalise();
 
     double duration = time_manager_for_eye.getDurationSecd();
-    center[0] = center_saved[0] + dir_move.x * viewMoveSpeed * (duration);
-    center[1] = center_saved[1] + dir_move.y * viewMoveSpeed * (duration);
+    center[0] = center_saved[0] + dir_move.x * viewMoveSpeed * duration;
+    center[1] = center_saved[1] + dir_move.y * viewMoveSpeed * duration;
+}
+
+void dsEyeRotate() {
+    if (rdir == 0) {
+        return;
+    }
+    static GLdouble rotateSpeed = 1;
+    static GLdouble scaleSpeed = 0.5;
+    //GLdouble direction[3];
+    double duration = time_manager_for_special.getDurationSecd();
+
+    int dir1 = 0, dir2 = 0;
+    if (rdir & UP)
+        ++dir1;
+    if (rdir & DOWN)
+        --dir1;
+    if (rdir & LEFT)
+        ++dir2;
+    if (rdir & RIGHT)
+        --dir2;
+
+    eye_sphere[1] = eye_sphere_saved[1] + dir1 * rotateSpeed * duration;
+    if (eye_sphere[1] > pi - 0.01) {
+        eye_sphere[1] = pi - 0.01;
+    }
+    if (eye_sphere[1] < 0.01) {
+        eye_sphere[1] = 0.01;
+    }
+    eye_sphere[2] = eye_sphere_saved[2] + dir2 * rotateSpeed * duration;
 }
 
 //效果不理想

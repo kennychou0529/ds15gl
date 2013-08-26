@@ -30,10 +30,12 @@ extern const int font_height_small;
 
 void dsSetEye();
 void dsSpecialKeys(int key, int x, int y);
+void dsSpecialKeysUp(int key, int x, int y);
 void dsKeyDown(unsigned char key, int x, int y);
 void dsKeyUP(unsigned char key, int x, int y);
 
 void dsCenterMove();
+void dsEyeRotate();
 //void dsMouseFunc(int key,int x,int y,int);
 //void dsPassiveMonitionFunc(int x,int y);
 
