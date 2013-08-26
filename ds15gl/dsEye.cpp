@@ -1,15 +1,15 @@
-#include "dsEye.h"
+ï»¿#include "dsEye.h"
 #include "dsTimeManager.h"
 #include "dsVector2f.h"
 #include "dsVector.h"
 #include "dsSoundManager.h"
 
-// ÒÆ¶¯ÊÓÏßÖÐÐÄµãÊ±£¬Ã¿ÃëÒÆ¶¯¾àÀë
+// ç§»åŠ¨è§†çº¿ä¸­å¿ƒç‚¹æ—¶ï¼Œæ¯ç§’ç§»åŠ¨è·ç¦»
 static const double viewMoveSpeed = 40;
 
 static const GLdouble pi = 3.1415926;
 
-// Ðý×ªÑÛ¾¦Ê±£¬Ã¿Ãë×ª¹ý»¡¶È
+// æ—‹è½¬çœ¼ç›æ—¶ï¼Œæ¯ç§’è½¬è¿‡å¼§åº¦
 static GLdouble rotateSpeed = 2;
 
 
@@ -20,34 +20,34 @@ static dsTimeManager time_manager_for_eye;
 
 extern DSSoundManager* soundManager;
 
-// ÑÛ¾¦Ðý×ª·½Ïò
+// çœ¼ç›æ—‹è½¬æ–¹å‘
 int rdir = STOP;
 
-// ÊÓÏßÖÐÐÄÎ»ÖÃÆ½ÒÆ·½Ïò
+// è§†çº¿ä¸­å¿ƒä½ç½®å¹³ç§»æ–¹å‘
 int idir = STOP;
 
-// ÊÓÏßÇ°½ø / ºóÍËÒò×Ó£¬Ö»È¡ UP DOWN STOP
+// è§†çº¿å‰è¿› / åŽé€€å› å­ï¼Œåªå– UP DOWN STOP
 int mdir = STOP;
 
 bool moving = false;
 static float targetX, targetY;
 
-// ÑÛ¾¦Î»ÖÃ£¬ÓÃÇò×ø±ê (r, phi, theta) ±íÊ¾
-// ÆäÖÐ£¬phi ±íÊ¾Óë z ÖáµÄ¼Ð½Ç
-// theta ±íÊ¾ÔÚ xy Æ½ÃæµÄÍ¶Ó°µÄÐý×ª½Ç 
+// çœ¼ç›ä½ç½®ï¼Œç”¨çƒåæ ‡ (r, phi, theta) è¡¨ç¤º
+// å…¶ä¸­ï¼Œphi è¡¨ç¤ºä¸Ž z è½´çš„å¤¹è§’
+// theta è¡¨ç¤ºåœ¨ xy å¹³é¢çš„æŠ•å½±çš„æ—‹è½¬è§’ 
 GLdouble eye_sphere[3] = { 10.0, pi / 4, -pi / 2 };
 
 static GLdouble eye_sphere_saved[3];
 
-// ÊÓÏßÏòÉÏµÄ·½Ïò
+// è§†çº¿å‘ä¸Šçš„æ–¹å‘
 GLdouble up[3] = { 0.0, 0.0, 1.0 };
 
-// ÊÓÏßÖÐÐÄµã£¬Çò×ø±êµÄÔ­µã
+// è§†çº¿ä¸­å¿ƒç‚¹ï¼Œçƒåæ ‡çš„åŽŸç‚¹
 GLdouble center[3] = { 0.0, 0.0, 0.0 };
 
 static GLdouble center_saved[3] = { 0.0, 0.0, 0.0 };
 
-// Ïà»úÎ»ÖÃ£¬²»Ö±½ÓÐÞ¸Ä£¬Í¨¹ýÇò×ø±ê¼ä½Ó²Ù×÷
+// ç›¸æœºä½ç½®ï¼Œä¸ç›´æŽ¥ä¿®æ”¹ï¼Œé€šè¿‡çƒåæ ‡é—´æŽ¥æ“ä½œ
 GLdouble eye[3];
 
 GLdouble direction[3];
@@ -72,7 +72,7 @@ static void saveDirection() {
     time_manager_for_eye.recordTime();
 }
 
-// ±£´æµ±Ç°ÊÓ½ÇÐÅÏ¢£¬ÔÚ dsTools ÖÐµÄ¼üÅÌ²Ù×÷º¯ÊýÖÐÓÃµ½
+// ä¿å­˜å½“å‰è§†è§’ä¿¡æ¯ï¼Œåœ¨ dsTools ä¸­çš„é”®ç›˜æ“ä½œå‡½æ•°ä¸­ç”¨åˆ°
 void saveEyeInfo() {
     saveEyeSphere();
     saveCenter();
@@ -101,7 +101,7 @@ static void moveTo() {
     center[1] += dir.y;
 }
 
-// °´Ê±¼äÉèÖÃÊÓÏßÖÐÐÄµã£¬ÔÚ dsSetEye ÖÐµ÷ÓÃ
+// æŒ‰æ—¶é—´è®¾ç½®è§†çº¿ä¸­å¿ƒç‚¹ï¼Œåœ¨ dsSetEye ä¸­è°ƒç”¨
 static void dsCenterMove() {
     if (moving == true) {
         moveTo();
@@ -134,7 +134,7 @@ static void dsCenterMove() {
     center[2] = center_saved[2] + direction[2] * move_factor * viewMoveSpeed * duration;
 }
 
-// °´Ê±¼äÉèÖÃÑÛ¾¦Çò×ø±ê£¬ÔÚ dsSetEye ÖÐµ÷ÓÃ
+// æŒ‰æ—¶é—´è®¾ç½®çœ¼ç›çƒåæ ‡ï¼Œåœ¨ dsSetEye ä¸­è°ƒç”¨
 static void dsEyeRotate() {
     if (rdir == 0) {
         return;
@@ -168,12 +168,12 @@ void dsSetEye() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    // ½«Çò×ø±ê×ª»¯ÎªÖ±½Ç×ø±ê
+    // å°†çƒåæ ‡è½¬åŒ–ä¸ºç›´è§’åæ ‡
     dsSphereToOrtho3dv(eye_sphere, center, eye);
 
-    // ÉèÖÃÉãÏñÍ·Î»ÖÃ
+    // è®¾ç½®æ‘„åƒå¤´ä½ç½®
     gluLookAt(eye[0], eye[1], eye[2], center[0], center[1], center[2], up[0], up[1], up[2]);
 
-    // ¼àÌýÕßÎ»ÖÃ
+    // ç›‘å¬è€…ä½ç½®
     soundManager->setListenerPosition(eye[0], eye[1], eye[2]);
 }
