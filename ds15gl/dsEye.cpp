@@ -12,10 +12,6 @@ static const GLdouble pi = 3.1415926;
 // 旋转眼睛时，每秒转过弧度
 static GLdouble rotateSpeed = 2;
 
-
-// static GLdouble scaleSpeed = 0.5;
-
-static dsTimeManager time_manager_for_special;
 static dsTimeManager time_manager_for_eye;
 
 extern DSSoundManager* soundManager;
@@ -26,11 +22,11 @@ int rdir = STOP;
 // 视线中心位置平移方向
 int idir = STOP;
 
-// 视线前进 / 后退因子，只取 UP DOWN STOP
+// 视线 3D 前进 / 后退因子，只取 UP DOWN STOP
 int mdir = STOP;
 
 bool moving = false;
-static float targetX, targetY;
+static GLfloat targetX, targetY;
 
 // 眼睛位置，用球坐标 (r, phi, theta) 表示
 // 其中，phi 表示与 z 轴的夹角
@@ -52,24 +48,21 @@ GLdouble eye[3];
 
 GLdouble direction[3];
 
-static void saveEyeSphere() {
-    time_manager_for_special.recordTime();
+static inline void saveEyeSphere() {
     eye_sphere_saved[0] = eye_sphere[0];
     eye_sphere_saved[1] = eye_sphere[1];
     eye_sphere_saved[2] = eye_sphere[2];
 }
 
-static void saveCenter() {
-    time_manager_for_eye.recordTime();
+static inline void saveCenter() {
     center_saved[0] = center[0];
     center_saved[1] = center[1];
     center_saved[2] = center[2];
 }
 
-static void saveDirection() {
+static inline void saveDirection() {
     dsDiff3dv(center, eye, direction);
     dsNormalize3dv(direction);
-    time_manager_for_eye.recordTime();
 }
 
 // 保存当前视角信息，在 dsTools 中的键盘操作函数中用到
@@ -77,6 +70,7 @@ void saveEyeInfo() {
     saveEyeSphere();
     saveCenter();
     saveDirection();
+    time_manager_for_eye.recordTime();
 }
 
 void centerMoveTo(float x, float y) {
@@ -85,26 +79,41 @@ void centerMoveTo(float x, float y) {
     moving = true;
 }
 
-static void moveTo() {
-    dsVector2f dir = dsVector2f(GLfloat(targetX - center[0]),
-        GLfloat(targetY - center[1]));
-
-    if (dir.getLenth() <= viewMoveSpeed){
-        center[0] += dir.x;
-        center[1] += dir.y;
-        moving = false;
-        return;
+static void dsAutoCenterMove() {
+    GLdouble duration = time_manager_for_eye.getDurationSecd();
+    //dsVector2f dir = dsVector2f(GLfloat(targetX - center[0]),
+    //    GLfloat(targetY - center[1]));
+    dsVector2f dir(GLfloat(targetX - center_saved[0]), GLfloat(targetY - center_saved[1]));
+    GLfloat lenth = dir.getLenth();
+    if (viewMoveSpeed * 1.0 > lenth) { // 按 viewMoveSpeed 可以在 1 秒内移动完毕
+        dir.normalise();
+        center[0] = center_saved[0] + dir.x * viewMoveSpeed * duration;
+        center[1] = center_saved[1] + dir.y * viewMoveSpeed * duration;
+        if (viewMoveSpeed * duration > lenth) {
+            center[0] = targetX;
+            center[1] = targetY;
+            moving = false;
+            saveEyeInfo();
+        }
     }
-
-    dir.normalise();
-    center[0] += dir.x;
-    center[1] += dir.y;
+    else { // 按 viewMoveSpeed 不能在 1 秒内移动完毕
+        if (duration < 1.0) {
+            center[0] = center_saved[0] + (targetX - center_saved[0]) * duration;
+            center[1] = center_saved[1] + (targetY - center_saved[1]) * duration;
+        }
+        else {
+            center[0] = targetX;
+            center[1] = targetY;
+            moving = false;
+            saveEyeInfo();
+        }
+    }
 }
 
 // 按时间设置视线中心点，在 dsSetEye 中调用
 static void dsCenterMove() {
     if (moving == true) {
-        moveTo();
+        dsAutoCenterMove();
         return;
     }
 
@@ -136,7 +145,7 @@ static void dsCenterMove() {
 
 // 按时间设置眼睛球坐标，在 dsSetEye 中调用
 static void dsEyeRotate() {
-    if (rdir == 0) {
+    if (rdir == STOP || moving == true) {
         return;
     }
 
@@ -150,7 +159,7 @@ static void dsEyeRotate() {
     if (rdir & RIGHT)
         --factor2;
 
-    double duration = time_manager_for_special.getDurationSecd();
+    double duration = time_manager_for_eye.getDurationSecd();
     eye_sphere[1] = eye_sphere_saved[1] + factor1 * rotateSpeed * duration;
     if (eye_sphere[1] > pi - 0.01) {
         eye_sphere[1] = pi - 0.01;
@@ -161,6 +170,7 @@ static void dsEyeRotate() {
     eye_sphere[2] = eye_sphere_saved[2] + factor2 * rotateSpeed * duration;
 }
 
+// 设置视角，每次绘图时用到
 void dsSetEye() {
     dsEyeRotate();
     dsCenterMove();

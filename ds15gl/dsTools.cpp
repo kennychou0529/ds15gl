@@ -131,7 +131,7 @@ void dsKeyDown(unsigned char key, int x, int y) {
         break;
     case 'm':
         void centerMoveTo(float, float);
-        centerMoveTo(100, 100);
+        centerMoveTo(10, 10);
         break;
     default:
         break;

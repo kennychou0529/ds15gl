@@ -2,7 +2,6 @@
 #define _DSEYE_H
 
 #include <GL/glut.h>
-#include <chrono>
 
 // 眼睛位置，用球坐标 (r, phi, theta) 表示
 // 其中，phi 表示与 z 轴的夹角
@@ -30,9 +29,10 @@ enum Direction {
 // 眼睛旋转方向
 extern int rdir;
 
-// 视线中心位置平移方向
+// 视线中心位置 2D 平移方向
 extern int idir;
 
+// 视线 3D 前进 / 后退因子，只取 UP DOWN STOP
 extern int mdir;
 
 // 保存当前视角信息，在 dsTools 中的键盘操作函数中用到

@@ -2,7 +2,6 @@
 #define _DSTOOLS_H
 
 #include <GL/glut.h>
-#include <chrono>
 
 #include "dsTextManager.h"
 
