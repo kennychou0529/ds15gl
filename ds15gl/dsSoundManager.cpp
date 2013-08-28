@@ -5,35 +5,38 @@ void Clip::append(){
 
 	ALuint sourceIndex = 0;
 
-	// 注释待添加
+	// 注释待添加的
 	ALuint tempBuffer ;
 	alGenBuffers(1,&tempBuffer);
 	if((alError = alGetError())!= AL_NO_ERROR){
 		DSSoundManager::displayALError("alGenBuffers:",alError);
 		return ;
 	}
-		if(strlen(fileName)>4&&strcmp(fileName+strlen(fileName)-3,"mp3")==0){
+		if(strlen(fileName)>4 && strcmp(fileName+strlen(fileName)-3,"mp3")==0){
 			//tempBuffer=DSSoundManager::createBufferFromMp3File(fileName);
 			type=1;
 		}else{
 			type=0;
+			
 			ALenum format;
 			void*data;
 			ALsizei	size;
 			ALsizei	frequency;
+			//ALfloat frequency;
 			ALboolean loop;
 			alutLoadWAVFile(fileName,&format,&data,&size,&frequency,&loop);
+			//data = alutLoadMemoryFromFile(fileName,&format,&size,&frequency);
 			alBufferData(tempBuffer,format,data,size,frequency);
-			//tempBuffer = alutCreateBufferHelloWorld();
-
+			//tempBuffer = alutCreateBufferFromFile(fileName);
 
 			if((alError = alGetError())!= AL_NO_ERROR){
-				//displayALError("alutCreateBufferFromFIle:",alError);
+				DSSoundManager::displayALError("alutCreateBufferFromFIle:",alError);
 				alDeleteBuffers(1,&tempBuffer);
 				return;
 			}
 		}
-		if(tempBuffer==AL_NONE){
+
+		if(tempBuffer == AL_NONE){
 			printf_s("LoadFileFailure\n");
 			return ;
 		}
@@ -63,39 +66,55 @@ void Clip::append(){
 Clip::Clip(char* fileName){
 
 	this->fileName = fileName;
-
 	append();
+	//append();
 	
 }
 Clip::~Clip(){
-	isPlaying=false;
+	isPlaying = false;
+	if (type == 0){
+		for(int i=0;i<sources.size();i++){
+			alSourceStop(sources[i]);
+			ALint buffer=0;
+			alGetSourcei(sources[i],AL_BUFFER,&buffer);
+			if(alIsBuffer(buffer)){
+				alDeleteBuffers(1,(ALuint*)&buffer);
+			}
+			buffer=0;
+		}
+	}
+	delete[] fileName;
 }
-void Clip::play(){
+ALuint Clip::play(float x,float y,float z,float vx,float vy,float vz){
 	ALuint sourceIndex=0;
-	if(type=0){
+	
+	//为 wav 格式文件创建的源
+	if(type==0){
 		if(sources.size()==0)
-			return;
+			return 0;
 
 		for(int i=0;i<sources.size();i++){
 			ALint value;
 			alGetSourcei(sources[i],AL_SOURCE_STATE,&value);
-
-
+			
 			if (value != AL_PLAYING)
 			{
 				sourceIndex=sources[i];
 				break;
 			}
 		}
-		if(sourceIndex==AL_NONE){
+
+		if(sourceIndex == AL_NONE){
 			append();
-			play();
-			return;
+			return play(x,y,z,vx,vy,vz);			
 		}
-		ALCfloat sourcePos[]={2,0,2};
-		ALCfloat sourceVel[]={1,10,1};
+
+		ALCfloat sourcePos[]={x,y,z};
+		ALCfloat sourceVel[]={vx,vy,vz};
 		alSourcefv(sourceIndex,AL_POSITION,sourcePos);
 		alSourcefv(sourceIndex,AL_VELOCITY,sourceVel);
+		
+		//循环播放
 		alSourcei(sourceIndex,AL_LOOPING,AL_TRUE);
 		alSourcef(sourceIndex,AL_GAIN,1);
 		alSourcef(sourceIndex,AL_PITCH,1);
@@ -104,12 +123,15 @@ void Clip::play(){
 		if((alError = alGetError())!= AL_NO_ERROR){
 			DSSoundManager::displayALError("alSourcePlay:",alError);
 		}
-	}else if(type=1){
+		return sourceIndex;
+	}else if(type==1){
+		//播放mp3音乐
 		int playMP3(char*,bool*);
 		this->isPlaying=true;
 		std::thread t(playMP3,fileName,&(this->isPlaying));
 		t.detach();
 	}	
+	return 0;
 }
 
 #define NUM_BUFFERS 4
@@ -252,9 +274,9 @@ int playMP3(char* fileName, bool* running){
 DSSoundManager* DSSoundManager::sm = nullptr;
 
 DSSoundManager* DSSoundManager::getSoundManager(){
-	if (sm==nullptr)
+	if (sm == nullptr)
 	{
-		return sm=new DSSoundManager;
+		return sm = new DSSoundManager;
 	}
 	return sm;
 }
@@ -274,9 +296,7 @@ DSSoundManager::DSSoundManager(void)
 	{
 		printf("failed to init mpg123\n");
 		return;
-	}
-
-	
+	}	
 
 	loadSounds();
 }
@@ -284,6 +304,12 @@ DSSoundManager::DSSoundManager(void)
 
 DSSoundManager::~DSSoundManager(void)
 {
+	ClipMap::iterator it = clipMap.begin();
+	while (it!=clipMap.end())
+	{
+		delete it->second;
+		it++;
+	}
 	context=alcGetCurrentContext();
 	device=alcGetContextsDevice(context);
 	alcMakeContextCurrent(NULL);
@@ -298,22 +324,30 @@ void DSSoundManager::addSound(unsigned int id, char* fileName){
 	clipMap.insert(ClipMap::value_type(id,clip));
 }
 	
+void DSSoundManager::stop(ALuint sourceIndex){
+	alGetError();
+	alSourceStop(sourceIndex);
+	if (alError=alGetError()!= AL_NO_ERROR)
+	{
+		DSSoundManager::displayALError("stop",alError);
+	}
+}
 
-
-void DSSoundManager::playSound(unsigned int id){
+ALuint DSSoundManager::playSound(unsigned int id,float x,float y,float z,float vx ,float vy ,float vz ){
 	ClipMap::iterator it = clipMap.find(id);
 	if(it!=clipMap.end())
-		(it->second)->play();
+		return (it->second)->play(x,y,z,vx,vy,vz);
+	return 0;
 }
 
 
 void DSSoundManager::setListenerPosition(ALfloat x, ALfloat y, ALfloat z){
 	ALCfloat listenerPos[]={x,y,z};
-	ALCfloat listenerVel[]={0,0,0};
-	ALCfloat listenerOri[]={0,0,-1,0,1,0};
+	//ALCfloat listenerVel[]={0,0,0};
+	//ALCfloat listenerOri[]={0,0,-1,0,1,0};
 	alListenerfv(AL_POSITION,listenerPos);
-	alListenerfv(AL_VELOCITY,listenerVel);
-	alListenerfv(AL_ORIENTATION,listenerOri);
+	//alListenerfv(AL_VELOCITY,listenerVel);
+	//alListenerfv(AL_ORIENTATION,listenerOri);
 }
 
 
@@ -328,29 +362,44 @@ void DSSoundManager::loadSounds(){
 	/**/
 //	// 注释待添加
 //	*/
-//	addSound(0,"data/sound/test.mp3");
+	addSound(0,"data/sound/test.mp3");
 //	/*alSourcePlay(backgroundSound);*/
 //
-//	addSound(1,"data/sound/Footsteps.wav");
+	addSound(1,"data/sound/footsteps.wav");
 //
 //	// 注释待添加
 //	
-//		playSound(0);
-//		playSound(1);
+	playSound(0,0,0,0);
+	playSound(1,0,0,0);
 //		//alutSleep(1);
 
 	
 }
 
-
+//
 //int main(int argc,char** argv){
-//	//alutInit(&argc,argv);
-//	DSSoundManager* sm = DSSoundManager::getSoundManager();
-//	sm->addSound(1,"data/sound/Footsteps.wav",5);
-//	sm->setListenerPosition(15,20);
-//	for (int i=0;i<5;i++){
-//		sm->playSound(1);
-//		alutSleep(1);
+//	
+//	ALCdevice* device;
+//	ALCcontext* context;
+//	device = alcOpenDevice(NULL); 
+//	if (device){
+//		context = alcCreateContext(device, NULL);
+//		alcMakeContextCurrent(context);
 //	}
+//	alutInit(&argc,argv);
+//	//g_bEAX = alIsExtensionPresent("EAX2.0");
+//	////sm->addSound(1,"data/sound/Footsteps.wav");
+//	//sm->setListenerPosition(1,2);
+//	//for (int i=0;i<1;i++){
+//	//	sm->playSound(1,0,0,0);
+//	//	alutSleep(1);
+//	//}
+//	//alutSleep(10);
+//	ALuint tb,ts;
+//	tb = alutCreateBufferFromFile("data/sound/footsteps.wav");
+//	alGenSources(1,&ts);
+//	alSourcei(ts,AL_BUFFER,tb);
+//	alSourcePlay(ts);
 //	alutSleep(10);
+//	return 0;	
 //}

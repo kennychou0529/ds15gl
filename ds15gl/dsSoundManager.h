@@ -15,17 +15,18 @@
 #pragma comment (lib, "./openal/lib/OpenAL32.lib")
 #pragma comment (lib, "./openal/lib/alut.lib")
 
-// 注释待添加
+// 音频source的容器
 
 class Clip{
 public:
 	Clip(char* fileName);
 	~Clip();
 	void append();
-	void play();
+	//x,y,z 声源位置
+	//vx,vy,vz 声源速度
+	ALuint play(float x,float y,float z,float vx = 0,float vy = 0,float vz = 0);
 
 	void playMP3(bool* running);
-
 private:
 	char* fileName;
 	std::vector<ALuint> sources;
@@ -36,19 +37,34 @@ private:
 };
 
 typedef std::map<unsigned int,Clip*> ClipMap; 
-
+	
+//必须在alutinit之后实例化，否则会出问题（导入音频失败）
 class DSSoundManager
 {
 public:
 	static DSSoundManager* getSoundManager();
-
+	//不要用这个构造函数，用DSSoundManager::getSoundManager()替代；
 	DSSoundManager(void);
+	//析构
 	~DSSoundManager(void);
-	// 注释待添加
+	
+	// 按文件名后缀区分MP3文件和wav文件
+	// wav文件默认载入两次备用，不够用时自动扩展
+	// mp3文件只保存文件名，播放时读取
+	// 暂时只能载入一个MP3作为背景音乐
 	void addSound(unsigned int id, char* fileName);
-	// 注释待添加
-	void playSound(unsigned int id);
-	// 注释待添加
+	
+	// x,y,z 声源位置
+	// vx,vy,vz 声源速度
+	// 返回所播放声源的索引
+	// 若为mp3文件，或id不存在，返回 0；
+	ALuint playSound(unsigned int id,float x,float y,float z,float vx = 0,float vy = 0,float vz = 0);
+	
+	// sourceIndex 请使用 plaSound的返回值
+	void stop(ALuint sourceIndex);
+	
+	// 在游戏载入阶段调用
+	// 由于用到alut,必须在alutInit之后调用
 	void loadSounds();
 	
 	void setListenerPosition(ALfloat x, ALfloat y, ALfloat z=8.f);

@@ -5,6 +5,8 @@
 #include "dsTextManager.h"
 #include "dsModel.h"
 #include "dsEye.h"
+#include <alut.h>
+#include "dsSoundManager.h"
 
 //
 //// 这可以避免在 Windows 下出现命令行窗口
@@ -13,6 +15,7 @@
 //#endif
 
 DSFrame frame;
+extern DSSoundManager* soundManager;
 
 // 每帧时间，毫秒
 //static const int mspf = 33;
@@ -48,6 +51,9 @@ void dsInit() {
     dstext.init(font_file_name, font_height);
     dstext_small.init(font_file_name, font_height_small);
     //time_manager.recordTime();
+
+	//this object must be initialized after main function
+	soundManager = DSSoundManager::getSoundManager();
 }
 
 // 当窗口大小被修改时自动调用此函数
@@ -66,8 +72,14 @@ void dsIdle() {
     glutPostRedisplay();
 }
 
+//some object need to be destroyed
+void destroy(){
+	delete soundManager;
+}
+
 int main(int argc, char* argv[]) {
     glutInit(&argc, argv);
+	alutInit(&argc,argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowPosition(0, 0);
     glutInitWindowSize(window_width, window_height);
@@ -83,5 +95,6 @@ int main(int argc, char* argv[]) {
 	glutKeyboardUpFunc(dsKeyUp);
     dsInit();
     glutMainLoop();
+	destroy();
     return 0;
 }
