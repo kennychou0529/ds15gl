@@ -12,9 +12,10 @@ public:
     void initialize();
     void display();
     size_t getFPS() { return fps; }
+    DSScene scene;
 private:
     void calculateFPS();
-    DSScene scene;
+    
     DSStatusBar statusBar;
     //DSMap map;
 

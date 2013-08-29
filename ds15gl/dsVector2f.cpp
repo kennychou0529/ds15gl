@@ -28,6 +28,14 @@ dsVector2f& dsVector2f::operator-=(const dsVector2f& rhs) {
     return *this;
 }
 
+dsVector2f dsVector2f::operator*(const GLdouble multiplier) const {
+    return dsVector2f(x * multiplier, y * multiplier);
+}
+
+dsVector2f operator*(const GLdouble multiplier, const dsVector2f& rhs) {
+    return dsVector2f(rhs.x * multiplier, rhs.y * multiplier);
+}
+
 // 点积
 GLfloat dsVector2f::operator*(const dsVector2f& rhs) const {
     return x * rhs.x + y * rhs.y;
