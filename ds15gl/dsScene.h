@@ -14,9 +14,9 @@ public:
     ~DSScene();
     void initialize();
     void show();
-
-private:
     DSMap map; // 以后改名
+private:
+    
     DSSkybox dsSkyBox;
     // MD2Model model;
     // MD2Model weapon;

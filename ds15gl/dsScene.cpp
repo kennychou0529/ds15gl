@@ -23,15 +23,10 @@ void DSScene::show() {
     
     glPushMatrix();
     {
-        glTranslated(0, 0, 2.0);
-        glScaled(0.1, 0.1, 0.1);
-        glPushMatrix();
-        {
-            soldier.renderSmoothly(soldier.time_manager.getDurationSecf() * 5);
-            glTranslatef(100.0f, 0, 0);
-            soldier2.renderSmoothly(soldier2.time_manager.getDurationSecf() * 5);
-        }
-        glPopMatrix();
+        //soldier.renderSmoothly(soldier.time_manager.getDurationSecf() * 5);
+        soldier.animate();
+        //glTranslatef(10.0f, 0, 0);
+        soldier2.animate();
     }
     glPopMatrix();
 
@@ -47,11 +42,15 @@ void DSScene::initialize() {
                  "data/sword_man/tris.bmp",
                  "data/sword_man/weapon.md2",
                  "data/sword_man/weapon.bmp");
-    soldier.time_manager.recordTime();
+    soldier.setPosition(6, 6);
+    soldier.setTarget(8, 9);
+    soldier.enterStatus(dsSoldier::Status::running);
     soldier2.load("data/mage/tris.md2",
                  "data/mage/tris.bmp",
                  "data/mage/weapon.md2",
                  "data/mage/weapon.bmp");
-    soldier2.time_manager.recordTime();
+    //soldier2.time_manager.recordTime();
+    soldier.setPosition(1, 1);
+    soldier2.enterStatus(dsSoldier::Status::idle);
     dsSkyBox.load(3);
 }

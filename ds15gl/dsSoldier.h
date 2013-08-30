@@ -35,28 +35,9 @@ public:
     // 当 progress 为 39.5 时，renderSmoothly(49, 10, 0.5)。
     void renderSmoothly(GLfloat progress);
 
-    void enterStatus(Status status_to_enter) {
-        status = status_to_enter;
-        time_manager.recordTime();
-        switch (status) {
-        case idle:
-            frame_beg = 0;
-            frame_end = 39;
-            fps = 10;
-            break;
-        case running:
-            frame_beg = 40;
-            frame_end = 35;
-            fps = 5;
-            break;
-        }
-    }
+    void enterStatus(Status status_to_enter);
 
-    void animate() {
-        glPushMatrix();
-        renderSmoothly(time_manager.getDurationSecf() * fps);
-        glPopMatrix();
-    }
+    void animate();
 
     // 载入士兵模型文件，只支持 bmp 类型的纹理图片
     void load(const char* person_model_file,
@@ -65,6 +46,11 @@ public:
               const char* weapon_skin_file);
 
     dsTimeManager time_manager;
+
+    void setPosition(size_t x, size_t y);
+
+    void setTarget(size_t x, size_t y);
+
 private:
     size_t fps;
     Status status;
@@ -72,6 +58,12 @@ private:
     MD2Model weapon;
     size_t frame_beg;
     size_t frame_end;
+    size_t current_position[2];
+    size_t saved_position[2];
+    size_t target_position[2];
+    GLfloat move_speed;
+    GLfloat scale;
+    GLfloat angle;
 };
 
 #endif
