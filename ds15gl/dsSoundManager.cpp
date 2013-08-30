@@ -369,15 +369,15 @@ void DSSoundManager::loadSounds(){
 //
 //	// 注释待添加
 //	
-	playSound(0,0,0,0);
-	playSound(1,0,0,0);
+	playSound(0,0,0,0,0,1,0);
+	playSound(1,0,0,0,0,1,0);
 //		//alutSleep(1);
 
 	
 }
 
-//
-//int main(int argc,char** argv){
+//for test
+int main1(int argc,char** argv){
 //	
 //	ALCdevice* device;
 //	ALCcontext* context;
@@ -386,7 +386,8 @@ void DSSoundManager::loadSounds(){
 //		context = alcCreateContext(device, NULL);
 //		alcMakeContextCurrent(context);
 //	}
-//	alutInit(&argc,argv);
+	alutInit(&argc,argv);
+	DSSoundManager* sm =DSSoundManager::getSoundManager();
 //	//g_bEAX = alIsExtensionPresent("EAX2.0");
 //	////sm->addSound(1,"data/sound/Footsteps.wav");
 //	//sm->setListenerPosition(1,2);
@@ -400,6 +401,6 @@ void DSSoundManager::loadSounds(){
 //	alGenSources(1,&ts);
 //	alSourcei(ts,AL_BUFFER,tb);
 //	alSourcePlay(ts);
-//	alutSleep(10);
-//	return 0;	
-//}
+	alutSleep(100);
+	return 0;	
+}

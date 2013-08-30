@@ -79,7 +79,7 @@ void destroy(){
 
 int main(int argc, char* argv[]) {
     glutInit(&argc, argv);
-	alutInit(&argc,argv);
+	//alutInit(&argc,argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowPosition(0, 0);
     glutInitWindowSize(window_width, window_height);
