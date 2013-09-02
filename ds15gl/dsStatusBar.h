@@ -2,7 +2,7 @@
 #define _DSSTATUSBAR_H
 
 #include <GL/glut.h>
-#include "dsTimeManager.h"
+#include "dsTimer.h"
 
 class DSStatusBar {
 public:

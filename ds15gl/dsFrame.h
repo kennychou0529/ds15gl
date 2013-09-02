@@ -17,12 +17,11 @@ private:
     void calculateFPS();
     
     DSStatusBar statusBar;
-    //DSMap map;
 
     // For FPS
     size_t num_frames;
     size_t fps;
-    dsTimeManager time_manager;
+    dsTimer timer;
 };
 
 #endif

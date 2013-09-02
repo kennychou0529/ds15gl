@@ -4,7 +4,7 @@ DSFrame::DSFrame() {}
 void DSFrame::initialize() {
     num_frames = 0;
     fps = 0;
-    time_manager.recordTime();
+    timer.recordTime();
 
     scene.initialize();
 }
@@ -18,9 +18,9 @@ void DSFrame::display() {
 
 void DSFrame::calculateFPS() {
     ++num_frames;
-    if (time_manager.getDurationSecf() > 1.0f) {
-        fps = (unsigned int)((float)num_frames / time_manager.getDurationSecf());
+    if (timer.getDurationSecf() > 1.0f) {
+        fps = (unsigned int)((float)num_frames / timer.getDurationSecf());
         num_frames = 0;
-        time_manager.recordTime();
+        timer.recordTime();
     }
 }

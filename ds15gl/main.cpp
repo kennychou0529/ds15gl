@@ -50,7 +50,6 @@ void dsInit() {
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); // why
     dstext.init(font_file_name, font_height);
     dstext_small.init(font_file_name, font_height_small);
-    //time_manager.recordTime();
 
 	//this object must be initialized after main function
 	soundManager = DSSoundManager::getSoundManager();
@@ -68,12 +67,11 @@ void dsReshape(int w, int h) {
 }
 
 void dsIdle() {
-    // std::this_thread::sleep_for(sleep_time);
     glutPostRedisplay();
 }
 
 //some object need to be destroyed
-void destroy(){
+void destroy() {
 	delete soundManager;
 }
 

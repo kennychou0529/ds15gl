@@ -2,7 +2,7 @@
 #define _DSSOLDIER_H
 
 #include "dsModel.h"
-#include "dsTimeManager.h"
+#include "dsTimer.h"
 
 // Ê¿±ø
 class dsSoldier {
@@ -45,7 +45,7 @@ public:
               const char* weapon_model_file,
               const char* weapon_skin_file);
 
-    dsTimeManager time_manager;
+    dsTimer timer;
 
     void setPosition(size_t x, size_t y);
 

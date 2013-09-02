@@ -1,12 +1,12 @@
-#ifndef _DSTIMEMANAGER_H
-#define _DSTIMEMANAGER_H
+#ifndef _DSTIMER_H
+#define _DSTIMER_H
 
-// dsTimeManager 时间管理器
+// dsTimer 时间管理器
 // 每个时间管理器内置一个计时装置
 
 #include <chrono>
 
-class dsTimeManager {
+class dsTimer {
 public:
     // 令内置计时装置记录下当前时刻
     void recordTime() {

@@ -44,7 +44,7 @@ MD2Model::MD2Model():
     tex_coords(nullptr),
     vertices(nullptr) {}
 
-MD2Model::~MD2Model() {}
+MD2Model::~MD2Model() { clear(); }
 
 int MD2Model::load(const char* model_file, const char* skin_file) {
     std::ifstream is;

@@ -55,18 +55,13 @@ void dsShowLightSource() {
     glPushAttrib(GL_TEXTURE_2D | GL_LIGHTING);
     glDisable(GL_TEXTURE_2D);
     glDisable(GL_LIGHTING);
-    /*glBegin(GL_POINTS);
-    {
-        glPointSize(5.0f);
-        glVertex3fv(position);
-    }
-    glEnd();*/
     glPushMatrix();
-    //glLoadIdentity();
-    glColor3d(1.0, 1.0, 1.0);
-    glTranslated(light_position[0], light_position[1], light_position[2]);
-
-    glutSolidSphere(0.5, 20, 20);
+    {
+        glLoadIdentity();
+        glColor3d(1.0, 1.0, 1.0);
+        glTranslated(light_position[0], light_position[1], light_position[2]);
+        glutSolidSphere(0.5, 20, 20);
+    }
     glPopMatrix();
     glPopAttrib();
 }

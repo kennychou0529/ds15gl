@@ -32,7 +32,7 @@ void dsSoldier::renderSmoothly(GLfloat progress) {
 
 void dsSoldier::enterStatus(Status status_to_enter) {
     status = status_to_enter;
-    time_manager.recordTime();
+    timer.recordTime();
     switch (status) {
     case idle:
         frame_beg = 0;
@@ -57,7 +57,7 @@ void dsSoldier::animate() {
             glTranslatef(x, y, 4.0f);
             glScaled(scale, scale, scale);
             glRotatef(angle, 0.0f, 0.0f, 1.0f);
-            renderSmoothly(time_manager.getDurationSecf() * fps);
+            renderSmoothly(timer.getDurationSecf() * fps);
         } else {
             dsVector2f saved;
             frame.scene.map.getCoords(saved_position[0], saved_position[1], &(saved.x), &(saved.y));
@@ -68,13 +68,13 @@ void dsSoldier::animate() {
             dsVector2f dir = target - saved;
             GLfloat length = dir.getLenth();
             dir.normalise();
-            GLfloat duration = time_manager.getDurationSecf();
+            GLfloat duration = timer.getDurationSecf();
             dsVector2f pos = saved + move_speed * duration * dir;
             angle = std::acos(dir * dsVector2f(1.0f, 0.0f)) * 180.0f / pi;
             glTranslatef(pos.x, pos.y, 4.0f);
             glScaled(scale, scale, scale);
             glRotatef(angle, 0.0f, 0.0f, 1.0f);
-            renderSmoothly(time_manager.getDurationSecf() * fps);
+            renderSmoothly(timer.getDurationSecf() * fps);
             if (move_speed * duration > length) {
                 pos = target;
                 setPosition(target_position[0], target_position[1]);

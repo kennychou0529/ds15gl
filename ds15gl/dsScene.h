@@ -5,6 +5,8 @@
 #include <GL/glut.h>
 #include "dsSkybox.h"
 #include "dsSoldier.h"
+#include <map>
+#include <vector>
 
 // 与场景有关的类
 // 所有绘图操作都应该转移到这个类
@@ -14,15 +16,10 @@ public:
     ~DSScene();
     void initialize();
     void show();
-    DSMap map; // 以后改名
+    DSMap map;
 private:
-    
     DSSkybox dsSkyBox;
-    // MD2Model model;
-    // MD2Model weapon;
-
-    dsSoldier soldier;
-    dsSoldier soldier2;
+    std::map<std::string, dsSoldier> soldiers;
     //显示列表
     GLuint groud;
 };

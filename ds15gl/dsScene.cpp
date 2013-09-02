@@ -4,6 +4,7 @@
 #include "dsModel.h"
 #include "dsTools.h"
 #include <sstream>
+#include <utility>
 
 extern dsTextManager dstext;
 
@@ -23,10 +24,8 @@ void DSScene::show() {
     
     glPushMatrix();
     {
-        //soldier.renderSmoothly(soldier.time_manager.getDurationSecf() * 5);
-        soldier.animate();
-        //glTranslatef(10.0f, 0, 0);
-        soldier2.animate();
+        soldiers["sword_man"].animate();
+        soldiers["mage"].animate();
     }
     glPopMatrix();
 
@@ -38,19 +37,24 @@ void DSScene::show() {
 }
 
 void DSScene::initialize() {
-    soldier.load("data/sword_man/tris.md2",
-                 "data/sword_man/tris.bmp",
-                 "data/sword_man/weapon.md2",
-                 "data/sword_man/weapon.bmp");
-    soldier.setPosition(6, 6);
-    soldier.setTarget(8, 9);
-    soldier.enterStatus(dsSoldier::Status::running);
-    soldier2.load("data/mage/tris.md2",
-                 "data/mage/tris.bmp",
-                 "data/mage/weapon.md2",
-                 "data/mage/weapon.bmp");
-    //soldier2.time_manager.recordTime();
-    soldier.setPosition(1, 1);
-    soldier2.enterStatus(dsSoldier::Status::idle);
+    soldiers.insert(std::make_pair("sword_man", dsSoldier()));
+    soldiers["sword_man"].load("data/sword_man/tris.md2",
+                               "data/sword_man/tris.bmp",
+                               "data/sword_man/weapon.md2",
+                               "data/sword_man/weapon.bmp");
+
+    soldiers["sword_man"].setPosition(6, 6);
+    soldiers["sword_man"].setTarget(8, 9);
+    soldiers["sword_man"].enterStatus(dsSoldier::Status::running);
+
+    soldiers.insert(std::make_pair("mage", dsSoldier()));
+    soldiers["mage"].load("data/mage/tris.md2",
+                          "data/mage/tris.bmp",
+                          "data/mage/weapon.md2",
+                          "data/mage/weapon.bmp");
+
+    soldiers["mage"].setPosition(1, 1);
+    soldiers["mage"].enterStatus(dsSoldier::Status::idle);
+
     dsSkyBox.load(3);
 }

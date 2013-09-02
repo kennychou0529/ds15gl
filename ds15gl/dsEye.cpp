@@ -1,5 +1,5 @@
 ﻿#include "dsEye.h"
-#include "dsTimeManager.h"
+#include "dsTimer.h"
 #include "dsVector2f.h"
 #include "dsVector.h"
 #include "dsSoundManager.h"
@@ -12,7 +12,7 @@ static const GLdouble pi = 3.1415926;
 // 旋转眼睛时，每秒转过弧度
 static GLdouble rotateSpeed = 2;
 
-static dsTimeManager time_manager_for_eye;
+static dsTimer timer;
 
 extern DSSoundManager* soundManager;
 
@@ -25,7 +25,8 @@ int idir = STOP;
 // 视线 3D 前进 / 后退因子，只取 UP DOWN STOP
 int mdir = STOP;
 
-bool moving = false;
+static bool moving = false;
+
 static GLfloat targetX, targetY;
 
 // 眼睛位置，用球坐标 (r, phi, theta) 表示
@@ -70,7 +71,7 @@ void saveEyeInfo() {
     saveEyeSphere();
     saveCenter();
     saveDirection();
-    time_manager_for_eye.recordTime();
+    timer.recordTime();
 }
 
 void centerMoveTo(float x, float y) {
@@ -80,7 +81,7 @@ void centerMoveTo(float x, float y) {
 }
 
 static void dsAutoCenterMove() {
-    GLdouble duration = time_manager_for_eye.getDurationSecd();
+    GLdouble duration = timer.getDurationSecd();
     //dsVector2f dir = dsVector2f(GLfloat(targetX - center[0]),
     //    GLfloat(targetY - center[1]));
     dsVector2f dir(GLfloat(targetX - center_saved[0]), GLfloat(targetY - center_saved[1]));
@@ -136,7 +137,7 @@ static void dsCenterMove() {
     if (mdir & DOWN)
         --move_factor;
 
-    double duration = time_manager_for_eye.getDurationSecd();
+    double duration = timer.getDurationSecd();
     center[0] = center_saved[0] + (direction[0] * move_factor + dir_move.x) * viewMoveSpeed * duration;
     center[1] = center_saved[1] + (direction[1] * move_factor + dir_move.y) * viewMoveSpeed * duration;
     center[2] = center_saved[2] + direction[2] * move_factor * viewMoveSpeed * duration;
@@ -158,7 +159,7 @@ static void dsEyeRotate() {
     if (rdir & RIGHT)
         --factor2;
 
-    double duration = time_manager_for_eye.getDurationSecd();
+    double duration = timer.getDurationSecd();
     eye_sphere[1] = eye_sphere_saved[1] + factor1 * rotateSpeed * duration;
     if (eye_sphere[1] > pi - 0.01) {
         eye_sphere[1] = pi - 0.01;
