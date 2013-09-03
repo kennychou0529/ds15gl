@@ -19,7 +19,8 @@ dsTextManager dstext;
 dsTextManager dstext_small;
 
 // 声音管理
-DSSoundManager* soundManager;
+//已移入Frame
+//DSSoundManager* soundManager;
 
 #ifdef WIN32
 const char* font_file_name = "C:/Windows/Fonts/msyhbd.ttc";

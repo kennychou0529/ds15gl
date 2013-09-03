@@ -4,6 +4,8 @@
 #include "dsScene.h"
 #include "dsStatusBar.h"
 #include "dsMap.h"
+#include "dsSoundManager.h"
+//#include "dsActorManager.h"
 
 class DSFrame {
 public:
@@ -12,7 +14,12 @@ public:
     void initialize();
     void display();
     size_t getFPS() { return fps; }
-    DSScene scene;
+    
+public:
+	DSScene scene;
+	DSSoundManager sounds;
+	//DSActorManager actors;
+	
 private:
     void calculateFPS();
     

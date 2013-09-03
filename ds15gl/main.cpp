@@ -15,7 +15,8 @@
 //#endif
 
 DSFrame frame;
-extern DSSoundManager* soundManager;
+//移入Frame
+//extern DSSoundManager* soundManager;
 
 // 每帧时间，毫秒
 //static const int mspf = 33;
@@ -52,7 +53,7 @@ void dsInit() {
     dstext_small.init(font_file_name, font_height_small);
 
 	//this object must be initialized after main function
-	soundManager = DSSoundManager::getSoundManager();
+	//soundManager = DSSoundManager::getSoundManager();
 }
 
 // 当窗口大小被修改时自动调用此函数
@@ -72,7 +73,7 @@ void dsIdle() {
 
 //some object need to be destroyed
 void destroy() {
-	delete soundManager;
+	//delete soundManager;
 }
 
 int main(int argc, char* argv[]) {

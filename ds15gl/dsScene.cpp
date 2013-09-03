@@ -17,6 +17,7 @@ DSScene::~DSScene() {
 }
 
 void DSScene::show() {
+	
     glViewport(0, 0, window_width - status_bar_width, window_height);
     dsSkyBox.show();
     

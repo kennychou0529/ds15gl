@@ -11,6 +11,7 @@
 #include <map>
 #include <vector>
 
+
 #pragma comment (lib, "./mpg123/libmpg123.lib")
 #pragma comment (lib, "./openal/lib/OpenAL32.lib")
 #pragma comment (lib, "./openal/lib/alut.lib")
@@ -28,7 +29,7 @@ public:
 
 	void playMP3(bool* running);
 private:
-	char* fileName;
+	char fileName[256];
 	std::vector<ALuint> sources;
 	unsigned short type;
 	bool isPlaying;
@@ -42,8 +43,8 @@ typedef std::map<unsigned int,Clip*> ClipMap;
 class DSSoundManager
 {
 public:
-	static DSSoundManager* getSoundManager();
-	//不要用这个构造函数，用DSSoundManager::getSoundManager()替代；
+	
+	//就用这个
 	DSSoundManager(void);
 	//析构
 	~DSSoundManager(void);
@@ -74,8 +75,6 @@ public:
 	
 
 private:
-	static DSSoundManager *sm;
-
 	ALCdevice *device;
 	ALCcontext *context;
 	

@@ -2,7 +2,7 @@
 #include "dsTimer.h"
 #include "dsVector2f.h"
 #include "dsVector.h"
-#include "dsSoundManager.h"
+#include "dsFrame.h"
 
 // 移动视线中心点时，每秒移动距离
 static const double viewMoveSpeed = 40;
@@ -14,7 +14,8 @@ static GLdouble rotateSpeed = 2;
 
 static dsTimer timer;
 
-extern DSSoundManager* soundManager;
+extern DSFrame frame;
+//extern DSSoundManager* soundManager;
 
 // 眼睛旋转方向
 int rdir = STOP;
@@ -185,5 +186,5 @@ void dsSetEye() {
     gluLookAt(eye[0], eye[1], eye[2], center[0], center[1], center[2], up[0], up[1], up[2]);
 
     // 监听者位置
-    soundManager->setListenerPosition(eye[0], eye[1], eye[2]);
+	frame.sounds.setListenerPosition(eye[0], eye[1], eye[2]);
 }

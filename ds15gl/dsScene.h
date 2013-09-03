@@ -6,7 +6,8 @@
 #include "dsSkybox.h"
 #include "dsSoldier.h"
 #include <map>
-#include <vector>
+//#include "dsActorManager.h"
+
 
 // 与场景有关的类
 // 所有绘图操作都应该转移到这个类

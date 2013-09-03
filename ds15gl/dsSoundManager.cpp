@@ -65,7 +65,7 @@ void Clip::append(){
 
 Clip::Clip(char* fileName){
 
-	this->fileName = fileName;
+	strcpy_s(this->fileName , fileName);
 	append();
 	//append();
 	
@@ -74,7 +74,7 @@ Clip::~Clip(){
 	isPlaying = false;
 	if (type == 0){
 		for(int i=0;i<sources.size();i++){
-			alSourceStop(sources[i]);
+			//alSourceStop(sources[i]);
 			ALint buffer=0;
 			alGetSourcei(sources[i],AL_BUFFER,&buffer);
 			if(alIsBuffer(buffer)){
@@ -83,7 +83,7 @@ Clip::~Clip(){
 			buffer=0;
 		}
 	}
-	delete[] fileName;
+
 }
 ALuint Clip::play(float x,float y,float z,float vx,float vy,float vz){
 	ALuint sourceIndex=0;
@@ -271,16 +271,6 @@ int playMP3(char* fileName, bool* running){
 }
 
 
-DSSoundManager* DSSoundManager::sm = nullptr;
-
-DSSoundManager* DSSoundManager::getSoundManager(){
-	if (sm == nullptr)
-	{
-		return sm = new DSSoundManager;
-	}
-	return sm;
-}
-
 
 DSSoundManager::DSSoundManager(void)
 {
@@ -387,7 +377,7 @@ int main1(int argc,char** argv){
 //		alcMakeContextCurrent(context);
 //	}
 	alutInit(&argc,argv);
-	DSSoundManager* sm =DSSoundManager::getSoundManager();
+//	DSSoundManager& sm =DSSoundManager::getSoundManager();
 //	//g_bEAX = alIsExtensionPresent("EAX2.0");
 //	////sm->addSound(1,"data/sound/Footsteps.wav");
 //	//sm->setListenerPosition(1,2);
