@@ -74,16 +74,20 @@ Clip::~Clip(){
 	isPlaying = false;
 	if (type == 0){
 		for(int i=0;i<sources.size();i++){
-			//alSourceStop(sources[i]);
+			//这是怎么回事？sources[i]居然报错。
+			ALuint source =sources.operator[](i);
+			if(!alIsSource(source)) continue;
+			alSourceStop(source);
 			ALint buffer=0;
-			alGetSourcei(sources[i],AL_BUFFER,&buffer);
+			alGetSourcei(source,AL_BUFFER,&buffer);
 			if(alIsBuffer(buffer)){
 				alDeleteBuffers(1,(ALuint*)&buffer);
 			}
 			buffer=0;
+			alDeleteSources(1,&source);
 		}
 	}
-
+	sources.clear();
 }
 ALuint Clip::play(float x,float y,float z,float vx,float vy,float vz){
 	ALuint sourceIndex=0;

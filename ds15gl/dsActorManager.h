@@ -4,6 +4,11 @@
 #include <map>
 #include <string>
 #include "dsSoldier.h"
+#include "dsScript.h"
+#include "dsTimer.h"
+
+//定义每回合时间
+#define ROUNDTIME 2000
 
 typedef std::map<std::string, dsSoldier> SOLDIERS;
 
@@ -17,11 +22,14 @@ public:
 	void initialize();
 	//渲染
 	void render();
-	//读脚本，更新人物信息，每回合运行
+	//每回合读脚本，更新人物信息，
 	void update();
 
 private:
 	SOLDIERS list;
+	DSScript script;
+	dsTimer timer;
+	int round;
 };
 
 #endif // !_DSACTORMANAGER_H

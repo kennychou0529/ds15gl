@@ -3,6 +3,7 @@
 
 DSActorManager::DSActorManager(void)
 {
+	round = 0;
 }
 
 
@@ -35,6 +36,7 @@ void DSActorManager::initialize(){
 }
 //äÖÈ¾
 void DSActorManager::render(){
+	update();
 	if (list.empty()) return;
 	
 	glPushMatrix();
@@ -49,5 +51,23 @@ void DSActorManager::render(){
 }
 
 void DSActorManager::update(){
-
+	if(timer.getDurationMiliseci()>ROUNDTIME){
+		round++;
+		
+		while (script.notEmpty()&&script.nextRound() == round)
+		{
+			Record& record = script.getNextRecord();
+			SOLDIERS::iterator it=list.find(record.id);
+			if(it==list.end()) continue;
+			switch (record.type)
+			{
+			case soldier_move:
+				list[record.id].setTarget(record.x,record.y);
+				list[record.id].enterStatus(dsSoldier::Status::running);
+			default:
+				break;
+			}
+		}
+		timer.recordTime();
+	}
 }
