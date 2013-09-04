@@ -5,10 +5,11 @@
 #include "dsTools.h"
 #include <sstream>
 #include <utility>
+#include "dsFrame.h"
 
 extern dsTextManager dstext;
-
-DSScene::DSScene() {}
+extern DSFrame frame;
+DSScene::DSScene() :actors(frame.actors){}
 
 DSScene::~DSScene() {
     if (glIsList(groud)) {
@@ -23,12 +24,15 @@ void DSScene::show() {
     
     glEnable(GL_LIGHTING);
     
-    glPushMatrix();
+    /*包含在ActorManager中
+	glPushMatrix();
     {
         soldiers["sword_man"].animate();
         soldiers["mage"].animate();
     }
-    glPopMatrix();
+    glPopMatrix();*/
+
+	actors.render();
 
     map.renderGrid();
 
@@ -38,7 +42,9 @@ void DSScene::show() {
 }
 
 void DSScene::initialize() {
-    soldiers.insert(std::make_pair("sword_man", dsSoldier()));
+
+   /* 由Manager管理
+   soldiers.insert(std::make_pair("sword_man", dsSoldier()));
     soldiers["sword_man"].load("data/sword_man/tris.md2",
                                "data/sword_man/tris.bmp",
                                "data/sword_man/weapon.md2",
@@ -55,7 +61,9 @@ void DSScene::initialize() {
                           "data/mage/weapon.bmp");
 
     soldiers["mage"].setPosition(1, 1);
-    soldiers["mage"].enterStatus(dsSoldier::Status::idle);
+    soldiers["mage"].enterStatus(dsSoldier::Status::idle);*/
+
+	actors.initialize();
 
     dsSkyBox.load(3);
 }

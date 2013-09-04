@@ -5,7 +5,7 @@
 #include "dsStatusBar.h"
 #include "dsMap.h"
 #include "dsSoundManager.h"
-//#include "dsActorManager.h"
+#include "dsActorManager.h"
 
 class DSFrame {
 public:
@@ -18,7 +18,7 @@ public:
 public:
 	DSScene scene;
 	DSSoundManager sounds;
-	//DSActorManager actors;
+	DSActorManager actors;
 	
 private:
     void calculateFPS();

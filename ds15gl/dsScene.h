@@ -6,7 +6,7 @@
 #include "dsSkybox.h"
 #include "dsSoldier.h"
 #include <map>
-//#include "dsActorManager.h"
+#include "dsActorManager.h"
 
 
 // 与场景有关的类
@@ -20,9 +20,11 @@ public:
     DSMap map;
 private:
     DSSkybox dsSkyBox;
-    std::map<std::string, dsSoldier> soldiers;
+	//移入cctors
+    //std::map<std::string, dsSoldier> soldiers;
     //显示列表
     GLuint groud;
+	DSActorManager& actors;
 };
 
 #endif
