@@ -1,6 +1,16 @@
 队式 15 展示组
 ======
 
+如何使用 AStyle 自动代码风格化：
+* 在 VS 中打开菜单 TOOLS / Extensions and updates...
+* 在对话框中点击左边 Online，再在右上角搜索框中搜索 astyle
+* 搜索出 AStyle Extension，安装之
+* 按照要求重启 VS
+* 打开菜单 TOOLS / Options
+* 在左边选择 Astyle Formatter / General，在右边选择 C/C++
+* 点击 Edit，并输入`--style=java --indent=spaces=4 --align-pointer=type --align-reference=type --indent-col1-comments --pad-oper --pad-header --unpad-paren --add-brackets --convert-tabs --mode=c`
+* 在菜单 EDIT / Advanced 中使用 Astyle
+
 Linux 下使用 FreeType：
 * 安装 FreeType：`sudo apt-get install libfreetype6-dev`
 * 在 /usr/include 中发现 freetype2 文件夹，将其中的 freetype 文件夹复制到 /usr/include 下
