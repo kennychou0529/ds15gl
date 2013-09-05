@@ -12,24 +12,25 @@
 
 typedef std::map<std::string, dsSoldier> SOLDIERS;
 
-class DSActorManager
-{
+class DSActorManager {
 public:
-	DSActorManager(void);
-	~DSActorManager(void);
-	
-	//加载人物
-	void initialize();
-	//渲染
-	void render();
-	//每回合读脚本，更新人物信息，
-	void update();
+    DSActorManager(void);
+    ~DSActorManager(void);
+
+    //加载人物
+    void initialize();
+
+    //渲染
+    void render();
+
+    //每回合读脚本，更新人物信息，
+    void update();
 
 private:
-	SOLDIERS list;
-	DSScript script;
-	dsTimer timer;
-	int round;
+    SOLDIERS list;
+    DSScript script;
+    dsTimer timer;
+    int round;
 };
 
 #endif // !_DSACTORMANAGER_H

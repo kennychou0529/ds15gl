@@ -18,74 +18,73 @@
 
 // 音频source的容器
 
-class Clip{
+class Clip {
 public:
-	Clip(char* fileName);
-	~Clip();
-	void append();
-	//x,y,z 声源位置
-	//vx,vy,vz 声源速度
-	ALuint play(float x,float y,float z,float vx = 0,float vy = 0,float vz = 0);
+    Clip(char* fileName);
+    ~Clip();
+    void append();
+    //x,y,z 声源位置
+    //vx,vy,vz 声源速度
+    ALuint play(float x, float y, float z, float vx = 0, float vy = 0, float vz = 0);
 
-	void playMP3(bool* running);
+    void playMP3(bool* running);
 private:
-	char fileName[256];
-	std::vector<ALuint> sources;
-	unsigned short type;
-	bool isPlaying;
+    char fileName[256];
+    std::vector<ALuint> sources;
+    unsigned short type;
+    bool isPlaying;
 
-	ALenum alError;
+    ALenum alError;
 };
 
-typedef std::map<unsigned int,Clip*> ClipMap; 
-	
-//必须在alutinit之后实例化，否则会出问题（导入音频失败）
-class DSSoundManager
-{
-public:
-	
-	//就用这个
-	DSSoundManager(void);
-	//析构
-	~DSSoundManager(void);
-	
-	// 按文件名后缀区分MP3文件和wav文件
-	// wav文件默认载入两次备用，不够用时自动扩展
-	// mp3文件只保存文件名，播放时读取
-	// 暂时只能载入一个MP3作为背景音乐
-	void addSound(unsigned int id, char* fileName);
-	
-	// x,y,z 声源位置
-	// vx,vy,vz 声源速度
-	// 返回所播放声源的索引
-	// 若为mp3文件，或id不存在，返回 0；
-	ALuint playSound(unsigned int id,float x,float y,float z,float vx = 0,float vy = 0,float vz = 0);
-	
-	// sourceIndex 请使用 plaSound的返回值
-	void stop(ALuint sourceIndex);
-	
-	// 在游戏载入阶段调用
-	// 由于用到alut,必须在alutInit之后调用
-	void loadSounds();
-	
-	void setListenerPosition(ALfloat x, ALfloat y, ALfloat z=8.f);
-	// 注释待添加
-	static void displayALError(char* func,ALenum alError);
+typedef std::map<unsigned int, Clip*> ClipMap;
 
-	
+//必须在alutinit之后实例化，否则会出问题（导入音频失败）
+class DSSoundManager {
+public:
+
+    //就用这个
+    DSSoundManager(void);
+    //析构
+    ~DSSoundManager(void);
+
+    // 按文件名后缀区分MP3文件和wav文件
+    // wav文件默认载入两次备用，不够用时自动扩展
+    // mp3文件只保存文件名，播放时读取
+    // 暂时只能载入一个MP3作为背景音乐
+    void addSound(unsigned int id, char* fileName);
+
+    // x,y,z 声源位置
+    // vx,vy,vz 声源速度
+    // 返回所播放声源的索引
+    // 若为mp3文件，或id不存在，返回 0；
+    ALuint playSound(unsigned int id, float x, float y, float z, float vx = 0, float vy = 0, float vz = 0);
+
+    // sourceIndex 请使用 plaSound的返回值
+    void stop(ALuint sourceIndex);
+
+    // 在游戏载入阶段调用
+    // 由于用到alut,必须在alutInit之后调用
+    void loadSounds();
+
+    void setListenerPosition(ALfloat x, ALfloat y, ALfloat z = 8.f);
+    // 注释待添加
+    static void displayALError(char* func, ALenum alError);
+
+
 
 private:
-	ALCdevice *device;
-	ALCcontext *context;
-	
-	mpg123_handle *mpg123 ;
+    ALCdevice* device;
+    ALCcontext* context;
 
-	ClipMap clipMap;
+    mpg123_handle* mpg123 ;
 
-	ALuint backgroundSound;
+    ClipMap clipMap;
 
-	ALboolean g_bEAX;
-	ALenum alError;
-	int iMpg123_error;
+    ALuint backgroundSound;
+
+    ALboolean g_bEAX;
+    ALenum alError;
+    int iMpg123_error;
 };
 

@@ -12,7 +12,6 @@ DSActorManager::~DSActorManager(void) {
 
 //º”‘ÿ»ÀŒÔ
 void DSActorManager::initialize() {
-
     list.insert(std::make_pair("sword_man", dsSoldier()));
     list["sword_man"].load("data/sword_man/tris.md2",
                            "data/sword_man/tris.bmp",
@@ -32,6 +31,7 @@ void DSActorManager::initialize() {
     list["mage"].setPosition(1, 1);
     list["mage"].enterStatus(dsSoldier::Status::idle);
 }
+
 //‰÷»æ
 void DSActorManager::render() {
     update();
