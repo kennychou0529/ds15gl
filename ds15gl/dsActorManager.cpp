@@ -41,11 +41,9 @@ void DSActorManager::render(){
 	
 	glPushMatrix();
 	{
-		SOLDIERS::iterator it = list.begin();
-		while(it!=list.end()){
-			it->second.animate();
-			it++;
-		}
+        for (auto& soldier : list) {
+            soldier.second.animate();
+        }
 	}
 	glPopMatrix();
 }

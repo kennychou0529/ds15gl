@@ -68,9 +68,15 @@ void dsSoldier::animate() {
             dsVector2f dir = target - saved;
             GLfloat length = dir.getLenth();
             dir.normalise();
+
             GLfloat duration = timer.getDurationSecf();
             dsVector2f pos = saved + move_speed * duration * dir;
-            angle = std::acos(dir * dsVector2f(1.0f, 0.0f)) * 180.0f / pi;
+
+            //angle = std::acos(dir * dsVector2f(1.0f, 0.0f)) * 180.0f / pi;
+            angle = std::acos(dir.x) * 180.0f / pi;
+            if (std::abs(std::sin(angle / 180.0f * pi) - dir.y) > 0.01f) {
+                angle = -angle;
+            }
             glTranslatef(pos.x, pos.y, 4.0f);
             glScaled(scale, scale, scale);
             glRotatef(angle, 0.0f, 0.0f, 1.0f);
