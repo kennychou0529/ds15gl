@@ -3,7 +3,7 @@
 
 #include <string>
 #include "dsVector2f.h"
-#include "dsQueue.h"
+#include <list>
 
 using std::string;
 
@@ -32,20 +32,26 @@ struct Record {
 class DSScript {
 public:
     DSScript(void): emptyRecord(0, "", soldier_die, 0, 0) {
-
-        scriptQue.push(new Record(3, "sword_man", soldier_move, 1, 1));
-        scriptQue.push(new Record(6, "sword_man", soldier_move, 5, 1));
-        scriptQue.push(new Record(9, "sword_man", soldier_move, 1, 6));
-        scriptQue.push(new Record(12, "sword_man", soldier_move, 2, 1));
+        scriptQue.push_back(new Record(3, "sword_man", soldier_move, 1, 1));
+		scriptQue.push_back(new Record(4, "mage", soldier_move, 0, 1));
+        scriptQue.push_back(new Record(6, "sword_man", soldier_move, 5, 1));
+        scriptQue.push_back(new Record(9, "mage", soldier_move, 1, 6));
+        scriptQue.push_back(new Record(12, "sword_man", soldier_move, 2, 9));
     }
+
+	//readScriptFromFile
+	void readFromFile(){
+		
+	}
 
     // 窥探接下来的一条记录，但是不将该记录挤出队列
     Record peekNextRecord() {
-        //去掉坏的记录
-        while (!scriptQue.empty() && scriptQue.front_element() == NULL) {
-            scriptQue.pop();
-        }
-        auto r = scriptQue.front_element();
+        //no need
+		////去掉坏的记录
+        //while (!scriptQue.empty() && scriptQue.front_element() == NULL) {
+        //    scriptQue.pop();
+        //}
+        auto r = scriptQue.front();
         if (r == nullptr) {
             return emptyRecord;
         }
@@ -55,15 +61,17 @@ public:
     }
 
     Record getNextRecord() {
-        Record* r = scriptQue.pop();
+        Record* r = scriptQue.front();
+		scriptQue.pop_front();
         //这几乎不可能
         if (r == NULL) {
             return emptyRecord;
         }
-        //去掉坏的记录
-        while (!scriptQue.empty() && scriptQue.front_element() == NULL) {
-            scriptQue.pop();
-        }
+		//no need
+        ////去掉坏的记录
+        //while (!scriptQue.empty() && scriptQue.front() == NULL) {
+        //    scriptQue.pop_front();
+        //}
 
         Record rd = *r;
         delete r;
@@ -78,12 +86,12 @@ public:
         if (scriptQue.empty()) {
             return 0;
         }
-        return scriptQue.front_element()->round;
+        return scriptQue.front()->round;
     }
 
 private:
     //脚本队列
-    DSQueue<Record*> scriptQue;
+    std::list<Record*> scriptQue;
 
     //有一个空 Record
     Record emptyRecord;

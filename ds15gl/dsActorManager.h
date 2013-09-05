@@ -31,9 +31,9 @@ public:
 private:
     SOLDIERS list;
     DSScript script;
-    dsTimer timer;
+    //dsTimer timer;
     int round;
-    
+
     bool round_finished;
 };
 

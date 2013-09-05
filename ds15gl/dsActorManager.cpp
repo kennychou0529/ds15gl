@@ -2,8 +2,8 @@
 
 
 DSActorManager::DSActorManager() : round(0),
-                                   script_finished(true),
-                                   round_finished(true) {}
+    script_finished(true),
+    round_finished(true) {}
 
 
 DSActorManager::~DSActorManager() {}
@@ -41,7 +41,7 @@ void DSActorManager::render() {
 
     glPushMatrix();
     {
-        for (auto& soldier : list) {
+        for (auto & soldier : list) {
             soldier.second.animate();
         }
     }
@@ -52,6 +52,8 @@ void DSActorManager::update() {
     if ((script_finished == true) && script.notEmpty()) {
         script_finished = false;
         Record record = script.getNextRecord();
+		//记录一下当前回合数，用于显示
+		round = record.round;
 
         auto iter_soldier = list.find(record.id);
         if (iter_soldier != list.end()) {
