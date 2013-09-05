@@ -89,7 +89,7 @@ void dsSoldier::animate() {
             if (move_speed * duration > length) {
                 pos = target;
                 setPosition(target_position[0], target_position[1]);
-                enterStatus(idle);
+                enterStatus(idle, finished);
                 if (finished != nullptr) {
                     *finished = true;
                 }

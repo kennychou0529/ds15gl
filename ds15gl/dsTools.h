@@ -16,6 +16,8 @@ extern const char* font_file_name;
 extern const int font_height;
 extern const int font_height_small;
 
+extern bool auto_playing;
+
 void dsSpecialKeyDown(int key, int x, int y);
 void dsSpecialKeyUp(int key, int x, int y);
 void dsKeyDown(unsigned char key, int x, int y);
@@ -27,7 +29,7 @@ void dsKeyUp(unsigned char key, int x, int y);
 // 显示一个三维坐标系，xyz 轴分别为红绿蓝
 void dsShowAxes();
 
-void drawRectange2D(int x,int y,int width,int length);
-void fillRectange2D(int x,int y,int width,int length);
+void drawRectange2D(int x, int y, int width, int length);
+void fillRectange2D(int x, int y, int width, int length);
 
 #endif

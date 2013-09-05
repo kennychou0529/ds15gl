@@ -14,8 +14,8 @@ typedef std::map<std::string, dsSoldier> SOLDIERS;
 
 class DSActorManager {
 public:
-    DSActorManager(void);
-    ~DSActorManager(void);
+    DSActorManager();
+    ~DSActorManager();
 
     //加载人物
     void initialize();
@@ -26,11 +26,15 @@ public:
     //每回合读脚本，更新人物信息，
     void update();
 
+    bool script_finished;
+
 private:
     SOLDIERS list;
     DSScript script;
     dsTimer timer;
     int round;
+    
+    bool round_finished;
 };
 
 #endif // !_DSACTORMANAGER_H

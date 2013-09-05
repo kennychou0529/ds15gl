@@ -42,27 +42,6 @@ void DSScene::show() {
 }
 
 void DSScene::initialize() {
-
-   /* 由Manager管理
-   soldiers.insert(std::make_pair("sword_man", dsSoldier()));
-    soldiers["sword_man"].load("data/sword_man/tris.md2",
-                               "data/sword_man/tris.bmp",
-                               "data/sword_man/weapon.md2",
-                               "data/sword_man/weapon.bmp");
-
-    soldiers["sword_man"].setPosition(6, 6);
-    soldiers["sword_man"].setTarget(8, 9);
-    soldiers["sword_man"].enterStatus(dsSoldier::Status::running);
-
-    soldiers.insert(std::make_pair("mage", dsSoldier()));
-    soldiers["mage"].load("data/mage/tris.md2",
-                          "data/mage/tris.bmp",
-                          "data/mage/weapon.md2",
-                          "data/mage/weapon.bmp");
-
-    soldiers["mage"].setPosition(1, 1);
-    soldiers["mage"].enterStatus(dsSoldier::Status::idle);*/
-
 	actors.initialize();
 
     dsSkyBox.load(3);

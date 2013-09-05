@@ -35,7 +35,7 @@ const int font_height_small = 13;
 
 GLdouble axeLength = eye_sphere[0] * 0.5;
 
-// bool keyboard_enabled = true;
+bool auto_playing = true;
 
 void dsSpecialKeyDown(int key, int x, int y) {
     saveEyeInfo();
