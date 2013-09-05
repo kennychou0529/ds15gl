@@ -24,6 +24,7 @@ void Clip::append() {
         ALsizei frequency;
         //ALfloat frequency;
         ALboolean loop;
+		//尽管它被否决，当初他以外的都有问题
         alutLoadWAVFile(fileName, &format, &data, &size, &frequency, &loop);
         //data = alutLoadMemoryFromFile(fileName,&format,&size,&frequency);
         alBufferData(tempBuffer, format, data, size, frequency);
@@ -72,7 +73,7 @@ Clip::Clip(char* fileName) {
 Clip::~Clip() {
     isPlaying = false;
     if (type == 0) {
-        for (int i = 0; i < sources.size(); i++) {
+        for (unsigned int i = 0; i < sources.size(); i++) {
             //这是怎么回事？sources[i]居然报错。
             ALuint source = sources.operator[](i);
             if (!alIsSource(source)) {
@@ -99,7 +100,7 @@ ALuint Clip::play(float x, float y, float z, float vx, float vy, float vz) {
             return 0;
         }
 
-        for (int i = 0; i < sources.size(); i++) {
+        for (unsigned int i = 0; i < sources.size(); i++) {
             ALint value;
             alGetSourcei(sources[i], AL_SOURCE_STATE, &value);
 
@@ -147,9 +148,9 @@ int playMP3(char* fileName, bool* running) {
     ALuint uiBuffer;
     ALCdevice* pDevice = NULL;
     ALCcontext* pContext = NULL;
-    ALboolean g_bEAX;
-    ALenum error, eBufferFormat;
-    ALint iDataSize, iFrequency;
+    //ALboolean g_bEAX;
+    ALenum error;//, eBufferFormat;
+    //ALint iDataSize, iFrequency;
     ALuint ulFormat;
     int iLoop, iBuffersProcessed, iTotalBuffersProcessed;
     unsigned long ulDataSize = 0;
@@ -158,9 +159,9 @@ int playMP3(char* fileName, bool* running) {
     size_t ulBytesWritten;
     long lRate;
     int iEncoding, iChannels;
-    int encoding;
+    //int encoding;
     void*         pData = NULL;
-    WAVEFORMATEX* pwfex;
+    //WAVEFORMATEX* pwfex;
     int iState, iQueuedBuffers;
     mpg123_handle* mpg123 ;
     int iMpg123_error;
@@ -224,7 +225,7 @@ int playMP3(char* fileName, bool* running) {
         alGetSourcei(uiSource, AL_BUFFERS_PROCESSED, &iBuffersProcessed);
 
         iTotalBuffersProcessed += iBuffersProcessed;
-        printf("Buffers total Processed %d\r", iTotalBuffersProcessed);
+        //printf("Buffers total Processed %d", iTotalBuffersProcessed);
         while (iBuffersProcessed) {
             uiBuffer = 0;
             alSourceUnqueueBuffers(uiSource, 1, &uiBuffer);
