@@ -33,24 +33,19 @@ class DSScript {
 public:
     DSScript(void): emptyRecord(0, "", soldier_die, 0, 0) {
 
-        scriptQue.push(new Record(3, "sword_man", soldier_move, 1, 1));
-        scriptQue.push(new Record(6, "sword_man", soldier_move, 5, 1));
-        scriptQue.push(new Record(9, "sword_man", soldier_move, 1, 6));
-        scriptQue.push(new Record(12, "sword_man", soldier_move, 2, 1));
+        scriptQue.push(new Record(0, "sword_man", soldier_move, 1, 1));
+        scriptQue.push(new Record(0, "sword_man", soldier_move, 5, 1));
+        scriptQue.push(new Record(1, "sword_man", soldier_move, 1, 6));
+        scriptQue.push(new Record(1, "sword_man", soldier_move, 2, 1));
     }
 
     // 窥探接下来的一条记录，但是不将该记录挤出队列
     Record peekNextRecord() {
-        //去掉坏的记录
-        while (!scriptQue.empty() && scriptQue.front_element() == NULL) {
-            scriptQue.pop();
-        }
-        auto r = scriptQue.front_element();
+        Record* r = scriptQue.front_element();
         if (r == nullptr) {
             return emptyRecord;
         }
         Record record = *r;
-        delete r;
         return record;
     }
 

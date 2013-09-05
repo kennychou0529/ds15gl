@@ -8,6 +8,9 @@
 #include "dsVector.h"
 #include "dsSoundManager.h"
 #include "dsEye.h"
+#include "dsFrame.h"
+
+extern DSFrame frame;
 
 // 全局使用
 int window_width = 1280;
@@ -59,6 +62,11 @@ void dsSpecialKeyDown(int key, int x, int y) {
     case GLUT_KEY_F2:
         mdir |= DOWN;
         break;
+    case GLUT_KEY_F3:
+        if (frame.actors.round_finished) {
+            frame.actors.enterNextRound();
+        }
+
     default:
         break;
     }

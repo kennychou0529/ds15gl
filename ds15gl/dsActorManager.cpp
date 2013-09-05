@@ -3,7 +3,8 @@
 
 DSActorManager::DSActorManager() : round(0),
                                    script_finished(true),
-                                   round_finished(true) {}
+                                   round_finished(false),
+                                   all_finished(false) {}
 
 
 DSActorManager::~DSActorManager() {}
@@ -49,43 +50,43 @@ void DSActorManager::render() {
 }
 
 void DSActorManager::update() {
-    if ((script_finished == true) && script.notEmpty()) {
-        script_finished = false;
-        Record record = script.getNextRecord();
 
-        auto iter_soldier = list.find(record.id);
-        if (iter_soldier != list.end()) {
-            switch (record.type) {
-            case soldier_move:
-                iter_soldier->second.setTarget(record.x, record.y);
-                iter_soldier->second.enterStatus(dsSoldier::Status::running, &script_finished);
-            default:
-                break;
-            }
+    // 只有当当前指令已经完成播放时，才需要 update
+    // 否则应该继续播放
+    if (script_finished) {
+
+        // 如果没有新的指令了，说明所有的都播放完成了
+        if (!script.notEmpty()) {
+            all_finished = true;
+            return;
         }
 
-    }
+        // 如果窥探到接下来的一条指令对应的回合数大于当前回合
+        // 说明当前回合的所有指令都已播放完成
+        // 于是标记 round_finished
+        if (script.peekNextRecord().round > round) {
+            round_finished = true;
+        }
 
-    /*if (timer.getDurationMiliseci() > ROUNDTIME) {
-        round++;
+        // 只有当当前回合还没有完全播放完成的时候才需要自动进入下一条指令
+        if (!round_finished) {
 
-        while (script.notEmpty() && script.nextRound() == round) {
-            Record& record = script.getNextRecord();
+            // 指令出队
+            Record record = script.getNextRecord();
 
+            // 下达指令
             auto iter_soldier = list.find(record.id);
-            if (iter_soldier == list.end()) {
-                continue;
-            }
-            switch (record.type) {
-            case soldier_move:
-                iter_soldier->second.setTarget(record.x, record.y);
-                iter_soldier->second.enterStatus(dsSoldier::Status::running, &script_finished);
-            default:
-                break;
+            if (iter_soldier != list.end()) {
+                switch (record.type) {
+                case soldier_move:
+                    iter_soldier->second.setTarget(record.x, record.y);
+                    iter_soldier->second.enterStatus(dsSoldier::Status::running, &script_finished);
+                default:
+                    break;
+                }
             }
         }
-        timer.recordTime();
-    }*/
+    }
 
     //if (timer.getDurationMiliseci() > ROUNDTIME) {
     //    round++;
