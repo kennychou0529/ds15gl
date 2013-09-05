@@ -93,20 +93,24 @@ void dsSpecialKeyUp(int key, int x, int y) {
     }
 }
 
-void dsKeyUp(unsigned char key, int x, int y){
+void dsKeyUp(unsigned char key, int x, int y) {
     saveEyeInfo();
 
     switch (key) {
-    case 'a': case 'A':
+    case 'a':
+    case 'A':
         idir &= ~LEFT;
         break;
-    case 'w': case 'W':
+    case 'w':
+    case 'W':
         idir &= ~UP;
         break;
-    case 'd': case 'D':
+    case 'd':
+    case 'D':
         idir &= ~RIGHT;
         break;
-    case 's': case 'S':
+    case 's':
+    case 'S':
         idir &= ~DOWN;
         break;
     default:
@@ -118,16 +122,20 @@ void dsKeyDown(unsigned char key, int x, int y) {
     saveEyeInfo();
 
     switch (key) {
-    case 'a': case 'A':
+    case 'a':
+    case 'A':
         idir |= LEFT;
         break;
-    case 'w': case 'W':
+    case 'w':
+    case 'W':
         idir |= UP;
         break;
-    case 'd': case 'D':
+    case 'd':
+    case 'D':
         idir |= RIGHT;
         break;
-    case 's': case 'S':
+    case 's':
+    case 'S':
         idir |= DOWN;
         break;
     case 'm':

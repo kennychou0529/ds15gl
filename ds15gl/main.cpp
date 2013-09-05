@@ -11,21 +11,15 @@
 //
 //// 这可以避免在 Windows 下出现命令行窗口
 //#ifdef WIN32
-//#pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"") 
+//#pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"")
 //#endif
 
 DSFrame frame;
-//移入Frame
-//extern DSSoundManager* soundManager;
-
-// 每帧时间，毫秒
-//static const int mspf = 33;
-// static auto sleep_time = std::chrono::milliseconds(33);
 
 void dsDisplay() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	dsSetEye(); // 设置视角
+    dsSetEye(); // 设置视角
     frame.display();
     glutSwapBuffers();
 
@@ -52,8 +46,8 @@ void dsInit() {
     dstext.init(font_file_name, font_height);
     dstext_small.init(font_file_name, font_height_small);
 
-	//this object must be initialized after main function
-	//soundManager = DSSoundManager::getSoundManager();
+    //this object must be initialized after main function
+    //soundManager = DSSoundManager::getSoundManager();
 }
 
 // 当窗口大小被修改时自动调用此函数
@@ -73,12 +67,12 @@ void dsIdle() {
 
 //some object need to be destroyed
 void destroy() {
-	//delete soundManager;
+    //delete soundManager;
 }
 
 int main(int argc, char* argv[]) {
     glutInit(&argc, argv);
-	//alutInit(&argc,argv);
+    // alutInit(&argc,argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowPosition(0, 0);
     glutInitWindowSize(window_width, window_height);
@@ -91,9 +85,9 @@ int main(int argc, char* argv[]) {
     glutReshapeFunc(dsReshape);
     glutIdleFunc(dsIdle);
     glutKeyboardFunc(dsKeyDown);
-	glutKeyboardUpFunc(dsKeyUp);
+    glutKeyboardUpFunc(dsKeyUp);
     dsInit();
     glutMainLoop();
-	destroy();
+    destroy();
     return 0;
 }
