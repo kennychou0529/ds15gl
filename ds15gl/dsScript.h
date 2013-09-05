@@ -43,6 +43,7 @@ public:
 	void readFromFile(){
 		
 	}
+    }
 
     // 窥探接下来的一条记录，但是不将该记录挤出队列
     Record peekNextRecord() {

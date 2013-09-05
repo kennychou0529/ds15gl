@@ -64,10 +64,11 @@ void DSStatusBar::show() {
         glPopMatrix();
 
         //std::wstringstream os;
-        os.str(L"");
-        os << L"FPS " << frame.getFPS();
+        
         glPushMatrix();
         {
+            os.str(L"");
+            os << L"FPS " << frame.getFPS();
             glLoadIdentity();
             glScalef(0.5, 0.5, 0.5);
             dstext.print(5, (GLfloat)window_height - 20, os.str());
@@ -76,10 +77,20 @@ void DSStatusBar::show() {
 
         glPushMatrix();
         {
-            glLoadIdentity();
-            if (frame.actors.script_finished == false) {
-            dstext_small.print(5, 200, L"playing");
+            os.str(L"");
+            os << L"Round " << frame.actors.getCurrentRound();
+            if (frame.actors.round_finished) {
+                os << L"\nF3: next round";
             }
+            if (!frame.actors.script_finished) {
+                os << L"\nplaying";
+            }
+            if (frame.actors.all_finished) {
+                os << L"\nFinished";
+            }
+
+            glLoadIdentity();
+            dstext_small.print(5, 220, os.str());
         }
         glPopMatrix();
 

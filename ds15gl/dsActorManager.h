@@ -26,15 +26,23 @@ public:
     //每回合读脚本，更新人物信息，
     void update();
 
-    bool script_finished;
+    int getCurrentRound() { return round; }
 
+    void enterNextRound() {
+        ++round;
+        round_finished = false;
+    }
+
+    bool script_finished;
+    bool round_finished;
+    bool all_finished;
 private:
     SOLDIERS list;
     DSScript script;
     //dsTimer timer;
     int round;
-
-    bool round_finished;
+    
+    
 };
 
 #endif // !_DSACTORMANAGER_H
