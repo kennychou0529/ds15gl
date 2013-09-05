@@ -54,14 +54,15 @@ void DSActorManager::update() {
 
         while (script.notEmpty() && script.nextRound() == round) {
             Record& record = script.getNextRecord();
-            SOLDIERS::iterator it = list.find(record.id);
-            if (it == list.end()) {
+
+            auto iter_soldier = list.find(record.id);
+            if (iter_soldier == list.end()) {
                 continue;
             }
             switch (record.type) {
             case soldier_move:
-                list[record.id].setTarget(record.x, record.y);
-                list[record.id].enterStatus(dsSoldier::Status::running);
+                iter_soldier->second.setTarget(record.x, record.y);
+                iter_soldier->second.enterStatus(dsSoldier::Status::running);
             default:
                 break;
             }

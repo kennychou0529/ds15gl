@@ -35,7 +35,7 @@ public:
     // µ± progress Îª 39.5 Ê±£¬renderSmoothly(49, 10, 0.5)¡£
     void renderSmoothly(GLfloat progress);
 
-    void enterStatus(Status status_to_enter);
+    void enterStatus(Status status_to_enter, bool* operation_finished = nullptr);
 
     void animate();
 
@@ -64,6 +64,7 @@ private:
     GLfloat move_speed;
     GLfloat scale;
     GLfloat angle;
+    bool* finished;
 };
 
 #endif

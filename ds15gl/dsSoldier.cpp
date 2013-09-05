@@ -4,11 +4,11 @@
 #include "dsVector2f.h"
 #include <cmath>
 
-static const GLfloat pi = 3.1415926;
+static const GLfloat pi = 3.1415926f;
 
 extern DSFrame frame;
 
-dsSoldier::dsSoldier() : frame_beg(40), frame_end(45), fps(5), move_speed(20), scale(0.2), angle(0) {}
+dsSoldier::dsSoldier() : frame_beg(40), frame_end(45), fps(5), move_speed(20.0f), scale(0.2f), angle(0.0f), finished(nullptr) {}
 
 void dsSoldier::renderFrame(size_t frame_index) {
     person.renderFrame(frame_index);
@@ -30,7 +30,12 @@ void dsSoldier::renderSmoothly(GLfloat progress) {
     renderSmoothly(frame1_index, frame2_index, percentage);
 }
 
-void dsSoldier::enterStatus(Status status_to_enter) {
+void dsSoldier::enterStatus(Status status_to_enter, bool* operation_finished) {
+    finished = operation_finished;
+    if (finished != nullptr) {
+        *finished = false;
+    }
+
     status = status_to_enter;
     timer.recordTime();
     switch (status) {
@@ -72,11 +77,11 @@ void dsSoldier::animate() {
             GLfloat duration = timer.getDurationSecf();
             dsVector2f pos = saved + move_speed * duration * dir;
 
-            //angle = std::acos(dir * dsVector2f(1.0f, 0.0f)) * 180.0f / pi;
             angle = std::acos(dir.x) * 180.0f / pi;
             if (std::abs(std::sin(angle / 180.0f * pi) - dir.y) > 0.01f) {
                 angle = -angle;
             }
+
             glTranslatef(pos.x, pos.y, 4.0f);
             glScaled(scale, scale, scale);
             glRotatef(angle, 0.0f, 0.0f, 1.0f);
@@ -85,6 +90,9 @@ void dsSoldier::animate() {
                 pos = target;
                 setPosition(target_position[0], target_position[1]);
                 enterStatus(idle);
+                if (finished != nullptr) {
+                    *finished = true;
+                }
             }
         }
     }
