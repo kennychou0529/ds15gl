@@ -32,7 +32,7 @@ static GLfloat targetX, targetY;
 
 // 眼睛位置，用球坐标 (r, phi, theta) 表示
 // 其中，phi 表示与 z 轴的夹角
-// theta 表示在 xy 平面的投影的旋转角 
+// theta 表示在 xy 平面的投影的旋转角
 GLdouble eye_sphere[3] = { 50.0, pi / 4, -pi / 2 };
 
 static GLdouble eye_sphere_saved[3];
@@ -97,8 +97,7 @@ static void dsAutoCenterMove() {
             moving = false;
             saveEyeInfo();
         }
-    }
-    else { // 按 viewMoveSpeed 不能在 1 秒内移动完毕
+    } else { // 按 viewMoveSpeed 不能在 1 秒内移动完毕
         if (duration < 1.0) {
             center[0] = center_saved[0] + (targetX - center_saved[0]) * duration;
             center[1] = center_saved[1] + (targetY - center_saved[1]) * duration;
@@ -122,21 +121,27 @@ static void dsCenterMove() {
     dsVector2f dir_left = dir_up.turnLeft();
 
     dsVector2f dir_move(0.0f, 0.0f); // Moving direction
-    if (idir & UP)
+    if (idir & UP) {
         dir_move += dir_up;
-    if (idir & DOWN)
+    }
+    if (idir & DOWN) {
         dir_move -= dir_up;
-    if (idir & LEFT)
+    }
+    if (idir & LEFT) {
         dir_move += dir_left;
-    if (idir & RIGHT)
+    }
+    if (idir & RIGHT) {
         dir_move -= dir_left;
+    }
     dir_move.normalise();
 
     int move_factor = 0;
-    if (mdir & UP)
+    if (mdir & UP) {
         ++move_factor;
-    if (mdir & DOWN)
+    }
+    if (mdir & DOWN) {
         --move_factor;
+    }
 
     double duration = timer.getDurationSecd();
     center[0] = center_saved[0] + (direction[0] * move_factor + dir_move.x) * viewMoveSpeed * duration;
@@ -151,14 +156,18 @@ static void dsEyeRotate() {
     }
 
     int factor1 = 0, factor2 = 0;
-    if (rdir & UP)
+    if (rdir & UP) {
         ++factor1;
-    if (rdir & DOWN)
+    }
+    if (rdir & DOWN) {
         --factor1;
-    if (rdir & LEFT)
+    }
+    if (rdir & LEFT) {
         ++factor2;
-    if (rdir & RIGHT)
+    }
+    if (rdir & RIGHT) {
         --factor2;
+    }
 
     double duration = timer.getDurationSecd();
     eye_sphere[1] = eye_sphere_saved[1] + factor1 * rotateSpeed * duration;
@@ -186,5 +195,5 @@ void dsSetEye() {
     gluLookAt(eye[0], eye[1], eye[2], center[0], center[1], center[2], up[0], up[1], up[2]);
 
     // 监听者位置
-	frame.sounds.setListenerPosition(eye[0], eye[1], eye[2]);
+    frame.sounds.setListenerPosition(eye[0], eye[1], eye[2]);
 }
