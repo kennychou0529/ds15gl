@@ -1,15 +1,14 @@
-﻿#include "dsScene.h"
-#include "dsTexture.h"
-#include "dsTextManager.h"
-#include "dsModel.h"
-#include "dsTools.h"
-#include <sstream>
+﻿#include <sstream>
 #include <utility>
+
+#include "dsScene.h"
+#include "dsTools.h"
 #include "dsFrame.h"
 
-extern dsTextManager dstext;
+//extern dsTextManager dstext;
 extern DSFrame frame;
-DSScene::DSScene() :actors(frame.actors){}
+
+DSScene::DSScene() : actors(frame.actors) {}
 
 DSScene::~DSScene() {
     if (glIsList(groud)) {
@@ -18,20 +17,11 @@ DSScene::~DSScene() {
 }
 
 void DSScene::show() {
-	
     glViewport(0, 0, window_width - status_bar_width, window_height);
     dsSkyBox.show();
     
     glEnable(GL_LIGHTING);
     
-    /*包含在ActorManager中
-	glPushMatrix();
-    {
-        soldiers["sword_man"].animate();
-        soldiers["mage"].animate();
-    }
-    glPopMatrix();*/
-
 	actors.render();
 
     map.renderGrid();

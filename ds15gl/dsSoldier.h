@@ -1,10 +1,10 @@
-#ifndef _DSSOLDIER_H
+ï»¿#ifndef _DSSOLDIER_H
 #define _DSSOLDIER_H
 
 #include "dsModel.h"
 #include "dsTimer.h"
 
-// Ê¿±ø
+// å£«å…µ
 class dsSoldier {
 public:
     enum Status {
@@ -13,33 +13,33 @@ public:
 
     dsSoldier();
 
-    // »æÖÆÖ¡ frame_index
+    // ç»˜åˆ¶å¸§ frame_index
     void renderFrame(size_t frame_index);
 
-    // ´øÓĞÏßĞÔ²åÖµµÄ»æÖÆ£¬Ê¹µÃ¶¯»­Á÷³©¡£
-    // µ± percentage = 0 Ê±£¬»æÖÆ frame1£»
-    // µ± percentage = 1 Ê±£¬»æÖÆ frame2£»
-    // µ± percentage ½éÓÚ 0 ºÍ 1 Ö®¼äÊ±£¬»æÖÆÁ½ÕßÖ®¼äµÄÇéĞÎ¡£
-    // ÀıÈç percentage = 0.2 Ê±£¬»æÖÆµÄÍ¼ĞÎ¸ü½Ó½ü frame1
+    // å¸¦æœ‰çº¿æ€§æ’å€¼çš„ç»˜åˆ¶ï¼Œä½¿å¾—åŠ¨ç”»æµç•…ã€‚
+    // å½“ percentage = 0 æ—¶ï¼Œç»˜åˆ¶ frame1ï¼›
+    // å½“ percentage = 1 æ—¶ï¼Œç»˜åˆ¶ frame2ï¼›
+    // å½“ percentage ä»‹äº 0 å’Œ 1 ä¹‹é—´æ—¶ï¼Œç»˜åˆ¶ä¸¤è€…ä¹‹é—´çš„æƒ…å½¢ã€‚
+    // ä¾‹å¦‚ percentage = 0.2 æ—¶ï¼Œç»˜åˆ¶çš„å›¾å½¢æ›´æ¥è¿‘ frame1
     void renderSmoothly(size_t frame1_index, size_t frame2_index, GLfloat percentage);
 
-    // ´øÓĞÏßĞÔ²åÖµµÄ»æÖÆ£¬²ÎÊı progress ÊÇÒ»¸öĞ¡Êı»¯µÄ¡°Ö¡Êı¡±¡£
-    // ÀıÈçµ±Ç° dsSoldier Ë½ÓĞ²ÎÊı frame_beg ºÍ frame_end ·Ö±ğÎª 0 ºÍ 39£¬
-    // Ôòµ± proress Îª 0 Ê±£¬»æÖÆ Ö¡ 0£»
-    // µ± progress Îª 5.7 Ê±£¬»æÖÆ Ö¡ '5.7'£¬¼´ renderSmoothly(5, 6, 0.7)£»
-    // µ± progress Îª 39.5 Ê±£¬renderSmoothly(39, 0, 0.5)¡£
+    // å¸¦æœ‰çº¿æ€§æ’å€¼çš„ç»˜åˆ¶ï¼Œå‚æ•° progress æ˜¯ä¸€ä¸ªå°æ•°åŒ–çš„â€œå¸§æ•°â€ã€‚
+    // ä¾‹å¦‚å½“å‰ dsSoldier ç§æœ‰å‚æ•° frame_beg å’Œ frame_end åˆ†åˆ«ä¸º 0 å’Œ 39ï¼Œ
+    // åˆ™å½“ proress ä¸º 0 æ—¶ï¼Œç»˜åˆ¶ å¸§ 0ï¼›
+    // å½“ progress ä¸º 5.7 æ—¶ï¼Œç»˜åˆ¶ å¸§ '5.7'ï¼Œå³ renderSmoothly(5, 6, 0.7)ï¼›
+    // å½“ progress ä¸º 39.5 æ—¶ï¼ŒrenderSmoothly(39, 0, 0.5)ã€‚
     // 
-    // ÔÙÀıÈçµ±Ç° dsSoldier Ë½ÓĞ²ÎÊı frame_beg ºÍ frame_end ·Ö±ğÎª 10 ºÍ 49,
-    // Ôòµ± proress Îª 0 Ê±£¬»æÖÆ Ö¡ 10£»
-    // µ± progress Îª 5.7 Ê±£¬»æÖÆ Ö¡ '15.7'£¬¼´ renderSmoothly(15, 16, 0.7)£»
-    // µ± progress Îª 39.5 Ê±£¬renderSmoothly(49, 10, 0.5)¡£
+    // å†ä¾‹å¦‚å½“å‰ dsSoldier ç§æœ‰å‚æ•° frame_beg å’Œ frame_end åˆ†åˆ«ä¸º 10 å’Œ 49,
+    // åˆ™å½“ proress ä¸º 0 æ—¶ï¼Œç»˜åˆ¶ å¸§ 10ï¼›
+    // å½“ progress ä¸º 5.7 æ—¶ï¼Œç»˜åˆ¶ å¸§ '15.7'ï¼Œå³ renderSmoothly(15, 16, 0.7)ï¼›
+    // å½“ progress ä¸º 39.5 æ—¶ï¼ŒrenderSmoothly(49, 10, 0.5)ã€‚
     void renderSmoothly(GLfloat progress);
 
     void enterStatus(Status status_to_enter, int* script_playing = nullptr);
 
     void animate();
 
-    // ÔØÈëÊ¿±øÄ£ĞÍÎÄ¼ş£¬Ö»Ö§³Ö bmp ÀàĞÍµÄÎÆÀíÍ¼Æ¬
+    // è½½å…¥å£«å…µæ¨¡å‹æ–‡ä»¶ï¼Œåªæ”¯æŒ bmp ç±»å‹çš„çº¹ç†å›¾ç‰‡
     void load(const char* person_model_file,
               const char* person_skin_file,
               const char* weapon_model_file,

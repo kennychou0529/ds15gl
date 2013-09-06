@@ -1,4 +1,4 @@
-#include "dsActorManager.h"
+ï»¿#include "dsActorManager.h"
 
 
 DSActorManager::DSActorManager() : round(0),
@@ -10,7 +10,7 @@ DSActorManager::DSActorManager() : round(0),
 DSActorManager::~DSActorManager() {}
 
 
-//¼ÓÔØÈËÎï
+//åŠ è½½äººç‰©
 void DSActorManager::initialize() {
     list.insert(std::make_pair("sword_man", dsSoldier()));
     list["sword_man"].load("data/sword_man/tris.md2",
@@ -31,12 +31,9 @@ void DSActorManager::initialize() {
     list["mage"].enterStatus(dsSoldier::Status::idle);
 }
 
-//äÖÈ¾
+//æ¸²æŸ“
 void DSActorManager::render() {
     update();
-    //if (list.empty()) {
-    //    return;
-    //}
 
     glPushMatrix();
     {
@@ -49,30 +46,30 @@ void DSActorManager::render() {
 
 void DSActorManager::update() {
 
-    // Ö»ÓÐµ±µ±Ç°Ö¸ÁîÒÑ¾­Íê³É²¥·ÅÊ±£¬²ÅÐèÒª update
-    // ·ñÔòÓ¦¸Ã¼ÌÐø²¥·Å
+    // åªæœ‰å½“å½“å‰æŒ‡ä»¤å·²ç»å®Œæˆæ’­æ”¾æ—¶ï¼Œæ‰éœ€è¦ update
+    // å¦åˆ™åº”è¯¥ç»§ç»­æ’­æ”¾
     if (script_playing == 0) {
 
-        // Èç¹ûÃ»ÓÐÐÂµÄÖ¸ÁîÁË£¬ËµÃ÷ËùÓÐµÄ¶¼²¥·ÅÍê³ÉÁË
+        // å¦‚æžœæ²¡æœ‰æ–°çš„æŒ‡ä»¤äº†ï¼Œè¯´æ˜Žæ‰€æœ‰çš„éƒ½æ’­æ”¾å®Œæˆäº†
         if (!script.notEmpty()) {
             all_finished = true;
             return;
         }
 
-        // Èç¹û¿úÌ½µ½½ÓÏÂÀ´µÄÒ»ÌõÖ¸Áî¶ÔÓ¦µÄ»ØºÏÊý´óÓÚµ±Ç°»ØºÏ
-        // ËµÃ÷µ±Ç°»ØºÏµÄËùÓÐÖ¸Áî¶¼ÒÑ²¥·ÅÍê³É
-        // ÓÚÊÇ±ê¼Ç round_finished
+        // å¦‚æžœçª¥æŽ¢åˆ°æŽ¥ä¸‹æ¥çš„ä¸€æ¡æŒ‡ä»¤å¯¹åº”çš„å›žåˆæ•°å¤§äºŽå½“å‰å›žåˆ
+        // è¯´æ˜Žå½“å‰å›žåˆçš„æ‰€æœ‰æŒ‡ä»¤éƒ½å·²æ’­æ”¾å®Œæˆ
+        // äºŽæ˜¯æ ‡è®° round_finished
         if (script.peekNextRecord().round > round) {
             round_finished = true;
         }
 
-        // Ö»ÓÐµ±µ±Ç°»ØºÏ»¹Ã»ÓÐÍêÈ«²¥·ÅÍê³ÉµÄÊ±ºò²ÅÐèÒª×Ô¶¯½øÈëÏÂÒ»²¨Ö¸Áî
+        // åªæœ‰å½“å½“å‰å›žåˆè¿˜æ²¡æœ‰å®Œå…¨æ’­æ”¾å®Œæˆçš„æ—¶å€™æ‰éœ€è¦è‡ªåŠ¨è¿›å…¥ä¸‹ä¸€æ³¢æŒ‡ä»¤
         if (!round_finished) {
             do {
-                // Ö¸Áî³ö¶Ó
+                // æŒ‡ä»¤å‡ºé˜Ÿ
                 Record record = script.getNextRecord();
 
-                // ÏÂ´ïÖ¸Áî
+                // ä¸‹è¾¾æŒ‡ä»¤
                 auto iter_soldier = list.find(record.id);
                 if (iter_soldier != list.end()) {
                     switch (record.type) {
@@ -84,29 +81,8 @@ void DSActorManager::update() {
                     }
                 }
             } while ((script.peekNextRecord().round == round) && (script.peekNextRecord().sync == true));
-            // µ±ÏÂÒ»ÌõÖ¸ÁîÒ²ÊÇ±¾»ØºÏµÄ£¬ÇÒÏÂÒ»ÌõÖ¸ÁîÒªÇóÍ¬²½²¥·Å£¬ÄÇÃ´½«ÏÂÒ»ÌõÖ¸ÁîÒ²ÏÂ´ï
+            // å½“ä¸‹ä¸€æ¡æŒ‡ä»¤ä¹Ÿæ˜¯æœ¬å›žåˆçš„ï¼Œä¸”ä¸‹ä¸€æ¡æŒ‡ä»¤è¦æ±‚åŒæ­¥æ’­æ”¾ï¼Œé‚£ä¹ˆå°†ä¸‹ä¸€æ¡æŒ‡ä»¤ä¹Ÿä¸‹è¾¾
 
         }
     }
-
-    //if (timer.getDurationMiliseci() > ROUNDTIME) {
-    //    round++;
-
-    //    while (script.notEmpty() && script.nextRound() == round) {
-    //        Record& record = script.getNextRecord();
-
-    //        auto iter_soldier = list.find(record.id);
-    //        if (iter_soldier == list.end()) {
-    //            continue;
-    //        }
-    //        switch (record.type) {
-    //        case soldier_move:
-    //            iter_soldier->second.setTarget(record.x, record.y);
-    //            iter_soldier->second.enterStatus(dsSoldier::Status::running, &script_finished);
-    //        default:
-    //            break;
-    //        }
-    //    }
-    //    timer.recordTime();
-    //}
 }

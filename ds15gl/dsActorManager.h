@@ -1,14 +1,10 @@
-#ifndef _DSACTORMANAGER_H
+ï»¿#ifndef _DSACTORMANAGER_H
 #define _DSACTORMANAGER_H
 
 #include <map>
 #include <string>
 #include "dsSoldier.h"
 #include "dsScript.h"
-#include "dsTimer.h"
-
-//¶¨ÒåÃ¿»ØºÏÊ±¼ä
-#define ROUNDTIME 2000
 
 typedef std::map<std::string, dsSoldier> SOLDIERS;
 
@@ -17,13 +13,13 @@ public:
     DSActorManager();
     ~DSActorManager();
 
-    //¼ÓÔØÈËÎï
+    //åŠ è½½äººç‰©
     void initialize();
 
-    //äÖÈ¾
+    //æ¸²æŸ“
     void render();
 
-    //Ã¿»ØºÏ¶Á½Å±¾£¬¸üĞÂÈËÎïĞÅÏ¢£¬
+    //æ¯å›åˆè¯»è„šæœ¬ï¼Œæ›´æ–°äººç‰©ä¿¡æ¯ï¼Œ
     void update();
 
     int getCurrentRound() { return round; }
@@ -34,16 +30,12 @@ public:
     }
 
     int script_playing;
-    // bool script_finished;
     bool round_finished;
     bool all_finished;
 private:
     SOLDIERS list;
     DSScript script;
-    //dsTimer timer;
     int round;
-    
-    
 };
 
 #endif // !_DSACTORMANAGER_H

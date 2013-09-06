@@ -1,11 +1,10 @@
 ﻿#ifndef _DSSCENE_H
 #define _DSSCENE_H
 
-#include "dsMap.h"
 #include <GL/glut.h>
-#include "dsSkybox.h"
-#include "dsSoldier.h"
 #include <map>
+#include "dsSkybox.h"
+#include "dsMap.h"
 #include "dsActorManager.h"
 
 // 与场景有关的类
@@ -19,10 +18,10 @@ public:
     DSMap map;
 private:
     DSSkybox dsSkyBox;
-	//移入cctors
-    //std::map<std::string, dsSoldier> soldiers;
+
     //显示列表
     GLuint groud;
+
 	DSActorManager& actors;
 };
 

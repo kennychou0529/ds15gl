@@ -1,4 +1,4 @@
-#include "dsSoldier.h"
+﻿#include "dsSoldier.h"
 #include "dsFrame.h"
 #include "dsMap.h"
 #include "dsVector2f.h"

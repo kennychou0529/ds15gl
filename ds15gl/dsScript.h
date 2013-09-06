@@ -1,9 +1,9 @@
-#ifndef _DSDCRIPT_H
+ï»¿#ifndef _DSDCRIPT_H
 #define _DSDCRIPT_H
 
 #include <string>
-#include "dsVector2f.h"
 #include <list>
+#include "dsVector2f.h"
 
 using std::string;
 
@@ -15,15 +15,15 @@ enum ScriptType {
 };
 
 struct Record {
-    //»ØºÏÊı
+    //å›åˆæ•°
     int round;
-    // ÊÇ·ñÓëÉÏÒ»ÌõÖ¸ÁîÍ¬Ê±·¢³ö
+    // æ˜¯å¦ä¸ä¸Šä¸€æ¡æŒ‡ä»¤åŒæ—¶å‘å‡º
     bool sync;
-    //¶ÔÏóid;
+    //å¯¹è±¡id;
     string id;
-    //¶¯×÷
+    //åŠ¨ä½œ
     ScriptType type;
-    //Ä¿±ê
+    //ç›®æ ‡
     size_t x, y;
 
     Record() {}
@@ -51,36 +51,21 @@ public:
 
 
 
-    // ¿úÌ½½ÓÏÂÀ´µÄÒ»Ìõ¼ÇÂ¼£¬µ«ÊÇ²»½«¸Ã¼ÇÂ¼¼·³ö¶ÓÁĞ
-    Record& peekNextRecord() {
-        //no need
-        ////È¥µô»µµÄ¼ÇÂ¼
-        //while (!scriptQue.empty() && scriptQue.front_element() == NULL) {
-        //    scriptQue.pop();
-        //}
+    // çª¥æ¢æ¥ä¸‹æ¥çš„ä¸€æ¡è®°å½•ï¼Œä½†æ˜¯ä¸å°†è¯¥è®°å½•æŒ¤å‡ºé˜Ÿåˆ—
+    Record peekNextRecord() {
 		if (scriptQue.empty()) {
 			return emptyRecord;
 		}
-        auto r = scriptQue.front();
-        
-        /*ÒÔÇ°ºÃºÃµÄÔõÃ´ÏÖÔÚ²»ĞĞÁË£¿
-        Record record(*r);
-        delete r;*/
-        return r;
+        return scriptQue.front();
     }
 
+    // è·å–æ¥ä¸‹æ¥çš„ä¸€æ¡è®°å½•ï¼ŒåŒæ—¶å°†è¯¥è®°å½•æŒ¤å‡ºé˜Ÿåˆ—
     Record getNextRecord() {
 		if (scriptQue.empty()) {
 			return emptyRecord;
 		}
         Record r = scriptQue.front();
         scriptQue.pop_front();
-                
-        //no need
-        ////È¥µô»µµÄ¼ÇÂ¼
-        //while (!scriptQue.empty() && scriptQue.front() == NULL) {
-        //    scriptQue.pop_front();
-        //}
         return r;
     }
 
@@ -96,10 +81,10 @@ public:
     }
 
 private:
-    //½Å±¾¶ÓÁĞ
+    //è„šæœ¬é˜Ÿåˆ—
     std::list<Record> scriptQue;
 
-    //ÓĞÒ»¸ö¿Õ Record
+    //æœ‰ä¸€ä¸ªç©º Record
     Record emptyRecord;
 };
 

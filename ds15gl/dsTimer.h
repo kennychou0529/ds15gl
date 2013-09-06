@@ -1,29 +1,29 @@
-#ifndef _DSTIMER_H
+ï»¿#ifndef _DSTIMER_H
 #define _DSTIMER_H
 
-// dsTimer Ê±¼ä¹ÜÀíÆ÷
-// Ã¿¸öÊ±¼ä¹ÜÀíÆ÷ÄÚÖÃÒ»¸ö¼ÆÊ±×°ÖÃ
+// dsTimer æ—¶é—´ç®¡ç†å™¨
+// æ¯ä¸ªæ—¶é—´ç®¡ç†å™¨å†…ç½®ä¸€ä¸ªè®¡æ—¶è£…ç½®
 
 #include <chrono>
 
 class dsTimer {
 public:
-    // ÁîÄÚÖÃ¼ÆÊ±×°ÖÃ¼ÇÂ¼ÏÂµ±Ç°Ê±¿Ì
+    // ä»¤å†…ç½®è®¡æ—¶è£…ç½®è®°å½•ä¸‹å½“å‰æ—¶åˆ»
     void recordTime() {
         recorded_time = std::chrono::steady_clock::now();
     }
 
-    // ·µ»Ø µ±Ç°Ê±¿Ì Óë ÄÚÖÃ¼ÆÊ±×°ÖÃ¼ÇÂ¼ÏÂµÄÊ±¿Ì µÄÊ±¼ä²î£¬µ¥Î»ÎªÃë
+    // è¿”å› å½“å‰æ—¶åˆ» ä¸ å†…ç½®è®¡æ—¶è£…ç½®è®°å½•ä¸‹çš„æ—¶åˆ» çš„æ—¶é—´å·®ï¼Œå•ä½ä¸ºç§’
     double getDurationSecd() {
         return std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::steady_clock::now() - recorded_time).count();
     }
 
-    // ·µ»Ø µ±Ç°Ê±¿Ì Óë ÄÚÖÃ¼ÆÊ±×°ÖÃ¼ÇÂ¼ÏÂµÄÊ±¿Ì µÄÊ±¼ä²î£¬µ¥Î»ÎªÃë
+    // è¿”å› å½“å‰æ—¶åˆ» ä¸ å†…ç½®è®¡æ—¶è£…ç½®è®°å½•ä¸‹çš„æ—¶åˆ» çš„æ—¶é—´å·®ï¼Œå•ä½ä¸ºç§’
     float getDurationSecf() {
         return std::chrono::duration_cast<std::chrono::duration<float>>(std::chrono::steady_clock::now() - recorded_time).count();
     }
 
-    // ·µ»Ø µ±Ç°Ê±¿Ì Óë ÄÚÖÃ¼ÆÊ±×°ÖÃ¼ÇÂ¼ÏÂµÄÊ±¿Ì µÄÊ±¼ä²î£¬µ¥Î»ÎªºÁÃë(ms)
+    // è¿”å› å½“å‰æ—¶åˆ» ä¸ å†…ç½®è®¡æ—¶è£…ç½®è®°å½•ä¸‹çš„æ—¶åˆ» çš„æ—¶é—´å·®ï¼Œå•ä½ä¸ºæ¯«ç§’(ms)
     long long getDurationMiliseci() {
         return std::chrono::duration_cast<std::chrono::duration<long long, std::milli>>(std::chrono::steady_clock::now() - recorded_time).count();
     }
