@@ -36,12 +36,12 @@ struct Record {
 
 class DSScript {
 public:
-    DSScript(void): emptyRecord(0, false, "", soldier_die, 0, 0) {
+    DSScript(): emptyRecord(0, false, "", soldier_die, 0, 0) {
         scriptQue.push_back(Record(0, false, "sword_man", soldier_move, 1, 1));
         scriptQue.push_back(Record(0, false, "mage", soldier_move, 0, 1));
         scriptQue.push_back(Record(1, false, "sword_man", soldier_move, 5, 1));
         scriptQue.push_back(Record(2, false, "mage", soldier_move, 1, 6));
-        scriptQue.push_back(Record(2, false, "sword_man", soldier_move, 2, 9));
+        scriptQue.push_back(Record(2, true, "sword_man", soldier_move, 2, 9));
         scriptQue.push_back(Record(3, false, "sword_man", soldier_move, 1, 1));
         scriptQue.push_back(Record(3, false, "mage", soldier_move, 0, 1));
         scriptQue.push_back(Record(4, false, "sword_man", soldier_move, 5, 1));
@@ -52,7 +52,7 @@ public:
 
 
     // 窥探接下来的一条记录，但是不将该记录挤出队列
-    Record peekNextRecord() {
+    Record& peekNextRecord() {
         //no need
         ////去掉坏的记录
         //while (!scriptQue.empty() && scriptQue.front_element() == NULL) {
