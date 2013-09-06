@@ -17,6 +17,8 @@ enum ScriptType {
 struct Record {
     //回合数
     int round;
+    // 是否与上一条指令同时发出
+    bool sync;
     //对象id;
     string id;
     //动作
@@ -24,27 +26,27 @@ struct Record {
     //目标
     size_t x, y;
 
-    Record(void) {}
+    Record() {}
     Record(Record& r):
-        round(r.round), id(r.id), type(r.type), x(r.x), y(r.y) {}
+        round(r.round), sync(r.sync), id(r.id), type(r.type), x(r.x), y(r.y) {}
 
-    Record(int r, string i, ScriptType t, size_t tx, size_t ty):
-        round(r), id(i), type(t), x(tx), y(ty) {}
+    Record(int r, bool s, string i, ScriptType t, size_t tx, size_t ty):
+        round(r), sync(s), id(i), type(t), x(tx), y(ty) {}
 };
 
 class DSScript {
 public:
-    DSScript(void): emptyRecord(0, "", soldier_die, 0, 0) {
-        scriptQue.push_back(Record(0, "sword_man", soldier_move, 1, 1));
-        scriptQue.push_back(Record(0, "mage", soldier_move, 0, 1));
-        scriptQue.push_back(Record(1, "sword_man", soldier_move, 5, 1));
-        scriptQue.push_back(Record(2, "mage", soldier_move, 1, 6));
-        scriptQue.push_back(Record(2, "sword_man", soldier_move, 2, 9));
-        scriptQue.push_back(Record(3, "sword_man", soldier_move, 1, 1));
-        scriptQue.push_back(Record(3, "mage", soldier_move, 0, 1));
-        scriptQue.push_back(Record(4, "sword_man", soldier_move, 5, 1));
-        scriptQue.push_back(Record(4, "mage", soldier_move, 1, 6));
-        scriptQue.push_back(Record(5, "sword_man", soldier_move, 2, 9));
+    DSScript(void): emptyRecord(0, false, "", soldier_die, 0, 0) {
+        scriptQue.push_back(Record(0, false, "sword_man", soldier_move, 1, 1));
+        scriptQue.push_back(Record(0, false, "mage", soldier_move, 0, 1));
+        scriptQue.push_back(Record(1, false, "sword_man", soldier_move, 5, 1));
+        scriptQue.push_back(Record(2, false, "mage", soldier_move, 1, 6));
+        scriptQue.push_back(Record(2, false, "sword_man", soldier_move, 2, 9));
+        scriptQue.push_back(Record(3, false, "sword_man", soldier_move, 1, 1));
+        scriptQue.push_back(Record(3, false, "mage", soldier_move, 0, 1));
+        scriptQue.push_back(Record(4, false, "sword_man", soldier_move, 5, 1));
+        scriptQue.push_back(Record(4, false, "mage", soldier_move, 1, 6));
+        scriptQue.push_back(Record(5, false, "sword_man", soldier_move, 2, 9));
     }
 
 

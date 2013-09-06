@@ -33,7 +33,8 @@ public:
         round_finished = false;
     }
 
-    bool script_finished;
+    int script_playing;
+    // bool script_finished;
     bool round_finished;
     bool all_finished;
 private:

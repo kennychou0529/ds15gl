@@ -82,7 +82,7 @@ void DSStatusBar::show() {
             if (frame.actors.round_finished) {
                 os << L"\nF3: next round";
             }
-            if (!frame.actors.script_finished) {
+            if (frame.actors.script_playing != 0) {
                 os << L"\nplaying";
             }
             if (frame.actors.all_finished) {

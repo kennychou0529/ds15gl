@@ -8,7 +8,7 @@ static const GLfloat pi = 3.1415926f;
 
 extern DSFrame frame;
 
-dsSoldier::dsSoldier() : frame_beg(40), frame_end(45), fps(5), move_speed(20.0f), scale(0.2f), angle(0.0f), finished(nullptr) {}
+dsSoldier::dsSoldier() : frame_beg(40), frame_end(45), fps(5), move_speed(20.0f), scale(0.2f), angle(0.0f), playing(nullptr) {}
 
 void dsSoldier::renderFrame(size_t frame_index) {
     person.renderFrame(frame_index);
@@ -30,14 +30,11 @@ void dsSoldier::renderSmoothly(GLfloat progress) {
     renderSmoothly(frame1_index, frame2_index, percentage);
 }
 
-void dsSoldier::enterStatus(Status status_to_enter, bool* operation_finished) {
-    finished = operation_finished;
-    if (finished != nullptr) {
-        *finished = false;
-    }
-
+void dsSoldier::enterStatus(Status status_to_enter, int* script_playing) {
+    playing = script_playing;
     status = status_to_enter;
     timer.recordTime();
+
     switch (status) {
     case idle:
         frame_beg = 0;
@@ -48,6 +45,9 @@ void dsSoldier::enterStatus(Status status_to_enter, bool* operation_finished) {
         frame_beg = 40;
         frame_end = 45;
         fps = 5;
+        if (playing != nullptr) {
+            ++(*playing);
+        }
         break;
     }
 }
@@ -89,9 +89,9 @@ void dsSoldier::animate() {
             if (move_speed * duration > length) {
                 pos = target;
                 setPosition(target_position[0], target_position[1]);
-                enterStatus(idle, finished);
-                if (finished != nullptr) {
-                    *finished = true;
+                enterStatus(idle, playing);
+                if (playing != nullptr) {
+                    --(*playing);
                 }
             }
         }

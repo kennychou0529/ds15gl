@@ -2,7 +2,7 @@
 
 
 DSActorManager::DSActorManager() : round(0),
-    script_finished(true),
+                                   script_playing(0),
                                    round_finished(false),
                                    all_finished(false) {}
 
@@ -20,8 +20,6 @@ void DSActorManager::initialize() {
 
     list["sword_man"].setPosition(0, 0);
     list["sword_mam"].enterStatus(dsSoldier::Status::idle);
-    //list["sword_man"].setTarget(8, 9);
-    //list["sword_man"].enterStatus(dsSoldier::Status::running);
 
     list.insert(std::make_pair("mage", dsSoldier()));
     list["mage"].load("data/mage/tris.md2",
@@ -53,7 +51,7 @@ void DSActorManager::update() {
 
     // 只有当当前指令已经完成播放时，才需要 update
     // 否则应该继续播放
-    if (script_finished) {
+    if (script_playing == 0) {
 
         // 如果没有新的指令了，说明所有的都播放完成了
         if (!script.notEmpty()) {
@@ -80,7 +78,7 @@ void DSActorManager::update() {
                 switch (record.type) {
                 case soldier_move:
                     iter_soldier->second.setTarget(record.x, record.y);
-                    iter_soldier->second.enterStatus(dsSoldier::Status::running, &script_finished);
+                    iter_soldier->second.enterStatus(dsSoldier::Status::running, &script_playing);
                 default:
                     break;
                 }
