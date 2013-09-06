@@ -44,7 +44,10 @@ local.properties
 *.sln
 *.vcxproj
 *.vcxproj.filters
-
+*.activitydiagram
+*.activitydiagram.layout
+*.modelproj
+*.uml
 # Build results
 
 [Dd]ebug/
