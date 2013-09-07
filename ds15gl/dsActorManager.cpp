@@ -29,6 +29,14 @@ void DSActorManager::initialize() {
 
     list["mage"].setPosition(1, 1);
     list["mage"].enterStatus(dsSoldier::Status::idle);
+
+    list.insert(std::make_pair("chastit", dsSoldier()));
+    list["chastit"].load("data/chastit/tris.md2",
+                         "data/chastit/tris.bmp",
+                         "data/chastit/weapon.md2",
+                         "data/chastit/weapon.bmp");
+    list["chastit"].setPosition(1, 1);
+    list["chastit"].enterStatus(dsSoldier::Status::idle);
 }
 
 //渲染
@@ -38,6 +46,7 @@ void DSActorManager::render() {
     glPushMatrix();
     {
         for (auto& soldier : list) {
+            glEnable(GL_LIGHTING);
             soldier.second.animate();
         }
     }
@@ -76,6 +85,10 @@ void DSActorManager::update() {
                     case soldier_move:
                         iter_soldier->second.setTarget(record.x, record.y);
                         iter_soldier->second.enterStatus(dsSoldier::Status::running, &script_playing);
+                        break;
+                    case soldier_fight:
+                        iter_soldier->second.enterStatus(dsSoldier::Status::attacking, &script_playing);
+                        break;
                     default:
                         break;
                     }

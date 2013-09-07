@@ -37,11 +37,15 @@ struct Record {
 class DSScript {
 public:
     DSScript(): emptyRecord(0, false, "", soldier_die, 0, 0) {
+        scriptQue.push_back(Record(0, false, "chastit", soldier_move, 1, 2));
         scriptQue.push_back(Record(0, false, "sword_man", soldier_move, 1, 1));
         scriptQue.push_back(Record(0, false, "mage", soldier_move, 0, 1));
+
         scriptQue.push_back(Record(1, false, "sword_man", soldier_move, 5, 1));
+
         scriptQue.push_back(Record(2, false, "mage", soldier_move, 1, 6));
-        scriptQue.push_back(Record(2, true, "sword_man", soldier_move, 2, 9));
+        scriptQue.push_back(Record(2, false, "sword_man", soldier_fight, 2, 9));
+
         scriptQue.push_back(Record(3, false, "sword_man", soldier_move, 1, 1));
         scriptQue.push_back(Record(3, false, "mage", soldier_move, 0, 1));
         scriptQue.push_back(Record(4, false, "sword_man", soldier_move, 5, 1));

@@ -8,7 +8,7 @@
 class dsSoldier {
 public:
     enum Status {
-        idle, running
+        idle, running, attacking
     };
 
     dsSoldier();

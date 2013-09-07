@@ -49,13 +49,22 @@ void dsSoldier::enterStatus(Status status_to_enter, int* script_playing) {
             ++(*playing);
         }
         break;
+    case attacking:
+        frame_beg = 46;
+        frame_end = 53;
+        fps = 10;
+        if (playing != nullptr) {
+            ++(*playing);
+        }
+        break;
     }
 }
 
 void dsSoldier::animate() {
     glPushMatrix();
     {
-        if (status != running) {
+        // 这里没有使用 case 语句，是因为会出现对象初始化问题
+        if (status == idle) {
             GLfloat x, y;
             frame.scene.map.getCoords(current_position[0], current_position[1], &x, &y);
 
@@ -63,7 +72,7 @@ void dsSoldier::animate() {
             glScaled(scale, scale, scale);
             glRotatef(angle, 0.0f, 0.0f, 1.0f);
             renderSmoothly(timer.getDurationSecf() * fps);
-        } else {
+        } else if (status == running) {
             dsVector2f saved;
             frame.scene.map.getCoords(saved_position[0], saved_position[1], &(saved.x), &(saved.y));
 
@@ -94,7 +103,23 @@ void dsSoldier::animate() {
                     --(*playing);
                 }
             }
-        }
+        } else if (status == attacking) {
+            GLfloat x, y;
+            frame.scene.map.getCoords(current_position[0], current_position[1], &x, &y);
+
+            glTranslatef(x, y, 4.0f);
+            glScaled(scale, scale, scale);
+            glRotatef(angle, 0.0f, 0.0f, 1.0f);
+
+            GLfloat duration = timer.getDurationSecf();
+            renderSmoothly(duration * fps);
+            if (fps * duration > (frame_end - frame_beg + 1)) {
+                enterStatus(idle, playing);
+                if (playing != nullptr) {
+                    --(*playing);
+                }
+            }
+        } // endif
     }
     glPopMatrix();
 }
