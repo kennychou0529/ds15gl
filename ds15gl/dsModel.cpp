@@ -46,7 +46,7 @@ MD2Model::MD2Model():
 
 MD2Model::~MD2Model() { clear(); }
 
-int MD2Model::load(const char* model_file, const char* skin_file) {
+int MD2Model::load(const std::string& model_file, const std::string& skin_file) {
     std::ifstream is;
     is.open(model_file, is.in | is.binary);
 

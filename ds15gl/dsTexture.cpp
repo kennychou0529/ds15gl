@@ -3,7 +3,7 @@
 
 using std::ifstream;
 
-GLuint dsLoadTextureBMP2D(const char* file_name, GLuint* pheight, GLuint* pwidth) {
+GLuint dsLoadTextureBMP2D(const std::string& file_name, GLuint* pheight, GLuint* pwidth) {
     const int BMP_Header_Length = 54;
 
     GLint width, height, total_bytes;

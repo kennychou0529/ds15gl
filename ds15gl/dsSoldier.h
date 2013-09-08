@@ -1,6 +1,7 @@
 ﻿#ifndef _DSSOLDIER_H
 #define _DSSOLDIER_H
 
+#include <string>
 #include "dsModel.h"
 #include "dsTimer.h"
 
@@ -40,10 +41,12 @@ public:
     void animate();
 
     // 载入士兵模型文件，只支持 bmp 类型的纹理图片
-    void load(const char* person_model_file,
-              const char* person_skin_file,
-              const char* weapon_model_file,
-              const char* weapon_skin_file);
+    void load(const std::string& person_model_file,
+              const std::string& person_skin_file,
+              const std::string& weapon_model_file,
+              const std::string& weapon_skin_file);
+
+    void load(const std::string& soldier_name);
 
     dsTimer timer;
 
@@ -64,7 +67,6 @@ private:
     GLfloat move_speed;
     GLfloat scale;
     GLfloat angle;
-    // bool* finished;
     int* playing;
 };
 

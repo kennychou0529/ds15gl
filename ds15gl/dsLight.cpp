@@ -5,15 +5,15 @@
 GLfloat light_ambient[4]  = {0.2f, 0.2f, 0.2f, 1.0f};
 
 // 漫射光
-GLfloat light_diffuse[4]  = {0.5f, 250.0f / 255 / 2, 200.0f / 255 / 2, 1.0f};
+GLfloat light_diffuse[4]  = {0.5f, 250.0f / 255 / 2, 200.0f / 255 / 2, 20.0f};
 
 // 镜面光，产生亮斑
-GLfloat light_specular[4] = {0.5f, 250.0f / 255 / 2, 200.0f / 255 / 2, 20.0f};
+GLfloat light_specular[4] = {0.5f, 250.0f / 255 / 2, 200.0f / 255 / 2, 1.0f};
 // GLfloat specular[4] = {1.0f, 1.0f, 0.0f, 1.0f};
 // GLfloat specular[4] = {0.0f, 0.0f, 0.0f, 1.0f};
 
 // 光源位置
-GLfloat light_position[4] = {50.0f, 0.0f, 50.0f, 1.0f};
+GLfloat light_position[4] = {50.0f, 0.0f, 50.0f, 0.0f};
 // GLfloat position[4] = {5.0f, 0.0f, 5.0f, 1.0f};
 
 void dsSetLight() {
@@ -26,10 +26,10 @@ void dsSetLight() {
     glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 
     // 聚光灯
-    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180.0f);
-    GLfloat spot_direction[] = { - light_position[0], - light_position[1], - light_position[2]};
+    //glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180.0f);
+    //GLfloat spot_direction[] = { - light_position[0], - light_position[1], - light_position[2]};
     // GLfloat spot_direction[] = {0.0, 0.0, -1};
-    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, spot_direction);
+    //glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, spot_direction);
 }
 
 void dsSetMaterial() {
@@ -42,7 +42,7 @@ void dsSetMaterial() {
     // 镜面光，产生亮斑
     GLfloat specular[4] = {0.0f, 0.0f, 0.0f, 1000.0f};
 
-    GLfloat shinness = 5.0;
+    GLfloat shinness = 0.0;
 
     // 将数据载入材质
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ambient);

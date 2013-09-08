@@ -1,0 +1,26 @@
+<soldiers>
+  <soldier name="sword_man">
+    <tris>data/sword_man/tris.md2</tris>
+    <tris_skin>data/sword_man/tris.bmp</tris_skin>
+    <weapon>data/sword_man/weapon.md2</weapon>
+    <weapon_skin>data/sword_man/weapon.bmp</weapon_skin>
+  </soldier>
+  <soldier name="mage">
+    <tris>data/mage/tris.md2</tris>
+    <tris_skin>data/mage/tris.bmp</tris_skin>
+    <weapon>data/mage/weapon.md2</weapon>
+    <weapon_skin>data/mage/weapon.bmp</weapon_skin>
+  </soldier>
+  <soldier name="chastit">
+    <tris>data/chastit/tris.md2</tris>
+    <tris_skin>data/chastit/tris.bmp</tris_skin>
+    <weapon>data/chastit/weapon.md2</weapon>
+    <weapon_skin>data/chastit/weapon.bmp</weapon_skin>
+  </soldier>
+  <soldier name="gunman">
+    <tris>data/gunman/tris.md2</tris>
+    <tris_skin>data/gunman/tris.bmp</tris_skin>
+    <weapon>data/gunman/weapon.md2</weapon>
+    <weapon_skin>data/gunman/weapon.bmp</weapon_skin>
+  </soldier>
+</soldiers>

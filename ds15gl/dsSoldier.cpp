@@ -2,6 +2,7 @@
 #include "dsFrame.h"
 #include "dsMap.h"
 #include "dsVector2f.h"
+#include "tinyxml2.h"
 #include <cmath>
 
 static const GLfloat pi = 3.1415926f;
@@ -124,13 +125,29 @@ void dsSoldier::animate() {
     glPopMatrix();
 }
 
-void dsSoldier::load(const char* person_model_file,
-                     const char* person_skin_file,
-                     const char* weapon_model_file,
-                     const char* weapon_skin_file)
+void dsSoldier::load(const std::string& person_model_file,
+                     const std::string& person_skin_file,
+                     const std::string& weapon_model_file,
+                     const std::string& weapon_skin_file)
 {
     person.load(person_model_file, person_skin_file);
     weapon.load(weapon_model_file, weapon_skin_file);
+}
+
+void dsSoldier::load(const std::string& soldier_name) {
+    tinyxml2::XMLDocument doc;
+    doc.LoadFile("soldiers.xml");
+    auto root = doc.FirstChildElement();
+    auto soldier = root->FirstChildElement("soldier");
+    for (; soldier != nullptr; soldier = soldier->NextSiblingElement()) {
+        if (soldier_name == soldier->Attribute("name")) {
+            load(soldier->FirstChildElement("tris")->GetText(),
+                 soldier->FirstChildElement("tris_skin")->GetText(),
+                 soldier->FirstChildElement("weapon")->GetText(),
+                 soldier->FirstChildElement("weapon_skin")->GetText());
+            return;
+        }
+    }
 }
 
 void dsSoldier::setPosition(size_t x, size_t y) {

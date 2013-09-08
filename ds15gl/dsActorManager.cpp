@@ -9,34 +9,25 @@ DSActorManager::DSActorManager() : round(0),
 
 DSActorManager::~DSActorManager() {}
 
+void DSActorManager::insertSoldier(const std::string& soldier_name) {
+    list.insert(std::make_pair(soldier_name, dsSoldier()));
+    list[soldier_name].load(soldier_name);
+    list[soldier_name].enterStatus(dsSoldier::Status::idle);
+}
 
 //加载人物
 void DSActorManager::initialize() {
-    list.insert(std::make_pair("sword_man", dsSoldier()));
-    list["sword_man"].load("data/sword_man/tris.md2",
-                           "data/sword_man/tris.bmp",
-                           "data/sword_man/weapon.md2",
-                           "data/sword_man/weapon.bmp");
-
+    insertSoldier("sword_man");
     list["sword_man"].setPosition(0, 0);
-    list["sword_mam"].enterStatus(dsSoldier::Status::idle);
 
-    list.insert(std::make_pair("mage", dsSoldier()));
-    list["mage"].load("data/mage/tris.md2",
-                      "data/mage/tris.bmp",
-                      "data/mage/weapon.md2",
-                      "data/mage/weapon.bmp");
-
+    insertSoldier("mage");
     list["mage"].setPosition(1, 1);
-    list["mage"].enterStatus(dsSoldier::Status::idle);
 
-    list.insert(std::make_pair("chastit", dsSoldier()));
-    list["chastit"].load("data/chastit/tris.md2",
-                         "data/chastit/tris.bmp",
-                         "data/chastit/weapon.md2",
-                         "data/chastit/weapon.bmp");
-    list["chastit"].setPosition(1, 1);
-    list["chastit"].enterStatus(dsSoldier::Status::idle);
+    insertSoldier("chastit");
+    list["chastit"].setPosition(1, 5);
+
+    insertSoldier("gunman");
+    list["gunman"].setPosition(1, 6);
 }
 
 //渲染

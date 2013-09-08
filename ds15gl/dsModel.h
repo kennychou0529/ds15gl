@@ -4,6 +4,7 @@
 #define _DSMODEL_H
 
 #include <GL/glut.h>
+#include <string>
 
 // MD2Model 类不必直接使用，已经封装到 dsSoldier 类里了
 // dsSoldier 用法详见 dsSoldier.h
@@ -12,7 +13,7 @@ class MD2Model {
 public:
     MD2Model();
     ~MD2Model();
-    int load(const char* model_file, const char* skin_file);
+    int load(const std::string& model_file, const std::string& skin_file);
     void clear();
     int renderFrame(size_t frame_index);
     int renderSmoothly(size_t frame1_index, size_t frame2_index, GLfloat percentage);
