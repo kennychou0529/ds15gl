@@ -64,7 +64,7 @@ void DSStatusBar::show() {
         glPopMatrix();
 
         //std::wstringstream os;
-        
+
         glPushMatrix();
         {
             os.str(L"");
