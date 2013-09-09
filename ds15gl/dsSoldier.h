@@ -1,6 +1,7 @@
 ﻿#ifndef _DSSOLDIER_H
 #define _DSSOLDIER_H
 
+#include <utility>
 #include <string>
 #include "dsModel.h"
 #include "dsTimer.h"
@@ -9,7 +10,7 @@
 class dsSoldier {
 public:
     enum Status {
-        idle, running, attacking
+        idle, running, attacking, pain, dying, died, disappear
     };
 
     dsSoldier();
@@ -69,6 +70,9 @@ private:
     GLfloat scale;
     GLfloat angle;
     int* playing;
+
+    // 各个状态的起止帧号
+    std::pair<size_t, size_t> frame_set[6];
 };
 
 #endif

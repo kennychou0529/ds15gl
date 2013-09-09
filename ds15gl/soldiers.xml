@@ -1,38 +1,92 @@
-<soldiers>
+﻿<soldiers>
   <soldier name="sword_man">
     <tris>data/sword_man/tris.md2</tris>
     <tris_skin>data/sword_man/tris.bmp</tris_skin>
     <weapon>data/sword_man/weapon.md2</weapon>
     <weapon_skin>data/sword_man/weapon.bmp</weapon_skin>
+    <frame_set>
+      <idle beg="0" end="39"/>
+      <running beg="40" end="45"/>
+      <attacking beg="46" end="53"/>
+      <pain beg="54" end="65"/>
+      <dying beg="178" end="183"/>
+      <died beg="183" end="183"/>
+    </frame_set>
   </soldier>
+  
   <soldier name="mage">
     <tris>data/mage/tris.md2</tris>
     <tris_skin>data/mage/tris.bmp</tris_skin>
     <weapon>data/mage/weapon.md2</weapon>
     <weapon_skin>data/mage/weapon.bmp</weapon_skin>
+    <frame_set>
+      <idle beg="0" end="39"/>
+      <running beg="40" end="45"/>
+      <attacking beg="46" end="53"/>
+      <pain beg="54" end="65"/>
+      <dying beg="184" end="189"/>
+      <died beg="189" end="189"/>
+    </frame_set>
   </soldier>
+  
   <soldier name="chastit">
     <tris>data/chastit/tris.md2</tris>
     <tris_skin>data/chastit/tris.bmp</tris_skin>
     <weapon>data/chastit/weapon.md2</weapon>
     <weapon_skin>data/chastit/weapon.bmp</weapon_skin>
+    <frame_set>
+      <idle beg="0" end="39"/>
+      <running beg="40" end="45"/>
+      <attacking beg="46" end="53"/>
+      <pain beg="54" end="65"/>
+      <dying beg="184" end="189"/>
+      <died beg="189" end="189"/>
+    </frame_set>
   </soldier>
+  
   <soldier name="gunman">
     <tris>data/gunman/tris.md2</tris>
     <tris_skin>data/gunman/tris.bmp</tris_skin>
     <weapon>data/gunman/weapon.md2</weapon>
     <weapon_skin>data/gunman/weapon.bmp</weapon_skin>
+    <frame_set>
+      <idle beg="0" end="39"/>
+      <running beg="40" end="45"/>
+      <attacking beg="46" end="53"/>
+      <pain beg="54" end="65"/>
+      <dying beg="178" end="183"/>
+      <died beg="183" end="183"/>
+    </frame_set>
   </soldier>
+  
   <soldier name="bauul">
     <tris>data/bauul/tris.md2</tris>
     <tris_skin>data/bauul/tris.bmp</tris_skin>
     <weapon>data/bauul/weapon.md2</weapon>
     <weapon_skin>data/bauul/weapon.bmp</weapon_skin>
+    <frame_set>
+      <idle beg="0" end="39"/>
+      <running beg="40" end="45"/>
+      <attacking beg="46" end="53"/>
+      <pain beg="54" end="65"/>
+      <dying beg="178" end="183"/>
+      <died beg="183" end="183"/>
+    </frame_set>
   </soldier>
+  
   <soldier name="fighter">
     <tris>data/fighter/fighter.md2</tris>
     <tris_skin>data/fighter/fighter.bmp</tris_skin>
     <weapon>data/fighter/fighter.md2</weapon>
     <weapon_skin>data/fighter/fighter.bmp</weapon_skin>
+    <frame_set>
+      <idle beg="0" end="0"/>
+      <running beg="0" end="0"/>
+      <attacking beg="0" end="0"/>
+      <pain beg="0" end="0"/>
+      <dying beg="0" end="0"/>
+      <died beg="0" end="0"/>
+    </frame_set>
   </soldier>
+  
 </soldiers>
