@@ -1,10 +1,11 @@
 ﻿#include "dsSkybox.h"
 #include "dsTexture.h"
+#include "tinyxml2.h"
 
 void DSSkybox::del() {
     // 如果 显示列表 已存在，则删除之
-    if (glIsList(skyBox)) {
-        glDeleteLists(skyBox, 1);
+    if (glIsList(display_list)) {
+        glDeleteLists(display_list, 1);
     }
 
     // 清空原来的天空盒 纹理
@@ -23,75 +24,39 @@ void DSSkybox::load(GLuint index) {
     GLuint texture_height, texture_width;
 
     // 先载入纹理，将纹理编号存入 texture[]
-    // 我搜集了几种天空盒
-    switch (index) {
-    case 0:
-        // 精美绝伦花园天空盒
-        texture[0] = dsLoadTextureBMP2D("data/images/skybox1/east.bmp", &texture_height, &texture_width);
-        texture[1] = dsLoadTextureBMP2D("data/images/skybox1/west.bmp");
-        texture[2] = dsLoadTextureBMP2D("data/images/skybox1/south.bmp");
-        texture[3] = dsLoadTextureBMP2D("data/images/skybox1/north.bmp");
-        texture[4] = dsLoadTextureBMP2D("data/images/skybox1/up.bmp");
-        texture[5] = dsLoadTextureBMP2D("data/images/skybox1/down.bmp");
-        extern GLdouble center[3];
-        //center[2] = 95.0;
-        depth = 950.0;
-        break;
+    tinyxml2::XMLDocument doc;
+    doc.LoadFile("skyboxes.xml");
+    auto root = doc.FirstChildElement();
+    auto item = root->FirstChildElement("skybox");
+    for (; item != nullptr; item = item->NextSiblingElement()) {
 
-    case 1:
-        // 锦绣壮丽山川天空盒
-        texture[0] = dsLoadTextureBMP2D("data/images/skybox0/lostvalley_east.bmp", &texture_height, &texture_width);
-        texture[1] = dsLoadTextureBMP2D("data/images/skybox0/lostvalley_west.bmp");
-        texture[2] = dsLoadTextureBMP2D("data/images/skybox0/lostvalley_south.bmp");
-        texture[3] = dsLoadTextureBMP2D("data/images/skybox0/lostvalley_north.bmp");
-        texture[4] = dsLoadTextureBMP2D("data/images/skybox0/lostvalley_up.bmp");
-        texture[5] = dsLoadTextureBMP2D("data/images/skybox0/lostvalley_down.bmp");
-        extern GLdouble center[3];
-        //center[2] = 70.0;
-        depth = 700.0;
-        break;
+        // 找到了该序号的天空盒信息
+        if (item->UnsignedAttribute("id") == index) {
 
-    case 2:
-        // 水天交接天空盒
-        texture[0] = dsLoadTextureBMP2D("data/images/skybox2/east.bmp", &texture_height, &texture_width);
-        texture[1] = dsLoadTextureBMP2D("data/images/skybox2/west.bmp");
-        texture[2] = dsLoadTextureBMP2D("data/images/skybox2/south.bmp");
-        texture[3] = dsLoadTextureBMP2D("data/images/skybox2/north.bmp");
-        texture[4] = dsLoadTextureBMP2D("data/images/skybox2/up.bmp");
-        texture[5] = dsLoadTextureBMP2D("data/images/skybox2/down.bmp");
-        extern GLdouble center[3];
-        // center[2] = 1000.0;
-        depth = 970.0;
-        break;
+            texture[0] = dsLoadTextureBMP2D(
+                             item->FirstChildElement("t0")->GetText(),
+                             &texture_height,
+                             &texture_width
+                         );
+            texture[1] = dsLoadTextureBMP2D(
+                             item->FirstChildElement("t1")->GetText()
+                         );
+            texture[2] = dsLoadTextureBMP2D(
+                             item->FirstChildElement("t2")->GetText()
+                         );
+            texture[3] = dsLoadTextureBMP2D(
+                             item->FirstChildElement("t3")->GetText()
+                         );
+            texture[4] = dsLoadTextureBMP2D(
+                             item->FirstChildElement("t4")->GetText()
+                         );
+            texture[5] = dsLoadTextureBMP2D(
+                             item->FirstChildElement("t5")->GetText()
+                         );
+            item->FirstChildElement("depth")->QueryDoubleText(&depth);
 
-    case 3:
-        // 夕阳无限红霞天空盒
-        texture[0] = dsLoadTextureBMP2D("data/images/skybox3/east.bmp", &texture_height, &texture_width);
-        texture[1] = dsLoadTextureBMP2D("data/images/skybox3/west.bmp");
-        texture[2] = dsLoadTextureBMP2D("data/images/skybox3/south.bmp");
-        texture[3] = dsLoadTextureBMP2D("data/images/skybox3/north.bmp");
-        texture[4] = dsLoadTextureBMP2D("data/images/skybox3/up.bmp");
-        texture[5] = dsLoadTextureBMP2D("data/images/skybox3/down.bmp");
-        extern GLdouble center[3];
-        // center[2] = 950.0;
-        depth = 950.0;
-        break;
-
-    case 4:
-        // 原来的天空盒
-        texture[0] = dsLoadTextureBMP2D("data/images/skybox4/east.bmp", &texture_height, &texture_width);
-        texture[1] = dsLoadTextureBMP2D("data/images/skybox4/west.bmp");
-        texture[2] = dsLoadTextureBMP2D("data/images/skybox4/south.bmp");
-        texture[3] = dsLoadTextureBMP2D("data/images/skybox4/north.bmp");
-        texture[4] = dsLoadTextureBMP2D("data/images/skybox4/up.bmp");
-        texture[5] = dsLoadTextureBMP2D("data/images/skybox4/down.bmp");
-        extern GLdouble center[3];
-        // center[2] = 40.0;
-        depth = 400.0;
-        break;
-
-    default:
-        break;
+            break;
+        }
     }
 
     // 再创建显示列表
@@ -100,9 +65,9 @@ void DSSkybox::load(GLuint index) {
 
     GLdouble x = width / 2;
 
-    skyBox = glGenLists(1);
+    display_list = glGenLists(1);
 
-    glNewList(skyBox, GL_COMPILE_AND_EXECUTE);
+    glNewList(display_list, GL_COMPILE); // GL_COMPILE_AND_EXECUTE
     {
         glDisable(GL_LIGHTING);
 
@@ -203,5 +168,5 @@ void DSSkybox::load(GLuint index) {
 }
 
 void DSSkybox::show() {
-    glCallList(skyBox);
+    glCallList(display_list);
 }

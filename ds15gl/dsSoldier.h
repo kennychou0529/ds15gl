@@ -47,6 +47,7 @@ public:
               const std::string& weapon_model_file,
               const std::string& weapon_skin_file);
 
+    // 根据 XML 文件中的信息载入士兵模型文件
     void load(const std::string& soldier_name);
 
     dsTimer timer;
@@ -54,24 +55,27 @@ public:
     void setPosition(size_t x, size_t y);
 
     void setTarget(size_t x, size_t y);
-
-    size_t frame_beg;
-    size_t frame_end;
-private:
-    size_t fps;
-    Status status;
-    MD2Model person;
-    MD2Model weapon;
     
-    size_t current_position[2];
-    size_t saved_position[2];
-    size_t target_position[2];
-    GLfloat move_speed;
-    GLfloat scale;
-    GLfloat angle;
-    int* playing;
+private:
+    Status status;              // 当前状态
 
-    // 各个状态的起止帧号
+    MD2Model person;            // 人物模型
+    MD2Model weapon;            // 武器模型
+    
+    GLfloat move_speed;         // 移动速度
+    GLfloat scale;              // 缩放倍数
+    GLfloat angle;              // 当前旋转角
+    int* playing;               // 正在播放中的对象个数
+
+    size_t frame_beg;           // 起始帧
+    size_t frame_end;           // 末帧
+    size_t fps;                 // 每秒播放的关键帧数
+
+    size_t current_position[2]; // 当前地图坐标
+    size_t saved_position[2];   // 储存的地图坐标
+    size_t target_position[2];  // 正在走向的地图坐标 (在 running 状态中用)
+
+    // 各个状态的起止帧号 <frame_beg, frame_end>
     std::pair<size_t, size_t> frame_set[6];
 };
 

@@ -33,8 +33,6 @@ void DSActorManager::initialize() {
     list["bauul"].setPosition(3, 6);
 
     insertSoldier("fighter");
-    list["fighter"].frame_beg = 0;
-    list["fighter"].frame_end = 0;
     list["fighter"].setPosition(5, 6);
 }
 

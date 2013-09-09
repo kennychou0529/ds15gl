@@ -1,0 +1,41 @@
+<skyboxes>
+  <skybox id="0">
+    <t0>data/images/skybox0/lostvalley_east.bmp</t0>
+    <t1>data/images/skybox0/lostvalley_west.bmp</t1>
+    <t2>data/images/skybox0/lostvalley_south.bmp</t2>
+    <t3>data/images/skybox0/lostvalley_north.bmp</t3>
+    <t4>data/images/skybox0/lostvalley_up.bmp</t4>
+    <t5>data/images/skybox0/lostvalley_down.bmp</t5>
+    <depth>700</depth>
+  </skybox>
+  
+  <skybox id="1">
+    <t0>data/images/skybox1/east.bmp</t0>
+    <t1>data/images/skybox1/west.bmp</t1>
+    <t2>data/images/skybox1/south.bmp</t2>
+    <t3>data/images/skybox1/north.bmp</t3>
+    <t4>data/images/skybox1/up.bmp</t4>
+    <t5>data/images/skybox1/down.bmp</t5>
+    <depth>950</depth>
+  </skybox>
+
+  <skybox id="2">
+    <t0>data/images/skybox2/east.bmp</t0>
+    <t1>data/images/skybox2/west.bmp</t1>
+    <t2>data/images/skybox2/south.bmp</t2>
+    <t3>data/images/skybox2/north.bmp</t3>
+    <t4>data/images/skybox2/up.bmp</t4>
+    <t5>data/images/skybox2/down.bmp</t5>
+    <depth>970</depth>
+  </skybox>
+
+  <skybox id="3">
+    <t0>data/images/skybox3/east.bmp</t0>
+    <t1>data/images/skybox3/west.bmp</t1>
+    <t2>data/images/skybox3/south.bmp</t2>
+    <t3>data/images/skybox3/north.bmp</t3>
+    <t4>data/images/skybox3/up.bmp</t4>
+    <t5>data/images/skybox3/down.bmp</t5>
+    <depth>950</depth>
+  </skybox>
+</skyboxes>

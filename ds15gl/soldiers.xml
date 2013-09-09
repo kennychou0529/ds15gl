@@ -5,9 +5,9 @@
     <weapon>data/sword_man/weapon.md2</weapon>
     <weapon_skin>data/sword_man/weapon.bmp</weapon_skin>
     <frame_set>
-      <idle beg="0" end="39"/>
-      <running beg="40" end="45"/>
-      <attacking beg="46" end="53"/>
+      <idle beg="0" end="39" fps="10"/>
+      <running beg="40" end="45" fps="5"/>
+      <attacking beg="46" end="53" fps="10"/>
       <pain beg="54" end="65"/>
       <dying beg="178" end="183"/>
       <died beg="183" end="183"/>
@@ -20,9 +20,9 @@
     <weapon>data/mage/weapon.md2</weapon>
     <weapon_skin>data/mage/weapon.bmp</weapon_skin>
     <frame_set>
-      <idle beg="0" end="39"/>
-      <running beg="40" end="45"/>
-      <attacking beg="46" end="53"/>
+      <idle beg="0" end="39" fps="10"/>
+      <running beg="40" end="45" fps="5"/>
+      <attacking beg="46" end="53" fps="10"/>
       <pain beg="54" end="65"/>
       <dying beg="184" end="189"/>
       <died beg="189" end="189"/>
@@ -35,9 +35,9 @@
     <weapon>data/chastit/weapon.md2</weapon>
     <weapon_skin>data/chastit/weapon.bmp</weapon_skin>
     <frame_set>
-      <idle beg="0" end="39"/>
-      <running beg="40" end="45"/>
-      <attacking beg="46" end="53"/>
+      <idle beg="0" end="39" fps="10"/>
+      <running beg="40" end="45" fps="5"/>
+      <attacking beg="46" end="53" fps="10"/>
       <pain beg="54" end="65"/>
       <dying beg="184" end="189"/>
       <died beg="189" end="189"/>
@@ -50,9 +50,9 @@
     <weapon>data/gunman/weapon.md2</weapon>
     <weapon_skin>data/gunman/weapon.bmp</weapon_skin>
     <frame_set>
-      <idle beg="0" end="39"/>
-      <running beg="40" end="45"/>
-      <attacking beg="46" end="53"/>
+      <idle beg="0" end="39" fps="10"/>
+      <running beg="40" end="45" fps="5"/>
+      <attacking beg="46" end="53" fps="10"/>
       <pain beg="54" end="65"/>
       <dying beg="178" end="183"/>
       <died beg="183" end="183"/>
@@ -65,9 +65,9 @@
     <weapon>data/bauul/weapon.md2</weapon>
     <weapon_skin>data/bauul/weapon.bmp</weapon_skin>
     <frame_set>
-      <idle beg="0" end="39"/>
-      <running beg="40" end="45"/>
-      <attacking beg="46" end="53"/>
+      <idle beg="0" end="39" fps="10"/>
+      <running beg="40" end="45" fps="5"/>
+      <attacking beg="46" end="53" fps="10"/>
       <pain beg="54" end="65"/>
       <dying beg="178" end="183"/>
       <died beg="183" end="183"/>
@@ -80,9 +80,9 @@
     <weapon>data/fighter/fighter.md2</weapon>
     <weapon_skin>data/fighter/fighter.bmp</weapon_skin>
     <frame_set>
-      <idle beg="0" end="0"/>
-      <running beg="0" end="0"/>
-      <attacking beg="0" end="0"/>
+      <idle beg="0" end="0" fps="10"/>
+      <running beg="0" end="0" fps="5"/>
+      <attacking beg="0" end="0" fps="10"/>
       <pain beg="0" end="0"/>
       <dying beg="0" end="0"/>
       <died beg="0" end="0"/>
