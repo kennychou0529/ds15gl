@@ -54,13 +54,14 @@ public:
 
     void setTarget(size_t x, size_t y);
 
+    size_t frame_beg;
+    size_t frame_end;
 private:
     size_t fps;
     Status status;
     MD2Model person;
     MD2Model weapon;
-    size_t frame_beg;
-    size_t frame_end;
+    
     size_t current_position[2];
     size_t saved_position[2];
     size_t target_position[2];

@@ -23,4 +23,16 @@
     <weapon>data/gunman/weapon.md2</weapon>
     <weapon_skin>data/gunman/weapon.bmp</weapon_skin>
   </soldier>
+  <soldier name="bauul">
+    <tris>data/bauul/tris.md2</tris>
+    <tris_skin>data/bauul/tris.bmp</tris_skin>
+    <weapon>data/bauul/weapon.md2</weapon>
+    <weapon_skin>data/bauul/weapon.bmp</weapon_skin>
+  </soldier>
+  <soldier name="fighter">
+    <tris>data/fighter/fighter.md2</tris>
+    <tris_skin>data/fighter/fighter.bmp</tris_skin>
+    <weapon>data/fighter/fighter.md2</weapon>
+    <weapon_skin>data/fighter/fighter.bmp</weapon_skin>
+  </soldier>
 </soldiers>
