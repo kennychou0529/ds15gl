@@ -1,6 +1,7 @@
 ﻿#include <sstream>
 #include <iomanip>
-
+#include <iostream>
+#include "dsTexture.h"
 #include "dsStatusBar.h"
 #include "dsTools.h"
 #include "dsTextManager.h"
@@ -13,7 +14,11 @@ DSStatusBar::DSStatusBar() {}
 
 DSStatusBar::~DSStatusBar() {}
 
-void DSStatusBar::init() {}
+void DSStatusBar::init() {
+    GLuint height, width;
+    logo_tex = dsLoadTextureBMP2D("data/images/logo.bmp", &height, &width);
+    ratio = static_cast<GLdouble>(height) / width;
+}
 
 void DSStatusBar::show() {
     // 更改投影方式为 2D 平行投影
@@ -41,6 +46,27 @@ void DSStatusBar::show() {
             glTranslated(status_bar_width / 2, status_bar_width / 2, 0.0);
             glColor3f(1.0f, 1.0f, 1.0f);
             glutSolidTeapot(50);
+        }
+        glPopMatrix();
+
+        glPushMatrix();
+        {
+            glEnable(GL_TEXTURE_2D);
+            glBindTexture(GL_TEXTURE_2D, logo_tex);
+            glBegin(GL_QUADS);
+
+            glTexCoord2d(0, 1);
+            glVertex2d(0, window_height);
+
+            glTexCoord2d(1, 1);
+            glVertex2d(status_bar_width, window_height);
+
+            glTexCoord2d(1, 0);
+            glVertex2d(status_bar_width, window_height - ratio * status_bar_width);
+
+            glTexCoord2d(0, 0);
+            glVertex2d(0, window_height - ratio * status_bar_width);
+            glEnd();
         }
         glPopMatrix();
 
@@ -83,7 +109,7 @@ void DSStatusBar::show() {
                 os << L"\nF3: next round";
             }
             if (frame.actors.script_playing != 0) {
-                os << L"\nplaying";
+                os << L"\n" << frame.actors.script_playing << L" playing";
             }
             if (frame.actors.all_finished) {
                 os << L"\nFinished";

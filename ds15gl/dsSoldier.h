@@ -11,7 +11,13 @@
 class dsSoldier {
 public:
     enum Status {
-        idle, running, attacking, pain, dying, died, disappear
+        idle,       // 站着
+        running,    // 跑动
+        attacking,  // 攻击
+        pain,       // 受到攻击
+        dying,      // 倒地身亡
+        died,       // 躺在地上
+        disappear   // 不绘制
     };
 
     dsSoldier();

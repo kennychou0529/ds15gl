@@ -11,6 +11,9 @@ public:
     void show();
     void init();
 private:
+    GLuint logo_tex;
+    GLdouble ratio;
+    GLuint logo_display_list;
 };
 
 #endif

@@ -86,6 +86,12 @@ void DSActorManager::update() {
                     case soldier_fight:
                         iter_soldier->second.enterStatus(dsSoldier::Status::attacking, &script_playing);
                         break;
+                    case soldier_die:
+                        iter_soldier->second.enterStatus(dsSoldier::Status::dying, &script_playing);
+                        break;
+                    case soldier_pain:
+                        iter_soldier->second.enterStatus(dsSoldier::Status::pain, &script_playing);
+                        break;
                     default:
                         break;
                     }

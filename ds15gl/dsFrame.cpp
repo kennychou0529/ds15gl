@@ -5,7 +5,7 @@ void DSFrame::initialize() {
     num_frames = 0;
     fps = 0;
     timer.recordTime();
-
+    statusBar.init();
     scene.initialize();
 }
 

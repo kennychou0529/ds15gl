@@ -8,10 +8,12 @@
       <idle beg="0" end="39" fps="10"/>
       <running beg="40" end="45" fps="5"/>
       <attacking beg="46" end="53" fps="10"/>
-      <pain beg="54" end="65"/>
-      <dying beg="178" end="183"/>
-      <died beg="183" end="183"/>
+      <pain beg="54" end="58" fps="5"/>
+      <dying beg="178" end="182" fps="10"/>
+      <died beg="183" end="183" fps="10"/>
     </frame_set>
+    <scale>0.2</scale>
+    <default_angle>0</default_angle>
   </soldier>
   
   <soldier name="mage">
@@ -23,10 +25,12 @@
       <idle beg="0" end="39" fps="10"/>
       <running beg="40" end="45" fps="5"/>
       <attacking beg="46" end="53" fps="10"/>
-      <pain beg="54" end="65"/>
-      <dying beg="184" end="189"/>
-      <died beg="189" end="189"/>
+      <pain beg="54" end="65" fps="10"/>
+      <dying beg="184" end="189" fps="10"/>
+      <died beg="189" end="189" fps="10"/>
     </frame_set>
+    <scale>0.2</scale>
+    <default_angle>0</default_angle>
   </soldier>
   
   <soldier name="chastit">
@@ -38,10 +42,12 @@
       <idle beg="0" end="39" fps="10"/>
       <running beg="40" end="45" fps="5"/>
       <attacking beg="46" end="53" fps="10"/>
-      <pain beg="54" end="65"/>
-      <dying beg="184" end="189"/>
-      <died beg="189" end="189"/>
+      <pain beg="54" end="65" fps="10"/>
+      <dying beg="184" end="189" fps="10"/>
+      <died beg="189" end="189" fps="10"/>
     </frame_set>
+    <scale>0.2</scale>
+    <default_angle>0</default_angle>
   </soldier>
   
   <soldier name="gunman">
@@ -53,10 +59,12 @@
       <idle beg="0" end="39" fps="10"/>
       <running beg="40" end="45" fps="5"/>
       <attacking beg="46" end="53" fps="10"/>
-      <pain beg="54" end="65"/>
-      <dying beg="178" end="183"/>
-      <died beg="183" end="183"/>
+      <pain beg="54" end="65" fps="10"/>
+      <dying beg="178" end="183" fps="10"/>
+      <died beg="183" end="183" fps="10"/>
     </frame_set>
+    <scale>0.2</scale>
+    <default_angle>0</default_angle>
   </soldier>
   
   <soldier name="bauul">
@@ -68,10 +76,12 @@
       <idle beg="0" end="39" fps="10"/>
       <running beg="40" end="45" fps="5"/>
       <attacking beg="46" end="53" fps="10"/>
-      <pain beg="54" end="65"/>
-      <dying beg="178" end="183"/>
-      <died beg="183" end="183"/>
+      <pain beg="54" end="65" fps="10"/>
+      <dying beg="178" end="183" fps="10"/>
+      <died beg="183" end="183" fps="10"/>
     </frame_set>
+    <scale>0.2</scale>
+    <default_angle>0</default_angle>
   </soldier>
   
   <soldier name="fighter">
@@ -83,10 +93,12 @@
       <idle beg="0" end="0" fps="10"/>
       <running beg="0" end="0" fps="5"/>
       <attacking beg="0" end="0" fps="10"/>
-      <pain beg="0" end="0"/>
-      <dying beg="0" end="0"/>
-      <died beg="0" end="0"/>
+      <pain beg="0" end="0" fps="10"/>
+      <dying beg="0" end="0" fps="10"/>
+      <died beg="0" end="0" fps="10"/>
     </frame_set>
+    <scale>0.1</scale>
+    <default_angle>0</default_angle>
   </soldier>
   
 </soldiers>

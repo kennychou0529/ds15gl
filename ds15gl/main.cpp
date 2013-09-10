@@ -27,10 +27,10 @@ void dsDisplay() {
     GLenum errCode;
     const GLubyte* errString;
 
-    while ((errCode = glGetError()) != GL_NO_ERROR) {
-        errString = gluErrorString(errCode);
-        std::cerr << errString << std::endl;
-    }
+    //while ((errCode = glGetError()) != GL_NO_ERROR) {
+    //    errString = gluErrorString(errCode);
+    //    std::cerr << errString << std::endl;
+    //}
 }
 
 void dsInit() {

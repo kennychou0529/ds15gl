@@ -9,7 +9,12 @@ static const GLfloat pi = 3.1415926f;
 
 extern DSFrame frame;
 
-dsSoldier::dsSoldier() : frame_beg(40), frame_end(45), fps(5), move_speed(20.0f), scale(0.2f), angle(0.0f), playing(nullptr) {}
+dsSoldier::dsSoldier() : move_speed(20.0f),
+    scale(0.2f),
+    angle(0.0f),
+    playing(nullptr) {
+    enterStatus(idle);
+}
 
 void dsSoldier::renderFrame(size_t frame_index) {
     person.renderFrame(frame_index);
@@ -22,38 +27,56 @@ void dsSoldier::renderSmoothly(size_t frame1_index, size_t frame2_index, GLfloat
 }
 
 void dsSoldier::renderSmoothly(GLfloat progress) {
-    size_t frame1_index = static_cast<size_t>(std::floor(progress));
-    GLfloat percentage = progress - frame1_index;
-    frame1_index %= (frame_end - frame_beg + 1);
-    size_t frame2_index = (frame1_index + 1) % (frame_end - frame_beg + 1);
-    frame1_index += frame_beg;
-    frame2_index += frame_beg;
-    renderSmoothly(frame1_index, frame2_index, percentage);
+    if (frame_beg == frame_end) {
+        renderFrame(frame_beg);
+    } else {
+        size_t frame1_index = static_cast<size_t>(std::floor(progress));
+        GLfloat percentage = progress - frame1_index;
+        frame1_index %= (frame_end - frame_beg + 1);
+        size_t frame2_index = (frame1_index + 1) % (frame_end - frame_beg + 1);
+        frame1_index += frame_beg;
+        frame2_index += frame_beg;
+        renderSmoothly(frame1_index, frame2_index, percentage);
+    }
 }
 
 void dsSoldier::enterStatus(Status status_to_enter, int* script_playing) {
     playing = script_playing;
+
+    // Status 中：
+    // idle, died, disappear 不属于过程
+    // running, attacking, pain, dying 属于过程
+    bool prev_playing = !((status == idle) || (status == died) || (status == disappear));
+
     status = status_to_enter;
+
+    bool cur_playing = !((status == idle) || (status == died) || (status == disappear));
+
     timer.recordTime();
 
-    if (status != died) {
-        frame_beg = std::get<0>(frame_set[status]);
-        frame_end = std::get<1>(frame_set[status]);
-    }
+    frame_beg = std::get<0>(frame_set[status]);
+    frame_end = std::get<1>(frame_set[status]);
     fps = std::get<2>(frame_set[status]);
 
-    if (status != idle && status != died) {
+    // 从非过程变成过程，需要 playing 增
+    // 从过程变成非过程，需要 playing 减
+    if (!prev_playing && cur_playing) {
         if (playing != nullptr) {
             ++(*playing);
         }
+    } else if (prev_playing && !cur_playing) {
+        if (playing != nullptr) {
+            --(*playing);
+        }
     }
+
 }
 
 void dsSoldier::animate() {
     glPushMatrix();
     {
         // 这里没有使用 case 语句，是因为会出现对象初始化问题
-        if (status == idle) {
+        if (status == idle || status == died) {
             GLfloat x, y;
             frame.scene.map.getCoords(current_position[0], current_position[1], &x, &y);
 
@@ -88,11 +111,8 @@ void dsSoldier::animate() {
                 pos = target;
                 setPosition(target_position[0], target_position[1]);
                 enterStatus(idle, playing);
-                if (playing != nullptr) {
-                    --(*playing);
-                }
             }
-        } else if (status == attacking) {
+        } else if (status == attacking || status == pain) {
             GLfloat x, y;
             frame.scene.map.getCoords(current_position[0], current_position[1], &x, &y);
 
@@ -104,9 +124,19 @@ void dsSoldier::animate() {
             renderSmoothly(duration * fps);
             if (fps * duration > (frame_end - frame_beg + 1)) {
                 enterStatus(idle, playing);
-                if (playing != nullptr) {
-                    --(*playing);
-                }
+            }
+        } else if (status == dying) {
+            GLfloat x, y;
+            frame.scene.map.getCoords(current_position[0], current_position[1], &x, &y);
+
+            glTranslatef(x, y, 4.0f);
+            glScaled(scale, scale, scale);
+            glRotatef(angle, 0.0f, 0.0f, 1.0f);
+
+            GLfloat duration = timer.getDurationSecf();
+            renderSmoothly(duration * fps);
+            if (fps * duration > (frame_end - frame_beg + 1)) {
+                enterStatus(died, playing);
             }
         } // endif
     }
@@ -116,8 +146,7 @@ void dsSoldier::animate() {
 void dsSoldier::load(const std::string& person_model_file,
                      const std::string& person_skin_file,
                      const std::string& weapon_model_file,
-                     const std::string& weapon_skin_file)
-{
+                     const std::string& weapon_skin_file) {
     person.load(person_model_file, person_skin_file);
     weapon.load(weapon_model_file, weapon_skin_file);
 }
@@ -138,36 +167,36 @@ void dsSoldier::load(const std::string& soldier_name) {
                 throw "Frame_set invalid";
             } else {
                 frame_set[idle] = std::make_tuple(
-                    xml_frame_set->FirstChildElement("idle")->UnsignedAttribute("beg"),
-                    xml_frame_set->FirstChildElement("idle")->UnsignedAttribute("end"),
-                    xml_frame_set->FirstChildElement("idle")->UnsignedAttribute("fps")
-                );
+                                      xml_frame_set->FirstChildElement("idle")->UnsignedAttribute("beg"),
+                                      xml_frame_set->FirstChildElement("idle")->UnsignedAttribute("end"),
+                                      xml_frame_set->FirstChildElement("idle")->UnsignedAttribute("fps")
+                                  );
                 frame_set[running] = std::make_tuple(
-                    xml_frame_set->FirstChildElement("running")->UnsignedAttribute("beg"),
-                    xml_frame_set->FirstChildElement("running")->UnsignedAttribute("end"),
-                    xml_frame_set->FirstChildElement("running")->UnsignedAttribute("fps")
-                );
+                                         xml_frame_set->FirstChildElement("running")->UnsignedAttribute("beg"),
+                                         xml_frame_set->FirstChildElement("running")->UnsignedAttribute("end"),
+                                         xml_frame_set->FirstChildElement("running")->UnsignedAttribute("fps")
+                                     );
                 frame_set[attacking] = std::make_tuple(
-                    xml_frame_set->FirstChildElement("attacking")->UnsignedAttribute("beg"),
-                    xml_frame_set->FirstChildElement("attacking")->UnsignedAttribute("end"),
-                    xml_frame_set->FirstChildElement("attacking")->UnsignedAttribute("fps")
-                );
+                                           xml_frame_set->FirstChildElement("attacking")->UnsignedAttribute("beg"),
+                                           xml_frame_set->FirstChildElement("attacking")->UnsignedAttribute("end"),
+                                           xml_frame_set->FirstChildElement("attacking")->UnsignedAttribute("fps")
+                                       );
                 frame_set[pain] = std::make_tuple(
-                    xml_frame_set->FirstChildElement("pain")->UnsignedAttribute("beg"),
-                    xml_frame_set->FirstChildElement("pain")->UnsignedAttribute("end"),
-                    xml_frame_set->FirstChildElement("pain")->UnsignedAttribute("fps")
-                );
+                                      xml_frame_set->FirstChildElement("pain")->UnsignedAttribute("beg"),
+                                      xml_frame_set->FirstChildElement("pain")->UnsignedAttribute("end"),
+                                      xml_frame_set->FirstChildElement("pain")->UnsignedAttribute("fps")
+                                  );
                 frame_set[dying] = std::make_tuple(
-                    xml_frame_set->FirstChildElement("dying")->UnsignedAttribute("beg"),
-                    xml_frame_set->FirstChildElement("dying")->UnsignedAttribute("end"),
-                    xml_frame_set->FirstChildElement("dying")->UnsignedAttribute("fps")
-                );
+                                       xml_frame_set->FirstChildElement("dying")->UnsignedAttribute("beg"),
+                                       xml_frame_set->FirstChildElement("dying")->UnsignedAttribute("end"),
+                                       xml_frame_set->FirstChildElement("dying")->UnsignedAttribute("fps")
+                                   );
                 frame_set[died] = std::make_tuple(
-                    xml_frame_set->FirstChildElement("died")->UnsignedAttribute("beg"),
-                    xml_frame_set->FirstChildElement("died")->UnsignedAttribute("end"),
-                    xml_frame_set->FirstChildElement("died")->UnsignedAttribute("fps")
+                                      xml_frame_set->FirstChildElement("died")->UnsignedAttribute("beg"),
+                                      xml_frame_set->FirstChildElement("died")->UnsignedAttribute("end"),
+                                      xml_frame_set->FirstChildElement("died")->UnsignedAttribute("fps")
 
-                    );
+                                  );
             }
             return;
         }
