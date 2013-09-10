@@ -125,7 +125,7 @@
   
   <soldier name="tank">
     <tris>data/tank/tris.md2</tris>
-    <tris_skin>data/tank/skin.bmp</tris_skin>
+    <tris_skin>data/tank/tris.bmp</tris_skin>
     <frame_set>
       <idle beg="0" end="0" fps="10"/>
       <running beg="0" end="0" fps="5"/>
