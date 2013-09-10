@@ -49,7 +49,7 @@
       <died beg="183" end="183" fps="10"/><!--correct-->
     </frame_set>
     <scale>0.2</scale>
-    <translate>4</translate>
+    <translate>5</translate>
     <default_angle>0</default_angle>
   </soldier>
   
@@ -67,7 +67,7 @@
       <died beg="183" end="183" fps="10"/><!--correct-->
     </frame_set>
     <scale>0.2</scale>
-    <translate>4</translate>
+    <translate>5</translate>
     <default_angle>0</default_angle>
   </soldier>
   
@@ -85,7 +85,7 @@
       <died beg="183" end="183" fps="10"/>
     </frame_set>
     <scale>0.2</scale>
-    <translate>4</translate>
+    <translate>5</translate>
     <default_angle>0</default_angle>
   </soldier>
 
@@ -103,7 +103,7 @@
       <died beg="197" end="197" fps="10"/>
     </frame_set>
     <scale>0.15</scale>
-    <translate>3</translate>
+    <translate>3.5</translate>
     <default_angle>0</default_angle>
   </soldier>
   
