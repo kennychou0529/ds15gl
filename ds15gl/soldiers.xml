@@ -5,11 +5,11 @@
     <weapon>data/sword_man/weapon.md2</weapon>
     <weapon_skin>data/sword_man/weapon.bmp</weapon_skin>
     <frame_set>
-      <idle beg="0" end="39" fps="10"/>
-      <running beg="40" end="45" fps="5"/>
-      <attacking beg="46" end="53" fps="10"/>
-      <pain beg="54" end="58" fps="5"/>
-      <dying beg="178" end="183" fps="5"/>
+      <idle beg="0" end="39" fps="10"/><!--correct-->
+      <running beg="40" end="45" fps="5"/><!--correct-->
+      <attacking beg="46" end="53" fps="10"/><!--correct-->
+      <pain beg="54" end="57" fps="5"/>
+      <dying beg="178" end="183" fps="5"/><!--correct-->
       <died beg="183" end="183" fps="1"/>
     </frame_set>
     <scale>0.17</scale>
@@ -23,12 +23,12 @@
     <weapon>data/mage/weapon.md2</weapon>
     <weapon_skin>data/mage/weapon.bmp</weapon_skin>
     <frame_set>
-      <idle beg="0" end="39" fps="10"/>
-      <running beg="40" end="45" fps="5"/>
-      <attacking beg="46" end="53" fps="10"/>
-      <pain beg="54" end="65" fps="10"/>
-      <dying beg="184" end="189" fps="10"/>
-      <died beg="189" end="189" fps="1"/>
+      <idle beg="0" end="39" fps="10"/><!--correct-->
+      <running beg="40" end="45" fps="5"/><!--correct-->
+      <attacking beg="46" end="53" fps="10"/><!--correct-->
+      <pain beg="58" end="61" fps="10"/>
+      <dying beg="184" end="189" fps="10"/><!--correct-->
+      <died beg="189" end="189" fps="1"/><!--correct-->
     </frame_set>
     <scale>0.2</scale>
     <translate>4</translate>
@@ -45,8 +45,8 @@
       <running beg="40" end="45" fps="5"/>
       <attacking beg="46" end="53" fps="10"/>
       <pain beg="54" end="65" fps="10"/>
-      <dying beg="184" end="189" fps="10"/>
-      <died beg="189" end="189" fps="10"/>
+      <dying beg="178" end="183" fps="10"/><!--correct-->
+      <died beg="183" end="183" fps="10"/><!--correct-->
     </frame_set>
     <scale>0.2</scale>
     <translate>4</translate>
@@ -59,12 +59,12 @@
     <weapon>data/gunman/weapon.md2</weapon>
     <weapon_skin>data/gunman/weapon.bmp</weapon_skin>
     <frame_set>
-      <idle beg="0" end="39" fps="10"/>
-      <running beg="40" end="45" fps="5"/>
-      <attacking beg="46" end="53" fps="10"/>
+      <idle beg="0" end="39" fps="10"/><!--correct-->
+      <running beg="40" end="45" fps="5"/><!--correct-->
+      <attacking beg="46" end="53" fps="10"/><!--correct-->
       <pain beg="54" end="65" fps="10"/>
-      <dying beg="178" end="183" fps="10"/>
-      <died beg="183" end="183" fps="10"/>
+      <dying beg="178" end="183" fps="10"/><!--correct-->
+      <died beg="183" end="183" fps="10"/><!--correct-->
     </frame_set>
     <scale>0.2</scale>
     <translate>4</translate>
@@ -86,6 +86,24 @@
     </frame_set>
     <scale>0.2</scale>
     <translate>4</translate>
+    <default_angle>0</default_angle>
+  </soldier>
+
+  <soldier name="disgustin">
+    <tris>data/disgustin/tris.md2</tris>
+    <tris_skin>data/disgustin/tris.bmp</tris_skin>
+    <weapon>data/disgustin/weapon.md2</weapon>
+    <weapon_skin>data/disgustin/weapon.bmp</weapon_skin>
+    <frame_set>
+      <idle beg="0" end="39" fps="10"/>
+      <running beg="40" end="45" fps="5"/>
+      <attacking beg="46" end="53" fps="10"/>
+      <pain beg="54" end="57" fps="10"/>
+      <dying beg="190" end="197" fps="10"/>
+      <died beg="197" end="197" fps="10"/>
+    </frame_set>
+    <scale>0.15</scale>
+    <translate>3</translate>
     <default_angle>0</default_angle>
   </soldier>
   
