@@ -103,7 +103,7 @@ void DSStatusBar::show() {
             os << L"FPS " << frame.getFPS();
             glLoadIdentity();
             glScalef(0.5, 0.5, 0.5);
-            dstext.print(5, (GLfloat)window_height - 20, os.str());
+            dstext.print(5, (GLfloat)window_height - 70, os.str());
         }
         glPopMatrix();
 

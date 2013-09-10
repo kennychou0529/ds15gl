@@ -12,7 +12,8 @@
       <dying beg="178" end="183" fps="5"/>
       <died beg="183" end="183" fps="1"/>
     </frame_set>
-    <scale>0.2</scale>
+    <scale>0.17</scale>
+    <translate>4</translate>
     <default_angle>0</default_angle>
   </soldier>
   
@@ -27,9 +28,10 @@
       <attacking beg="46" end="53" fps="10"/>
       <pain beg="54" end="65" fps="10"/>
       <dying beg="184" end="189" fps="10"/>
-      <died beg="189" end="189" fps="10"/>
+      <died beg="189" end="189" fps="1"/>
     </frame_set>
     <scale>0.2</scale>
+    <translate>4</translate>
     <default_angle>0</default_angle>
   </soldier>
   
@@ -47,6 +49,7 @@
       <died beg="189" end="189" fps="10"/>
     </frame_set>
     <scale>0.2</scale>
+    <translate>4</translate>
     <default_angle>0</default_angle>
   </soldier>
   
@@ -64,6 +67,7 @@
       <died beg="183" end="183" fps="10"/>
     </frame_set>
     <scale>0.2</scale>
+    <translate>4</translate>
     <default_angle>0</default_angle>
   </soldier>
   
@@ -81,14 +85,13 @@
       <died beg="183" end="183" fps="10"/>
     </frame_set>
     <scale>0.2</scale>
+    <translate>4</translate>
     <default_angle>0</default_angle>
   </soldier>
   
   <soldier name="fighter">
     <tris>data/fighter/fighter.md2</tris>
     <tris_skin>data/fighter/fighter.bmp</tris_skin>
-    <weapon>data/fighter/fighter.md2</weapon>
-    <weapon_skin>data/fighter/fighter.bmp</weapon_skin>
     <frame_set>
       <idle beg="0" end="0" fps="10"/>
       <running beg="0" end="0" fps="5"/>
@@ -97,8 +100,24 @@
       <dying beg="0" end="0" fps="10"/>
       <died beg="0" end="0" fps="10"/>
     </frame_set>
-    <scale>0.1</scale>
-    <default_angle>0</default_angle>
+    <scale>0.06</scale>
+    <translate>6</translate>
+    <default_angle>90</default_angle>
   </soldier>
   
+  <soldier name="tank">
+    <tris>data/tank/tris.md2</tris>
+    <tris_skin>data/tank/skin.bmp</tris_skin>
+    <frame_set>
+      <idle beg="0" end="0" fps="10"/>
+      <running beg="0" end="0" fps="5"/>
+      <attacking beg="0" end="0" fps="10"/>
+      <pain beg="0" end="0" fps="10"/>
+      <dying beg="0" end="0" fps="10"/>
+      <died beg="0" end="0" fps="10"/>
+    </frame_set>
+    <scale>0.06</scale>
+    <translate>0</translate>
+    <default_angle>90</default_angle>
+  </soldier>
 </soldiers>

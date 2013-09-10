@@ -60,6 +60,11 @@ public:
         const std::string& weapon_skin_file
     );
 
+    void load(
+        const std::string& model_file,
+        const std::string& skin_file
+    );
+
     // 根据 XML 文件中的信息载入士兵模型文件
     void load(const std::string& soldier_name);
 
@@ -70,6 +75,7 @@ public:
     void setTarget(size_t x, size_t y);
 
 private:
+    bool has_weapon;            // 是否含有武器模型
     Status status;              // 当前状态
 
     MD2Model person;            // 人物模型
@@ -78,6 +84,11 @@ private:
     GLfloat move_speed;         // 移动速度
     GLfloat scale;              // 缩放倍数
     GLfloat angle;              // 当前旋转角
+    GLfloat default_angle;      // 默认旋转角
+                                // 由于模型各不相同，需要一个修正角
+                                // 使得默认方向为 x 轴 正方向
+    GLfloat translate;          // 高度移动值
+
     int* playing;               // 正在播放中的对象个数
 
     size_t frame_beg;           // 起始帧

@@ -4,6 +4,7 @@
 #include "dsVector2f.h"
 #include "tinyxml2.h"
 #include <cmath>
+#include <functional>
 
 static const GLfloat pi = 3.1415926f;
 
@@ -30,7 +31,7 @@ void dsSoldier::renderSmoothly(
     person.renderSmoothly(frame1_index, frame2_index, percentage);
 
     // 测试表明，武器模型的死亡动画有问题，所以不画了
-    if (status == dying || status == died) {
+    if (status == dying || status == died || !has_weapon) {
         return;
     }
     weapon.renderSmoothly(frame1_index, frame2_index, percentage);
@@ -84,17 +85,22 @@ void dsSoldier::enterStatus(Status status_to_enter, int* script_playing) {
 void dsSoldier::animate() {
     glPushMatrix();
     {
+        GLfloat x, y;
+        GLfloat duration = timer.getDurationSecf();
+
+        auto render = [&]() {
+            glTranslatef(x, y, translate);
+            glScaled(scale, scale, scale);
+            glRotatef(angle + default_angle, 0.0f, 0.0f, 1.0f);
+            renderSmoothly(duration * fps);
+        };
+
         // 这里没有使用 case 语句，是因为会出现对象初始化问题
         if (status == idle || status == died) {
-            GLfloat x, y;
             frame.scene.map.getCoords(
                 current_position[0], current_position[1], &x, &y
             );
-
-            glTranslatef(x, y, 4.0f);
-            glScaled(scale, scale, scale);
-            glRotatef(angle, 0.0f, 0.0f, 1.0f);
-            renderSmoothly(timer.getDurationSecf() * fps);
+            render();
 
         } else if (status == running) {
             dsVector2f saved;
@@ -111,7 +117,6 @@ void dsSoldier::animate() {
             GLfloat length = dir.getLenth();
             dir.normalise();
 
-            GLfloat duration = timer.getDurationSecf();
             dsVector2f pos = saved + move_speed * duration * dir;
 
             angle = std::acos(dir.x) * 180.0f / pi;
@@ -119,10 +124,10 @@ void dsSoldier::animate() {
                 angle = -angle;
             }
 
-            glTranslatef(pos.x, pos.y, 4.0f);
-            glScaled(scale, scale, scale);
-            glRotatef(angle, 0.0f, 0.0f, 1.0f);
-            renderSmoothly(timer.getDurationSecf() * fps);
+            x = pos.x;
+            y = pos.y;
+
+            render();
             if (move_speed * duration > length) {
                 pos = target;
                 setPosition(target_position[0], target_position[1]);
@@ -130,35 +135,21 @@ void dsSoldier::animate() {
             }
 
         } else if (status == attacking || status == pain) {
-            GLfloat x, y;
             frame.scene.map.getCoords(
                 current_position[0], current_position[1], &x, &y
             );
-
-            glTranslatef(x, y, 4.0f);
-            glScaled(scale, scale, scale);
-            glRotatef(angle, 0.0f, 0.0f, 1.0f);
-
-            GLfloat duration = timer.getDurationSecf();
-            renderSmoothly(duration * fps);
+            render();
             if (fps * duration > (frame_end - frame_beg)) {
                 enterStatus(idle, playing);
             }
 
         } else if (status == dying) {
-            GLfloat x, y;
             frame.scene.map.getCoords(
                 current_position[0], current_position[1], &x, &y
             );
-
-            glTranslatef(x, y, 4.0f);
-            glScaled(scale, scale, scale);
-            glRotatef(angle, 0.0f, 0.0f, 1.0f);
-
-            GLfloat duration = timer.getDurationSecf();
-            renderSmoothly(duration * fps);
+            render();
             if (fps * duration > (frame_end - frame_beg)) {
-                enterStatus(idle, playing);
+                enterStatus(died, playing);
             }
 
         } // endif
@@ -172,8 +163,17 @@ void dsSoldier::load(
     const std::string& weapon_model_file,
     const std::string& weapon_skin_file
 ) {
+    has_weapon = true;
     person.load(person_model_file, person_skin_file);
     weapon.load(weapon_model_file, weapon_skin_file);
+}
+
+void dsSoldier::load(
+    const std::string& model_file,
+    const std::string& skin_file
+) {
+    has_weapon = false;
+    person.load(model_file, skin_file);
 }
 
 void dsSoldier::load(const std::string& soldier_name) {
@@ -183,46 +183,67 @@ void dsSoldier::load(const std::string& soldier_name) {
     auto soldier = root->FirstChildElement("soldier");
     for (; soldier != nullptr; soldier = soldier->NextSiblingElement()) {
         if (soldier_name == soldier->Attribute("name")) {
-            load(soldier->FirstChildElement("tris")->GetText(),
-                 soldier->FirstChildElement("tris_skin")->GetText(),
-                 soldier->FirstChildElement("weapon")->GetText(),
-                 soldier->FirstChildElement("weapon_skin")->GetText());
+            if (soldier->FirstChildElement("weapon") == nullptr) {
+                // 该士兵没有武器模型
+                load(
+                    soldier->FirstChildElement("tris")->GetText(),
+                    soldier->FirstChildElement("tris_skin")->GetText()
+                );
+            } else {
+                // 该士兵有武器模型
+                load(
+                    soldier->FirstChildElement("tris")->GetText(),
+                    soldier->FirstChildElement("tris_skin")->GetText(),
+                    soldier->FirstChildElement("weapon")->GetText(),
+                    soldier->FirstChildElement("weapon_skin")->GetText()
+                );
+            }
             auto xml_frame_set = soldier->FirstChildElement("frame_set");
             if (xml_frame_set == nullptr) {
                 throw "Frame_set invalid";
-            } else {
-                frame_set[idle] = std::make_tuple(
-                                      xml_frame_set->FirstChildElement("idle")->UnsignedAttribute("beg"),
-                                      xml_frame_set->FirstChildElement("idle")->UnsignedAttribute("end"),
-                                      xml_frame_set->FirstChildElement("idle")->UnsignedAttribute("fps")
-                                  );
-                frame_set[running] = std::make_tuple(
-                                         xml_frame_set->FirstChildElement("running")->UnsignedAttribute("beg"),
-                                         xml_frame_set->FirstChildElement("running")->UnsignedAttribute("end"),
-                                         xml_frame_set->FirstChildElement("running")->UnsignedAttribute("fps")
-                                     );
-                frame_set[attacking] = std::make_tuple(
-                                           xml_frame_set->FirstChildElement("attacking")->UnsignedAttribute("beg"),
-                                           xml_frame_set->FirstChildElement("attacking")->UnsignedAttribute("end"),
-                                           xml_frame_set->FirstChildElement("attacking")->UnsignedAttribute("fps")
-                                       );
-                frame_set[pain] = std::make_tuple(
-                                      xml_frame_set->FirstChildElement("pain")->UnsignedAttribute("beg"),
-                                      xml_frame_set->FirstChildElement("pain")->UnsignedAttribute("end"),
-                                      xml_frame_set->FirstChildElement("pain")->UnsignedAttribute("fps")
-                                  );
-                frame_set[dying] = std::make_tuple(
-                                       xml_frame_set->FirstChildElement("dying")->UnsignedAttribute("beg"),
-                                       xml_frame_set->FirstChildElement("dying")->UnsignedAttribute("end"),
-                                       xml_frame_set->FirstChildElement("dying")->UnsignedAttribute("fps")
-                                   );
-                frame_set[died] = std::make_tuple(
-                                      xml_frame_set->FirstChildElement("died")->UnsignedAttribute("beg"),
-                                      xml_frame_set->FirstChildElement("died")->UnsignedAttribute("end"),
-                                      xml_frame_set->FirstChildElement("died")->UnsignedAttribute("fps")
-
-                                  );
             }
+
+            frame_set[idle]
+                = std::make_tuple(
+                      xml_frame_set->FirstChildElement("idle")->UnsignedAttribute("beg"),
+                      xml_frame_set->FirstChildElement("idle")->UnsignedAttribute("end"),
+                      xml_frame_set->FirstChildElement("idle")->UnsignedAttribute("fps")
+                  );
+            frame_set[running]
+                = std::make_tuple(
+                      xml_frame_set->FirstChildElement("running")->UnsignedAttribute("beg"),
+                      xml_frame_set->FirstChildElement("running")->UnsignedAttribute("end"),
+                      xml_frame_set->FirstChildElement("running")->UnsignedAttribute("fps")
+                  );
+            frame_set[attacking]
+                = std::make_tuple(
+                      xml_frame_set->FirstChildElement("attacking")->UnsignedAttribute("beg"),
+                      xml_frame_set->FirstChildElement("attacking")->UnsignedAttribute("end"),
+                      xml_frame_set->FirstChildElement("attacking")->UnsignedAttribute("fps")
+                  );
+            frame_set[pain]
+                = std::make_tuple(
+                      xml_frame_set->FirstChildElement("pain")->UnsignedAttribute("beg"),
+                      xml_frame_set->FirstChildElement("pain")->UnsignedAttribute("end"),
+                      xml_frame_set->FirstChildElement("pain")->UnsignedAttribute("fps")
+                  );
+            frame_set[dying]
+                = std::make_tuple(
+                      xml_frame_set->FirstChildElement("dying")->UnsignedAttribute("beg"),
+                      xml_frame_set->FirstChildElement("dying")->UnsignedAttribute("end"),
+                      xml_frame_set->FirstChildElement("dying")->UnsignedAttribute("fps")
+                  );
+            frame_set[died]
+                = std::make_tuple(
+                      xml_frame_set->FirstChildElement("died")->UnsignedAttribute("beg"),
+                      xml_frame_set->FirstChildElement("died")->UnsignedAttribute("end"),
+                      xml_frame_set->FirstChildElement("died")->UnsignedAttribute("fps")
+
+                  );
+            soldier->FirstChildElement("default_angle")->QueryFloatText(&default_angle);
+            soldier->FirstChildElement("scale")->QueryFloatText(&scale);
+            soldier->FirstChildElement("translate")->QueryFloatText(&translate);
+
             return;
         }
     }

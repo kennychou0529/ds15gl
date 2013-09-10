@@ -5,7 +5,7 @@
 GLfloat light_ambient[4]  = {0.2f, 0.2f, 0.2f, 1.0f};
 
 // 漫射光
-GLfloat light_diffuse[4]  = {0.5f, 250.0f / 255 / 2, 200.0f / 255 / 2, 20.0f};
+GLfloat light_diffuse[4]  = {0.5f, 250.0f / 255 / 2, 200.0f / 255 / 2, 1.0f};
 
 // 镜面光，产生亮斑
 GLfloat light_specular[4] = {0.5f, 250.0f / 255 / 2, 200.0f / 255 / 2, 1.0f};
@@ -40,14 +40,18 @@ void dsSetMaterial() {
     GLfloat diffuse[4]  = {1.0f, 1.0f, 1.0f, 1.0f};
 
     // 镜面光，产生亮斑
-    GLfloat specular[4] = {0.0f, 0.0f, 0.0f, 1000.0f};
+    GLfloat specular[4] = {0.0f, 0.0f, 0.0f, 1.0f};
 
-    GLfloat shinness = 0.0;
+    // 物体自己发光
+    GLfloat emission[4] = {0.5f, 0.0f, 0.0f, 1.0f};
+
+    GLfloat shinness = 0.0f;
 
     // 将数据载入材质
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ambient);
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular);
+    // glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, emission);
     glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shinness);
 }
 

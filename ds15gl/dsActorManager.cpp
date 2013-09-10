@@ -35,6 +35,9 @@ void DSActorManager::initialize() {
 
     insertSoldier("fighter");
     list["fighter"].setPosition(5, 6);
+
+    insertSoldier("tank");
+    list["tank"].setPosition(6, 7);
 }
 
 //渲染
@@ -66,7 +69,7 @@ void DSActorManager::update() {
         // 如果窥探到接下来的一条指令对应的回合数大于当前回合
         // 说明当前回合的所有指令都已播放完成
         // 于是标记 round_finished
-        if (script.peekNextRecord().round > round) {
+        if (script.nextRound() > round) {
             round_finished = true;
         }
 
@@ -106,7 +109,7 @@ void DSActorManager::update() {
                     }
                 }
             } while (
-                (script.peekNextRecord().round == round)
+                (script.nextRound() == round)
                 && (script.peekNextRecord().sync)
             );
             // 当下一条指令也是本回合的，且下一条指令要求同步播放，

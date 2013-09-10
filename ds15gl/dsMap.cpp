@@ -33,6 +33,7 @@ void DSMap::renderGrid() {
     glDisable(GL_TEXTURE_2D);
     glLineWidth(1.0);
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    //glColor4d(1, 1, 1, 0.2);
     glPushMatrix();
     GLfloat x = - grid_size * width / 2;
     GLfloat y;
