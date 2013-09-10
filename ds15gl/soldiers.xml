@@ -9,8 +9,8 @@
       <running beg="40" end="45" fps="5"/>
       <attacking beg="46" end="53" fps="10"/>
       <pain beg="54" end="58" fps="5"/>
-      <dying beg="178" end="182" fps="10"/>
-      <died beg="183" end="183" fps="10"/>
+      <dying beg="178" end="183" fps="5"/>
+      <died beg="183" end="183" fps="1"/>
     </frame_set>
     <scale>0.2</scale>
     <default_angle>0</default_angle>

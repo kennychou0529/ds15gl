@@ -1,10 +1,11 @@
 ﻿#include "dsActorManager.h"
 
 
-DSActorManager::DSActorManager() : round(0),
-                                   script_playing(0),
-                                   round_finished(false),
-                                   all_finished(false) {}
+DSActorManager::DSActorManager() :
+    round(0),
+    script_playing(0),
+    round_finished(false),
+    all_finished(false) {}
 
 
 DSActorManager::~DSActorManager() {}
@@ -42,7 +43,7 @@ void DSActorManager::render() {
 
     glPushMatrix();
     {
-        for (auto& soldier : list) {
+        for (auto & soldier : list) {
             glEnable(GL_LIGHTING);
             soldier.second.animate();
         }
@@ -81,23 +82,35 @@ void DSActorManager::update() {
                     switch (record.type) {
                     case soldier_move:
                         iter_soldier->second.setTarget(record.x, record.y);
-                        iter_soldier->second.enterStatus(dsSoldier::Status::running, &script_playing);
+                        iter_soldier->second.enterStatus(
+                            dsSoldier::Status::running, &script_playing
+                        );
                         break;
                     case soldier_fight:
-                        iter_soldier->second.enterStatus(dsSoldier::Status::attacking, &script_playing);
+                        iter_soldier->second.enterStatus(
+                            dsSoldier::Status::attacking, &script_playing
+                        );
                         break;
                     case soldier_die:
-                        iter_soldier->second.enterStatus(dsSoldier::Status::dying, &script_playing);
+                        iter_soldier->second.enterStatus(
+                            dsSoldier::Status::dying, &script_playing
+                        );
                         break;
                     case soldier_pain:
-                        iter_soldier->second.enterStatus(dsSoldier::Status::pain, &script_playing);
+                        iter_soldier->second.enterStatus(
+                            dsSoldier::Status::pain, &script_playing
+                        );
                         break;
                     default:
                         break;
                     }
                 }
-            } while ((script.peekNextRecord().round == round) && (script.peekNextRecord().sync == true));
-            // 当下一条指令也是本回合的，且下一条指令要求同步播放，那么将下一条指令也下达
+            } while (
+                (script.peekNextRecord().round == round)
+                && (script.peekNextRecord().sync)
+            );
+            // 当下一条指令也是本回合的，且下一条指令要求同步播放，
+            // 那么将下一条指令也下达
 
         }
     }

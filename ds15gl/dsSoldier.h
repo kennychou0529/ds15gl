@@ -30,14 +30,18 @@ public:
     // 当 percentage = 1 时，绘制 frame2；
     // 当 percentage 介于 0 和 1 之间时，绘制两者之间的情形。
     // 例如 percentage = 0.2 时，绘制的图形更接近 frame1
-    void renderSmoothly(size_t frame1_index, size_t frame2_index, GLfloat percentage);
+    void renderSmoothly(
+        size_t frame1_index,
+        size_t frame2_index,
+        GLfloat percentage
+    );
 
     // 带有线性插值的绘制，参数 progress 是一个小数化的“帧数”。
     // 例如当前 dsSoldier 私有参数 frame_beg 和 frame_end 分别为 0 和 39，
     // 则当 proress 为 0 时，绘制 帧 0；
     // 当 progress 为 5.7 时，绘制 帧 '5.7'，即 renderSmoothly(5, 6, 0.7)；
     // 当 progress 为 39.5 时，renderSmoothly(39, 0, 0.5)。
-    // 
+    //
     // 再例如当前 dsSoldier 私有参数 frame_beg 和 frame_end 分别为 10 和 49,
     // 则当 proress 为 0 时，绘制 帧 10；
     // 当 progress 为 5.7 时，绘制 帧 '15.7'，即 renderSmoothly(15, 16, 0.7)；
@@ -49,10 +53,12 @@ public:
     void animate();
 
     // 载入士兵模型文件，只支持 bmp 类型的纹理图片
-    void load(const std::string& person_model_file,
-              const std::string& person_skin_file,
-              const std::string& weapon_model_file,
-              const std::string& weapon_skin_file);
+    void load(
+        const std::string& person_model_file,
+        const std::string& person_skin_file,
+        const std::string& weapon_model_file,
+        const std::string& weapon_skin_file
+    );
 
     // 根据 XML 文件中的信息载入士兵模型文件
     void load(const std::string& soldier_name);
@@ -62,13 +68,13 @@ public:
     void setPosition(size_t x, size_t y);
 
     void setTarget(size_t x, size_t y);
-    
+
 private:
     Status status;              // 当前状态
 
     MD2Model person;            // 人物模型
     MD2Model weapon;            // 武器模型
-    
+
     GLfloat move_speed;         // 移动速度
     GLfloat scale;              // 缩放倍数
     GLfloat angle;              // 当前旋转角

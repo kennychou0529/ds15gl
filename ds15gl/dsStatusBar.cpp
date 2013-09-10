@@ -30,7 +30,12 @@ void DSStatusBar::show() {
 
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
-        glViewport(window_width - status_bar_width, 0, status_bar_width, window_height);
+        glViewport(
+            window_width - status_bar_width,
+            0,
+            status_bar_width,
+            window_height
+        );
         glDisable(GL_LIGHTING);
         glDisable(GL_TEXTURE_2D);
 
@@ -62,7 +67,10 @@ void DSStatusBar::show() {
             glVertex2d(status_bar_width, window_height);
 
             glTexCoord2d(1, 0);
-            glVertex2d(status_bar_width, window_height - ratio * status_bar_width);
+            glVertex2d(
+                status_bar_width,
+                window_height - ratio * status_bar_width
+            );
 
             glTexCoord2d(0, 0);
             glVertex2d(0, window_height - ratio * status_bar_width);
@@ -72,11 +80,11 @@ void DSStatusBar::show() {
 
         // 让我们在这里写一下眼睛位置
         std::wostringstream os;
-        os << "(" << std::fixed << std::setprecision(2) << eye[0] << ", " << eye[1] << ", " << eye[2] << ")";
+        os << "(" << std::fixed << std::setprecision(2) << eye[0]
+           << ", " << eye[1] << ", " << eye[2] << ")";
         glPushMatrix();
         {
             glLoadIdentity();
-            //glScaled(0.75, 0.75, 0.75);
             dstext_small.print(8.0, 8.0, os.str());
             dstext_small.print(40.0, 30.0, L"Eye position");
         }
@@ -88,8 +96,6 @@ void DSStatusBar::show() {
             dstext.print(5, 400, L"操作面板");
         }
         glPopMatrix();
-
-        //std::wstringstream os;
 
         glPushMatrix();
         {

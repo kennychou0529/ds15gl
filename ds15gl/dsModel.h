@@ -16,7 +16,11 @@ public:
     int load(const std::string& model_file, const std::string& skin_file);
     void clear();
     void renderFrame(size_t frame_index);
-    void renderSmoothly(size_t frame1_index, size_t frame2_index, GLfloat percentage);
+    void renderSmoothly(
+        size_t frame1_index,
+        size_t frame2_index,
+        GLfloat percentage
+    );
 
 private:
     // 以下定义了一些 struct
@@ -60,8 +64,12 @@ private:
     typedef struct {
         float scale[3];
         float translate[3];
-        char name[16];          // 看起来每个帧还有个名字
-        MD2Vertex vertices[1]; // 其实有 num_vertices 个 MD2Vertex，vertices 只是当指针用
+
+        // 看起来每个帧还有个名字
+        char name[16];
+
+        // 其实有 num_vertices 个 MD2Vertex，vertices 只是当指针用
+        MD2Vertex vertices[1];
 
     } MD2Frame;
 
@@ -72,7 +80,8 @@ private:
     } Mesh;
 
     typedef struct {
-        unsigned int identifier;         // 一个表明自己是 MD2 的神奇数字, 它永远是 0x32504449("IDP2")
+        unsigned int identifier;         // 一个表明自己是 MD2 的神奇数字,
+                                         // 它永远是 0x32504449("IDP2")
         unsigned int version;            // 版本，永远是 8
         unsigned int skin_width;         // 纹理宽度 (像素值), 通常是 256
         unsigned int skin_height;        // 纹理高度 (像素值), 通常是 256

@@ -89,7 +89,10 @@ void centerMoveTo(GLfloat x, GLfloat y, int* script_playing) {
 
 static void dsAutoCenterMove() {
     GLdouble duration = timer.getDurationSecd();
-    dsVector2f dir(GLfloat(targetX - center_saved[0]), GLfloat(targetY - center_saved[1]));
+    dsVector2f dir(
+        GLfloat(targetX - center_saved[0]),
+        GLfloat(targetY - center_saved[1])
+    );
     GLfloat lenth = dir.getLenth();
     if (viewMoveSpeed * 1.0 > lenth) { // 按 viewMoveSpeed 可以在 1 秒内移动完毕
         dir.normalise();
@@ -151,14 +154,20 @@ static void dsCenterMove() {
     }
 
     double duration = timer.getDurationSecd();
-    center[0] = center_saved[0] + (direction[0] * move_factor + dir_move.x) * viewMoveSpeed * duration;
-    center[1] = center_saved[1] + (direction[1] * move_factor + dir_move.y) * viewMoveSpeed * duration;
-    center[2] = center_saved[2] + direction[2] * move_factor * viewMoveSpeed * duration;
+    center[0]
+        = center_saved[0]
+          + (direction[0] * move_factor + dir_move.x) * viewMoveSpeed * duration;
+    center[1]
+        = center_saved[1]
+          + (direction[1] * move_factor + dir_move.y) * viewMoveSpeed * duration;
+    center[2]
+        = center_saved[2]
+          + direction[2] * move_factor * viewMoveSpeed * duration;
 }
 
 // 按时间设置眼睛球坐标，在 dsSetEye 中调用
 static void dsEyeRotate() {
-    if (rdir == STOP || moving == true) {
+    if (rdir == STOP || moving) {
         return;
     }
 
@@ -199,7 +208,11 @@ void dsSetEye() {
     dsSphereToOrtho3dv(eye_sphere, center, eye);
 
     // 设置摄像头位置
-    gluLookAt(eye[0], eye[1], eye[2], center[0], center[1], center[2], up[0], up[1], up[2]);
+    gluLookAt(
+        eye[0], eye[1], eye[2],
+        center[0], center[1], center[2],
+        up[0], up[1], up[2]
+    );
 
     // 监听者位置
     frame.sounds.setListenerPosition(eye[0], eye[1], eye[2]);

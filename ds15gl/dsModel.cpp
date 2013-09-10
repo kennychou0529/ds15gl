@@ -5,7 +5,11 @@
 #include "dsVector.h"
 #include <iostream>
 
-void CalculateNormal(const GLfloat* p1, const GLfloat* p2, const GLfloat* p3) {
+void CalculateNormal(
+    const GLfloat* p1,
+    const GLfloat* p2,
+    const GLfloat* p3
+) {
     // 把教程中的代码换成了我的
     //float a[3], b[3], result[3];
     //float length;
@@ -48,7 +52,10 @@ MD2Model::~MD2Model() {
     clear();
 }
 
-int MD2Model::load(const std::string& model_file, const std::string& skin_file) {
+int MD2Model::load(
+    const std::string& model_file,
+    const std::string& skin_file
+) {
     std::ifstream is;
     is.open(model_file, is.in | is.binary);
 
@@ -177,7 +184,11 @@ void MD2Model::renderFrame(size_t frame_index) {
     glEnd();
 }
 
-void MD2Model::renderSmoothly(size_t frame1_index, size_t frame2_index, GLfloat percentage) {
+void MD2Model::renderSmoothly(
+    size_t frame1_index,
+    size_t frame2_index,
+    GLfloat percentage
+) {
     Vertex3f* vertex_base1 = &vertices[num_vertices * frame1_index];
     Vertex3f* vertex_base2 = &vertices[num_vertices * frame2_index];
     glBindTexture(GL_TEXTURE_2D, texture_ID);

@@ -9,7 +9,8 @@ static const GLfloat pi = 3.1415926f;
 
 extern DSFrame frame;
 
-dsSoldier::dsSoldier() : move_speed(20.0f),
+dsSoldier::dsSoldier() :
+    move_speed(20.0f),
     scale(0.2f),
     angle(0.0f),
     playing(nullptr) {
@@ -21,14 +22,23 @@ void dsSoldier::renderFrame(size_t frame_index) {
     weapon.renderFrame(frame_index);
 }
 
-void dsSoldier::renderSmoothly(size_t frame1_index, size_t frame2_index, GLfloat percentage) {
+void dsSoldier::renderSmoothly(
+    size_t frame1_index,
+    size_t frame2_index,
+    GLfloat percentage
+) {
     person.renderSmoothly(frame1_index, frame2_index, percentage);
+
+    // 测试表明，武器模型的死亡动画有问题，所以不画了
+    if (status == dying || status == died) {
+        return;
+    }
     weapon.renderSmoothly(frame1_index, frame2_index, percentage);
 }
 
 void dsSoldier::renderSmoothly(GLfloat progress) {
     if (frame_beg == frame_end) {
-        renderFrame(frame_beg);
+        renderSmoothly(frame_beg, frame_beg, 0);
     } else {
         size_t frame1_index = static_cast<size_t>(std::floor(progress));
         GLfloat percentage = progress - frame1_index;
@@ -46,11 +56,10 @@ void dsSoldier::enterStatus(Status status_to_enter, int* script_playing) {
     // Status 中：
     // idle, died, disappear 不属于过程
     // running, attacking, pain, dying 属于过程
-    bool prev_playing = !((status == idle) || (status == died) || (status == disappear));
+    bool prev_playing = status != idle && status != died && status != disappear;
 
     status = status_to_enter;
-
-    bool cur_playing = !((status == idle) || (status == died) || (status == disappear));
+    bool cur_playing = status != idle && status != died && status != disappear;
 
     timer.recordTime();
 
@@ -78,18 +87,25 @@ void dsSoldier::animate() {
         // 这里没有使用 case 语句，是因为会出现对象初始化问题
         if (status == idle || status == died) {
             GLfloat x, y;
-            frame.scene.map.getCoords(current_position[0], current_position[1], &x, &y);
+            frame.scene.map.getCoords(
+                current_position[0], current_position[1], &x, &y
+            );
 
             glTranslatef(x, y, 4.0f);
             glScaled(scale, scale, scale);
             glRotatef(angle, 0.0f, 0.0f, 1.0f);
             renderSmoothly(timer.getDurationSecf() * fps);
+
         } else if (status == running) {
             dsVector2f saved;
-            frame.scene.map.getCoords(saved_position[0], saved_position[1], &(saved.x), &(saved.y));
+            frame.scene.map.getCoords(
+                saved_position[0], saved_position[1], &(saved.x), &(saved.y)
+            );
 
             dsVector2f target;
-            frame.scene.map.getCoords(target_position[0], target_position[1], &(target.x), &(target.y));
+            frame.scene.map.getCoords(
+                target_position[0], target_position[1], &(target.x), &(target.y)
+            );
 
             dsVector2f dir = target - saved;
             GLfloat length = dir.getLenth();
@@ -112,9 +128,12 @@ void dsSoldier::animate() {
                 setPosition(target_position[0], target_position[1]);
                 enterStatus(idle, playing);
             }
+
         } else if (status == attacking || status == pain) {
             GLfloat x, y;
-            frame.scene.map.getCoords(current_position[0], current_position[1], &x, &y);
+            frame.scene.map.getCoords(
+                current_position[0], current_position[1], &x, &y
+            );
 
             glTranslatef(x, y, 4.0f);
             glScaled(scale, scale, scale);
@@ -122,12 +141,15 @@ void dsSoldier::animate() {
 
             GLfloat duration = timer.getDurationSecf();
             renderSmoothly(duration * fps);
-            if (fps * duration > (frame_end - frame_beg + 1)) {
+            if (fps * duration > (frame_end - frame_beg)) {
                 enterStatus(idle, playing);
             }
+
         } else if (status == dying) {
             GLfloat x, y;
-            frame.scene.map.getCoords(current_position[0], current_position[1], &x, &y);
+            frame.scene.map.getCoords(
+                current_position[0], current_position[1], &x, &y
+            );
 
             glTranslatef(x, y, 4.0f);
             glScaled(scale, scale, scale);
@@ -135,18 +157,21 @@ void dsSoldier::animate() {
 
             GLfloat duration = timer.getDurationSecf();
             renderSmoothly(duration * fps);
-            if (fps * duration > (frame_end - frame_beg + 1)) {
-                enterStatus(died, playing);
+            if (fps * duration > (frame_end - frame_beg)) {
+                enterStatus(idle, playing);
             }
+
         } // endif
     }
     glPopMatrix();
 }
 
-void dsSoldier::load(const std::string& person_model_file,
-                     const std::string& person_skin_file,
-                     const std::string& weapon_model_file,
-                     const std::string& weapon_skin_file) {
+void dsSoldier::load(
+    const std::string& person_model_file,
+    const std::string& person_skin_file,
+    const std::string& weapon_model_file,
+    const std::string& weapon_skin_file
+) {
     person.load(person_model_file, person_skin_file);
     weapon.load(weapon_model_file, weapon_skin_file);
 }
