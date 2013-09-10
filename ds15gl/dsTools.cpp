@@ -38,8 +38,6 @@ const int font_height_small = 13;
 
 GLdouble axeLength = eye_sphere[0] * 0.5;
 
-bool auto_playing = true;
-
 void dsSpecialKeyDown(int key, int x, int y) {
     saveEyeInfo();
 
@@ -147,7 +145,6 @@ void dsKeyDown(unsigned char key, int x, int y) {
         idir |= DOWN;
         break;
     case 'm':
-        void centerMoveTo(float, float);
         centerMoveTo(10, 10);
         break;
     default:

@@ -41,4 +41,6 @@ void saveEyeInfo();
 // 设置视角，每次绘图时用到
 void dsSetEye();
 
+void centerMoveTo(GLfloat x, GLfloat y, int* script_playing = nullptr);
+
 #endif

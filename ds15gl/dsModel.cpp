@@ -44,7 +44,9 @@ MD2Model::MD2Model():
     tex_coords(nullptr),
     vertices(nullptr) {}
 
-MD2Model::~MD2Model() { clear(); }
+MD2Model::~MD2Model() {
+    clear();
+}
 
 int MD2Model::load(const std::string& model_file, const std::string& skin_file) {
     std::ifstream is;
@@ -56,7 +58,7 @@ int MD2Model::load(const std::string& model_file, const std::string& skin_file) 
 
     // 确认文件长度
     is.seekg(0, is.end);
-    size_t file_length = is.tellg();
+    auto file_length = static_cast<size_t>(is.tellg());
     is.seekg(0, is.beg);
 
     // 将整个文件全部载入 buffer，然后文件就可以关闭了
@@ -67,7 +69,6 @@ int MD2Model::load(const std::string& model_file, const std::string& skin_file) 
     // 接下来从 buffer 中获取 MD2 文件头
     MD2Header* model_header = (MD2Header*)file_buffer;
 
-    std::cout << model_header->offset_eof << std::endl << file_length << std::endl;
     // 获取文件头中我们比较感兴趣的内容
     num_frames = model_header->num_frames;
     num_vertices = model_header->num_vertices;
@@ -124,15 +125,17 @@ int MD2Model::load(const std::string& model_file, const std::string& skin_file) 
     //    triangles[triangle_index].tex_coord_index[2] = triangle_ptr[triangle_index].tex_coord_index[2];
     //}
 
-    // 计算法向量 testing
+    // 计算法向量
     normal_vecs = new Vertex3f[num_triangles * num_frames];
 
     for (size_t frame_index = 0; frame_index < num_frames; ++frame_index) {
         for (size_t triangle_index = 0; triangle_index < num_triangles; ++triangle_index) {
-            dsNormalVectorOfTriangle3fv(vertices[frame_index * num_vertices + triangles[triangle_index].mesh_index[0]].v,
-                                        vertices[frame_index * num_vertices + triangles[triangle_index].mesh_index[1]].v,
-                                        vertices[frame_index * num_vertices + triangles[triangle_index].mesh_index[2]].v,
-                                        normal_vecs[frame_index * num_triangles + triangle_index].v);
+            dsNormalVectorOfTriangle3fv(
+                vertices[frame_index * num_vertices + triangles[triangle_index].mesh_index[0]].v,
+                vertices[frame_index * num_vertices + triangles[triangle_index].mesh_index[1]].v,
+                vertices[frame_index * num_vertices + triangles[triangle_index].mesh_index[2]].v,
+                normal_vecs[frame_index * num_triangles + triangle_index].v
+            );
         }
     }
 
@@ -147,7 +150,7 @@ void MD2Model::clear() {
     delete[] vertices;
 }
 
-int MD2Model::renderFrame(size_t frame_index) {
+void MD2Model::renderFrame(size_t frame_index) {
     Vertex3f* vertex_base = &vertices[num_vertices * frame_index];
     Vertex3f* normal_vec_base = &normal_vecs[frame_index * num_triangles];
     glBindTexture(GL_TEXTURE_2D, texture_ID);
@@ -161,20 +164,20 @@ int MD2Model::renderFrame(size_t frame_index) {
                             vertex_base[triangles[triangle_index].mesh_index[1]].v,
                             vertex_base[triangles[triangle_index].mesh_index[2]].v);*/
 
-
             for (size_t point_index = 0; point_index < 3; ++point_index) {
-                glTexCoord2f(tex_coords[triangles[triangle_index].tex_coord_index[point_index]].u,
-                             tex_coords[triangles[triangle_index].tex_coord_index[point_index]].v);
+                glTexCoord2f(
+                    tex_coords[triangles[triangle_index].tex_coord_index[point_index]].u,
+                    tex_coords[triangles[triangle_index].tex_coord_index[point_index]].v
+                );
 
                 glVertex3fv(vertex_base[triangles[triangle_index].mesh_index[point_index]].v);
             }
         }
     }
     glEnd();
-    return 0;
 }
 
-int MD2Model::renderSmoothly(size_t frame1_index, size_t frame2_index, GLfloat percentage) {
+void MD2Model::renderSmoothly(size_t frame1_index, size_t frame2_index, GLfloat percentage) {
     Vertex3f* vertex_base1 = &vertices[num_vertices * frame1_index];
     Vertex3f* vertex_base2 = &vertices[num_vertices * frame2_index];
     glBindTexture(GL_TEXTURE_2D, texture_ID);
@@ -186,8 +189,9 @@ int MD2Model::renderSmoothly(size_t frame1_index, size_t frame2_index, GLfloat p
             // 线性计算点坐标，存在 points 中
             for (size_t point_index = 0; point_index < 3; ++point_index) {
                 for (size_t axis_index = 0; axis_index < 3; ++axis_index) {
-                    points[point_index].v[axis_index] = (1.0f - percentage) * vertex_base1[triangles[triangle_index].mesh_index[point_index]].v[axis_index]
-                                                       + percentage * vertex_base2[triangles[triangle_index].mesh_index[point_index]].v[axis_index];
+                    points[point_index].v[axis_index]
+                        = (1.0f - percentage) * vertex_base1[triangles[triangle_index].mesh_index[point_index]].v[axis_index]
+                          + percentage * vertex_base2[triangles[triangle_index].mesh_index[point_index]].v[axis_index];
                 }
             }
 
@@ -196,14 +200,13 @@ int MD2Model::renderSmoothly(size_t frame1_index, size_t frame2_index, GLfloat p
 
             // 绘制三角形
             for (size_t point_index = 0; point_index < 3; ++point_index) {
-                glTexCoord2f(tex_coords[triangles[triangle_index].tex_coord_index[point_index]].u,
-                             tex_coords[triangles[triangle_index].tex_coord_index[point_index]].v);
-
+                glTexCoord2f(
+                    tex_coords[triangles[triangle_index].tex_coord_index[point_index]].u,
+                    tex_coords[triangles[triangle_index].tex_coord_index[point_index]].v
+                );
                 glVertex3fv(points[point_index].v);
             }
-
         }
     }
     glEnd();
-    return 0;
 }

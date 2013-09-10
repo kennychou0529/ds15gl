@@ -1,6 +1,7 @@
 ﻿#ifndef _DSSOLDIER_H
 #define _DSSOLDIER_H
 
+#include <tuple>
 #include <utility>
 #include <string>
 #include "dsModel.h"
@@ -75,8 +76,8 @@ private:
     size_t saved_position[2];   // 储存的地图坐标
     size_t target_position[2];  // 正在走向的地图坐标 (在 running 状态中用)
 
-    // 各个状态的起止帧号 <frame_beg, frame_end>
-    std::pair<size_t, size_t> frame_set[6];
+    // 各个状态的起止帧号与播放速度 <frame_beg, frame_end, fps>
+    std::tuple<size_t, size_t, size_t> frame_set[6];
 };
 
 #endif

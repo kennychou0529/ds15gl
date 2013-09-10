@@ -28,11 +28,11 @@ dsVector2f& dsVector2f::operator-=(const dsVector2f& rhs) {
     return *this;
 }
 
-dsVector2f dsVector2f::operator*(const GLdouble multiplier) const {
+dsVector2f dsVector2f::operator*(const GLfloat multiplier) const {
     return dsVector2f(x * multiplier, y * multiplier);
 }
 
-dsVector2f operator*(const GLdouble multiplier, const dsVector2f& rhs) {
+dsVector2f operator*(const GLfloat multiplier, const dsVector2f& rhs) {
     return dsVector2f(rhs.x * multiplier, rhs.y * multiplier);
 }
 
@@ -46,9 +46,9 @@ dsVector2f dsVector2f::turnLeft() const {
     return dsVector2f(-y, x);
 }
 
-dsVector2f dsVector2f::turn45d() const{
-	static float temp = cos(45);
-	return dsVector2f((x - y)*temp, (x + y)*temp);
+dsVector2f dsVector2f::turn45d() const {
+    static GLfloat temp = cos(45.0f);
+    return dsVector2f((x - y) * temp, (x + y) * temp);
 }
 
 int dsVector2f::normalise() {

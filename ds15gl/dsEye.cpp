@@ -12,10 +12,10 @@ static const GLdouble pi = 3.1415926;
 // 旋转眼睛时，每秒转过弧度
 static GLdouble rotateSpeed = 2;
 
+// 内置时间管理器
 static dsTimer timer;
 
 extern DSFrame frame;
-//extern DSSoundManager* soundManager;
 
 // 眼睛旋转方向
 int rdir = STOP;
@@ -28,12 +28,14 @@ int mdir = STOP;
 
 static bool moving = false;
 
+static int* playing;
+
 static GLfloat targetX, targetY;
 
 // 眼睛位置，用球坐标 (r, phi, theta) 表示
 // 其中，phi 表示与 z 轴的夹角
 // theta 表示在 xy 平面的投影的旋转角
-GLdouble eye_sphere[3] = { 50.0, pi / 4, -pi / 2 };
+GLdouble eye_sphere[3] = { 25.0, pi / 4, -pi / 2 };
 
 static GLdouble eye_sphere_saved[3];
 
@@ -75,7 +77,11 @@ void saveEyeInfo() {
     timer.recordTime();
 }
 
-void centerMoveTo(float x, float y) {
+void centerMoveTo(GLfloat x, GLfloat y, int* script_playing) {
+    playing = script_playing;
+    if (playing != nullptr) {
+        ++(*playing);
+    }
     targetX = x;
     targetY = y;
     moving = true;
@@ -83,8 +89,6 @@ void centerMoveTo(float x, float y) {
 
 static void dsAutoCenterMove() {
     GLdouble duration = timer.getDurationSecd();
-    //dsVector2f dir = dsVector2f(GLfloat(targetX - center[0]),
-    //    GLfloat(targetY - center[1]));
     dsVector2f dir(GLfloat(targetX - center_saved[0]), GLfloat(targetY - center_saved[1]));
     GLfloat lenth = dir.getLenth();
     if (viewMoveSpeed * 1.0 > lenth) { // 按 viewMoveSpeed 可以在 1 秒内移动完毕
@@ -105,6 +109,9 @@ static void dsAutoCenterMove() {
             center[0] = targetX;
             center[1] = targetY;
             moving = false;
+            if (playing != nullptr) {
+                --(*playing);
+            }
             saveEyeInfo();
         }
     }
