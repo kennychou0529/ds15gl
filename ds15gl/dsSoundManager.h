@@ -12,6 +12,7 @@
 #include <vector>
 
 
+
 #pragma comment (lib, "./mpg123/libmpg123.lib")
 #pragma comment (lib, "./openal/lib/OpenAL32.lib")
 #pragma comment (lib, "./openal/lib/alut.lib")
@@ -20,7 +21,7 @@
 
 class Clip {
 public:
-    Clip(char* fileName);
+    Clip(char* fileName,bool loop);
     ~Clip();
     void append();
     //x,y,z 声源位置
@@ -33,7 +34,7 @@ private:
     std::vector<ALuint> sources;
     unsigned short type;
     bool isPlaying;
-
+	bool loop;
     ALenum alError;
 };
 
@@ -52,7 +53,7 @@ public:
     // wav文件默认载入两次备用，不够用时自动扩展
     // mp3文件只保存文件名，播放时读取
     // 暂时只能载入一个MP3作为背景音乐
-    void addSound(unsigned int id, char* fileName);
+    void addSound(unsigned int id, char* fileName,bool loop = true);
 
     // x,y,z 声源位置
     // vx,vy,vz 声源速度
@@ -63,8 +64,7 @@ public:
     // sourceIndex 请使用 plaSound的返回值
     void stop(ALuint sourceIndex);
 
-    // 在游戏载入阶段调用
-    // 由于用到alut,必须在alutInit之后调用
+    // 在Frame::Initialize中调用
     void loadSounds();
 
     void setListenerPosition(ALfloat x, ALfloat y, ALfloat z = 8.f);
@@ -74,8 +74,8 @@ public:
 
 
 private:
-    ALCdevice* device;
-    ALCcontext* context;
+   /* ALCdevice* device;
+    ALCcontext* context;*/
 
     mpg123_handle* mpg123 ;
 

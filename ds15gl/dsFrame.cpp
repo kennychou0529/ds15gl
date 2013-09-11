@@ -7,6 +7,7 @@ void DSFrame::initialize() {
     timer.recordTime();
     statusBar.init();
     scene.initialize();
+	sounds.loadSounds();
 }
 
 void DSFrame::display() {

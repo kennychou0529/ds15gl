@@ -3,68 +3,58 @@
 void Clip::append() {
     alGetError();
 
-    ALuint sourceIndex = 0;
-
-    // 注释待添加的
-    ALuint tempBuffer ;
-    alGenBuffers(1, &tempBuffer);
-    if ((alError = alGetError()) != AL_NO_ERROR) {
-        DSSoundManager::displayALError("alGenBuffers:", alError);
-        return ;
-    }
     if (strlen(fileName) > 4 && strcmp(fileName + strlen(fileName) - 3, "mp3") == 0) {
         //tempBuffer=DSSoundManager::createBufferFromMp3File(fileName);
         type = 1;
     } else {
         type = 0;
 
-        ALenum format;
-        void* data;
-        ALsizei size;
-        ALsizei frequency;
-        //ALfloat frequency;
-        ALboolean loop;
-		//尽管它被否决，当初他以外的都有问题
-        alutLoadWAVFile(fileName, &format, &data, &size, &frequency, &loop);
-        //data = alutLoadMemoryFromFile(fileName,&format,&size,&frequency);
-        alBufferData(tempBuffer, format, data, size, frequency);
-        //tempBuffer = alutCreateBufferFromFile(fileName);
+		ALuint sourceIndex = 0;
+		ALuint tempBuffer ;
+        
+        tempBuffer = alutCreateBufferFromFile(fileName);
 
         if ((alError = alGetError()) != AL_NO_ERROR) {
             DSSoundManager::displayALError("alutCreateBufferFromFIle:", alError);
             alDeleteBuffers(1, &tempBuffer);
             return;
         }
-    }
 
-    if (tempBuffer == AL_NONE) {
-        printf_s("LoadFileFailure\n");
-        return ;
-    }
+        if (tempBuffer == AL_NONE) {
+            printf_s("LoadFileFailure\n");
+            return ;
+        }
 
-    // 注释待添加
-    ALuint tempSource;
-    alGenSources(1, &tempSource);
-    if ((alError = alGetError()) != AL_NO_ERROR) {
-        DSSoundManager::displayALError("alGenSources:", alError);
-        return ;
-    }
+        // 注释待添加
+        ALuint tempSource;
+        alGenSources(1, &tempSource);
+        if ((alError = alGetError()) != AL_NO_ERROR) {
+            DSSoundManager::displayALError("alGenSources:", alError);
+            return ;
+        }
 
-    alSourcei(tempSource, AL_BUFFER, tempBuffer);
+        alSourcei(tempSource, AL_BUFFER, tempBuffer);
 
-    if ((alError = alGetError()) != AL_NO_ERROR) {
-        DSSoundManager::displayALError("alSourcei:", alError);
-        alDeleteSources(1, &tempSource);
-        alDeleteBuffers(1, &tempBuffer);
-        return ;
-    }
-    if (tempSource != AL_NONE) {
-        sources.push_back(tempSource);
+        if ((alError = alGetError()) != AL_NO_ERROR) {
+            DSSoundManager::displayALError("alSourcei:", alError);
+            alDeleteSources(1, &tempSource);
+            alDeleteBuffers(1, &tempBuffer);
+            return ;
+        }
+		
+        if (tempSource != AL_NONE) {
+			//循环播放
+			if(loop)
+				alSourcei(tempSource, AL_LOOPING, AL_TRUE);
+			alSourcef(tempSource, AL_GAIN, 1.0f);
+			alSourcef(tempSource, AL_PITCH, 1.0f);
+            sources.push_back(tempSource);
+        }
     }
 }
 
-Clip::Clip(char* fileName) {
-
+Clip::Clip(char* fileName,bool loop) {
+	this->loop= loop;
     strcpy_s(this->fileName , fileName);
     append();
     //append();
@@ -120,10 +110,7 @@ ALuint Clip::play(float x, float y, float z, float vx, float vy, float vz) {
         alSourcefv(sourceIndex, AL_POSITION, sourcePos);
         alSourcefv(sourceIndex, AL_VELOCITY, sourceVel);
 
-        //循环播放
-        alSourcei(sourceIndex, AL_LOOPING, AL_TRUE);
-        alSourcef(sourceIndex, AL_GAIN, 1);
-        alSourcef(sourceIndex, AL_PITCH, 1);
+       
 
         alSourcePlay(sourceIndex);
         if ((alError = alGetError()) != AL_NO_ERROR) {
@@ -146,8 +133,6 @@ int playMP3(char* fileName, bool* running) {
     ALuint g_Buffers[NUM_BUFFERS];
     ALuint uiSource;
     ALuint uiBuffer;
-    ALCdevice* pDevice = NULL;
-    ALCcontext* pContext = NULL;
     //ALboolean g_bEAX;
     ALenum error;//, eBufferFormat;
     //ALint iDataSize, iFrequency;
@@ -266,12 +251,7 @@ int playMP3(char* fileName, bool* running) {
 
 
 DSSoundManager::DSSoundManager(void) {
-    device = alcOpenDevice(NULL);
-    if (device) {
-        context = alcCreateContext(device, NULL);
-        alcMakeContextCurrent(context);
-    }
-    g_bEAX = alIsExtensionPresent("EAX2.0");
+    alutInit(NULL, 0);
 
     //init mpg123 library
     if (MPG123_OK != (iMpg123_error = mpg123_init())) {
@@ -279,7 +259,7 @@ DSSoundManager::DSSoundManager(void) {
         return;
     }
 
-    loadSounds();
+    //loadSounds();
 }
 
 
@@ -289,17 +269,13 @@ DSSoundManager::~DSSoundManager(void) {
         delete it->second;
         it++;
     }
-    context = alcGetCurrentContext();
-    device = alcGetContextsDevice(context);
-    alcMakeContextCurrent(NULL);
-    alcDestroyContext(context);
-    alcCloseDevice(device);
 
+    alutExit();
     clipMap.clear();
 }
 
-void DSSoundManager::addSound(unsigned int id, char* fileName) {
-    Clip* clip = new Clip(fileName);
+void DSSoundManager::addSound(unsigned int id, char* fileName,bool loop) {
+    Clip* clip = new Clip(fileName,loop);
     clipMap.insert(ClipMap::value_type(id, clip));
 }
 
@@ -349,37 +325,17 @@ void DSSoundManager::loadSounds() {
     //  // 注释待添加
     //
     playSound(0, 0, 0, 0, 0, 1, 0);
-    playSound(1, 0, 0, 0, 0, 1, 0);
+    //playSound(1, 0, 0, 0, 0, 1, 0);
     //      //alutSleep(1);
 
 
 }
 
 //for test
-int main1(int argc, char** argv) {
-    //
-    //  ALCdevice* device;
-    //  ALCcontext* context;
-    //  device = alcOpenDevice(NULL);
-    //  if (device){
-    //      context = alcCreateContext(device, NULL);
-    //      alcMakeContextCurrent(context);
-    //  }
-    alutInit(&argc, argv);
-    //  DSSoundManager& sm =DSSoundManager::getSoundManager();
-    //  //g_bEAX = alIsExtensionPresent("EAX2.0");
-    //  ////sm->addSound(1,"data/sound/Footsteps.wav");
-    //  //sm->setListenerPosition(1,2);
-    //  //for (int i=0;i<1;i++){
-    //  //  sm->playSound(1,0,0,0);
-    //  //  alutSleep(1);
-    //  //}
-    //  //alutSleep(10);
-    //  ALuint tb,ts;
-    //  tb = alutCreateBufferFromFile("data/sound/footsteps.wav");
-    //  alGenSources(1,&ts);
-    //  alSourcei(ts,AL_BUFFER,tb);
-    //  alSourcePlay(ts);
+int main2(int argc, char** argv) {
+    DSSoundManager sm;
+    sm.loadSounds();
+    sm.playSound(1, 0, 0, 0, 0, 1, 0);
     alutSleep(100);
     return 0;
 }
