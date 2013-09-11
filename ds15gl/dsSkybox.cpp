@@ -69,6 +69,7 @@ void DSSkybox::load(GLuint index) {
 
     glNewList(display_list, GL_COMPILE); // GL_COMPILE_AND_EXECUTE
     {
+        glPushAttrib(GL_ENABLE_BIT);
         glDisable(GL_LIGHTING);
 
         // 地面
@@ -161,8 +162,8 @@ void DSSkybox::load(GLuint index) {
         }
         glEnd();
 
-        glEnable(GL_LIGHTING);
-
+        //glEnable(GL_LIGHTING);
+        glPopAttrib();
     }
     glEndList();
 }
