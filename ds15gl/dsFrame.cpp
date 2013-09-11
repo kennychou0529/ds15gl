@@ -6,7 +6,7 @@ void DSFrame::initialize() {
     fps = 0;
     timer.recordTime();
     statusBar.init();
-    scene.map.init(15, 10);
+    //scene.map.init(15, 10);
     scene.initialize();
     sounds.loadSounds();
 }
@@ -21,7 +21,9 @@ void DSFrame::display() {
 void DSFrame::calculateFPS() {
     ++num_frames;
     if (timer.getDurationSecf() > 1.0f) {
-        fps = (unsigned int)((float)num_frames / timer.getDurationSecf());
+        fps = static_cast<size_t>(
+                  static_cast<GLfloat>(num_frames) / timer.getDurationSecf()
+              );
         num_frames = 0;
         timer.recordTime();
     }
