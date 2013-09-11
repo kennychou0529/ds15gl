@@ -41,6 +41,9 @@ void DSActorManager::initialize() {
 
     insertSoldier("disgustin");
     list["disgustin"].setPosition(5, 7);
+
+    insertSoldier("monkey");
+    list["monkey"].setPosition(5, 8);
 }
 
 //渲染

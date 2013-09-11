@@ -8,9 +8,9 @@
       <idle beg="0" end="39" fps="10"/><!--correct-->
       <running beg="40" end="45" fps="5"/><!--correct-->
       <attacking beg="46" end="53" fps="10"/><!--correct-->
-      <pain beg="54" end="57" fps="5"/>
+      <pain beg="53" end="57" fps="3"/><!--correct-->
       <dying beg="178" end="183" fps="5"/><!--correct-->
-      <died beg="183" end="183" fps="1"/>
+      <died beg="183" end="183" fps="1"/><!--correct-->
     </frame_set>
     <scale>0.17</scale>
     <translate>4</translate>
@@ -26,8 +26,8 @@
       <idle beg="0" end="39" fps="10"/><!--correct-->
       <running beg="40" end="45" fps="5"/><!--correct-->
       <attacking beg="46" end="53" fps="10"/><!--correct-->
-      <pain beg="58" end="61" fps="10"/>
-      <dying beg="184" end="189" fps="10"/><!--correct-->
+      <pain beg="57" end="61" fps="4"/><!--correct-->
+      <dying beg="184" end="189" fps="5"/><!--correct-->
       <died beg="189" end="189" fps="1"/><!--correct-->
     </frame_set>
     <scale>0.2</scale>
@@ -41,12 +41,12 @@
     <weapon>data/chastit/weapon.md2</weapon>
     <weapon_skin>data/chastit/weapon.bmp</weapon_skin>
     <frame_set>
-      <idle beg="0" end="39" fps="10"/>
+      <idle beg="0" end="39" fps="10"/><!--correct-->
       <running beg="40" end="45" fps="5"/>
       <attacking beg="46" end="53" fps="10"/>
       <pain beg="54" end="65" fps="10"/>
-      <dying beg="178" end="183" fps="10"/><!--correct-->
-      <died beg="183" end="183" fps="10"/><!--correct-->
+      <dying beg="178" end="183" fps="5"/><!--correct-->
+      <died beg="183" end="183" fps="1"/><!--correct-->
     </frame_set>
     <scale>0.2</scale>
     <translate>5</translate>
@@ -62,8 +62,8 @@
       <idle beg="0" end="39" fps="10"/><!--correct-->
       <running beg="40" end="45" fps="5"/><!--correct-->
       <attacking beg="46" end="53" fps="10"/><!--correct-->
-      <pain beg="54" end="65" fps="10"/>
-      <dying beg="178" end="183" fps="10"/><!--correct-->
+      <pain beg="57" end="61" fps="10"/><!--correct-->
+      <dying beg="178" end="183" fps="5"/><!--correct-->
       <died beg="183" end="183" fps="10"/><!--correct-->
     </frame_set>
     <scale>0.2</scale>
@@ -80,8 +80,8 @@
       <idle beg="0" end="39" fps="10"/>
       <running beg="40" end="45" fps="5"/>
       <attacking beg="46" end="53" fps="10"/>
-      <pain beg="54" end="65" fps="10"/>
-      <dying beg="178" end="183" fps="10"/>
+      <pain beg="57" end="61" fps="4"/><!--correct-->
+      <dying beg="178" end="183" fps="5"/><!--correct-->
       <died beg="183" end="183" fps="10"/>
     </frame_set>
     <scale>0.2</scale>
@@ -98,12 +98,29 @@
       <idle beg="0" end="39" fps="10"/>
       <running beg="40" end="45" fps="5"/>
       <attacking beg="46" end="53" fps="10"/>
-      <pain beg="54" end="57" fps="10"/>
-      <dying beg="190" end="197" fps="10"/>
+      <pain beg="53" end="57" fps="4"/><!--correct-->
+      <dying beg="190" end="197" fps="7"/><!--correct-->
       <died beg="197" end="197" fps="10"/>
     </frame_set>
     <scale>0.15</scale>
     <translate>3.5</translate>
+    <default_angle>0</default_angle>
+  </soldier>
+
+
+  <soldier name="monkey">
+    <tris>data/monkey/monkey.md2</tris>
+    <tris_skin>data/monkey/brute.bmp</tris_skin>
+    <frame_set>
+      <idle beg="0" end="1" fps="1"/>
+      <running beg="2" end="8" fps="5"/>
+      <attacking beg="9" end="19" fps="10"/>
+      <pain beg="20" end="22" fps="4"/><!--correct-->
+      <dying beg="22" end="26" fps="4"/>
+      <died beg="26" end="26" fps="5"/>
+    </frame_set>
+    <scale>0.1</scale>
+    <translate>0</translate>
     <default_angle>0</default_angle>
   </soldier>
   
@@ -136,6 +153,7 @@
     </frame_set>
     <scale>0.06</scale>
     <translate>0</translate>
-    <default_angle>90</default_angle>
+    <default_angle>-90</default_angle>
   </soldier>
+
 </soldiers>

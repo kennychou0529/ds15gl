@@ -51,13 +51,14 @@ struct Record {
 class DSScript {
 public:
     DSScript(): emptyRecord(0, false, "", empty, 0, 0) {
-        scriptQue.push_back(Record(1, false, "chastit", soldier_die, 1, 2));
-        scriptQue.push_back(Record(1, false, "sword_man", soldier_die, 1, 1));
-        scriptQue.push_back(Record(1, false, "mage", soldier_die, 0, 1));
-        scriptQue.push_back(Record(1, false, "gunman", soldier_die, 0, 1));
-        scriptQue.push_back(Record(1, false, "bauul", soldier_die, 5, 1));
-        scriptQue.push_back(Record(1, false, "fighter", soldier_die, 5, 1));
-        scriptQue.push_back(Record(1, false, "disgustin", soldier_die, 5, 1));
+        scriptQue.push_back(Record(1, false, "chastit", soldier_pain, 1, 2));
+        scriptQue.push_back(Record(1, false, "sword_man", soldier_pain, 1, 1));
+        scriptQue.push_back(Record(1, false, "mage", soldier_pain, 0, 1));
+        scriptQue.push_back(Record(1, false, "gunman", soldier_pain, 0, 1));
+        scriptQue.push_back(Record(1, false, "bauul", soldier_pain, 5, 1));
+        scriptQue.push_back(Record(1, false, "fighter", soldier_pain, 5, 1));
+        scriptQue.push_back(Record(1, false, "disgustin", soldier_pain, 5, 1));
+        scriptQue.push_back(Record(1, false, "monkey", soldier_pain, 5, 1));
 
         scriptQue.push_back(Record(2, false, "mage", soldier_pain, 1, 6));
         scriptQue.push_back(Record(2, false, "sword_man", soldier_pain, 2, 9));
