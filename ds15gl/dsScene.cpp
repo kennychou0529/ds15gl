@@ -32,6 +32,7 @@ void DSScene::show() {
 }
 
 void DSScene::initialize() {
+	map.init(15,10);
 	actors.initialize();
 
     dsSkyBox.load(3);

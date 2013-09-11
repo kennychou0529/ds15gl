@@ -5,25 +5,26 @@
 
 class DSMap {
 public:
-    DSMap(const char* fileName = "");
+	// data的大小不应小于x_max * y_max
+    void init(size_t x_max = 10,size_t y_max = 10, char* data = NULL);
     ~DSMap();
 public:
     void getSize(int* pwidth = nullptr, int* pheight = nullptr) const {
         if (pwidth != nullptr) {
-            *pwidth = width;
+            *pwidth = x_max;
         }
         if (pheight != nullptr) {
-            *pheight = height;
+            *pheight = y_max;
         }
     }
 
     int getTile(size_t x, size_t y) const {
         //数组越界
-        if (x < 0 || x >= width || y < 0 || y >= height) {
+        if (x < 0 || x >= x_max || y < 0 || y >= y_max) {
             return 0;
         }
 
-        return data[y][x];
+        return data[y * y_max+x];
     }
 
     // 绘制地图网格
@@ -38,10 +39,10 @@ public:
     ) const;
 
 private:
-    size_t width;
-    size_t height;
-    GLfloat grid_size; // 地图每块的大小
-    int** data;
+    size_t x_max;
+    size_t y_max;
+    static GLfloat grid_size; // 地图每块的大小
+    char* data;
 };
 
 #endif

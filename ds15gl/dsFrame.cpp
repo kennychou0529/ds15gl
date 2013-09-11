@@ -6,6 +6,7 @@ void DSFrame::initialize() {
     fps = 0;
     timer.recordTime();
     statusBar.init();
+	scene.map.init(15,10);
     scene.initialize();
 	sounds.loadSounds();
 }

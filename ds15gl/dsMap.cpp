@@ -1,28 +1,23 @@
 ﻿#include "dsMap.h"
 #include <iostream>
 
-// 从文件初始化一张地图
-DSMap::DSMap(const char* fileName) : grid_size(10.0f) {
-    // 如果没有传入文件名，则产生一张 100 * 100 的地图，且所有元素都是0
-    if (fileName[0] == '\0') {
-        width = 10;
-        height = 10;
-        data = new int*[height];
+GLfloat DSMap::grid_size = 10.0f;
 
-        for (size_t i = 0; i < height; i++) {
-            data[i] = new int[width];
-            for (size_t j = 0; j < width; j++) {
-                data[i][j] = 0;
-            }
-        }
-    }
+// 从数组初始化一张地图
+void DSMap::init(size_t x_max,size_t y_max,char* data) {
+   this->x_max=x_max;
+   this->y_max=y_max;
+   if(data==NULL){
+	  this->data = new char[x_max*y_max];
+	  for(int i =0;i<x_max*y_max;i++){
+		this->data[i]=0;
+	  }
+	  return;
+   }
+   strcpy(this->data,data);
 }
 
-
 DSMap::~DSMap() {
-    for (size_t i = 0; i < height; i++) {
-        delete[] data[i];
-    }
     delete[] data;
 }
 
@@ -35,11 +30,11 @@ void DSMap::renderGrid() {
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     //glColor4d(1, 1, 1, 0.2);
     glPushMatrix();
-    GLfloat x = - grid_size * width / 2;
+    GLfloat x = - grid_size * x_max / 2;
     GLfloat y;
-    for (size_t x_index = 0; x_index < width; ++x_index) {
-        y = - grid_size * height / 2;
-        for (size_t y_index = 0; y_index < height; ++y_index) {
+    for (size_t x_index = 0; x_index < x_max; ++x_index) {
+        y = - grid_size * y_max / 2;
+        for (size_t y_index = 0; y_index < y_max; ++y_index) {
             glBegin(GL_POLYGON);
             {
                 glVertex3f(x,             y,             0.0f);
@@ -61,8 +56,8 @@ void DSMap::getCoords(
     size_t y_index,
     GLfloat* px,
     GLfloat* py
-) const {
-    *px = grid_size * (- (GLfloat)width / 2 + x_index + 0.5f);
-    *py = grid_size * (- (GLfloat)height / 2 + y_index + 0.5f);
+)  const {
+    *px = grid_size * (- (GLfloat)x_max / 2 + x_index + 0.5f);
+    *py = grid_size * (- (GLfloat)y_max / 2 + y_index + 0.5f);
 }
 
