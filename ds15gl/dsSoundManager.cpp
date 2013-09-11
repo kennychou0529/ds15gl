@@ -330,6 +330,7 @@ void DSSoundManager::loadSounds() {
     //  /*alSourcePlay(backgroundSound);*/
     //
     addSound(1, "data/sound/footsteps.wav");
+	addSound(2, "data/sound/hited.wav",false);
     //
     //  // 注释待添加
     //

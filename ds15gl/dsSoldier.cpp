@@ -80,6 +80,9 @@ void dsSoldier::enterStatus(Status status_to_enter, int* script_playing) {
             --(*playing);
         }
     }
+	ALfloat x,y;
+	
+	frame.scene.map.getCoords(current_position[0],current_position[1],&x,&y);
 
 	//需要播放声音
 	switch (status_to_enter)
@@ -87,13 +90,15 @@ void dsSoldier::enterStatus(Status status_to_enter, int* script_playing) {
 	case dsSoldier::idle:
 		break;
 	case dsSoldier::running:
-		footsteps=frame.sounds.playSound(1,0,0,0);
+		footsteps=frame.sounds.playSound(1,x,y,0);
 		break;
 	case dsSoldier::attacking:
 		break;
 	case dsSoldier::pain:
+		frame.sounds.playSound(2,x,y,1);
 		break;
 	case dsSoldier::dying:
+		frame.sounds.playSound(2,x,y,1);
 		break;
 	case dsSoldier::died:
 		break;
