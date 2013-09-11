@@ -8,13 +8,14 @@ GLfloat DSMap::grid_size = 10.0f;
 void DSMap::init(size_t _x_max, size_t _y_max, char* _data) {
     x_max = _x_max;
     y_max = _y_max;
-    if (data == NULL) {
-        data = new char[x_max * y_max];
-        for (int i = 0; i < x_max * y_max; i++) {
-            data[i] = 0;
-        }
-        return;
+    if (data != nullptr) {
+        delete[] data;
     }
+    data = new char[x_max * y_max];
+    for (int i = 0; i < x_max * y_max; i++) {
+        data[i] = 0;
+    }
+    return;
     std::memcpy(data, _data, sizeof(char) * x_max * y_max);
 }
 
