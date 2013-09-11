@@ -145,7 +145,7 @@ void dsKeyDown(unsigned char key, int x, int y) {
         idir |= DOWN;
         break;
     case 'm':
-        centerMoveTo(10, 10);
+        centerMoveTof(10, 10);
         break;
     default:
         break;

@@ -3,6 +3,7 @@
 #include "dsVector2f.h"
 #include "dsVector.h"
 #include "dsFrame.h"
+#include "dsMap.h"
 
 // 移动视线中心点时，每秒移动距离
 static const double viewMoveSpeed = 40;
@@ -77,13 +78,24 @@ void saveEyeInfo() {
     timer.recordTime();
 }
 
-void centerMoveTo(GLfloat x, GLfloat y, int* script_playing) {
+void centerMoveTof(GLfloat x, GLfloat y, int* script_playing) {
+    saveEyeInfo();
     playing = script_playing;
     if (playing != nullptr) {
         ++(*playing);
     }
     targetX = x;
     targetY = y;
+    moving = true;
+}
+
+void centerMoveToi(size_t x, size_t y, int* script_playing) {
+    saveEyeInfo();
+    playing = script_playing;
+    if (playing != nullptr) {
+        ++(*playing);
+    }
+    frame.scene.map.getCoords(x, y, &targetX, &targetY);
     moving = true;
 }
 

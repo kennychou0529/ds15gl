@@ -41,6 +41,10 @@ void saveEyeInfo();
 // 设置视角，每次绘图时用到
 void dsSetEye();
 
-void centerMoveTo(GLfloat x, GLfloat y, int* script_playing = nullptr);
+// 进入自动视角移动模式 (目标为实际坐标)
+void centerMoveTof(GLfloat x, GLfloat y, int* script_playing = nullptr);
+
+// 进入自动视角移动模式 (目标为地图网格坐标)
+void centerMoveToi(size_t x, size_t y, int* script_playing = nullptr);
 
 #endif

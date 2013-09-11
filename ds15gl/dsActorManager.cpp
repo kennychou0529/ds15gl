@@ -1,5 +1,5 @@
 ﻿#include "dsActorManager.h"
-
+#include "dsEye.h"
 
 DSActorManager::DSActorManager() :
     round(0),
@@ -114,6 +114,11 @@ void DSActorManager::update() {
                         break;
                     }
                 }
+
+                if (record.type == view_move) {
+                    centerMoveToi(record.x, record.y, &script_playing);
+                }
+
             } while (
                 (script.nextRound() == round)
                 && (script.peekNextRecord().sync)

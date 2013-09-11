@@ -13,6 +13,7 @@ enum ScriptType {
     soldier_fight,
     soldier_die,
     soldier_pain,
+    view_move,
     empty
 };
 
@@ -59,6 +60,7 @@ public:
         scriptQue.push_back(Record(1, false, "fighter", soldier_pain, 5, 1));
         scriptQue.push_back(Record(1, false, "disgustin", soldier_pain, 5, 1));
         scriptQue.push_back(Record(1, false, "monkey", soldier_pain, 5, 1));
+        scriptQue.push_back(Record(1, false, "", view_move, 10, 10));
 
         scriptQue.push_back(Record(2, false, "mage", soldier_pain, 1, 6));
         scriptQue.push_back(Record(2, false, "sword_man", soldier_pain, 2, 9));
