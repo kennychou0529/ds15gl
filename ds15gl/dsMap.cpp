@@ -4,17 +4,17 @@
 GLfloat DSMap::grid_size = 10.0f;
 
 // 从数组初始化一张地图
-void DSMap::init(size_t x_max,size_t y_max,char* data) {
-   this->x_max=x_max;
-   this->y_max=y_max;
-   if(data==NULL){
-	  this->data = new char[x_max*y_max];
-	  for(int i =0;i<x_max*y_max;i++){
-		this->data[i]=0;
-	  }
-	  return;
-   }
-   strcpy(this->data,data);
+void DSMap::init(size_t x_max, size_t y_max, char* data) {
+    this->x_max = x_max;
+    this->y_max = y_max;
+    if (data == NULL) {
+        this->data = new char[x_max * y_max];
+        for (int i = 0; i < x_max * y_max; i++) {
+            this->data[i] = 0;
+        }
+        return;
+    }
+    strcpy(this->data, data);
 }
 
 DSMap::~DSMap() {

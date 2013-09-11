@@ -16,7 +16,7 @@ dsSoldier::dsSoldier() :
     angle(0.0f),
     playing(nullptr) {
     enterStatus(idle);
-	footsteps = 0;
+    footsteps = 0;
 }
 
 void dsSoldier::renderFrame(size_t frame_index) {
@@ -80,33 +80,32 @@ void dsSoldier::enterStatus(Status status_to_enter, int* script_playing) {
             --(*playing);
         }
     }
-	ALfloat x,y;
-	
-	frame.scene.map.getCoords(current_position[0],current_position[1],&x,&y);
+    ALfloat x, y;
 
-	//需要播放声音
-	switch (status_to_enter)
-	{
-	case dsSoldier::idle:
-		break;
-	case dsSoldier::running:
-		footsteps=frame.sounds.playSound(1,x,y,0);
-		break;
-	case dsSoldier::attacking:
-		break;
-	case dsSoldier::pain:
-		frame.sounds.playSound(2,x,y,1);
-		break;
-	case dsSoldier::dying:
-		frame.sounds.playSound(2,x,y,1);
-		break;
-	case dsSoldier::died:
-		break;
-	case dsSoldier::disappear:
-		break;
-	default:
-		break;
-	}
+    frame.scene.map.getCoords(current_position[0], current_position[1], &x, &y);
+
+    //需要播放声音
+    switch (status_to_enter) {
+    case dsSoldier::idle:
+        break;
+    case dsSoldier::running:
+        footsteps = frame.sounds.playSound(1, x, y, 0);
+        break;
+    case dsSoldier::attacking:
+        break;
+    case dsSoldier::pain:
+        frame.sounds.playSound(2, x, y, 1);
+        break;
+    case dsSoldier::dying:
+        frame.sounds.playSound(2, x, y, 1);
+        break;
+    case dsSoldier::died:
+        break;
+    case dsSoldier::disappear:
+        break;
+    default:
+        break;
+    }
 
 }
 
@@ -160,10 +159,10 @@ void dsSoldier::animate() {
                 pos = target;
                 setPosition(target_position[0], target_position[1]);
                 enterStatus(idle, playing);
-				frame.sounds.stop(footsteps); //结束脚步声
+                frame.sounds.stop(footsteps); //结束脚步声
             }
-			//声源跟随人物
-			DSSoundManager::changePosition(footsteps,x,y);
+            //声源跟随人物
+            DSSoundManager::changePosition(footsteps, x, y);
 
         } else if (status == attacking || status == pain) {
             frame.scene.map.getCoords(

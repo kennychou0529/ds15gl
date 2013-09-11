@@ -5,8 +5,8 @@
 
 class DSMap {
 public:
-	// data的大小不应小于x_max * y_max
-    void init(size_t x_max = 10,size_t y_max = 10, char* data = NULL);
+    // data的大小不应小于x_max * y_max
+    void init(size_t x_max = 10, size_t y_max = 10, char* data = NULL);
     ~DSMap();
 public:
     void getSize(int* pwidth = nullptr, int* pheight = nullptr) const {
@@ -24,7 +24,7 @@ public:
             return 0;
         }
 
-        return data[y * y_max+x];
+        return data[y * y_max + x];
     }
 
     // 绘制地图网格

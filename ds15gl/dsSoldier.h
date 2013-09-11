@@ -102,7 +102,7 @@ private:
     // 各个状态的起止帧号与播放速度 <frame_beg, frame_end, fps>
     std::tuple<size_t, size_t, size_t> frame_set[6];
 
-	unsigned int footsteps;	//脚步声
+    unsigned int footsteps;     //脚步声
 };
 
 #endif

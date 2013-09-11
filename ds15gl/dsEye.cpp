@@ -27,7 +27,7 @@ int idir = STOP;
 // 视线 3D 前进 / 后退因子，只取 UP DOWN STOP
 int mdir = STOP;
 
-static bool moving = false;
+bool view_auto_moving = false;
 
 static int* playing;
 
@@ -72,6 +72,10 @@ static inline void saveDirection() {
 
 // 保存当前视角信息，在 dsTools 中的键盘操作函数中用到
 void saveEyeInfo() {
+    if (view_auto_moving) {
+        return;
+    }
+
     saveEyeSphere();
     saveCenter();
     saveDirection();
@@ -86,7 +90,7 @@ void centerMoveTof(GLfloat x, GLfloat y, int* script_playing) {
     }
     targetX = x;
     targetY = y;
-    moving = true;
+    view_auto_moving = true;
 }
 
 void centerMoveToi(size_t x, size_t y, int* script_playing) {
@@ -96,7 +100,7 @@ void centerMoveToi(size_t x, size_t y, int* script_playing) {
         ++(*playing);
     }
     frame.scene.map.getCoords(x, y, &targetX, &targetY);
-    moving = true;
+    view_auto_moving = true;
 }
 
 static void dsAutoCenterMove() {
@@ -106,35 +110,37 @@ static void dsAutoCenterMove() {
         GLfloat(targetY - center_saved[1])
     );
     GLfloat lenth = dir.getLenth();
+
+    auto endMoving = [&]() {
+        center[0] = targetX;
+        center[1] = targetY;
+        view_auto_moving = false;
+        if (playing != nullptr) {
+            --(*playing);
+        }
+        saveEyeInfo();
+    };
+
     if (viewMoveSpeed * 1.0 > lenth) { // 按 viewMoveSpeed 可以在 1 秒内移动完毕
         dir.normalise();
         center[0] = center_saved[0] + dir.x * viewMoveSpeed * duration;
         center[1] = center_saved[1] + dir.y * viewMoveSpeed * duration;
         if (viewMoveSpeed * duration > lenth) {
-            center[0] = targetX;
-            center[1] = targetY;
-            moving = false;
-            saveEyeInfo();
+            endMoving();
         }
     } else { // 按 viewMoveSpeed 不能在 1 秒内移动完毕
         if (duration < 1.0) {
             center[0] = center_saved[0] + (targetX - center_saved[0]) * duration;
             center[1] = center_saved[1] + (targetY - center_saved[1]) * duration;
         } else {
-            center[0] = targetX;
-            center[1] = targetY;
-            moving = false;
-            if (playing != nullptr) {
-                --(*playing);
-            }
-            saveEyeInfo();
+            endMoving();
         }
     }
 }
 
 // 按时间设置视线中心点，在 dsSetEye 中调用
 static void dsCenterMove() {
-    if (moving == true) {
+    if (view_auto_moving == true) {
         dsAutoCenterMove();
         return;
     }
@@ -179,7 +185,7 @@ static void dsCenterMove() {
 
 // 按时间设置眼睛球坐标，在 dsSetEye 中调用
 static void dsEyeRotate() {
-    if (rdir == STOP || moving) {
+    if (rdir == STOP || view_auto_moving) {
         return;
     }
 

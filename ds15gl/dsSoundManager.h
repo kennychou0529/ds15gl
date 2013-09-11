@@ -21,7 +21,7 @@
 
 class Clip {
 public:
-    Clip(char* fileName,bool loop);
+    Clip(char* fileName, bool loop);
     ~Clip();
     void append();
     //x,y,z 声源位置
@@ -34,7 +34,7 @@ private:
     std::vector<ALuint> sources;
     unsigned short type;
     bool isPlaying;
-	bool loop;
+    bool loop;
     ALenum alError;
 };
 
@@ -53,7 +53,7 @@ public:
     // wav文件默认载入两次备用，不够用时自动扩展
     // mp3文件只保存文件名，播放时读取
     // 暂时只能载入一个MP3作为背景音乐
-    void addSound(unsigned int id, char* fileName,bool loop = true);
+    void addSound(unsigned int id, char* fileName, bool loop = true);
 
     // x,y,z 声源位置
     // vx,vy,vz 声源速度
@@ -61,7 +61,7 @@ public:
     // 若为mp3文件，或id不存在，返回 0；
     ALuint playSound(unsigned int id, float x, float y, float z, float vx = 0, float vy = 0, float vz = 0);
 
-	static void changePosition(ALuint source, float x, float y, float z = 0.f);
+    static void changePosition(ALuint source, float x, float y, float z = 0.f);
 
     // sourceIndex 请使用 plaSound的返回值
     void stop(ALuint sourceIndex);
@@ -76,8 +76,8 @@ public:
 
 
 private:
-   /* ALCdevice* device;
-    ALCcontext* context;*/
+    /* ALCdevice* device;
+     ALCcontext* context;*/
 
     mpg123_handle* mpg123 ;
 

@@ -5,7 +5,7 @@
 
 // 眼睛位置，用球坐标 (r, phi, theta) 表示
 // 其中，phi 表示与 z 轴的夹角
-// theta 表示在 xy 平面的投影的旋转角 
+// theta 表示在 xy 平面的投影的旋转角
 extern GLdouble eye_sphere[3];
 
 // 视线向上的方向
@@ -34,6 +34,9 @@ extern int idir;
 
 // 视线 3D 前进 / 后退因子，只取 UP DOWN STOP
 extern int mdir;
+
+// 视线正在自动移动
+extern bool view_auto_moving;
 
 // 保存当前视角信息，在 dsTools 中的键盘操作函数中用到
 void saveEyeInfo();
