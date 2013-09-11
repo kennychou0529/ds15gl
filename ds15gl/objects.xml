@@ -1,0 +1,12 @@
+<objects>
+  <object name="tree">
+    <model>
+      <tris></tris>
+      <skin></skin>
+    </model>
+    <model>
+      <tris></tris>
+      <skin></skin>
+    </model>
+  </object>
+</objects>
