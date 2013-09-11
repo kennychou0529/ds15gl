@@ -61,6 +61,8 @@ public:
     // 若为mp3文件，或id不存在，返回 0；
     ALuint playSound(unsigned int id, float x, float y, float z, float vx = 0, float vy = 0, float vz = 0);
 
+	static void changePosition(ALuint source, float x, float y, float z = 0.f);
+
     // sourceIndex 请使用 plaSound的返回值
     void stop(ALuint sourceIndex);
 

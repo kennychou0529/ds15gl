@@ -281,6 +281,8 @@ void DSSoundManager::addSound(unsigned int id, char* fileName,bool loop) {
 
 void DSSoundManager::stop(ALuint sourceIndex) {
     alGetError();
+	if(!alIsSource(sourceIndex)) 
+		return;
     alSourceStop(sourceIndex);
     if (alError = alGetError() != AL_NO_ERROR) {
         DSSoundManager::displayALError("stop", alError);
@@ -295,6 +297,13 @@ ALuint DSSoundManager::playSound(unsigned int id, float x, float y, float z, flo
     return 0;
 }
 
+
+void DSSoundManager::changePosition(ALuint source, float x, float y, float z){
+	if (alIsSource(source)){
+		alSource3f(source,AL_POSITION,x,y,z);
+	}
+	
+}
 
 void DSSoundManager::setListenerPosition(ALfloat x, ALfloat y, ALfloat z) {
     ALCfloat listenerPos[] = {x, y, z};
@@ -317,14 +326,14 @@ void DSSoundManager::loadSounds() {
     /**/
     //  // 注释待添加
     //  */
-    addSound(0, "data/sound/test.mp3");
+    //addSound(0, "data/sound/test.mp3");
     //  /*alSourcePlay(backgroundSound);*/
     //
     addSound(1, "data/sound/footsteps.wav");
     //
     //  // 注释待添加
     //
-    playSound(0, 0, 0, 0, 0, 1, 0);
+    //playSound(0, 0, 0, 0, 0, 1, 0);
     //playSound(1, 0, 0, 0, 0, 1, 0);
     //      //alutSleep(1);
 
