@@ -1,20 +1,21 @@
 ﻿#include "dsMap.h"
 #include <iostream>
+#include <cstring>
 
 GLfloat DSMap::grid_size = 10.0f;
 
 // 从数组初始化一张地图
-void DSMap::init(size_t x_max, size_t y_max, char* data) {
-    this->x_max = x_max;
-    this->y_max = y_max;
+void DSMap::init(size_t _x_max, size_t _y_max, char* _data) {
+    x_max = _x_max;
+    y_max = _y_max;
     if (data == NULL) {
-        this->data = new char[x_max * y_max];
+        data = new char[x_max * y_max];
         for (int i = 0; i < x_max * y_max; i++) {
-            this->data[i] = 0;
+            data[i] = 0;
         }
         return;
     }
-    strcpy(this->data, data);
+    std::memcpy(data, _data, sizeof(char) * x_max * y_max);
 }
 
 DSMap::~DSMap() {
