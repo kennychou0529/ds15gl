@@ -69,6 +69,7 @@ private:
     static GLfloat grid_size; // 地图每块的大小
     TileType* data;
     GLuint display_lists[8];
+    GLuint display_list_grids;
 };
 
 #endif

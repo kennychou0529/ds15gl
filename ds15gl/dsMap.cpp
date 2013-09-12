@@ -29,31 +29,14 @@ void DSMap::init(size_t _x_max, size_t _y_max, TileType* _data) {
 
     x_max = _x_max;
     y_max = _y_max;
-    if (data != nullptr) {
-        delete[] data;
-    }
-    data = new TileType[x_max * y_max];
-    for (int i = 0; i < x_max * y_max; i++) {
-        data[i] = trap;
-    }
-    return;
-    std::memcpy(data, _data, sizeof(TileType) * x_max * y_max);
-}
 
-DSMap::~DSMap() {
-    delete[] data;
-}
-
-void DSMap::renderGrid() {
-    renderTile(0, 0);
-    //glPushAttrib(GL_LIGHTING | GL_TEXTURE_2D | GL_POLYGON_MODE); // 测试不良
+    display_list_grids = glGenLists(1);
+    glNewList(display_list_grids, GL_COMPILE);
     glPushAttrib(GL_ALL_ATTRIB_BITS);
     glDisable(GL_LIGHTING);
     glDisable(GL_TEXTURE_2D);
     glLineWidth(1.0);
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    //glColor4d(1, 1, 1, 0.2);
-    glPushMatrix();
     GLfloat x = - grid_size * x_max / 2;
     GLfloat y;
     for (size_t x_index = 0; x_index < x_max; ++x_index) {
@@ -71,8 +54,27 @@ void DSMap::renderGrid() {
         }
         x += grid_size;
     }
-    glPopMatrix();
     glPopAttrib();
+    glEndList();
+
+    if (data != nullptr) {
+        delete[] data;
+    }
+    data = new TileType[x_max * y_max];
+    for (int i = 0; i < x_max * y_max; i++) {
+        data[i] = trap;
+    }
+    return;
+    std::memcpy(data, _data, sizeof(TileType) * x_max * y_max);
+}
+
+DSMap::~DSMap() {
+    delete[] data;
+}
+
+void DSMap::renderGrid() {
+    renderTile(0, 0);
+    glCallList(display_list_grids);
 }
 
 void DSMap::renderTile(size_t x_index, size_t y_index) {
