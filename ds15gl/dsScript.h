@@ -22,7 +22,10 @@ struct Record {
     bool sync;       // 是否与上一条指令同时发出
     string id;       // 对象id;
     ScriptType type; // 动作
-    size_t x, y;     // 目标
+   // 目标
+	/*令soldier_pan的x,代表所受伤害
+	*/
+	size_t x, y;     
 
     Record() {}
     Record(Record& record):

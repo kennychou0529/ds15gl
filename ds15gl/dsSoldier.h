@@ -52,6 +52,13 @@ public:
 
     void animate();
 
+    void hpReduce(size_t reduce) {
+        hp -= reduce;
+        if (hp < 0) {
+            hp = 0;
+        }
+    }
+
     // 载入士兵模型文件，只支持 bmp 类型的纹理图片
     void load(
         const std::string& person_model_file,
@@ -77,7 +84,7 @@ public:
     void hpBar(GLfloat x, GLfloat y, GLfloat z);
 
     void hpBar2();
-    
+
 private:
     int hp;
     int hp_max;
@@ -92,8 +99,8 @@ private:
     GLfloat scale;              // 缩放倍数
     GLfloat angle;              // 当前旋转角
     GLfloat default_angle;      // 默认旋转角
-                                // 由于模型各不相同，需要一个修正角
-                                // 使得默认方向为 x 轴 正方向
+    // 由于模型各不相同，需要一个修正角
+    // 使得默认方向为 x 轴 正方向
     GLfloat translate;          // 高度移动值
 
     int* playing;               // 正在播放中的对象个数
@@ -110,7 +117,7 @@ private:
     std::tuple<size_t, size_t, size_t> frame_set[6];
 
     unsigned int footsteps;     //脚步声
-    
+
 };
 
 #endif

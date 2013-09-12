@@ -19,7 +19,7 @@ dsSoldier::dsSoldier() :
     playing(nullptr) {
     enterStatus(idle);
     footsteps = 0;
-    hp = 10;
+    hp = 15;
     hp_max = 15;
 }
 

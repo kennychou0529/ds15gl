@@ -111,6 +111,7 @@ void DSActorManager::update() {
                         iter_soldier->second.enterStatus(
                             dsSoldier::Status::pain, &script_playing
                         );
+                        iter_soldier->second.hpReduce(record.x);
                         break;
                     default:
                         break;
