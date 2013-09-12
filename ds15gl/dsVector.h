@@ -90,4 +90,9 @@ void dsNormalVectorOfTriangle3fv(
     GLfloat ret[3]
 );
 
+
+GLdouble dsIncludedAngle2dv(
+    const GLdouble v1[2],
+    const GLdouble v2[2]);
+
 #endif

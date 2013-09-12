@@ -5,6 +5,7 @@
 #include "tinyxml2.h"
 #include <cmath>
 #include <functional>
+#include "dsVector.h"
 
 static const GLfloat pi = 3.1415926f;
 
@@ -17,6 +18,8 @@ dsSoldier::dsSoldier() :
     playing(nullptr) {
     enterStatus(idle);
     footsteps = 0;
+	hp=10;
+	hp_max=15;
 }
 
 void dsSoldier::renderFrame(size_t frame_index) {
@@ -116,10 +119,13 @@ void dsSoldier::animate() {
         GLfloat duration = timer.getDurationSecf();
 
         auto render = [&]() {
+			glPushMatrix();
             glTranslatef(x, y, translate);
             glScaled(scale, scale, scale);
             glRotatef(angle + default_angle, 0.0f, 0.0f, 1.0f);
             renderSmoothly(duration * fps);
+			glPopMatrix();
+			hpBar(x,y,12);
         };
 
         // 这里没有使用 case 语句，是因为会出现对象初始化问题
@@ -290,4 +296,57 @@ void dsSoldier::setTarget(size_t x, size_t y) {
 
     target_position[0] = x;
     target_position[1] = y;
+}
+
+extern GLdouble up[3];
+extern GLdouble center[3];
+extern GLdouble eye[3];
+
+//hpBar需要画在人物头顶正上方，方向总与视线垂直
+void dsSoldier::hpBar(GLfloat x, GLfloat y, GLfloat z) {
+
+	static double hpBarWidth = 0.5;
+
+	glPushAttrib(GL_ALL_ATTRIB_BITS);
+	glDisable(GL_LIGHTING);
+	glDisable(GL_TEXTURE_2D);
+	//glLoadIdentity();
+	glPushMatrix();
+
+	glTranslatef(x , y, z);
+
+	GLdouble direction[3];
+	dsDiff3dv(center, eye, direction);
+
+
+	static GLdouble xline[] = {1.0, 0, 0};
+	static GLdouble yline[] = {0, 1.0, 0};
+	GLdouble direction_t[] = {direction[0], direction[1], 0};
+	//计算旋转角度
+	GLdouble rr = dsIncludedAngle2dv(yline, direction_t);
+	GLdouble n[3];
+	dsCross3dv(yline, direction, n);
+	if (n[2] < 0) {
+		rr = -rr;
+	}
+	//printf("%f %f ",n[2],rr);
+	glRotated(rr, 0, 0, 1.0);
+
+	glTranslatef(-hp_max/2 * (hpBarWidth+0.2),0,0);
+	for (int i = 0; i < hp_max; i++) {
+		glColor3f(0, 0, 1.0f);
+		glutWireCube(hpBarWidth);
+		if (i < hp) {
+			glColor3f(0, 1.0, 0);
+			glutSolidCube(hpBarWidth-0.01);
+		}
+		glTranslatef(hpBarWidth + 0.2, 0, 0);
+	}
+
+	//auxSolidCylinder()
+	//auxSolidCylinder(hpBarWidth,hpBarLenth,3,1);
+
+	glPopMatrix();
+	glPopAttrib();
+
 }

@@ -153,3 +153,13 @@ void dsNormalVectorOfTriangle3fv(
     dsCross3fv(vec1, vec2, ret);
     dsNormalize3fv(ret);
 }
+
+const double pi = 3.14159265358979323846;
+//计算两个向量的夹角,注意是角度
+GLdouble dsIncludedAngle2dv(
+	const GLdouble v1[2],
+	const GLdouble v2[2]) {
+		return 180 / pi * acos((v1[0] * v2[0] + v1[1] * v2[1])
+			/ sqrt((v1[0] * v1[0] + v1[1] * v1[1]) * (v2[0] * v2[0] + v2[1] * v2[1])));
+
+}
