@@ -15,12 +15,12 @@ public:
     ~MD2Model();
     int load(const std::string& model_file, const std::string& skin_file);
     void clear();
-    void renderFrame(size_t frame_index);
+    void renderFrame(size_t frame_index) const;
     void renderSmoothly(
         size_t frame1_index,
         size_t frame2_index,
         GLfloat percentage
-    );
+    ) const;
 
 private:
     // 以下定义了一些 struct

@@ -19,7 +19,7 @@ dsSoldier::dsSoldier() :
     footsteps = 0;
 }
 
-void dsSoldier::renderFrame(size_t frame_index) {
+void dsSoldier::renderFrame(size_t frame_index) const {
     person.renderFrame(frame_index);
     weapon.renderFrame(frame_index);
 }
@@ -28,7 +28,7 @@ void dsSoldier::renderSmoothly(
     size_t frame1_index,
     size_t frame2_index,
     GLfloat percentage
-) {
+) const {
     person.renderSmoothly(frame1_index, frame2_index, percentage);
 
     // 测试表明，武器模型的死亡动画有问题，所以不画了
@@ -38,7 +38,7 @@ void dsSoldier::renderSmoothly(
     weapon.renderSmoothly(frame1_index, frame2_index, percentage);
 }
 
-void dsSoldier::renderSmoothly(GLfloat progress) {
+void dsSoldier::renderSmoothly(GLfloat progress) const {
     if (frame_beg == frame_end) {
         renderSmoothly(frame_beg, frame_beg, 0);
     } else {

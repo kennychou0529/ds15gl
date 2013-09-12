@@ -23,7 +23,7 @@ public:
     dsSoldier();
 
     // 绘制帧 frame_index
-    void renderFrame(size_t frame_index);
+    void renderFrame(size_t frame_index) const;
 
     // 带有线性插值的绘制，使得动画流畅。
     // 当 percentage = 0 时，绘制 frame1；
@@ -34,7 +34,7 @@ public:
         size_t frame1_index,
         size_t frame2_index,
         GLfloat percentage
-    );
+    ) const;
 
     // 带有线性插值的绘制，参数 progress 是一个小数化的“帧数”。
     // 例如当前 dsSoldier 私有参数 frame_beg 和 frame_end 分别为 0 和 39，
@@ -46,7 +46,7 @@ public:
     // 则当 proress 为 0 时，绘制 帧 10；
     // 当 progress 为 5.7 时，绘制 帧 '15.7'，即 renderSmoothly(15, 16, 0.7)；
     // 当 progress 为 39.5 时，renderSmoothly(49, 10, 0.5)。
-    void renderSmoothly(GLfloat progress);
+    void renderSmoothly(GLfloat progress) const;
 
     void enterStatus(Status status_to_enter, int* script_playing = nullptr);
 

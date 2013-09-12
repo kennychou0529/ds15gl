@@ -1,7 +1,7 @@
 #include "dsObject.h"
 #include "tinyxml2.h"
 
-void dsObject::load(const std::string& object_name) {
+void DSObject::load(const std::string& object_name) {
     tinyxml2::XMLDocument doc;
     doc.LoadFile("objects.xml");
 
@@ -38,7 +38,7 @@ void dsObject::load(const std::string& object_name) {
 
 }
 
-void dsObject::render() {
+void DSObject::render() const {
     glPushMatrix();
     glScalef(scale, scale, scale);
     glTranslatef(0.0f, 0.0f, translate);
@@ -46,4 +46,9 @@ void dsObject::render() {
         model.renderFrame(0);
     }
     glPopMatrix();
+}
+
+void DSObjectManager::addObject(const std::string& object_name) {
+    objects.insert(std::make_pair(object_name, DSObject()));
+    objects[object_name].load(object_name);
 }
