@@ -28,7 +28,7 @@ private:
 class DSObjectManager {
 public:
     void addObject(const std::string& object_name);
-    void addAllObjects();
+    void loadAllObjects();
     std::map<std::string, DSObject> objects;
 };
 

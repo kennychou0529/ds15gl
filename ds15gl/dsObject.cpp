@@ -53,14 +53,14 @@ void DSObjectManager::addObject(const std::string& object_name) {
     objects[object_name].load(object_name);
 }
 
-void DSObjectManager::addAllObjects() {
+void DSObjectManager::loadAllObjects() {
     tinyxml2::XMLDocument doc;
+    doc.LoadFile("objects.xml");
     auto root = doc.FirstChildElement();
-    for (
-        auto xml_object = root->FirstChildElement("object");
-        xml_object != nullptr;
-        xml_object = xml_object->NextSiblingElement("object")
-    ) {
+    for (auto xml_object = root->FirstChildElement("object");
+         xml_object != nullptr;
+         xml_object = xml_object->NextSiblingElement("object")) {
+
         std::string name = xml_object->Attribute("name");
         objects.insert(std::make_pair(name, DSObject()));
         for (
@@ -68,6 +68,7 @@ void DSObjectManager::addAllObjects() {
             xml_model != nullptr;
             xml_model = xml_model->NextSiblingElement("model")
         ) {
+
             objects[name].models.push_back(MD2Model());
             auto new_model = objects[name].models.end() - 1;
             new_model->load(
@@ -75,6 +76,9 @@ void DSObjectManager::addAllObjects() {
                 xml_model->FirstChildElement("skin")->GetText()
             );
         }
+        xml_object->FirstChildElement("scale")->QueryFloatText(&objects[name].scale);
+        xml_object->FirstChildElement("translate")->QueryFloatText(&objects[name].translate);
+
     }
 
 }
