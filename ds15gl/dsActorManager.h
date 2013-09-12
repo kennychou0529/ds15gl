@@ -34,9 +34,9 @@ public:
     int script_playing;
     bool round_finished;
     bool all_finished;
-    SOLDIERS list;
-private:
     
+private:
+    SOLDIERS list;
     DSScript script;
     int round;
 };
