@@ -21,7 +21,7 @@ void DSScene::show() {
     dsSkyBox.show();
     
     glEnable(GL_LIGHTING);
-    object_manager.objects["banana"].render();
+    //object_manager.objects["banana"].render();
 	actors.render();
     
     map.renderGrid();
@@ -37,5 +37,5 @@ void DSScene::initialize() {
 
     dsSkyBox.load(3);
     //object_manager.addObject("cannon");
-    object_manager.loadAllObjects();
+    //object_manager.loadAllObjects();
 }

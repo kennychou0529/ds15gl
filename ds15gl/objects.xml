@@ -36,7 +36,7 @@
       <skin>data/hek/hek.bmp</skin>
     </model>
     <translate>0</translate>
-    <scale>0.1</scale>
+    <scale>0.08</scale>
   </object>
 
   <object name="cannon">

@@ -2,6 +2,7 @@
 #define _DSMAP_H
 
 #include <GL/glut.h>
+#include "dsObject.h"
 
 enum TileType {
     plain,   // 平原
@@ -17,7 +18,7 @@ enum TileType {
 class DSMap {
 public:
     // data的大小不应小于 x_max * y_max
-    void init(size_t x_max = 10, size_t y_max = 10, TileType* data = NULL);
+    void init(size_t x_max = 10, size_t y_max = 10, TileType* data = nullptr);
     ~DSMap();
 
 public:
@@ -42,6 +43,9 @@ public:
     // 绘制地图网格
     void renderGrid();
 
+    // 绘制一个格子
+    void renderTile(size_t x_index, size_t y_index);
+
     // 输入格子坐标，给出绘图实际坐标
     void getCoords(
         size_t x_index,
@@ -58,10 +62,12 @@ public:
     ) const;
 
 private:
+    DSObjectManager object_manager;
+
     size_t x_max;
     size_t y_max;
     static GLfloat grid_size; // 地图每块的大小
-    char* data;
+    TileType* data;
 };
 
 #endif

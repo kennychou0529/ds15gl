@@ -5,18 +5,20 @@
 GLfloat DSMap::grid_size = 10.0f;
 
 // 从数组初始化一张地图
-void DSMap::init(size_t _x_max, size_t _y_max, char* _data) {
+void DSMap::init(size_t _x_max, size_t _y_max, TileType* _data) {
+    object_manager.loadAllObjects();
+
     x_max = _x_max;
     y_max = _y_max;
     if (data != nullptr) {
         delete[] data;
     }
-    data = new char[x_max * y_max];
+    data = new TileType[x_max * y_max];
     for (int i = 0; i < x_max * y_max; i++) {
-        data[i] = 0;
+        data[i] = trap;
     }
     return;
-    std::memcpy(data, _data, sizeof(char) * x_max * y_max);
+    std::memcpy(data, _data, sizeof(TileType) * x_max * y_max);
 }
 
 DSMap::~DSMap() {
@@ -24,6 +26,7 @@ DSMap::~DSMap() {
 }
 
 void DSMap::renderGrid() {
+    //renderTile(0, 0);
     //glPushAttrib(GL_LIGHTING | GL_TEXTURE_2D | GL_POLYGON_MODE); // 测试不良
     glPushAttrib(GL_ALL_ATTRIB_BITS);
     glDisable(GL_LIGHTING);
@@ -53,14 +56,55 @@ void DSMap::renderGrid() {
     glPopAttrib();
 }
 
+void DSMap::renderTile(size_t x_index, size_t y_index) {
+    
+    GLfloat x, y;
+    getCoords(x_index, y_index, &x, &y);
+
+    switch (data[x_index * y_max + x_index]) {
+    case barrier:
+        glPushMatrix();
+        {
+            glTranslatef(x, y, 0.0f);
+            object_manager.objects["hek"].render();
+            glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
+            object_manager.objects["hek"].render();
+        }
+        glPopMatrix();
+        break;
+    case trap:
+        glPushMatrix();
+        {
+            glTranslatef(x, y, 0.0f);
+            glTranslatef(0.0f, - grid_size * 0.9f / 2, 0.0f);
+            object_manager.objects["hek"].render();
+
+            glTranslatef(0.0f, + grid_size * 0.9f, 0.0f);
+            object_manager.objects["hek"].render();
+
+            glTranslatef(- grid_size * 0.9f / 2.0f, - grid_size * 0.9 / 2, 0.0f);
+            glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
+            object_manager.objects["hek"].render();
+
+            glTranslatef(0.0f, - grid_size * 0.9f, 0.0f);
+            object_manager.objects["hek"].render();
+        }
+        glPopMatrix();
+        break;
+    default:
+        break;
+    }
+    
+}
+
 void DSMap::getCoords(
     size_t x_index,
     size_t y_index,
     GLfloat* px,
     GLfloat* py
-)  const {
-    *px = grid_size * (- (GLfloat)x_max / 2 + x_index + 0.5f);
-    *py = grid_size * (- (GLfloat)y_max / 2 + y_index + 0.5f);
+    )  const {
+        *px = grid_size * (- (GLfloat)x_max / 2 + x_index + 0.5f);
+        *py = grid_size * (- (GLfloat)y_max / 2 + y_index + 0.5f);
 }
 
 void DSMap::getCoords(
@@ -68,7 +112,7 @@ void DSMap::getCoords(
     size_t y_index,
     GLdouble* px,
     GLdouble* py
-)  const {
-    *px = grid_size * (- (GLdouble)x_max / 2 + x_index + 0.5f);
-    *py = grid_size * (- (GLdouble)y_max / 2 + y_index + 0.5f);
+    )  const {
+        *px = grid_size * (- (GLdouble)x_max / 2 + x_index + 0.5f);
+        *py = grid_size * (- (GLdouble)y_max / 2 + y_index + 0.5f);
 }
