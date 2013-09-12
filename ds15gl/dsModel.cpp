@@ -157,9 +157,9 @@ void MD2Model::clear() {
     delete[] vertices;
 }
 
-void MD2Model::renderFrame(size_t frame_index) {
-    Vertex3f* vertex_base = &vertices[num_vertices * frame_index];
-    Vertex3f* normal_vec_base = &normal_vecs[frame_index * num_triangles];
+void MD2Model::renderFrame(size_t frame_index) const {
+    const Vertex3f* vertex_base = &vertices[num_vertices * frame_index];
+    const Vertex3f* normal_vec_base = &normal_vecs[frame_index * num_triangles];
     glBindTexture(GL_TEXTURE_2D, texture_ID);
 
     glBegin(GL_TRIANGLES);
@@ -188,9 +188,9 @@ void MD2Model::renderSmoothly(
     size_t frame1_index,
     size_t frame2_index,
     GLfloat percentage
-) {
-    Vertex3f* vertex_base1 = &vertices[num_vertices * frame1_index];
-    Vertex3f* vertex_base2 = &vertices[num_vertices * frame2_index];
+) const {
+    const Vertex3f* vertex_base1 = &vertices[num_vertices * frame1_index];
+    const Vertex3f* vertex_base2 = &vertices[num_vertices * frame2_index];
     glBindTexture(GL_TEXTURE_2D, texture_ID);
 
     Vertex3f points[3];
