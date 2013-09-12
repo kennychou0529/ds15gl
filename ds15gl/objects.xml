@@ -16,4 +16,17 @@
     <translate>0</translate>
     <scale>0.1</scale>
   </object>
+
+  <object name="temple">
+    <model>
+      <tris>data/temple/gazebo_b.md2</tris>
+      <skin>data/temple/gazebo_b.bmp</skin>
+    </model>
+    <model>
+      <tris>data/temple/gazebo_t.md2</tris>
+      <skin>data/temple/gazebo_t.bmp</skin>
+    </model>
+    <translate>0</translate>
+    <scale>0.03</scale>
+  </object>
 </objects>

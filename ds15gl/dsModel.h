@@ -12,6 +12,8 @@
 class MD2Model {
 public:
     MD2Model();
+    MD2Model(MD2Model&& model);
+    MD2Model(const MD2Model& model);
     ~MD2Model();
     int load(const std::string& model_file, const std::string& skin_file);
     void clear();
