@@ -6,8 +6,11 @@
 #include <map>
 #include <utility>
 
+class DSObjectManager;
+
 // 专门用来处理地图上的静态物体
 class DSObject {
+    friend class DSObjectManager;
 public:
     // 从 XML 文件中载入模型们
     void load(const std::string& object_name);
@@ -25,10 +28,8 @@ private:
 class DSObjectManager {
 public:
     void addObject(const std::string& object_name);
-
-//private:
+    void addAllObjects();
     std::map<std::string, DSObject> objects;
-
 };
 
 #endif

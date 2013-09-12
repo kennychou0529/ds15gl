@@ -21,7 +21,7 @@ void DSScene::show() {
     dsSkyBox.show();
     
     glEnable(GL_LIGHTING);
-    object_manager.objects["temple"].render();
+    object_manager.objects["cannon"].render();
 	actors.render();
     
     map.renderGrid();
@@ -36,5 +36,5 @@ void DSScene::initialize() {
 	actors.initialize();
 
     dsSkyBox.load(3);
-    object_manager.addObject("temple");
+    object_manager.addObject("cannon");
 }
