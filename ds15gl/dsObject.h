@@ -14,6 +14,8 @@ public:
 
 private:
     std::vector<MD2Model> models;
+    GLfloat translate;
+    GLfloat scale;
 };
 
 #endif

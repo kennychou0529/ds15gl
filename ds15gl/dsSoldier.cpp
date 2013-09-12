@@ -211,7 +211,7 @@ void dsSoldier::load(const std::string& soldier_name) {
     doc.LoadFile("soldiers.xml");
     auto root = doc.FirstChildElement();
     auto soldier = root->FirstChildElement("soldier");
-    for (; soldier != nullptr; soldier = soldier->NextSiblingElement()) {
+    for (; soldier != nullptr; soldier = soldier->NextSiblingElement("soldier")) {
         if (soldier_name == soldier->Attribute("name")) {
             if (soldier->FirstChildElement("weapon") == nullptr) {
                 // 该士兵没有武器模型

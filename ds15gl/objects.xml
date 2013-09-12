@@ -1,8 +1,19 @@
 <objects>
-  <object name="tree">
+  <object name="banana">
     <model>
-      <tris>banana.md2</tris>
-      <skin>banana.bmp</skin>
+      <tris>data/tree/banana.md2</tris>
+      <skin>data/tree/banana.bmp</skin>
     </model>
+    <translate>0</translate>
+    <scale>0.1</scale>
+  </object>
+
+  <object name="plant2">
+    <model>
+      <tris>data/tree/plant2.md2</tris>
+      <skin>data/tree/plant2.bmp</skin>
+    </model>
+    <translate>0</translate>
+    <scale>0.1</scale>
   </object>
 </objects>

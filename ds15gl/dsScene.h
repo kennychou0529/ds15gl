@@ -25,6 +25,7 @@ private:
 
 	DSActorManager& actors;
 
+    dsObject object;
 };
 
 #endif

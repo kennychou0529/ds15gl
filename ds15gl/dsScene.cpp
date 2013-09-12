@@ -21,9 +21,9 @@ void DSScene::show() {
     dsSkyBox.show();
     
     glEnable(GL_LIGHTING);
-    
+    object.render();
 	actors.render();
-
+    
     map.renderGrid();
 
     //dsShowLightSource();
@@ -36,4 +36,5 @@ void DSScene::initialize() {
 	actors.initialize();
 
     dsSkyBox.load(3);
+    object.load("plant2");
 }

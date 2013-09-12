@@ -11,7 +11,7 @@ void dsObject::load(const std::string& object_name) {
     // Try to find the node <object name="...">
     auto xml_object = xml_root->FirstChildElement("object");
     for (; xml_object != nullptr; xml_object = xml_object->NextSiblingElement()) {
-        if (xml_object->Attribute(object_name.c_str()) == object_name) {
+        if (xml_object->Attribute("name") == object_name) {
             break;
         }
     }
@@ -20,10 +20,13 @@ void dsObject::load(const std::string& object_name) {
         throw "Cannot find object in objects.xml";
     }
 
+    xml_object->FirstChildElement("scale")->QueryFloatText(&scale);
+    xml_object->FirstChildElement("translate")->QueryFloatText(&translate);
+
     for (
         auto xml_model = xml_object->FirstChildElement("model");
         xml_model != nullptr;
-        xml_model = xml_model->NextSiblingElement()
+        xml_model = xml_model->NextSiblingElement("model")
     ) {
         models.push_back(MD2Model());
         auto new_model = models.end() - 1;
@@ -37,6 +40,8 @@ void dsObject::load(const std::string& object_name) {
 
 void dsObject::render() {
     glPushMatrix();
+    glScalef(scale, scale, scale);
+    glTranslatef(0.0f, 0.0f, translate);
     for (auto & model : models) {
         model.renderFrame(0);
     }
