@@ -48,6 +48,62 @@ MD2Model::MD2Model():
     tex_coords(nullptr),
     vertices(nullptr) {}
 
+MD2Model::MD2Model(MD2Model&& model):
+    num_frames(model.num_frames),
+    num_vertices(model.num_vertices),
+    num_triangles(model.num_triangles),
+    num_tex_coords(model.num_tex_coords),
+    frame_size(model.frame_size),
+    texture_ID(model.texture_ID),
+
+    triangles(model.triangles),
+    normal_vecs(model.normal_vecs),
+    tex_coords(model.tex_coords),
+    vertices(model.vertices) {
+
+    model.triangles = nullptr;
+    model.normal_vecs = nullptr;
+    model.tex_coords = nullptr;
+    model.vertices = nullptr;
+}
+
+MD2Model::MD2Model(const MD2Model& model):
+    num_frames(model.num_frames),
+    num_vertices(model.num_vertices),
+    num_triangles(model.num_triangles),
+    num_tex_coords(model.num_tex_coords),
+    frame_size(model.frame_size),
+    texture_ID(model.texture_ID) {
+
+    triangles = new Mesh[num_triangles];
+    std::memcpy(
+        triangles,
+        model.triangles,
+        sizeof(Mesh) * num_triangles
+    );
+
+    normal_vecs = new Vertex3f[num_triangles * num_frames];
+    std::memcpy(
+        normal_vecs,
+        model.normal_vecs,
+        sizeof(Vertex3f) * num_triangles * num_frames
+    );
+
+    tex_coords = new TexCoord2f[num_tex_coords];
+    std::memcpy(
+        tex_coords,
+        model.tex_coords,
+        sizeof(TexCoord2f) * num_tex_coords
+    );
+
+    vertices = new Vertex3f[num_vertices * num_frames];
+    std::memcpy(
+        vertices,
+        model.vertices,
+        sizeof(Vertex3f) * num_vertices * num_frames
+    );
+}
+
 MD2Model::~MD2Model() {
     clear();
 }
