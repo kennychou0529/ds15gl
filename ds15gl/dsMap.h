@@ -3,11 +3,23 @@
 
 #include <GL/glut.h>
 
+enum TileType {
+    plain,   // 平原
+    hill,    // 山地
+    forest,  // 森林
+    barrier, // 屏障
+    cannon,  // 炮
+    temple,  // 神庙
+    trap,    // 陷阱
+    facility // 机关
+};
+
 class DSMap {
 public:
-    // data的大小不应小于x_max * y_max
-    void init(size_t x_max = 10, size_t y_max = 10, char* data = NULL);
+    // data的大小不应小于 x_max * y_max
+    void init(size_t x_max = 10, size_t y_max = 10, TileType* data = NULL);
     ~DSMap();
+
 public:
     void getSize(int* pwidth = nullptr, int* pheight = nullptr) const {
         if (pwidth != nullptr) {
