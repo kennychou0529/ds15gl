@@ -81,7 +81,7 @@ private:
 
     typedef struct {
         unsigned int identifier;         // 一个表明自己是 MD2 的神奇数字,
-                                         // 它永远是 0x32504449("IDP2")
+        // 它永远是 0x32504449("IDP2")
         unsigned int version;            // 版本，永远是 8
         unsigned int skin_width;         // 纹理宽度 (像素值), 通常是 256
         unsigned int skin_height;        // 纹理高度 (像素值), 通常是 256
