@@ -7,7 +7,7 @@
 class dsObject {
 public:
     // 从 XML 文件中载入模型们
-    void load();
+    void load(const std::string& object_name);
 
     // 绘制
     void render();
