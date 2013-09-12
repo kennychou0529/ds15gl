@@ -76,6 +76,8 @@ public:
 
     void hpBar(GLfloat x, GLfloat y, GLfloat z);
 
+    void hpBar2();
+    
 private:
     int hp;
     int hp_max;
@@ -108,6 +110,7 @@ private:
     std::tuple<size_t, size_t, size_t> frame_set[6];
 
     unsigned int footsteps;     //脚步声
+    
 };
 
 #endif

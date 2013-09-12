@@ -6,6 +6,7 @@
 #include <cmath>
 #include <functional>
 #include "dsVector.h"
+#include <iostream>
 
 static const GLfloat pi = 3.1415926f;
 
@@ -318,7 +319,6 @@ void dsSoldier::hpBar(GLfloat x, GLfloat y, GLfloat z) {
     GLdouble direction[3];
     dsDiff3dv(center, eye, direction);
 
-
     static GLdouble xline[] = {1.0, 0, 0};
     static GLdouble yline[] = {0, 1.0, 0};
     GLdouble direction_t[] = {direction[0], direction[1], 0};
@@ -349,4 +349,71 @@ void dsSoldier::hpBar(GLfloat x, GLfloat y, GLfloat z) {
     glPopMatrix();
     glPopAttrib();
 
+}
+
+void dsSoldier::hpBar2() {
+    GLdouble winx, winy, winz;
+    GLdouble point[3];
+    point[2] = 11;
+    frame.scene.map.getCoords(
+        current_position[0], current_position[1], point, point + 1
+    );
+
+    GLdouble dir1[3];
+    GLdouble dir2[3];
+    dsDiff3dv(center, eye, dir1);
+    dsDiff3dv(point, eye, dir2);
+    if (dsDot3dv(dir1, dir2) < 0)
+        return;
+
+    GLdouble projection_matrix[16];
+    glGetDoublev(GL_PROJECTION_MATRIX, projection_matrix);
+
+    GLdouble modelview_matrix[16];
+    glGetDoublev(GL_MODELVIEW_MATRIX, modelview_matrix);
+
+    GLint viewport[4];
+    glGetIntegerv(GL_VIEWPORT, viewport);
+
+    gluProject(
+        point[0], point[1], point[2],
+        modelview_matrix,
+        projection_matrix,
+        viewport,
+        &winx, &winy, &winz
+    );
+    // 经测试，返回的 winx, winy 是像素值
+    if (winz < 0) {
+        return;
+    }
+
+    // 储存并替换投影矩阵
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    gluOrtho2D(0, viewport[2], 0, viewport[3]);
+
+    glMatrixMode(GL_MODELVIEW);
+
+    glPushAttrib(GL_ENABLE_BIT);
+    glPushMatrix();
+    {
+        glDisable(GL_LIGHTING);
+        glDisable(GL_TEXTURE_2D);
+        glLoadIdentity();
+        glBegin(GL_POLYGON);
+        {
+            glVertex2d(winx - 40, winy);
+            glVertex2d(winx + 40, winy);
+            glVertex2d(winx + 40, winy + 5);
+            glVertex2d(winx - 40, winy + 5);
+        }
+        glEnd();
+    }
+    glPopMatrix();
+    glPopAttrib();
+
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
 }

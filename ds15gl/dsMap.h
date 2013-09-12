@@ -38,6 +38,13 @@ public:
         GLfloat* py
     ) const;
 
+    void getCoords(
+        size_t x_index,
+        size_t y_index,
+        GLdouble* px,
+        GLdouble* py
+    ) const;
+
 private:
     size_t x_max;
     size_t y_max;

@@ -63,3 +63,12 @@ void DSMap::getCoords(
     *py = grid_size * (- (GLfloat)y_max / 2 + y_index + 0.5f);
 }
 
+void DSMap::getCoords(
+    size_t x_index,
+    size_t y_index,
+    GLdouble* px,
+    GLdouble* py
+)  const {
+    *px = grid_size * (- (GLdouble)x_max / 2 + x_index + 0.5f);
+    *py = grid_size * (- (GLdouble)y_max / 2 + y_index + 0.5f);
+}

@@ -55,7 +55,9 @@ void DSActorManager::render() {
         for (auto & soldier : list) {
             glEnable(GL_LIGHTING);
             soldier.second.animate();
+            soldier.second.hpBar2();
         }
+        //list["mage"].hpBar2();
     }
     glPopMatrix();
 }

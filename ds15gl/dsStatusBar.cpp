@@ -90,12 +90,16 @@ void DSStatusBar::show() {
         }
         glPopMatrix();
 
+        /*os.str(L"");
+        os << frame.actors.list["mage"].winx << L", "
+            << frame.actors.list["mage"].winy << L", "
+            << frame.actors.list["mage"].winz;
         glPushMatrix();
         {
             glLoadIdentity();
-            dstext.print(5, 400, L"操作面板");
+            dstext_small.print(5, 400, os.str().c_str());
         }
-        glPopMatrix();
+        glPopMatrix();*/
 
         glPushMatrix();
         {
