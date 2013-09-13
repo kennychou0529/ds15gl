@@ -15,7 +15,8 @@ public:
     DSScene();
     ~DSScene();
     void initialize();
-    void show();
+    void show(bool selectMode);
+	void selectRender();
     DSMap map;
 private:
     DSSkybox dsSkyBox;

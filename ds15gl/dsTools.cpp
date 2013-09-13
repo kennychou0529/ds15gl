@@ -41,7 +41,7 @@ GLdouble axeLength = eye_sphere[0] * 0.5;
 void dsSpecialKeyDown(int key, int x, int y) {
     int previous_rdir = rdir;
     int previous_mdir = mdir;
-    
+
     switch (key) {
     case GLUT_KEY_UP:
         rdir |= UP;
@@ -162,6 +162,67 @@ void dsKeyDown(unsigned char key, int x, int y) {
 
 }
 
+void processHits(GLint hits, GLuint buffer[]) {
+    GLuint names, *ptr;
+    ptr = (GLuint*)buffer;
+    for (int i = 0; i < hits; i++) {
+        names = *ptr;
+        ptr += 3;   // 跳过名字数和深度
+        printf("names are: ");
+        for (int j = 0; j < names; j++) {
+            printf("%d ", *ptr);
+            if (*ptr > 0 && *ptr <= 400) {
+                int x, y;
+                frame.scene.map.getXY(*ptr, &x, &y);
+                printf("选中了[%d,%d]格子", x, y);
+            }
+            ptr++;
+        }
+        printf("\n");
+    }
+}
+
+#define SIZE 512
+#define N 5
+void dsMouseFunc(int button, int state, int x, int y) {
+    GLuint selectBuf[SIZE];
+    GLint hits;
+
+    GLint viewport[4];
+    if (button != GLUT_LEFT_BUTTON || state != GLUT_DOWN) {
+        return;
+    }
+    printf("left clicked at(%d,%d)", x, y);
+    glViewport(0, 0, window_width - status_bar_width, window_height);
+    glGetIntegerv(GL_VIEWPORT, viewport);    //初始化名称堆栈
+    glSelectBuffer(SIZE, selectBuf);
+    glRenderMode(GL_SELECT);
+    glInitNames();
+    glPushName(0);
+
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();     // 定义一个以光标为中心的NxN拾取区域     // 必须对
+
+    //鼠标y坐标求反，从屏幕坐标系转换成世界坐标系
+    gluPickMatrix(x, viewport[3] - y, N, N, viewport);
+    //gluOrtho2D(-2, 2, -2, 2);
+    gluPerspective(60, (window_width - status_bar_width) / double(window_height), 0.2, 20000);
+    glMatrixMode(GL_MODELVIEW);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
+    dsSetEye();
+    //drawObjects(GL_SELECT);
+    frame.display(true);
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glFlush();
+    hits = glRenderMode(GL_RENDER);
+    printf(" hits = %d \n", hits);
+    processHits(hits, selectBuf);
+    glutPostRedisplay();
+
+}
 //效果不理想
 //void dsPassiveMonitionFunc(int x,int y){
 //  extern int width;
@@ -185,7 +246,7 @@ void dsShowAxes() {
     glMatrixMode(GL_MODELVIEW);
 
     glViewport(0, 0, 100, 100);
-    //glPushMatrix();
+    glPushMatrix();
     //glLoadIdentity();
     glTranslated(center[0], center[1], center[2]);
 
@@ -207,7 +268,8 @@ void dsShowAxes() {
         glVertex3d(0.0, 0.0, axeLength);
     }
     glEnd();
-    //glPopMatrix();
+    glColor3f(1, 1, 1);
+    glPopMatrix();
 
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();

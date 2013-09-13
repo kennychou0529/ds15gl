@@ -11,11 +11,11 @@ void DSFrame::initialize() {
     sounds.loadSounds();
 }
 
-void DSFrame::display() {
+void DSFrame::display(bool selectMode) {
     // 计算 FPS，每秒统计一次
-    calculateFPS();
-    scene.show();
-    statusBar.show();
+    calculateFPS();	  
+	scene.show(selectMode);
+	statusBar.show();
 }
 
 void DSFrame::calculateFPS() {

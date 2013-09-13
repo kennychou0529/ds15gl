@@ -7,7 +7,7 @@ GLfloat DSMap::grid_size = 10.0f;
 // 从数组初始化一张地图
 void DSMap::init(size_t _x_max, size_t _y_max, TileType* _data) {
     object_manager.loadAllObjects();
-    
+
     loadDisplayLists();
 
     x_max = _x_max;
@@ -20,23 +20,7 @@ void DSMap::init(size_t _x_max, size_t _y_max, TileType* _data) {
     glDisable(GL_TEXTURE_2D);
     glLineWidth(1.0);
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    GLfloat x = - grid_size * x_max / 2;
-    GLfloat y;
-    for (size_t x_index = 0; x_index < x_max; ++x_index) {
-        y = - grid_size * y_max / 2;
-        for (size_t y_index = 0; y_index < y_max; ++y_index) {
-            glBegin(GL_POLYGON);
-            {
-                glVertex3f(x,             y,             0.0f);
-                glVertex3f(x + grid_size, y,             0.0f);
-                glVertex3f(x + grid_size, y + grid_size, 0.0f);
-                glVertex3f(x,             y + grid_size, 0.0f);
-            }
-            glEnd();
-            y += grid_size;
-        }
-        x += grid_size;
-    }
+    drawGrid();
     glPopAttrib();
     glEndList();
 
@@ -51,13 +35,49 @@ void DSMap::init(size_t _x_max, size_t _y_max, TileType* _data) {
     std::memcpy(data, _data, sizeof(TileType) * x_max * y_max);
 }
 
+
 DSMap::~DSMap() {
     delete[] data;
 }
 
-void DSMap::renderGrid() {
+void DSMap::drawGrid(bool selectMode) {
+    GLfloat x = - grid_size * x_max / 2;
+    GLfloat y;
+    if (selectMode) {
+        glPushName(1);
+    }
+    for (size_t x_index = 0; x_index < x_max; ++x_index) {
+        y = - grid_size * y_max / 2;
+        for (size_t y_index = 0; y_index < y_max; ++y_index) {
+            //glRectf(x,y,grid_size,grid_size);
+            if (selectMode) {
+                glLoadName(y_index * x_max + x_index + 1);
+            }
+            glBegin(GL_POLYGON);
+            {
+                glVertex3f(x,             y,             0.0f);
+                glVertex3f(x + grid_size, y,             0.0f);
+                glVertex3f(x + grid_size, y + grid_size, 0.0f);
+                glVertex3f(x,             y + grid_size, 0.0f);
+            }
+            glEnd();
+            y += grid_size;
+        }
+        x += grid_size;
+    }
+    if (selectMode) {
+        glPopName();
+    }
+
+}
+
+void DSMap::renderGrid(bool selectMode) {
     renderTile(0, 0);
-    glCallList(display_list_grids);
+    if (selectMode) {
+        drawGrid(true);
+    } else {
+        glCallList(display_list_grids);
+    }
 }
 
 void DSMap::renderTile(size_t x_index, size_t y_index) {

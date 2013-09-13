@@ -23,7 +23,7 @@ void dsSpecialKeyUp(int key, int x, int y);
 void dsKeyDown(unsigned char key, int x, int y);
 void dsKeyUp(unsigned char key, int x, int y);
 
-//void dsMouseFunc(int key,int x,int y,int);
+void dsMouseFunc(int button,int state,int x,int y);
 //void dsPassiveMonitionFunc(int x,int y);
 
 // 显示一个三维坐标系，xyz 轴分别为红绿蓝

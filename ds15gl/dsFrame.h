@@ -12,7 +12,7 @@ public:
     DSFrame();
     ~DSFrame() {}
     void initialize();
-    void display();
+    void display(bool selectMode = false);
     size_t getFPS() { return fps; }
     
 public:

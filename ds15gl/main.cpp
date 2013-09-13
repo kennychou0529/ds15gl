@@ -81,7 +81,7 @@ int main(int argc, char* argv[]) {
     glutInitWindowSize(window_width, window_height);
     glutCreateWindow("DS 15th");
     glutDisplayFunc(dsDisplay);
-    // glutMouseFunc(dsMouseFunc);
+    glutMouseFunc(dsMouseFunc);
     // glutPassiveMotionFunc(dsPassiveMonitionFunc);
     glutSpecialFunc(dsSpecialKeyDown);
     glutSpecialUpFunc(dsSpecialKeyUp);

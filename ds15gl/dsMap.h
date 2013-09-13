@@ -40,8 +40,16 @@ public:
         return data[y * y_max + x];
     }
 
+	void getXY(int index,int*x, int* y){
+		index--;
+		*x=index%x_max;
+		*y=index/x_max;
+	}
+
     // 绘制地图网格
-    void renderGrid();
+    void renderGrid(bool selectMode);
+
+	void drawGrid(bool selectMode =false);
 
     // 绘制一个格子
     void renderTile(size_t x_index, size_t y_index);

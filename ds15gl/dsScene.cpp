@@ -16,24 +16,27 @@ DSScene::~DSScene() {
     }
 }
 
-void DSScene::show() {
+
+void DSScene::show(bool selectMode) {
+	
     glViewport(0, 0, window_width - status_bar_width, window_height);
-    dsSkyBox.show();
-    
-    glEnable(GL_LIGHTING);
-    //object_manager.objects["banana"].render();
-	actors.render();
-    
-    map.renderGrid();
+    if (!selectMode) {
+        dsSkyBox.show();
 
-    //dsShowLightSource();
+        glEnable(GL_LIGHTING);
+        //object_manager.objects["banana"].render();
+        actors.render();
+    }
 
-    dsShowAxes();
+    map.renderGrid(selectMode);
+
+    //dsShowLightSource();    
+	dsShowAxes();
 }
 
 void DSScene::initialize() {
-	map.init(15,10);
-	actors.initialize();
+    map.init(15, 10);
+    actors.initialize();
 
     dsSkyBox.load(3);
     //object_manager.addObject("cannon");
