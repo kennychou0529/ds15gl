@@ -62,6 +62,7 @@ public:
     ) const;
 
 private:
+    void loadDisplayLists();
     DSObjectManager object_manager;
 
     size_t x_max;
