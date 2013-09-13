@@ -44,14 +44,14 @@ void DSMap::drawGrid(bool selectMode) {
     GLfloat x = - grid_size * x_max / 2;
     GLfloat y;
     if (selectMode) {
-        glPushName(1);
+        glPushName(0);
     }
     for (size_t x_index = 0; x_index < x_max; ++x_index) {
         y = - grid_size * y_max / 2;
         for (size_t y_index = 0; y_index < y_max; ++y_index) {
             //glRectf(x,y,grid_size,grid_size);
             if (selectMode) {
-                glLoadName(y_index * x_max + x_index + 1);
+                glLoadName(y_index * x_max + x_index);
             }
             glBegin(GL_POLYGON);
             {
@@ -85,7 +85,7 @@ void DSMap::renderTile(size_t x_index, size_t y_index) {
     GLfloat x, y;
     getCoords(x_index, y_index, &x, &y);
 
-    switch (data[y_index * y_max + x_index]) {
+    switch (data[y_index * x_max + x_index]) {
     case barrier:
         glTranslatef(x, y, 0.0f);
         glCallList(display_lists[barrier]);

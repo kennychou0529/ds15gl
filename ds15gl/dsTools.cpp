@@ -198,7 +198,7 @@ void dsMouseFunc(int button, int state, int x, int y) {
     glSelectBuffer(SIZE, selectBuf);
     glRenderMode(GL_SELECT);
     glInitNames();
-    glPushName(0);
+    glPushName(1000);
 
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();

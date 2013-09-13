@@ -41,7 +41,6 @@ public:
     }
 
 	void getXY(int index,int*x, int* y){
-		index--;
 		*x=index%x_max;
 		*y=index/x_max;
 	}
