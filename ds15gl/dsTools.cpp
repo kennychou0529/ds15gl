@@ -39,8 +39,9 @@ const int font_height_small = 13;
 GLdouble axeLength = eye_sphere[0] * 0.5;
 
 void dsSpecialKeyDown(int key, int x, int y) {
-    saveEyeInfo();
-
+    int previous_rdir = rdir;
+    int previous_mdir = mdir;
+    
     switch (key) {
     case GLUT_KEY_UP:
         rdir |= UP;
@@ -67,6 +68,10 @@ void dsSpecialKeyDown(int key, int x, int y) {
 
     default:
         break;
+    }
+
+    if (previous_mdir != mdir || previous_rdir != rdir) {
+        saveEyeInfo();
     }
 
     axeLength = eye_sphere[0] * 0.5;
@@ -125,7 +130,7 @@ void dsKeyUp(unsigned char key, int x, int y) {
 }
 
 void dsKeyDown(unsigned char key, int x, int y) {
-    saveEyeInfo();
+    int previous_idir = idir;
 
     switch (key) {
     case 'a':
@@ -150,6 +155,11 @@ void dsKeyDown(unsigned char key, int x, int y) {
     default:
         break;
     }
+
+    if (previous_idir != idir) {
+        saveEyeInfo();
+    }
+
 }
 
 //效果不理想
