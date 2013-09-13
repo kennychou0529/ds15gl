@@ -46,7 +46,7 @@ public:
 	}
 
     // 绘制地图网格
-    void renderGrid(bool selectMode);
+    void render(bool selectMode);
 
 	void drawGrid(bool selectMode =false);
 

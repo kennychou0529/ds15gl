@@ -28,7 +28,7 @@ void DSScene::show(bool selectMode) {
        
     }
 	actors.render(selectMode);
-    map.renderGrid(selectMode);
+    map.render(selectMode);
 
     //dsShowLightSource();    
 	dsShowAxes();

@@ -1,4 +1,6 @@
 ﻿#include "dsMap.h"
+#include "dsTexture.h"
+
 #include <iostream>
 #include <cstring>
 
@@ -6,11 +8,11 @@ GLfloat DSMap::grid_size = 10.0f;
 
 // 从数组初始化一张地图
 void DSMap::init(size_t _x_max, size_t _y_max, TileType* _data) {
-    object_manager.loadAllObjects();
-
     x_max = _x_max;
     y_max = _y_max;
 
+    object_manager.loadAllObjects();
+    texture_ID_plain = dsLoadTextureBMP2D("data/images/plain.bmp");
     loadDisplayLists();
 
     if (data != nullptr) {
@@ -44,10 +46,10 @@ void DSMap::drawGrid(bool selectMode) {
             }
             glBegin(GL_POLYGON);
             {
-                glVertex3f(x,             y,             0.0f);
-                glVertex3f(x + grid_size, y,             0.0f);
-                glVertex3f(x + grid_size, y + grid_size, 0.0f);
-                glVertex3f(x,             y + grid_size, 0.0f);
+                glVertex3f(x,             y,             0.1f);
+                glVertex3f(x + grid_size, y,             0.1f);
+                glVertex3f(x + grid_size, y + grid_size, 0.1f);
+                glVertex3f(x,             y + grid_size, 0.1f);
             }
             glEnd();
             y += grid_size;
@@ -60,7 +62,7 @@ void DSMap::drawGrid(bool selectMode) {
 
 }
 
-void DSMap::renderGrid(bool selectMode) {
+void DSMap::render(bool selectMode) {
     renderTiles();
     if (selectMode) {
         drawGrid(true);
@@ -77,6 +79,7 @@ void DSMap::renderTile(size_t x_index, size_t y_index) {
     switch (data[y_index * x_max + x_index]) {
     case barrier:
         glTranslatef(x, y, 0.0f);
+        glCallList(display_lists[plain]);
         glCallList(display_lists[barrier]);
         glTranslatef(-x, -y, 0.0f);
         break;
@@ -90,6 +93,10 @@ void DSMap::renderTile(size_t x_index, size_t y_index) {
         glCallList(display_lists[temple]);
         glTranslatef(-x, -y, 0.0f);
         break;
+    case plain:
+        glTranslatef(x, y, 0.0f);
+        glCallList(display_lists[plain]);
+        glTranslatef(-x, -y, 0.0f);
     default:
         break;
     }
@@ -135,6 +142,32 @@ void DSMap::loadDisplayLists() {
     glPopAttrib();
     glEndList();
     // Grids: end
+
+    // Plain: begin
+    display_lists[plain] = glGenLists(1);
+    glNewList(display_lists[plain], GL_COMPILE);
+    glPushAttrib(GL_ENABLE_BIT);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture_ID_plain);
+    glBegin(GL_QUADS);
+    {
+        glTexCoord2f(0.0f, 0.0f);
+        glVertex3f(- grid_size / 2.0f, - grid_size / 2.0f, 0.0f);
+
+        glTexCoord2f(1.0f, 0.0f);
+        glVertex3f(+ grid_size / 2.0f, - grid_size / 2.0f, 0.0f);
+
+        glTexCoord2f(1.0f, 1.0f);
+        glVertex3f(+ grid_size / 2.0f, + grid_size / 2.0f, 0.0f);
+
+        glTexCoord2f(0.0f, 1.0f);
+        glVertex3f(- grid_size / 2.0f, + grid_size / 2.0f, 0.0f);
+    }
+    glEnd();
+    glPopAttrib();
+    glEndList();
+    // Plain: end
 
     // Trap: begin
     display_lists[trap] = glGenLists(1);
