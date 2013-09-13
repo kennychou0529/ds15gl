@@ -54,7 +54,7 @@ void DSStatusBar::show() {
         }
         glPopMatrix();
 
-        glPushMatrix();
+		glPushMatrix();
         {
             glEnable(GL_TEXTURE_2D);
             glBindTexture(GL_TEXTURE_2D, logo_tex);
@@ -89,7 +89,16 @@ void DSStatusBar::show() {
             dstext_small.print(40.0, 30.0, L"Eye position");
         }
         glPopMatrix();
-
+		//让我们写一下被选中人物的信息
+		glPushMatrix();
+		{
+			//std::stringstream o;
+			os.str(L"");
+			os<<frame.actors.selectInfo();
+			glLoadIdentity();
+			dstext_small.print(8.0, 400.0, os.str());
+		}
+		glPopMatrix();
         /*os.str(L"");
         os << frame.actors.list["mage"].winx << L", "
             << frame.actors.list["mage"].winy << L", "

@@ -6,6 +6,7 @@
 #include <string>
 #include "dsModel.h"
 #include "dsTimer.h"
+#include <sstream>
 
 // 士兵
 class dsSoldier {
@@ -84,6 +85,13 @@ public:
     void hpBar(GLfloat x, GLfloat y, GLfloat z);
 
     void hpBar2();
+
+	std::wstring getInfo(){
+		std::wostringstream os;
+		os<< L"HP     :"<<hp<<" / "<<hp_max<<L"\n";
+		os<< "Location:"<<current_position[0]<<","<<current_position[1]<<"\n";
+		return os.str();
+	}
 
 private:
 	int idNumber;				//为了启用选择模式，应该有一个编号

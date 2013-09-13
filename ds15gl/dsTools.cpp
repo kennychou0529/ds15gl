@@ -177,6 +177,7 @@ void processHits(GLint hits, GLuint buffer[]) {
                 printf("选中了[%d,%d]格子", x, y);
 			}else if(*ptr > 1000 && *ptr <= 1100){
 				printf(("选中了士兵"+ frame.actors.intToString[*ptr-1000]).c_str());
+				frame.actors.selectSoldier = frame.actors.intToString[*ptr-1000];
 			}
             ptr++;
         }
@@ -191,9 +192,10 @@ void dsMouseFunc(int button, int state, int x, int y) {
     GLint hits;
 
     GLint viewport[4];
-    if (button != GLUT_LEFT_BUTTON || state != GLUT_DOWN) {
+    if ( state != GLUT_DOWN) {
         return;
     }
+	if(button == GLUT_LEFT_BUTTON){
     printf("left clicked at(%d,%d)", x, y);
     glViewport(0, 0, window_width - status_bar_width, window_height);
     glGetIntegerv(GL_VIEWPORT, viewport);    //初始化名称堆栈
@@ -222,7 +224,11 @@ void dsMouseFunc(int button, int state, int x, int y) {
     hits = glRenderMode(GL_RENDER);
     printf(" hits = %d \n", hits);
     processHits(hits, selectBuf);
-    glutPostRedisplay();
+	glutPostRedisplay();
+	}
+	if(button == GLUT_RIGHT_BUTTON){
+		frame.actors.selectSoldier.clear();
+	}
 
 }
 //效果不理想
