@@ -6,6 +6,7 @@
 #include "dsSoldier.h"
 #include "dsScript.h"
 
+
 typedef std::map<std::string, dsSoldier> SOLDIERS;
 
 class DSActorManager {
@@ -19,7 +20,7 @@ public:
     void initialize();
 
     //渲染
-    void render();
+    void render(bool selectMode);
 
     //每回合读脚本，更新人物信息，
     void update();
@@ -34,9 +35,10 @@ public:
     int script_playing;
     bool round_finished;
     bool all_finished;
-    
+    std::map<int, string> intToString;
 private:
     SOLDIERS list;
+	
     DSScript script;
     int round;
 };

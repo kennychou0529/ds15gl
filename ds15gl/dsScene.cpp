@@ -25,9 +25,9 @@ void DSScene::show(bool selectMode) {
 
         glEnable(GL_LIGHTING);
         //object_manager.objects["banana"].render();
-        actors.render();
+       
     }
-
+	actors.render(selectMode);
     map.renderGrid(selectMode);
 
     //dsShowLightSource();    

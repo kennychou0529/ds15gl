@@ -12,11 +12,13 @@ static const GLfloat pi = 3.1415926f;
 
 extern DSFrame frame;
 
-dsSoldier::dsSoldier() :
+dsSoldier::dsSoldier(int _idNumber) :
     move_speed(20.0f),
     scale(0.2f),
     angle(0.0f),
-    playing(nullptr) {
+    playing(nullptr),
+	idNumber(_idNumber)
+{
     enterStatus(idle);
     footsteps = 0;
     hp = 15;
@@ -113,7 +115,11 @@ void dsSoldier::enterStatus(Status status_to_enter, int* script_playing) {
 
 }
 
-void dsSoldier::animate() {
+void dsSoldier::animate(bool selectMode) {
+
+    if (selectMode) {
+        glPushName(idNumber+1000);
+    }
     glPushMatrix();
     {
         GLfloat x, y;
@@ -192,6 +198,9 @@ void dsSoldier::animate() {
         } // endif
     }
     glPopMatrix();
+    if (selectMode) {
+        glPopName();
+    }
 }
 
 void dsSoldier::load(
@@ -363,8 +372,9 @@ void dsSoldier::hpBar2() {
     GLdouble dir2[3];
     dsDiff3dv(center, eye, dir1);
     dsDiff3dv(point, eye, dir2);
-    if (dsDot3dv(dir1, dir2) < 0)
+    if (dsDot3dv(dir1, dir2) < 0) {
         return;
+    }
 
     GLdouble projection_matrix[16];
     glGetDoublev(GL_PROJECTION_MATRIX, projection_matrix);

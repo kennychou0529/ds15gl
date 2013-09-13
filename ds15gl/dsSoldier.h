@@ -20,7 +20,7 @@ public:
         disappear   // 不绘制
     };
 
-    dsSoldier();
+    dsSoldier(int _idNumber  = 0);
 
     // 绘制帧 frame_index
     void renderFrame(size_t frame_index) const;
@@ -50,7 +50,7 @@ public:
 
     void enterStatus(Status status_to_enter, int* script_playing = nullptr);
 
-    void animate();
+    void animate(bool selectMode);
 
     void hpReduce(size_t reduce) {
         hp -= reduce;
@@ -86,6 +86,8 @@ public:
     void hpBar2();
 
 private:
+	int idNumber;				//为了启用选择模式，应该有一个编号
+
     int hp;
     int hp_max;
 

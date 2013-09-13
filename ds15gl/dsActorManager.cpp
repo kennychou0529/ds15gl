@@ -11,13 +11,16 @@ DSActorManager::DSActorManager() :
 DSActorManager::~DSActorManager() {}
 
 void DSActorManager::insertSoldier(const std::string& soldier_name) {
-    list.insert(std::make_pair(soldier_name, dsSoldier()));
+	static int counter = 1;
+    list.insert(std::make_pair(soldier_name, dsSoldier(counter)));
     list[soldier_name].load(soldier_name);
     list[soldier_name].enterStatus(dsSoldier::Status::idle);
+	intToString[counter++] = soldier_name;
 }
 
 //加载人物
 void DSActorManager::initialize() {
+	
     insertSoldier("sword_man");
     list["sword_man"].setPosition(0, 0);
 
@@ -47,14 +50,14 @@ void DSActorManager::initialize() {
 }
 
 //渲染
-void DSActorManager::render() {
+void DSActorManager::render(bool selectMode) {
     update();
 
     glPushMatrix();
     {
         for (auto & soldier : list) {
             glEnable(GL_LIGHTING);
-            soldier.second.animate();
+            soldier.second.animate(selectMode);
             //soldier.second.hpBar2();
         }
         //list["mage"].hpBar2();
