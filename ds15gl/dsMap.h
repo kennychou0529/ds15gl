@@ -46,6 +46,9 @@ public:
     // 绘制一个格子
     void renderTile(size_t x_index, size_t y_index);
 
+    // 绘制所有
+    void renderTiles();
+
     // 输入格子坐标，给出绘图实际坐标
     void getCoords(
         size_t x_index,
