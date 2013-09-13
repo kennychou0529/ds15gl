@@ -17,8 +17,7 @@ dsSoldier::dsSoldier(int _idNumber) :
     scale(0.2f),
     angle(0.0f),
     playing(nullptr),
-	idNumber(_idNumber)
-{
+    idNumber(_idNumber) {
     enterStatus(idle);
     footsteps = 0;
     hp = 15;
@@ -118,7 +117,7 @@ void dsSoldier::enterStatus(Status status_to_enter, int* script_playing) {
 void dsSoldier::animate(bool selectMode) {
 
     if (selectMode) {
-        glPushName(idNumber+1000);
+        glPushName(idNumber + 1000);
     }
     glPushMatrix();
     {

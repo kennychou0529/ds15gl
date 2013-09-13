@@ -20,7 +20,7 @@ void DSMap::init(size_t _x_max, size_t _y_max, TileType* _data) {
     }
     data = new TileType[x_max * y_max];
     for (int i = 0; i < x_max * y_max; i++) {
-        data[i] = barrier;
+        data[i] = plain;
     }
     return;
     std::memcpy(data, _data, sizeof(TileType) * x_max * y_max);
@@ -44,6 +44,7 @@ void DSMap::drawGrid(bool selectMode) {
             if (selectMode) {
                 glLoadName(y_index * x_max + x_index);
             }
+            glColor4ub(255, 255, 255, 150);
             glBegin(GL_POLYGON);
             {
                 glVertex3f(x,             y,             0.1f);
