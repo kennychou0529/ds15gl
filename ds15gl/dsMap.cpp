@@ -8,21 +8,10 @@ GLfloat DSMap::grid_size = 10.0f;
 void DSMap::init(size_t _x_max, size_t _y_max, TileType* _data) {
     object_manager.loadAllObjects();
 
-    loadDisplayLists();
-
     x_max = _x_max;
     y_max = _y_max;
 
-    display_list_grids = glGenLists(1);
-    glNewList(display_list_grids, GL_COMPILE);
-    glPushAttrib(GL_ALL_ATTRIB_BITS);
-    glDisable(GL_LIGHTING);
-    glDisable(GL_TEXTURE_2D);
-    glLineWidth(1.0);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    drawGrid();
-    glPopAttrib();
-    glEndList();
+    loadDisplayLists();
 
     if (data != nullptr) {
         delete[] data;
@@ -134,6 +123,19 @@ void DSMap::getCoords(
 }
 
 void DSMap::loadDisplayLists() {
+    // Grids: begin
+    display_list_grids = glGenLists(1);
+    glNewList(display_list_grids, GL_COMPILE);
+    glPushAttrib(GL_ALL_ATTRIB_BITS);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_TEXTURE_2D);
+    glLineWidth(1.0);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    drawGrid();
+    glPopAttrib();
+    glEndList();
+    // Grids: end
+
     // Trap: begin
     display_lists[trap] = glGenLists(1);
     glNewList(display_lists[trap], GL_COMPILE);

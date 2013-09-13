@@ -81,6 +81,8 @@ private:
     TileType* data;
     GLuint display_lists[8];
     GLuint display_list_grids;
+
+    GLuint texture_ID_plain;
 };
 
 #endif
