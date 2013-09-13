@@ -72,7 +72,7 @@ void DSMap::drawGrid(bool selectMode) {
 }
 
 void DSMap::renderGrid(bool selectMode) {
-    renderTile(0, 0);
+    renderTiles();
     if (selectMode) {
         drawGrid(true);
     } else {
@@ -85,7 +85,7 @@ void DSMap::renderTile(size_t x_index, size_t y_index) {
     GLfloat x, y;
     getCoords(x_index, y_index, &x, &y);
 
-    switch (data[x_index * y_max + x_index]) {
+    switch (data[y_index * y_max + x_index]) {
     case barrier:
         glTranslatef(x, y, 0.0f);
         glCallList(display_lists[barrier]);
@@ -105,6 +105,12 @@ void DSMap::renderTile(size_t x_index, size_t y_index) {
         break;
     }
 
+}
+
+void DSMap::renderTiles() {
+    for (size_t x = 0; x < x_max; ++x)
+        for (size_t y = 0; y < y_max; ++y)
+            renderTile(x, y);
 }
 
 void DSMap::getCoords(
