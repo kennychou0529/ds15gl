@@ -41,11 +41,11 @@
 
   <object name="cannon">
     <model>
-      <tris>data/cannon/cannon.md2</tris>
-      <skin>data/cannon/cannon.bmp</skin>
+      <tris>data/cannon/kanon.md2</tris>
+      <skin>data/cannon/kanon.bmp</skin>
     </model>
     <translate>0</translate>
-    <scale>0.1</scale>
+    <scale>0.03</scale>
   </object>
 
   <object name="pallete">

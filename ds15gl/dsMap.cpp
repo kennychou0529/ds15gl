@@ -20,7 +20,7 @@ void DSMap::init(size_t _x_max, size_t _y_max, TileType* _data) {
     }
     data = new TileType[x_max * y_max];
     for (int i = 0; i < x_max * y_max; i++) {
-        data[i] = facility;
+        data[i] = plain;
     }
     return;
     std::memcpy(data, _data, sizeof(TileType) * x_max * y_max);
@@ -100,10 +100,19 @@ void DSMap::renderTile(size_t x_index, size_t y_index) {
         glTranslatef(x, y, 0.0f);
         glCallList(display_lists[plain]);
         glTranslatef(-x, -y, 0.0f);
+        break;
     case facility:
         glTranslatef(x, y, 0.0f);
+        glCallList(display_lists[plain]);
         glCallList(display_lists[facility]);
         glTranslatef(-x, -y, 0.0f);
+        break;
+    case cannon:
+        glTranslatef(x, y, 0.0f);
+        glCallList(display_lists[plain]);
+        glCallList(display_lists[cannon]);
+        glTranslatef(-x, -y, 0.0f);
+        break;
     default:
         break;
     }
@@ -112,8 +121,9 @@ void DSMap::renderTile(size_t x_index, size_t y_index) {
 
 void DSMap::renderTiles() {
     for (size_t x = 0; x < x_max; ++x)
-        for (size_t y = 0; y < y_max; ++y)
+        for (size_t y = 0; y < y_max; ++y) {
             renderTile(x, y);
+        }
 }
 
 void DSMap::getCoords(
@@ -159,6 +169,8 @@ void DSMap::loadDisplayLists() {
     glBindTexture(GL_TEXTURE_2D, texture_ID_plain);
     glBegin(GL_QUADS);
     {
+        glNormal3f(0.0f, 0.0f, 1.0f);
+
         glTexCoord2f(0.0f, 0.0f);
         glVertex3f(- grid_size / 2.0f, - grid_size / 2.0f, 0.0f);
 
@@ -222,4 +234,26 @@ void DSMap::loadDisplayLists() {
     glPopMatrix();
     glEndList();
     // Barrier: end
+
+    // Cannon: begin
+    GLfloat cannon_move = grid_size * 0.7f / 2;
+    display_lists[cannon] = glGenLists(1);
+    glNewList(display_lists[cannon], GL_COMPILE);
+    glTranslatef(0.0f, - cannon_move, 0.0f);
+    object_manager.objects["cannon"].render();
+    glTranslatef(cannon_move, cannon_move, 0.0f);
+    glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
+    object_manager.objects["cannon"].render();
+    glRotatef(-90.0f, 0.0f, 0.0f, 1.0f);
+    glTranslatef(- cannon_move, cannon_move, 0.0f);
+    glRotatef(180.0f, 0.0f, 0.0f, 1.0f);
+    object_manager.objects["cannon"].render();
+    glRotatef(-180.0f, 0.0f, 0.0f, 1.0f);
+    glTranslatef(- cannon_move, - cannon_move, 0.0f);
+    glRotatef(-90.0f, 0.0f, 0.0f, 1.0f);
+    object_manager.objects["cannon"].render();
+    glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
+    glTranslatef(cannon_move, 0.0f, 0.0f);
+    glEndList();
+    // Cannon: end
 }
