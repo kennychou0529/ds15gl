@@ -7,7 +7,7 @@
 
 #define TEMPLE_UP_TIME 9
 #define TURRET_SCORE_TIME 5
-#define TRAP_COST 3;
+#define TRAP_COST 3
 #define GEAR_MAX_NUMBER 5
 #define TEMPLE_MAX_NUMBER 5
 
