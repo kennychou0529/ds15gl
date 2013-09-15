@@ -20,7 +20,7 @@ void DSMap::init(size_t _x_max, size_t _y_max, TileType* _data) {
     }
     data = new TileType[x_max * y_max];
     for (int i = 0; i < x_max * y_max; i++) {
-        data[i] = plain;
+        data[i] = facility;
     }
     return;
     std::memcpy(data, _data, sizeof(TileType) * x_max * y_max);
@@ -86,17 +86,23 @@ void DSMap::renderTile(size_t x_index, size_t y_index) {
         break;
     case trap:
         glTranslatef(x, y, 0.0f);
+        glCallList(display_lists[plain]);
         glCallList(display_lists[trap]);
         glTranslatef(-x, -y, 0.0f);
         break;
     case temple:
         glTranslatef(x, y, 0.0f);
+        glCallList(display_lists[plain]);
         glCallList(display_lists[temple]);
         glTranslatef(-x, -y, 0.0f);
         break;
     case plain:
         glTranslatef(x, y, 0.0f);
         glCallList(display_lists[plain]);
+        glTranslatef(-x, -y, 0.0f);
+    case facility:
+        glTranslatef(x, y, 0.0f);
+        glCallList(display_lists[facility]);
         glTranslatef(-x, -y, 0.0f);
     default:
         break;
@@ -198,6 +204,13 @@ void DSMap::loadDisplayLists() {
     object_manager.objects["temple"].render();
     glEndList();
     // Temple: end
+
+    // Facility: begin
+    display_lists[facility] = glGenLists(1);
+    glNewList(display_lists[facility], GL_COMPILE);
+    object_manager.objects["pallete"].render();
+    glEndList();
+    // Facility: end
 
     // Barrier: begin
     display_lists[barrier] = glGenLists(1);

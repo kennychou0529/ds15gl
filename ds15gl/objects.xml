@@ -47,4 +47,13 @@
     <translate>0</translate>
     <scale>0.1</scale>
   </object>
+
+  <object name="pallete">
+    <model>
+      <tris>data/pallete/pallete.md2</tris>
+      <skin>data/pallete/pallete.bmp</skin>
+    </model>
+    <translate>0</translate>
+    <scale>0.18</scale>
+  </object>
 </objects>
