@@ -175,10 +175,10 @@ void processHits(GLint hits, GLuint buffer[]) {
                 int x, y;
                 frame.scene.map.getXY(*ptr, &x, &y);
                 printf("选中了[%d,%d]格子", x, y);
-			}else if(*ptr > 1000 && *ptr <= 1100){
-				printf(("选中了士兵"+ frame.actors.intToString[*ptr-1000]).c_str());
-				frame.actors.selectSoldier = frame.actors.intToString[*ptr-1000];
-			}
+            } else if (*ptr > 1000 && *ptr <= 1100) {
+                printf(("选中了士兵" + frame.actors.intToString[*ptr - 1000]).c_str());
+                frame.actors.selectSoldier = frame.actors.intToString[*ptr - 1000];
+            }
             ptr++;
         }
         printf("\n");
@@ -192,43 +192,43 @@ void dsMouseFunc(int button, int state, int x, int y) {
     GLint hits;
 
     GLint viewport[4];
-    if ( state != GLUT_DOWN) {
+    if (state != GLUT_DOWN) {
         return;
     }
-	if(button == GLUT_LEFT_BUTTON){
-    printf("left clicked at(%d,%d)", x, y);
-    glViewport(0, 0, window_width - status_bar_width, window_height);
-    glGetIntegerv(GL_VIEWPORT, viewport);    //初始化名称堆栈
-    glSelectBuffer(SIZE, selectBuf);
-    glRenderMode(GL_SELECT);
-    glInitNames();
-    glPushName(1000);
+    if (button == GLUT_LEFT_BUTTON) {
+        printf("left clicked at(%d,%d)", x, y);
+        glViewport(0, 0, window_width - status_bar_width, window_height);
+        glGetIntegerv(GL_VIEWPORT, viewport);    //初始化名称堆栈
+        glSelectBuffer(SIZE, selectBuf);
+        glRenderMode(GL_SELECT);
+        glInitNames();
+        glPushName(1000);
 
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();     // 定义一个以光标为中心的NxN拾取区域     // 必须对
+        glMatrixMode(GL_PROJECTION);
+        glPushMatrix();
+        glLoadIdentity();     // 定义一个以光标为中心的NxN拾取区域     // 必须对
 
-    //鼠标y坐标求反，从屏幕坐标系转换成世界坐标系
-    gluPickMatrix(x, viewport[3] - y, N, N, viewport);
-    //gluOrtho2D(-2, 2, -2, 2);
-    gluPerspective(60, (window_width - status_bar_width) / double(window_height), 0.2, 20000);
-    glMatrixMode(GL_MODELVIEW);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glLoadIdentity();
-    dsSetEye();
-    //drawObjects(GL_SELECT);
-    frame.display(true);
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glFlush();
-    hits = glRenderMode(GL_RENDER);
-    printf(" hits = %d \n", hits);
-    processHits(hits, selectBuf);
-	glutPostRedisplay();
-	}
-	if(button == GLUT_RIGHT_BUTTON){
-		frame.actors.selectSoldier.clear();
-	}
+        //鼠标y坐标求反，从屏幕坐标系转换成世界坐标系
+        gluPickMatrix(x, viewport[3] - y, N, N, viewport);
+        //gluOrtho2D(-2, 2, -2, 2);
+        gluPerspective(60, (window_width - status_bar_width) / double(window_height), 0.2, 20000);
+        glMatrixMode(GL_MODELVIEW);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glLoadIdentity();
+        dsSetEye();
+        //drawObjects(GL_SELECT);
+        frame.display(true);
+        glMatrixMode(GL_PROJECTION);
+        glPopMatrix();
+        glFlush();
+        hits = glRenderMode(GL_RENDER);
+        printf(" hits = %d \n", hits);
+        processHits(hits, selectBuf);
+        glutPostRedisplay();
+    }
+    if (button == GLUT_RIGHT_BUTTON) {
+        frame.actors.selectSoldier.clear();
+    }
 
 }
 //效果不理想

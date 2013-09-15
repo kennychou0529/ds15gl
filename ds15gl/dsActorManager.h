@@ -27,7 +27,9 @@ public:
     //每回合读脚本，更新人物信息，
     void update();
 
-    int getCurrentRound() { return round; }
+    int getCurrentRound() {
+        return round;
+    }
 
     void enterNextRound() {
         ++round;
@@ -38,17 +40,19 @@ public:
     bool round_finished;
     bool all_finished;
     std::map<int, string> intToString;
-	string selectSoldier;
+    string selectSoldier;
 
-	std::wstring selectInfo(){
-		std::wostringstream info;
-		if (selectSoldier.empty()) return L"NOT SELECT";
-		info << selectSoldier.c_str()  <<":\n";
-		info << list[selectSoldier].getInfo();
-		return info.str();
-	}
+    std::wstring selectInfo() {
+        std::wostringstream info;
+        if (selectSoldier.empty()) {
+            return L"NOT SELECT";
+        }
+        info << selectSoldier.c_str()  << ":\n";
+        info << list[selectSoldier].getInfo();
+        return info.str();
+    }
 private:
-    SOLDIERS list;	
+    SOLDIERS list;
     DSScript script;
     int round;
 };
