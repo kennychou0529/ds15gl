@@ -48,7 +48,7 @@ public:
     // 绘制地图网格
     void render(bool selectMode);
 
-	void drawGrid(bool selectMode =false);
+	void renderGrids(bool selectMode =false);
 
     // 绘制一个格子
     void renderTile(size_t x_index, size_t y_index);

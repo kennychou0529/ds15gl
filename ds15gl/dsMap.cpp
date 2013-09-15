@@ -20,7 +20,7 @@ void DSMap::init(size_t _x_max, size_t _y_max, TileType* _data) {
     }
     data = new TileType[x_max * y_max];
     for (int i = 0; i < x_max * y_max; i++) {
-        data[i] = plain;
+        data[i] = forest;
     }
     return;
     std::memcpy(data, _data, sizeof(TileType) * x_max * y_max);
@@ -31,7 +31,7 @@ DSMap::~DSMap() {
     delete[] data;
 }
 
-void DSMap::drawGrid(bool selectMode) {
+void DSMap::renderGrids(bool selectMode) {
     GLfloat x = - grid_size * x_max / 2;
     GLfloat y;
     if (selectMode) {
@@ -66,7 +66,7 @@ void DSMap::drawGrid(bool selectMode) {
 void DSMap::render(bool selectMode) {
     renderTiles();
     if (selectMode) {
-        drawGrid(true);
+        renderGrids(true);
     } else {
         glCallList(display_list_grids);
     }
@@ -113,6 +113,15 @@ void DSMap::renderTile(size_t x_index, size_t y_index) {
         glCallList(display_lists[cannon]);
         glTranslatef(-x, -y, 0.0f);
         break;
+    case forest:
+        glTranslatef(x, y, 0.0f);
+        glCallList(display_lists[plain]);
+        glRotatef(45.0f, 0.0f, 0.0f, 1.0f);
+        glCallList(display_lists[forest]);
+        glRotatef(-45.0f, 0.0f, 0.0f, 1.0f);
+        glCallList(display_lists[plain]);
+        glTranslatef(-x, -y, 0.0f);
+        break;
     default:
         break;
     }
@@ -155,7 +164,7 @@ void DSMap::loadDisplayLists() {
     glDisable(GL_TEXTURE_2D);
     glLineWidth(1.0);
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    drawGrid();
+    renderGrids();
     glPopAttrib();
     glEndList();
     // Grids: end
@@ -187,6 +196,14 @@ void DSMap::loadDisplayLists() {
     glPopAttrib();
     glEndList();
     // Plain: end
+
+    // Forest: begin
+    display_lists[forest] = glGenLists(1);
+    glNewList(display_lists[forest], GL_COMPILE);
+    object_manager.objects["plant2"].render();
+    // object_manager.objects["banana"].render();
+    glEndList();
+    // Forest: end
 
     // Trap: begin
     display_lists[trap] = glGenLists(1);

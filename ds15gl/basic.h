@@ -121,7 +121,7 @@ typedef struct round_begin_info {
     // 队伍号（0或1）
     int team_number;
 
-    //移动单位，表示本队伍中第 move_id 个人
+    // 移动单位，表示本队伍中第 move_id 个人
     int move_id;
 
     // 该士兵可移动范围数组
@@ -240,7 +240,7 @@ Position* move_range(int team_number, int move_id) {
     return result;
 }
 
-//搜索单位可攻击对象
+// 搜索单位可攻击对象
 int* attack_range(int team_number, int move_id, Position* move_range) {
     int* result = (int*)(malloc(SOLDIERS_NUMBER * sizeof(int)));
     Position end = { -1, -1}, pos;
