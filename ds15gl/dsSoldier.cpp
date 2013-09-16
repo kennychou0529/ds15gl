@@ -12,6 +12,7 @@ static const GLfloat pi = 3.1415926f;
 
 extern DSFrame frame;
 
+
 dsSoldier::dsSoldier(int _idNumber) :
     move_speed(20.0f),
     scale(0.2f),
@@ -19,7 +20,6 @@ dsSoldier::dsSoldier(int _idNumber) :
     playing(nullptr),
     idNumber(_idNumber) {
     enterStatus(idle);
-    footsteps = 0;
     hp = 15;
     hp_max = 15;
 }
@@ -94,15 +94,15 @@ void dsSoldier::enterStatus(Status status_to_enter, int* script_playing) {
     case dsSoldier::idle:
         break;
     case dsSoldier::running:
-        footsteps = frame.sounds.playSound(1, x, y, 0);
+        sound._run_record = frame.sounds.playSound(sound._run, x, y, 0);
         break;
     case dsSoldier::attacking:
         break;
     case dsSoldier::pain:
-        frame.sounds.playSound(2, x, y, 1);
+        frame.sounds.playSound(sound._pain, x, y, 1);
         break;
     case dsSoldier::dying:
-        frame.sounds.playSound(2, x, y, 1);
+        frame.sounds.playSound(sound._dying, x, y, 1);
         break;
     case dsSoldier::died:
         break;
@@ -171,10 +171,10 @@ void dsSoldier::animate(bool selectMode) {
                 pos = target;
                 setPosition(target_position[0], target_position[1]);
                 enterStatus(idle, playing);
-                frame.sounds.stop(footsteps); //结束脚步声
+                frame.sounds.stop(sound._run_record); //结束脚步声
             }
             //声源跟随人物
-            DSSoundManager::changePosition(footsteps, x, y);
+            DSSoundManager::changePosition(sound._run_record, x, y);
 
         } else if (status == attacking || status == pain) {
             frame.scene.map.getCoords(

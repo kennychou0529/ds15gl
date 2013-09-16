@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sounds>
+  <sound id="0" type="background">data/sound/test.mp3</sound>
+  <sound_group id="default">
+     <sound type="move" id="1">data/sound/footsteps.wav</sound>
+     <sound type="pain" id="2">data/sound/hited.wav</sound>
+  </sound_group>
+  <sound_group id="tank">
+     <sound type="move" id="3">data/sound/footsteps.wav</sound>
+     <sound type="pain" id="4">data/sound/hited.wav</sound>
+  </sound_group>
+      
+</sounds>

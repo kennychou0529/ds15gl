@@ -8,6 +8,17 @@
 #include "dsTimer.h"
 #include <sstream>
 
+
+struct SoundIDandSource{
+	int _run;
+	unsigned int _run_record;
+	int _pain;
+	int _fight;
+	int _dying;
+};
+
+//unsigned int footsteps;     //脚步声
+
 // 士兵
 class dsSoldier {
 public:
@@ -22,6 +33,10 @@ public:
     };
 
     dsSoldier(int _idNumber  = 0);
+
+	void setSounds(SoundIDandSource _soundsGroup){
+		sound = _soundsGroup;
+	}
 
     // 绘制帧 frame_index
     void renderFrame(size_t frame_index) const;
@@ -93,6 +108,8 @@ public:
 		return os.str();
 	}
 
+	
+
 private:
 	int idNumber;				//为了启用选择模式，应该有一个编号
 
@@ -126,8 +143,9 @@ private:
     // 各个状态的起止帧号与播放速度 <frame_beg, frame_end, fps>
     std::tuple<size_t, size_t, size_t> frame_set[6];
 
-    unsigned int footsteps;     //脚步声
+	SoundIDandSource sound;
 
-};
+   };
+
 
 #endif

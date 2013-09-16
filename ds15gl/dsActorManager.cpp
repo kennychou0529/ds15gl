@@ -1,5 +1,7 @@
 ﻿#include "dsActorManager.h"
+#include "dsSoundManager.h"
 #include "dsEye.h"
+#include "dsFrame.h"
 
 DSActorManager::DSActorManager() :
     round(0),
@@ -10,12 +12,21 @@ DSActorManager::DSActorManager() :
 
 DSActorManager::~DSActorManager() {}
 
+extern DSFrame frame;
+
 void DSActorManager::insertSoldier(const std::string& soldier_name) {
     static int counter = 1;
     list.insert(std::make_pair(soldier_name, dsSoldier(counter)));
     list[soldier_name].load(soldier_name);
     list[soldier_name].enterStatus(dsSoldier::Status::idle);
     intToString[counter++] = soldier_name;
+
+	if(frame.sounds.soundgroups.find(soldier_name)!=frame.sounds.soundgroups.end()){
+		list[soldier_name].setSounds(frame.sounds.soundgroups[soldier_name]);
+	}else
+	{
+		list[soldier_name].setSounds(DSSoundManager::default);
+	}
 }
 
 //加载人物

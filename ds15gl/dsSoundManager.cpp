@@ -9,9 +9,9 @@ void Clip::append() {
     } else {
         type = 0;
 
-		ALuint sourceIndex = 0;
-		ALuint tempBuffer ;
-        
+        ALuint sourceIndex = 0;
+        ALuint tempBuffer ;
+
         tempBuffer = alutCreateBufferFromFile(fileName);
 
         if ((alError = alGetError()) != AL_NO_ERROR) {
@@ -41,20 +41,21 @@ void Clip::append() {
             alDeleteBuffers(1, &tempBuffer);
             return ;
         }
-		
+
         if (tempSource != AL_NONE) {
-			//循环播放
-			if(loop)
-				alSourcei(tempSource, AL_LOOPING, AL_TRUE);
-			alSourcef(tempSource, AL_GAIN, 1.0f);
-			alSourcef(tempSource, AL_PITCH, 1.0f);
+            //循环播放
+            if (loop) {
+                alSourcei(tempSource, AL_LOOPING, AL_TRUE);
+            }
+            alSourcef(tempSource, AL_GAIN, 50.0f);
+            alSourcef(tempSource, AL_PITCH, 1.0f);
             sources.push_back(tempSource);
         }
     }
 }
 
-Clip::Clip(char* fileName,bool loop) {
-	this->loop= loop;
+Clip::Clip(const char* fileName, bool loop) {
+    this->loop = loop;
     strcpy_s(this->fileName , fileName);
     append();
     //append();
@@ -110,7 +111,7 @@ ALuint Clip::play(float x, float y, float z, float vx, float vy, float vz) {
         alSourcefv(sourceIndex, AL_POSITION, sourcePos);
         alSourcefv(sourceIndex, AL_VELOCITY, sourceVel);
 
-       
+
 
         alSourcePlay(sourceIndex);
         if ((alError = alGetError()) != AL_NO_ERROR) {
@@ -200,6 +201,8 @@ int playMP3(char* fileName, bool* running) {
         alBufferData(g_Buffers[iLoop], ulFormat, pData, ulBytesWritten, ulFrequency);
         alSourceQueueBuffers(uiSource, 1, &g_Buffers[iLoop]);
     }
+
+    alSourcef(uiSource, AL_GAIN, 0.5f);
     alSourcePlay(uiSource);
     iTotalBuffersProcessed = 0;
     printf("playing\n");
@@ -274,15 +277,16 @@ DSSoundManager::~DSSoundManager(void) {
     clipMap.clear();
 }
 
-void DSSoundManager::addSound(unsigned int id, char* fileName,bool loop) {
-    Clip* clip = new Clip(fileName,loop);
+void DSSoundManager::addSound(unsigned int id, const char* fileName, bool loop) {
+    Clip* clip = new Clip(fileName, loop);
     clipMap.insert(ClipMap::value_type(id, clip));
 }
 
 void DSSoundManager::stop(ALuint sourceIndex) {
     alGetError();
-	if(!alIsSource(sourceIndex)) 
-		return;
+    if (!alIsSource(sourceIndex)) {
+        return;
+    }
     alSourceStop(sourceIndex);
     if (alError = alGetError() != AL_NO_ERROR) {
         DSSoundManager::displayALError("stop", alError);
@@ -298,11 +302,11 @@ ALuint DSSoundManager::playSound(unsigned int id, float x, float y, float z, flo
 }
 
 
-void DSSoundManager::changePosition(ALuint source, float x, float y, float z){
-	if (alIsSource(source)){
-		alSource3f(source,AL_POSITION,x,y,z);
-	}
-	
+void DSSoundManager::changePosition(ALuint source, float x, float y, float z) {
+    if (alIsSource(source)) {
+        alSource3f(source, AL_POSITION, x, y, z);
+    }
+
 }
 
 void DSSoundManager::setListenerPosition(ALfloat x, ALfloat y, ALfloat z) {
@@ -322,30 +326,56 @@ void DSSoundManager::displayALError(char* func, ALenum alError) {
 }
 
 
+SoundIDandSource DSSoundManager::default = {1, 0, 2, 2, 2};
+
 void DSSoundManager::loadSounds() {
-    /**/
-    //  // 注释待添加
-    //  */
-    //addSound(0, "data/sound/test.mp3");
-    //  /*alSourcePlay(backgroundSound);*/
-    //
-    addSound(1, "data/sound/footsteps.wav");
-	addSound(2, "data/sound/hited.wav",false);
-    //
-    //  // 注释待添加
-    //
-    //playSound(0, 0, 0, 0, 0, 1, 0);
-    //playSound(1, 0, 0, 0, 0, 1, 0);
-    //      //alutSleep(1);
+    ////背景音乐
+    //   addSound(0, "data/sound/test.mp3");
+    ////默认音效
+    //   addSound(1, "data/sound/footsteps.wav");
+    //addSound(2, "data/sound/hited.wav",false);
+    tinyxml2::XMLDocument doc;
+    doc.LoadFile("sounds.xml");
+    auto root = doc.FirstChildElement();
+    auto background = root->FirstChildElement("sound");
+    if (background != nullptr) {
+        addSound(atoi(background->Attribute("id")), background->GetText());
+    }
 
+    auto group = root->FirstChildElement("sound_group");
+    for (; group != nullptr; group = group->NextSiblingElement("sound_group")) {
+        SoundIDandSource* pSound;
+        std::string id = group->Attribute("id");
+        if (id == "default") {
+            pSound = &default;
+        } else {
+            pSound = new SoundIDandSource(default);
+        }
+        auto sound = group->FirstChildElement("sound");
+        for (; sound != nullptr; sound = sound->NextSiblingElement("sound")) {
+            std::string soundType = sound->Attribute("type");
+            if (soundType == "move") {
+                pSound->_run = atoi(sound->Attribute("id"));
+                addSound(pSound->_run, sound->GetText());
+            }
+            if (soundType == "pain") {
+                pSound->_pain = atoi(sound->Attribute("id"));
+                addSound(pSound->_pain, sound->GetText(),false);
+            }
+            if (soundType == "fight") {
+                pSound->_fight = atoi(sound->Attribute("id"));
+                addSound(pSound->_fight, sound->GetText(),false);
+            }
+            if (soundType == "dying") {
+                pSound->_dying = atoi(sound->Attribute("id"));
+                addSound(pSound->_dying, sound->GetText(),false);
+            }
+            soundgroups[id] = *pSound;
+        }
+    }
+
+    //播放背景音乐
+    playSound(0, 0, 0, 0);
 
 }
 
-//for test
-int main2(int argc, char** argv) {
-    DSSoundManager sm;
-    sm.loadSounds();
-    sm.playSound(1, 0, 0, 0, 0, 1, 0);
-    alutSleep(100);
-    return 0;
-}

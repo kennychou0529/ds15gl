@@ -7,8 +7,9 @@ void DSFrame::initialize() {
     timer.recordTime();
     statusBar.init();
     //scene.map.init(15, 10);
+	sounds.loadSounds();
     scene.initialize();
-    sounds.loadSounds();
+   
 }
 
 void DSFrame::display(bool selectMode) {

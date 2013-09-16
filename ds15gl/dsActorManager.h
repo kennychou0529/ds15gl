@@ -55,6 +55,7 @@ private:
     SOLDIERS list;
     DSScript script;
     int round;
+	//std::map<string,SoundIDandSource> soundGroups; 
 };
 
 #endif // !_DSACTORMANAGER_H

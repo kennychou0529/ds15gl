@@ -11,7 +11,8 @@
 #include <map>
 #include <vector>
 
-
+#include "tinyxml2.h"
+#include "dsSoldier.h"
 
 #pragma comment (lib, "./mpg123/libmpg123.lib")
 #pragma comment (lib, "./openal/lib/OpenAL32.lib")
@@ -21,7 +22,7 @@
 
 class Clip {
 public:
-    Clip(char* fileName, bool loop);
+    Clip(const char* fileName, bool loop);
     ~Clip();
     void append();
     //x,y,z 声源位置
@@ -53,7 +54,7 @@ public:
     // wav文件默认载入两次备用，不够用时自动扩展
     // mp3文件只保存文件名，播放时读取
     // 暂时只能载入一个MP3作为背景音乐
-    void addSound(unsigned int id, char* fileName, bool loop = true);
+    void addSound(unsigned int id, const char* fileName, bool loop = true);
 
     // x,y,z 声源位置
     // vx,vy,vz 声源速度
@@ -73,7 +74,8 @@ public:
     // 注释待添加
     static void displayALError(char* func, ALenum alError);
 
-
+	std::map<std::string,SoundIDandSource> soundgroups;
+	static SoundIDandSource default;
 
 private:
     /* ALCdevice* device;
@@ -87,6 +89,6 @@ private:
 
     ALboolean g_bEAX;
     ALenum alError;
-    int iMpg123_error;
+    int iMpg123_error;	
 };
 
