@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <cstring>
+#include <string>
+#include <sstream>
 
 GLfloat DSMap::grid_size = 10.0f;
 
@@ -13,6 +15,22 @@ void DSMap::init(size_t _x_max, size_t _y_max, TileType* _data) {
 
     object_manager.loadAllObjects();
     texture_ID_plain = dsLoadTextureBMP2D("data/images/plain.bmp");
+
+    size_t A, B, C, D, temp;
+    std::ostringstream os;
+    for (size_t i = 0; i < 16; ++i) {
+        os.str("");
+        os << "data/images/hill_";
+        D = i & 1;
+        temp = i >> 1; // temp = ABC
+        C = temp & 1;
+        temp >>= 1;    // temp = AB
+        B = temp & 1;
+        A = temp >> 1;
+        os << A << B << C << D << ".bmp";
+        texture_ID_hill[i] = dsLoadTextureBMP2D(os.str());
+    }
+
     loadDisplayLists();
 
     if (data != nullptr) {
@@ -20,7 +38,7 @@ void DSMap::init(size_t _x_max, size_t _y_max, TileType* _data) {
     }
     data = new TileType[x_max * y_max];
     for (int i = 0; i < x_max * y_max; i++) {
-        data[i] = forest;
+        data[i] = hill;
     }
     return;
     std::memcpy(data, _data, sizeof(TileType) * x_max * y_max);
@@ -78,6 +96,12 @@ void DSMap::renderTile(size_t x_index, size_t y_index) {
     getCoords(x_index, y_index, &x, &y);
 
     switch (data[y_index * x_max + x_index]) {
+    case hill:
+        glTranslatef(x, y, 0.0f);
+        // 
+        glCallList(display_lists[hill]);
+        glTranslatef(-x, -y, 0.0f);
+        break;
     case barrier:
         glTranslatef(x, y, 0.0f);
         glCallList(display_lists[plain]);
@@ -168,6 +192,34 @@ void DSMap::loadDisplayLists() {
     glPopAttrib();
     glEndList();
     // Grids: end
+
+    // Hill: begin
+    display_lists[hill] = glGenLists(1);
+    glNewList(display_lists[hill], GL_COMPILE);
+    glPushAttrib(GL_ENABLE_BIT);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture_ID_hill[0]);
+    glBegin(GL_QUADS);
+    {
+        glNormal3f(0.0f, 0.0f, 1.0f);
+
+        glTexCoord2f(0.0f, 0.0f);
+        glVertex3f(- grid_size / 2.0f, - grid_size / 2.0f, 0.0f);
+
+        glTexCoord2f(1.0f, 0.0f);
+        glVertex3f(+ grid_size / 2.0f, - grid_size / 2.0f, 0.0f);
+
+        glTexCoord2f(1.0f, 1.0f);
+        glVertex3f(+ grid_size / 2.0f, + grid_size / 2.0f, 0.0f);
+
+        glTexCoord2f(0.0f, 1.0f);
+        glVertex3f(- grid_size / 2.0f, + grid_size / 2.0f, 0.0f);
+    }
+    glEnd();
+    glPopAttrib();
+    glEndList();
+    // Hill: end
 
     // Plain: begin
     display_lists[plain] = glGenLists(1);

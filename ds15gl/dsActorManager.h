@@ -47,7 +47,7 @@ public:
         if (selectSoldier.empty()) {
             return L"NOT SELECT";
         }
-        info << selectSoldier.c_str()  << ":\n";
+        info << selectSoldier.c_str() << ":\n";
         info << list[selectSoldier].getInfo();
         return info.str();
     }
