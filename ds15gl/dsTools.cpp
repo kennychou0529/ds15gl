@@ -172,7 +172,7 @@ void processHits(GLint hits, GLuint buffer[]) {
         for (int j = 0; j < names; j++) {
             printf("%d ", *ptr);
             if (*ptr > 0 && *ptr <= 400) {
-                int x, y;
+                size_t x, y;
                 frame.scene.map.getXY(*ptr, &x, &y);
                 printf("选中了[%d,%d]格子", x, y);
             } else if (*ptr > 1000 && *ptr <= 1100) {

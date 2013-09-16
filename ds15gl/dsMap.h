@@ -5,56 +5,40 @@
 #include "dsObject.h"
 
 enum TileType {
-    plain,   // 平原
-    hill,    // 山地
-    forest,  // 森林
-    barrier, // 屏障
-    cannon,  // 炮
-    temple,  // 神庙
-    trap,    // 陷阱
-    facility // 机关
+    plain,    // 平原
+    hill,     // 山地
+    forest,   // 森林
+    barrier,  // 屏障
+    cannon,   // 炮
+    temple,   // 神庙
+    trap,     // 陷阱
+    facility, // 机关
+    invalid   // 返回错误
 };
 
 class DSMap {
 public:
     // data的大小不应小于 x_max * y_max
     void init(size_t x_max = 10, size_t y_max = 10, TileType* data = nullptr);
+
     ~DSMap();
 
 public:
-    void getSize(int* pwidth = nullptr, int* pheight = nullptr) const {
-        if (pwidth != nullptr) {
-            *pwidth = x_max;
-        }
-        if (pheight != nullptr) {
-            *pheight = y_max;
-        }
+
+    // 返回地图尺寸
+    void getSize(int* pwidth = nullptr, int* pheight = nullptr) const;
+
+    // 返回特定格子的信息
+    TileType getTile(size_t x, size_t y) const;
+
+    // 从单一序号中提取出 x, y 坐标
+    void getXY(size_t index, size_t* x, size_t* y) const {
+        *x = index % x_max;
+        *y = index / x_max;
     }
 
-    int getTile(size_t x, size_t y) const {
-        //数组越界
-        if (x < 0 || x >= x_max || y < 0 || y >= y_max) {
-            return 0;
-        }
-
-        return data[y * y_max + x];
-    }
-
-	void getXY(int index,int*x, int* y){
-		*x=index%x_max;
-		*y=index/x_max;
-	}
-
-    // 绘制地图网格
+    // 绘制地图，外部调用的唯一绘制函数
     void render(bool selectMode);
-
-	void renderGrids(bool selectMode =false);
-
-    // 绘制一个格子
-    void renderTile(size_t x_index, size_t y_index);
-
-    // 绘制所有
-    void renderTiles();
 
     // 输入格子坐标，给出绘图实际坐标
     void getCoords(
@@ -72,6 +56,14 @@ public:
     ) const;
 
 private:
+    // 绘制地图网格
+    void renderGrids(bool selectMode = false);
+
+    // 绘制一个格子
+    void renderTile(size_t x_index, size_t y_index);
+
+    // 绘制所有
+    void renderTiles();
     void loadDisplayLists();
     DSObjectManager object_manager;
 

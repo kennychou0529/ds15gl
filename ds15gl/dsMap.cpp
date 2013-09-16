@@ -13,9 +13,13 @@ void DSMap::init(size_t _x_max, size_t _y_max, TileType* _data) {
     x_max = _x_max;
     y_max = _y_max;
 
+    // 载入所有静态物体
     object_manager.loadAllObjects();
-    texture_ID_plain = dsLoadTextureBMP2D("data/images/plain.bmp");
 
+    // 载入平原贴图
+    texture_ID_plain = dsLoadTextureBMP2D("data/images/grass.bmp");
+
+    // 载入所有山地贴图: begin
     size_t A, B, C, D, temp;
     std::ostringstream os;
     for (size_t i = 0; i < 16; ++i) {
@@ -31,25 +35,48 @@ void DSMap::init(size_t _x_max, size_t _y_max, TileType* _data) {
         std::cout << os.str();
         texture_ID_hill[i] = dsLoadTextureBMP2D(os.str());
     }
+    // 载入所有山地贴图: end
 
-    loadDisplayLists();
-
+    // 建立地图数据
     if (data != nullptr) {
         delete[] data;
     }
     data = new TileType[x_max * y_max];
-    for (int i = 0; i < x_max * y_max; i++) {
+    for (size_t i = 0; i < x_max * y_max; ++i) {
         data[i] = hill;
     }
+    data[1] = plain;
+    data[17] = plain;
+
+    // 创建所有显示列表
+    loadDisplayLists();
+
     return;
     std::memcpy(data, _data, sizeof(TileType) * x_max * y_max);
 }
-
 
 DSMap::~DSMap() {
     delete[] data;
 }
 
+void DSMap::getSize(int* pwidth, int* pheight) const {
+    if (pwidth != nullptr) {
+        *pwidth = x_max;
+    }
+    if (pheight != nullptr) {
+        *pheight = y_max;
+    }
+}
+
+TileType DSMap::getTile(size_t x, size_t y) const {
+    // 数组越界
+    if (x < 0 || x >= x_max || y < 0 || y >= y_max) {
+        return invalid;
+    }
+
+    return data[y * x_max + x];
+}
+// 绘制地图网格
 void DSMap::renderGrids(bool selectMode) {
     GLfloat x = - grid_size * x_max / 2;
     GLfloat y;
@@ -59,7 +86,6 @@ void DSMap::renderGrids(bool selectMode) {
     for (size_t x_index = 0; x_index < x_max; ++x_index) {
         y = - grid_size * y_max / 2;
         for (size_t y_index = 0; y_index < y_max; ++y_index) {
-            //glRectf(x,y,grid_size,grid_size);
             if (selectMode) {
                 glLoadName(y_index * x_max + x_index);
             }
@@ -82,6 +108,7 @@ void DSMap::renderGrids(bool selectMode) {
 
 }
 
+// 绘制地图，外部调用的唯一绘制函数
 void DSMap::render(bool selectMode) {
     renderTiles();
     if (selectMode) {
@@ -92,7 +119,6 @@ void DSMap::render(bool selectMode) {
 }
 
 void DSMap::renderTile(size_t x_index, size_t y_index) {
-
     GLfloat x, y;
     size_t hill_type = 0;
     getCoords(x_index, y_index, &x, &y);
@@ -101,17 +127,17 @@ void DSMap::renderTile(size_t x_index, size_t y_index) {
     case hill:
         glTranslatef(x, y, 0.0f);
 
-        if (x == 0 || data[y_index * x_max + (x_index - 1)] == hill) {
+        if (x_index == 0 || data[y_index * x_max + (x_index - 1)] == hill) {
             hill_type |= 1u;
         }
-        if (y == 0 || data[(y_index - 1) * x_max + x_index] == hill) {
-            hill_type |= (1u << 1);
+        if (y_index == 0 || data[(y_index - 1) * x_max + x_index] == hill) {
+            hill_type |= 2u;
         }
-        if (x == x_max - 1 || data[y_index * x_max + (x_index + 1)] == hill) {
-            hill_type |= (1u << 2);
+        if (x_index == x_max - 1 || data[y_index * x_max + (x_index + 1)] == hill) {
+            hill_type |= 4u;
         }
-        if (y == y_max - 1 || data[(y_index + 1) * x_max + x_index] == hill) {
-            hill_type |= (1u << 3);
+        if (y_index == y_max - 1 || data[(y_index + 1) * x_max + x_index] == hill) {
+            hill_type |= 8u;
         }
 
         glCallList(display_lists_hills[hill_type]);
@@ -164,7 +190,6 @@ void DSMap::renderTile(size_t x_index, size_t y_index) {
     default:
         break;
     }
-
 }
 
 void DSMap::renderTiles() {
@@ -195,19 +220,6 @@ void DSMap::getCoords(
 }
 
 void DSMap::loadDisplayLists() {
-    // Grids: begin
-    display_list_grids = glGenLists(1);
-    glNewList(display_list_grids, GL_COMPILE);
-    glPushAttrib(GL_ALL_ATTRIB_BITS);
-    glDisable(GL_LIGHTING);
-    glDisable(GL_TEXTURE_2D);
-    glLineWidth(1.0);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    renderGrids();
-    glPopAttrib();
-    glEndList();
-    // Grids: end
-
     // Hill: begin
     display_lists[hill] = glGenLists(1);
     glNewList(display_lists[hill], GL_COMPILE);
@@ -370,4 +382,17 @@ void DSMap::loadDisplayLists() {
         glEndList();
     }
     // Hills: end
+
+    // Grids: begin
+    display_list_grids = glGenLists(1);
+    glNewList(display_list_grids, GL_COMPILE);
+    glPushAttrib(GL_ALL_ATTRIB_BITS);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_TEXTURE_2D);
+    glLineWidth(1.0);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    renderGrids();
+    glPopAttrib();
+    glEndList();
+    // Grids: end
 }
