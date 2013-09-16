@@ -21,13 +21,14 @@ void DSMap::init(size_t _x_max, size_t _y_max, TileType* _data) {
     for (size_t i = 0; i < 16; ++i) {
         os.str("");
         os << "data/images/hill_";
-        D = i & 1;
-        temp = i >> 1; // temp = ABC
-        C = temp & 1;
-        temp >>= 1;    // temp = AB
+        A = i & 1;
+        temp = i >> 1; // temp = DCB
         B = temp & 1;
-        A = temp >> 1;
-        os << A << B << C << D << ".bmp";
+        temp >>= 1;    // temp = DC
+        C = temp & 1;
+        D = temp >> 1;
+        os << D << C << B << A << ".bmp";
+        std::cout << os.str();
         texture_ID_hill[i] = dsLoadTextureBMP2D(os.str());
     }
 
@@ -93,13 +94,27 @@ void DSMap::render(bool selectMode) {
 void DSMap::renderTile(size_t x_index, size_t y_index) {
 
     GLfloat x, y;
+    size_t hill_type = 0;
     getCoords(x_index, y_index, &x, &y);
 
     switch (data[y_index * x_max + x_index]) {
     case hill:
         glTranslatef(x, y, 0.0f);
-        // 
-        glCallList(display_lists[hill]);
+
+        if (x == 0 || data[y_index * x_max + (x_index - 1)] == hill) {
+            hill_type |= 1u;
+        }
+        if (y == 0 || data[(y_index - 1) * x_max + x_index] == hill) {
+            hill_type |= (1u << 1);
+        }
+        if (x == x_max - 1 || data[y_index * x_max + (x_index + 1)] == hill) {
+            hill_type |= (1u << 2);
+        }
+        if (y == y_max - 1 || data[(y_index + 1) * x_max + x_index] == hill) {
+            hill_type |= (1u << 3);
+        }
+
+        glCallList(display_lists_hills[hill_type]);
         glTranslatef(-x, -y, 0.0f);
         break;
     case barrier:
@@ -325,4 +340,34 @@ void DSMap::loadDisplayLists() {
     glTranslatef(cannon_move, 0.0f, 0.0f);
     glEndList();
     // Cannon: end
+
+    // Hills: begin
+    for (size_t index = 0; index < 16; ++index) {
+        display_lists_hills[index] = glGenLists(1);
+        glNewList(display_lists_hills[index], GL_COMPILE);
+        glPushAttrib(GL_ENABLE_BIT);
+        glEnable(GL_LIGHTING);
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, texture_ID_hill[index]);
+        glBegin(GL_QUADS);
+        {
+            glNormal3f(0.0f, 0.0f, 1.0f);
+
+            glTexCoord2f(0.0f, 0.0f);
+            glVertex3f(- grid_size / 2.0f, - grid_size / 2.0f, 0.0f);
+
+            glTexCoord2f(1.0f, 0.0f);
+            glVertex3f(+ grid_size / 2.0f, - grid_size / 2.0f, 0.0f);
+
+            glTexCoord2f(1.0f, 1.0f);
+            glVertex3f(+ grid_size / 2.0f, + grid_size / 2.0f, 0.0f);
+
+            glTexCoord2f(0.0f, 1.0f);
+            glVertex3f(- grid_size / 2.0f, + grid_size / 2.0f, 0.0f);
+        }
+        glEnd();
+        glPopAttrib();
+        glEndList();
+    }
+    // Hills: end
 }

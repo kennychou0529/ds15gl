@@ -81,6 +81,7 @@ private:
     TileType* data;
     GLuint display_lists[8];
     GLuint display_list_grids;
+    GLuint display_lists_hills[16];
 
     GLuint texture_ID_plain;
 
@@ -100,7 +101,7 @@ private:
     //             B
     // 记 绿色边（即相邻格子不是山地）为 0，记山地边（即相邻格子还是山地）为 1
     // 则共有 2 ** 4 = 16 种格子
-    // 现编号 'ABCD'，即 A << 3 + B << 2 + C << 1 + D
+    // 现编号 'DCBA'，即 D << 3 + C << 2 + B << 1 + A
     GLuint texture_ID_hill[16];
 };
 
