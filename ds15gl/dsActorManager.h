@@ -16,7 +16,7 @@ public:
     DSActorManager();
     ~DSActorManager();
 
-    void insertSoldier(const std::string& soldier_name);
+    void insertSoldier(const std::string& soldier_name,std::string soldier_type="");
 
     //加载人物
     void initialize();

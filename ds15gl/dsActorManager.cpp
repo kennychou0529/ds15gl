@@ -14,19 +14,21 @@ DSActorManager::~DSActorManager() {}
 
 extern DSFrame frame;
 
-void DSActorManager::insertSoldier(const std::string& soldier_name) {
+void DSActorManager::insertSoldier(const std::string& soldier_id, std::string soldier_type) {
     static int counter = 1;
-    list.insert(std::make_pair(soldier_name, dsSoldier(counter)));
-    list[soldier_name].load(soldier_name);
-    list[soldier_name].enterStatus(dsSoldier::Status::idle);
-    intToString[counter++] = soldier_name;
+    if (soldier_type.empty()) {
+        soldier_type = soldier_id;
+    }
+    list.insert(std::make_pair(soldier_id, dsSoldier(counter)));
+    list[soldier_id].load(soldier_type);
+    list[soldier_id].enterStatus(dsSoldier::Status::idle);
+    intToString[counter++] = soldier_id;
 
-	if(frame.sounds.soundgroups.find(soldier_name)!=frame.sounds.soundgroups.end()){
-		list[soldier_name].setSounds(frame.sounds.soundgroups[soldier_name]);
-	}else
-	{
-		list[soldier_name].setSounds(DSSoundManager::default);
-	}
+    if (frame.sounds.soundgroups.find(soldier_type) != frame.sounds.soundgroups.end()) {
+        list[soldier_id].setSounds(frame.sounds.soundgroups[soldier_type]);
+    } else {
+        list[soldier_id].setSounds(DSSoundManager::default);
+    }
 }
 
 //加载人物
