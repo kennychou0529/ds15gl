@@ -5,6 +5,9 @@
 #include <cstring>
 #include <string>
 #include <sstream>
+#include <cmath>
+
+const GLfloat pi = 3.1415926f;
 
 GLfloat DSMap::grid_size = 10.0f;
 
@@ -76,6 +79,7 @@ TileType DSMap::getTile(size_t x, size_t y) const {
 
     return data[y * x_max + x];
 }
+
 // 绘制地图网格
 void DSMap::renderGrids(bool selectMode) {
     GLfloat x = - grid_size * x_max / 2;
@@ -110,6 +114,7 @@ void DSMap::renderGrids(bool selectMode) {
 
 // 绘制地图，外部调用的唯一绘制函数
 void DSMap::render(bool selectMode) {
+    renderHugeGround();
     renderTiles();
     if (selectMode) {
         renderGrids(true);
@@ -217,6 +222,26 @@ void DSMap::getCoords(
 )  const {
     *px = grid_size * (- (GLdouble)x_max / 2 + x_index + 0.5f);
     *py = grid_size * (- (GLdouble)y_max / 2 + y_index + 0.5f);
+}
+
+void DSMap::renderHugeGround(GLfloat radius) {
+    radius = 1000.0f;
+    GLfloat theta = 0.0f;
+    size_t num_edges = 20;
+    GLfloat dtheta = 2 * pi/ num_edges;
+    GLfloat x, y;
+    glBindTexture(GL_TEXTURE_2D, texture_ID_plain);
+    glBegin(GL_POLYGON);
+    glNormal3f(0.0f, 0.0f, 1.0f);
+    
+    for (size_t index = 0; index < num_edges; ++index) {
+        x = std::cos(theta);
+        y = std::sin(theta);
+        glTexCoord2f(x, y);
+        glVertex3f(radius * x, radius * y, -0.1f);
+        theta += dtheta;
+    }
+    glEnd();
 }
 
 void DSMap::loadDisplayLists() {

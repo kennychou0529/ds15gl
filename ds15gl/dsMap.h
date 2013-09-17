@@ -62,8 +62,12 @@ private:
     // 绘制一个格子
     void renderTile(size_t x_index, size_t y_index);
 
-    // 绘制所有
+    // 绘制所有格子
     void renderTiles();
+
+    // 绘制一个超大的地面，延伸至很远很远
+    void renderHugeGround(GLfloat radius = 5.0f);
+
     void loadDisplayLists();
     DSObjectManager object_manager;
 
@@ -73,6 +77,7 @@ private:
     TileType* data;
     GLuint display_lists[8];
     GLuint display_list_grids;
+    GLuint display_list_huge_ground;
     GLuint display_lists_hills[16];
 
     GLuint texture_ID_plain;
