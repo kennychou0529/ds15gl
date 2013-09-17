@@ -165,24 +165,43 @@ void dsKeyDown(unsigned char key, int x, int y) {
 void processHits(GLint hits, GLuint buffer[]) {
     GLuint names, *ptr;
     ptr = (GLuint*)buffer;
+    GLuint* select = NULL;
+    float deepth = 1e5;
+    GLuint mnames;//
     for (int i = 0; i < hits; i++) {
         names = *ptr;
-        ptr += 3;   // 跳过名字数和深度
-        printf("names are: ");
-        for (int j = 0; j < names; j++) {
-            printf("%d ", *ptr);
-            if (*ptr > 0 && *ptr <= 400) {
-                size_t x, y;
-                frame.scene.map.getXY(*ptr, &x, &y);
-                printf("选中了[%d,%d]格子", x, y);
-            } else if (*ptr > 1000 && *ptr <= 1100) {
-                printf(("选中了士兵" + frame.actors.intToString[*ptr - 1000]).c_str());
-                frame.actors.selectSoldier = frame.actors.intToString[*ptr - 1000];
-            }
-            ptr++;
+        ptr ++;
+        float cdeepth = (float) * ptr / 0x7fffffff;
+        printf("z1 is %g; ", (float)*ptr / 0x7fffffff);
+        ptr ++;
+        printf("z2 is %g\n", (float)*ptr / 0x7fffffff);
+        ptr ++;
+        if (cdeepth < deepth && !(*(ptr - 3) == 1 && *ptr == 1000)) {
+            deepth = cdeepth;
+            select = ptr;
+            mnames = names;
         }
-        printf("\n");
+
+        ptr+=names;
     }
+    if (select == NULL) {
+        return;
+    }
+    ptr = select;
+    printf("names are: ");
+    for (int j = 0; j < mnames; j++) {
+        printf("%d ", *ptr);
+        if (*ptr > 0 && *ptr <= 400) {
+            size_t x, y;
+            frame.scene.map.getXY(*ptr, &x, &y);
+            printf("选中了[%d,%d]格子", x, y);
+        } else if (*ptr > 1000 && *ptr <= 1100) {
+            printf(("选中了士兵" + frame.actors.intToString[*ptr - 1000]).c_str());
+            frame.actors.selectSoldier = frame.actors.intToString[*ptr - 1000];
+        }
+        ptr++;
+    }
+    printf("\n");
 }
 
 #define SIZE 512
