@@ -8,8 +8,10 @@ void DSFrame::initialize() {
     statusBar.init();
     //scene.map.init(15, 10);
 	sounds.loadSounds();
-    scene.initialize();
-   
+	//把这些初始化工作集中在这里，以备Socket使用
+	scene.map.init(15, 10);
+	scene.actors.initialize();
+    scene.initialize();   
 }
 
 void DSFrame::display(bool selectMode) {

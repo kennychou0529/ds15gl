@@ -35,8 +35,9 @@ void DSScene::show(bool selectMode) {
 }
 
 void DSScene::initialize() {
-    map.init(15, 10);
-    actors.initialize();
+    //都到Frame中
+	/*map.init(15, 10);
+    actors.initialize();*/
 
     dsSkyBox.load(3);
     //object_manager.addObject("cannon");

@@ -152,6 +152,9 @@ void dsKeyDown(unsigned char key, int x, int y) {
     case 'm':
         centerMoveTof(10, 10);
         break;
+	case 'i':
+		frame.initialize();
+		break;
     default:
         break;
     }

@@ -18,15 +18,12 @@ public:
     void show(bool selectMode);
 	void selectRender();
     DSMap map;
+	DSActorManager& actors;
 private:
     DSSkybox dsSkyBox;
 
     //显示列表
-    GLuint groud;
-
-	DSActorManager& actors;
-
-    
+    GLuint groud;    
 };
 
 #endif

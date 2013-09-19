@@ -442,7 +442,7 @@ void dsSoldier::drawAureole(GLfloat x, GLfloat y) {
     }
     glPushMatrix();
     //glLoadIdentity();
-    //glTranslatef(x, y, (int(angle) % 180)/360.f);
+    glTranslatef(x, y, 0.1f);
     glRotatef(angle, 0, 0, 1);
     glPushAttrib(GL_ALL_ATTRIB_BITS);
     glDisable(GL_TEXTURE_2D);
