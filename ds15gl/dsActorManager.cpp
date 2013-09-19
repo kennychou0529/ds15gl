@@ -27,7 +27,7 @@ void DSActorManager::insertSoldier(const std::string& soldier_id, std::string so
     if (frame.sounds.soundgroups.find(soldier_type) != frame.sounds.soundgroups.end()) {
         list[soldier_id].setSounds(frame.sounds.soundgroups[soldier_type]);
     } else {
-        list[soldier_id].setSounds(DSSoundManager::default);
+        list[soldier_id].setSounds(DSSoundManager::defaultSoundGroup);
     }
 }
 

@@ -108,13 +108,21 @@ public:
 		return os.str();
 	}
 
-	
+	void setSelected(bool _beSelected){
+		beSelected = _beSelected;
+	}
+
+	//为被选中的人物画一个光环
+	void drawAureole(GLfloat x,GLfloat y);
 
 private:
 	int idNumber;				//为了启用选择模式，应该有一个编号
 
     int hp;
     int hp_max;
+
+	bool beSelected;			//是否被选中
+	//static GLuint aureole;		//光环的贴图
 
     bool has_weapon;            // 是否含有武器模型
     Status status;              // 当前状态

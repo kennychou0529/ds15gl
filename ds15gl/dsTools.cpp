@@ -197,7 +197,7 @@ void processHits(GLint hits, GLuint buffer[]) {
             printf("选中了[%d,%d]格子", x, y);
         } else if (*ptr > 1000 && *ptr <= 1100) {
             printf(("选中了士兵" + frame.actors.intToString[*ptr - 1000]).c_str());
-            frame.actors.selectSoldier = frame.actors.intToString[*ptr - 1000];
+            frame.actors.selectSoldier(*ptr - 1000);
         }
         ptr++;
     }
@@ -246,7 +246,7 @@ void dsMouseFunc(int button, int state, int x, int y) {
         glutPostRedisplay();
     }
     if (button == GLUT_RIGHT_BUTTON) {
-        frame.actors.selectSoldier.clear();
+        frame.actors.cancelSelect();
     }
 
 }

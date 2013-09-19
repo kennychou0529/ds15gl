@@ -7,11 +7,13 @@
 #include <functional>
 #include "dsVector.h"
 #include <iostream>
+#include "dsTexture.h"
 
 static const GLfloat pi = 3.1415926f;
 
 extern DSFrame frame;
 
+//GLuint dsSoldier::aureole = dsLoadTextureBMP2D("data/images/aureole.bmp");
 
 dsSoldier::dsSoldier(int _idNumber) :
     move_speed(20.0f),
@@ -22,6 +24,7 @@ dsSoldier::dsSoldier(int _idNumber) :
     enterStatus(idle);
     hp = 15;
     hp_max = 15;
+    beSelected = false;
 }
 
 void dsSoldier::renderFrame(size_t frame_index) const {
@@ -132,6 +135,7 @@ void dsSoldier::animate(bool selectMode) {
             renderSmoothly(duration * fps);
             glPopMatrix();
             hpBar(x, y, 12);
+            drawAureole(x, y);
         };
 
         // 这里没有使用 case 语句，是因为会出现对象初始化问题
@@ -425,4 +429,48 @@ void dsSoldier::hpBar2() {
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
+}
+
+void dsSoldier::drawAureole(GLfloat x, GLfloat y) {
+    if (!beSelected) {
+        return;
+    }
+    static GLfloat angle = 0;
+    angle += 0.5f;
+    if (angle >= 360) {
+        angle = 0;
+    }
+    glPushMatrix();
+    //glLoadIdentity();
+    //glTranslatef(x, y, (int(angle) % 180)/360.f);
+    glRotatef(angle, 0, 0, 1);
+    glPushAttrib(GL_ALL_ATTRIB_BITS);
+    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_LIGHTING);
+    //glBindTexture(GL_TEXTURE_2D,aureole);
+    glColor4f(1.f, 1.f, 0.f,0.5f);
+	glLineWidth(6);
+    glBegin(GL_LINE_LOOP);
+    {
+
+        glVertex2d(0.f, 6.f);
+        glVertex2d(-5.2f, -3.f);
+        glVertex2d(5.2, -3.f);
+
+    }
+    glEnd();
+	//glRotatef(-2*angle, 0, 0, 1);
+    glBegin(GL_LINE_LOOP);
+    {
+        glVertex2d(0.f, -6.f);
+        glVertex2d(5.2f, 3.f);
+        glVertex2d(-5.2, 3.f);
+    }
+    glEnd();
+	glRotatef(-2*angle, 0, 0, 1);
+	glRectf(-2.f,-2.f,2.f,2.f);
+    glPopAttrib();
+    //  glEnable(GL_TEXTURE_2D);
+    //  glEnable(GL_LIGHTING);
+    glPopMatrix();
 }

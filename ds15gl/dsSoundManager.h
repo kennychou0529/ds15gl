@@ -75,7 +75,7 @@ public:
     static void displayALError(char* func, ALenum alError);
 
 	std::map<std::string,SoundIDandSource> soundgroups;
-	static SoundIDandSource default;
+	static SoundIDandSource defaultSoundGroup;
 
 private:
     /* ALCdevice* device;

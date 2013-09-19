@@ -326,7 +326,7 @@ void DSSoundManager::displayALError(char* func, ALenum alError) {
 }
 
 
-SoundIDandSource DSSoundManager::default = {1, 0, 2, 2, 2};
+SoundIDandSource DSSoundManager::defaultSoundGroup = {1, 0, 2, 2, 2};
 
 void DSSoundManager::loadSounds() {
     ////背景音乐
@@ -347,9 +347,9 @@ void DSSoundManager::loadSounds() {
         SoundIDandSource* pSound;
         std::string id = group->Attribute("id");
         if (id == "default") {
-            pSound = &default;
+            pSound = &defaultSoundGroup;
         } else {
-            pSound = new SoundIDandSource(default);
+            pSound = new SoundIDandSource(defaultSoundGroup);
         }
         auto sound = group->FirstChildElement("sound");
         for (; sound != nullptr; sound = sound->NextSiblingElement("sound")) {

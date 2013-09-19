@@ -40,17 +40,33 @@ public:
     bool round_finished;
     bool all_finished;
     std::map<int, string> intToString;
-    string selectSoldier;
+    string selectSoldierId;
 
     std::wstring selectInfo() {
         std::wostringstream info;
-        if (selectSoldier.empty()) {
+        if (selectSoldierId.empty()) {
             return L"NOT SELECT";
         }
-        info << selectSoldier.c_str() << ":\n";
-        info << list[selectSoldier].getInfo();
+        info << selectSoldierId.c_str() << ":\n";
+        info << list[selectSoldierId].getInfo();
         return info.str();
     }
+
+	void selectSoldier(int IdNum){
+		if(selectSoldierId.length()>0){
+			list[selectSoldierId].setSelected(false);
+		}
+		selectSoldierId = intToString[IdNum];
+		list[selectSoldierId].setSelected(true);
+	}
+
+	void cancelSelect(){
+		if(selectSoldierId.length()>0){
+			list[selectSoldierId].setSelected(false);
+		}
+		selectSoldierId = "";
+	}
+
 private:
     SOLDIERS list;
     DSScript script;
