@@ -30,17 +30,11 @@ void DSScene::show(bool selectMode) {
     }
 	actors.render(selectMode);
     map.render(selectMode);
-    mbox.render();
+    mboxes.render();
     //dsShowLightSource();    
 	dsShowAxes();
 }
 
 void DSScene::initialize() {
-    //都到Frame中
-	/*map.init(15, 10);
-    actors.initialize();*/
-
     dsSkyBox.load(3);
-    //object_manager.addObject("cannon");
-    //object_manager.loadAllObjects();
 }

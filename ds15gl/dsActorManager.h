@@ -8,7 +8,6 @@
 #include <iostream>
 #include <sstream>
 
-
 typedef std::map<std::string, dsSoldier> SOLDIERS;
 
 class DSActorManager {
@@ -31,10 +30,7 @@ public:
         return round;
     }
 
-    void enterNextRound() {
-        ++round;
-        round_finished = false;
-    }
+    void enterNextRound();
 
     int script_playing;
     bool round_finished;

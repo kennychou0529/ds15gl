@@ -3,19 +3,20 @@
 #include "dsTools.h"
 
 static const size_t num_messages = 10;
-static const GLfloat showing_alpha = 0.4f;
-static const GLfloat fading_speed = 1.0f;
+static const GLfloat showing_alpha = 0.6f;
+static const GLfloat fading_speed = 2.0f;
+static const GLfloat default_lasting_time = 2.0f;
 
-dsMessageBox::dsMessageBox(const std::wstring& _message)
-    : message(_message),
-      status(appearing),
-      width(250.0f),
-      height(100.0f),
-      x(400.0f),
-      y(400.0f),
-      lasting_time(4.0f) {
-    message = L"Hello!";
-    
+dsMessageBox::dsMessageBox(
+    const std::wstring& _message,
+    GLfloat width,
+    GLfloat height
+):
+    message(_message),
+    status(appearing),
+    width(width),
+    height(height),
+    lasting_time(default_lasting_time) {
     timer.recordTime();
 }
 
@@ -43,28 +44,12 @@ inline void pop_projection_matrix() {
 }
 
 void dsMessageBox::render() {
-    x = static_cast<GLfloat>(window_width - status_bar_width) / 2.0f;
-    y = window_height - 50.0f;
-    extern dsTextManager dstext;
-    glPushMatrix();
-    glLoadIdentity();
-    
-    glPopMatrix();
-
-    pushScreenCoordinateMatrix();
-    glPushAttrib(GL_LIST_BIT | GL_CURRENT_BIT | GL_ENABLE_BIT | GL_TRANSFORM_BIT);
-    glMatrixMode(GL_MODELVIEW);
-    glEnable(GL_BLEND);
-    glDisable(GL_LIGHTING);
-    glDisable(GL_TEXTURE_2D);
-    glDisable(GL_DEPTH_TEST);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    glPushMatrix();
-    glLoadIdentity();
     GLfloat alpha;
 
     switch (status) {
+    case disappeared:
+        return;
+        break;
     case appearing:
         alpha = fading_speed * timer.getDurationSecf();
         if (alpha > showing_alpha) {
@@ -85,13 +70,23 @@ void dsMessageBox::render() {
             status = disappeared;
         }
         break;
-    case disappeared:
-        glPopMatrix();
-        glPopAttrib();
-        pop_projection_matrix();
-        return;
-        break;
     }
+
+    x = static_cast<GLfloat>(window_width) / 2.0f;
+    y = window_height - height - 50.0f;
+    extern dsTextManager dstext;
+
+    pushScreenCoordinateMatrix();
+    glPushAttrib(GL_LIST_BIT | GL_CURRENT_BIT | GL_ENABLE_BIT | GL_TRANSFORM_BIT);
+    glMatrixMode(GL_MODELVIEW);
+    glEnable(GL_BLEND);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_DEPTH_TEST);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glPushMatrix();
+    glLoadIdentity();
 
     glColor4f(1.0f, 1.0f, 1.0f, alpha);
     glBegin(GL_QUADS);
@@ -101,12 +96,38 @@ void dsMessageBox::render() {
     glVertex2f(x - width / 2 + width, y);
     glEnd();
 
-    glColor4f(0.0f, 0.0f, 1.0f, alpha / showing_alpha);
-    dstext.print(x  - width / 2 + 10.0f, y + 10.0f, L"ROUND 1");
+    glColor4f(0.0f, 0.0f, 0.0f, alpha / showing_alpha);
+    dstext.print(x  - width / 2 + 20.0f, y + 13.0f, message);
 
     glPopMatrix();
     glPopAttrib();
     pop_projection_matrix();
 
-    
+
+}
+
+void dsMessageBoxManager::addMessage(
+    const std::wstring& message,
+    GLfloat width,
+    GLfloat height
+) {
+    message_boxes.push_back(
+        dsMessageBox(message, width, height)
+    );
+}
+
+void dsMessageBoxManager::render() {
+    if (message_boxes.empty()) {
+        return;
+    }
+
+    if (message_boxes.front().status == dsMessageBox::disappeared) {
+        message_boxes.pop_front();
+    }
+
+    if (message_boxes.empty()) {
+        return;
+    }
+
+    message_boxes.front().render();
 }

@@ -144,3 +144,12 @@ void DSActorManager::update() {
         }
     }
 }
+
+void DSActorManager::enterNextRound() {
+    ++round;
+    round_finished = false;
+    std::wostringstream os;
+    os.str(L"");
+    os << L"第 " << round << L" 回合";
+    frame.scene.mboxes.addMessage(os.str().c_str(), 230.0f);
+}

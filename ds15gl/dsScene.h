@@ -20,9 +20,10 @@ public:
 	void selectRender();
     DSMap map;
 	DSActorManager& actors;
+    dsMessageBoxManager mboxes;
 private:
     DSSkybox dsSkyBox;
-    dsMessageBox mbox;
+    
     //显示列表
     GLuint groud;    
 };
