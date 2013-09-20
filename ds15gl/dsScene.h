@@ -7,6 +7,7 @@
 #include "dsMap.h"
 #include "dsActorManager.h"
 #include "dsObject.h"
+#include "dsMessageBox.h"
 
 // 与场景有关的类
 // 所有绘图操作都应该转移到这个类
@@ -21,7 +22,7 @@ public:
 	DSActorManager& actors;
 private:
     DSSkybox dsSkyBox;
-
+    dsMessageBox mbox;
     //显示列表
     GLuint groud;    
 };

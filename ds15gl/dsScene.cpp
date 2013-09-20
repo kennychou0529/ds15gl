@@ -1,5 +1,6 @@
 ﻿#include <sstream>
 #include <utility>
+#include "dsMessageBox.h"
 
 #include "dsScene.h"
 #include "dsTools.h"
@@ -29,7 +30,7 @@ void DSScene::show(bool selectMode) {
     }
 	actors.render(selectMode);
     map.render(selectMode);
-
+    mbox.render();
     //dsShowLightSource();    
 	dsShowAxes();
 }
