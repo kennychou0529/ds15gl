@@ -1,5 +1,8 @@
 ﻿#include "dsMap.h"
 #include "dsTexture.h"
+#include "dsTools.h"
+#include "dsVector.h"
+#include "dsEye.h"
 
 #include <iostream>
 #include <cstring>
@@ -132,16 +135,16 @@ void DSMap::renderTile(size_t x_index, size_t y_index) {
     case hill:
         glTranslatef(x, y, 0.0f);
 
-        if (x_index == 0 || data[y_index * x_max + (x_index - 1)] == hill) {
+        if (x_index != 0 && data[y_index * x_max + (x_index - 1)] == hill) {
             hill_type |= 1u;
         }
-        if (y_index == 0 || data[(y_index - 1) * x_max + x_index] == hill) {
+        if (y_index != 0 && data[(y_index - 1) * x_max + x_index] == hill) {
             hill_type |= 2u;
         }
-        if (x_index == x_max - 1 || data[y_index * x_max + (x_index + 1)] == hill) {
+        if (x_index != x_max - 1 && data[y_index * x_max + (x_index + 1)] == hill) {
             hill_type |= 4u;
         }
-        if (y_index == y_max - 1 || data[(y_index + 1) * x_max + x_index] == hill) {
+        if (y_index != y_max - 1 && data[(y_index + 1) * x_max + x_index] == hill) {
             hill_type |= 8u;
         }
 
@@ -242,6 +245,63 @@ void DSMap::renderHugeGround(GLfloat radius) {
         theta += dtheta;
     }
     glEnd();
+    //renderArrow(0, 0, 0.0f);
+}
+
+void DSMap::renderArrow(size_t x_index, size_t y_index, GLfloat duration) {
+    GLfloat x, y, z;
+    z = 1.0f + std::sin(5.0f * duration);
+    getCoords(x_index, y_index, &x, &y);
+    glTranslatef(x, y, z);
+
+    static GLfloat height = 5.0f;
+    static GLfloat width = 2.0f;
+
+    static GLdouble direction[3];
+    dsDiff3dv(center, eye, direction);
+
+    static const GLdouble xline[] = {1.0, 0, 0};
+    static const GLdouble yline[] = {0, 1.0, 0};
+    GLdouble direction_t[] = {direction[0], direction[1], 0};
+    // 计算旋转角度
+    GLdouble rr = dsIncludedAngle2dv(yline, direction_t);
+    GLdouble n[3];
+    dsCross3dv(yline, direction, n);
+    if (n[2] < 0) {
+        rr = -rr;
+    }
+
+    glRotated(rr + 90.0, 0, 0, 1.0);
+
+
+    glPushAttrib(GL_ALL_ATTRIB_BITS);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_TEXTURE_2D);
+    glBegin(GL_TRIANGLES);
+    glColor3f(0.0f, 0.0f, 0.0f);
+    glVertex3f(0.0f, 0.0f, height);
+    glColor3f(1.0f / 2.5f, 0.0f, 0.0f);
+    glVertex3f(0.0f, width, height + width);
+    glVertex3f(0.0f, -width, height + width);
+    glEnd();
+
+    glBegin(GL_QUADS);
+    glVertex3f(0.0f, width / 2, height + width);
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glVertex3f(0.0f, width / 2, height + width * 5 / 2);
+    glVertex3f(0.0f, -width / 2, height + width * 5 / 2);
+    glColor3f(1.0f / 2.5f, 0.0f, 0.0f);
+    glVertex3f(0.0f, -width / 2, height + width);
+    glEnd();
+    //glBegin(GL_QUADS);
+    //glVertex3f(0.0f, -1.0f, 0.0f);
+    //glVertex3f(0.0f, 1.0f, 0.0f);
+    //glVertex3f(0.0f, 1.0f, 1.0f);
+    //glVertex3f(0.0f, -1.0f, 1.0f);
+    //glEnd();
+    glRotated(-rr - 90.0, 0, 0, 1.0);
+    glPopAttrib();
+    glTranslatef(-x, -y, 0.0f);
 }
 
 void DSMap::loadDisplayLists() {

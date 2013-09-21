@@ -146,6 +146,12 @@ void dsSoldier::animate(bool selectMode) {
             render();
 
         } else if (status == running) {
+            frame.scene.map.renderArrow(
+                target_position[0],
+                target_position[1],
+                duration
+            );
+
             dsVector2f saved;
             frame.scene.map.getCoords(
                 saved_position[0], saved_position[1], &(saved.x), &(saved.y)

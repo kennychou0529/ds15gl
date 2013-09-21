@@ -55,6 +55,8 @@ public:
         GLdouble* py
     ) const;
 
+    void renderArrow(size_t x_index, size_t y_index, GLfloat duration);
+
 private:
     // 绘制地图网格
     void renderGrids(bool selectMode = false);
