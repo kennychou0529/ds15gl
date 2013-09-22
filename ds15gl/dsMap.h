@@ -19,6 +19,8 @@ enum TileType {
 class DSMap {
 public:
     // data的大小不应小于 x_max * y_max
+	void load();
+
     void init(size_t x_max = 10, size_t y_max = 10, TileType* data = nullptr);
 
     ~DSMap();
@@ -71,6 +73,7 @@ private:
     void renderHugeGround(GLfloat radius = 5.0f);
 
     void loadDisplayLists();
+	bool listLoaded;
     DSObjectManager object_manager;
 
     size_t x_max;

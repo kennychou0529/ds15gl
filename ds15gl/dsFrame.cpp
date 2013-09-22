@@ -9,10 +9,15 @@ void DSFrame::initialize() {
     //scene.map.init(15, 10);
 	sounds.loadSounds();
 	//把这些初始化工作集中在这里，以备Socket使用
+	scene.map.load();
 	scene.map.init(15, 10);
 	scene.actors.initialize();
     scene.initialize();   
 }
+void DSFrame::initialize2(){
+	scene.map.init(15, 10);
+}
+
 
 void DSFrame::display(bool selectMode) {
     // 计算 FPS，每秒统计一次

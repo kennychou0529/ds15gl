@@ -175,9 +175,9 @@ void processHits(GLint hits, GLuint buffer[]) {
         names = *ptr;
         ptr ++;
         float cdeepth = (float) * ptr / 0x7fffffff;
-        printf("z1 is %g; ", (float)*ptr / 0x7fffffff);
+        //printf("z1 is %g; ", (float)*ptr / 0x7fffffff);
         ptr ++;
-        printf("z2 is %g\n", (float)*ptr / 0x7fffffff);
+        //printf("z2 is %g\n", (float)*ptr / 0x7fffffff);
         ptr ++;
         if (cdeepth < deepth && !(*(ptr - 3) == 1 && *ptr == 1000)) {
             deepth = cdeepth;

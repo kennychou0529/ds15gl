@@ -15,12 +15,17 @@
 //#endif
 
 DSFrame frame;
+bool isReady = false;
 
 void dsDisplay() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	if(isReady){
+		dsSetEye(); // 设置视角
+		frame.display();
+	}else
+	{
 
-    dsSetEye(); // 设置视角
-    frame.display();
+	}
     glutSwapBuffers();
 
     // 打印 GL 错误
@@ -48,9 +53,14 @@ void dsInit() {
     glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
     dstext.init(font_file_name, font_height);
     dstext_small.init(font_file_name, font_height_small);
-
+	
     //this object must be initialized after main function
     //soundManager = DSSoundManager::getSoundManager();
+}
+
+void dsGameInit(){
+	frame.initialize2();
+	isReady = true;
 }
 
 // 当窗口大小被修改时自动调用此函数
@@ -90,6 +100,8 @@ int main(int argc, char* argv[]) {
     glutKeyboardFunc(dsKeyDown);
     glutKeyboardUpFunc(dsKeyUp);
     dsInit();
+	std::thread gameThread(dsGameInit);
+	gameThread.detach();
     glutMainLoop();
     destroy();
     return 0;
