@@ -9,6 +9,7 @@
 #include <string>
 #include <sstream>
 #include <cmath>
+#include <time.h>
 
 const GLfloat pi = 3.1415926f;
 
@@ -37,6 +38,7 @@ void DSMap::load() {
         std::cout << os.str();
         texture_ID_hill[i] = dsLoadTextureBMP2D(os.str());
     }
+    srand(time(NULL));
     // 载入所有山地贴图: end
 }
 
@@ -60,7 +62,7 @@ void DSMap::init(size_t _x_max, size_t _y_max, TileType* _data) {
     //     // 创建所有显示列表
     //     loadDisplayLists();
     listLoaded = false;
-    dishi();
+    map = 0;
     return;
     std::memcpy(data, _data, sizeof(TileType) * x_max * y_max);
 
@@ -126,6 +128,10 @@ void DSMap::render(bool selectMode) {
         loadDisplayLists();
         listLoaded = true;
     }
+    if (map == 0) {
+        dishi();
+    }
+    glCallList(map);
     renderHugeGround();
     renderTiles();
     if (selectMode) {
@@ -136,84 +142,82 @@ void DSMap::render(bool selectMode) {
 }
 
 void DSMap::renderTile(size_t x_index, size_t y_index) {
-    
-     GLfloat x, y;
-     size_t hill_type = 0;
-     getCoords(x_index, y_index, &x, &y);
 
-     switch (data[y_index * x_max + x_index]) {
-     case hill:
-         glTranslatef(x, y, 0.0f);
+    GLfloat x, y;
+    size_t hill_type = 0;
+    getCoords(x_index, y_index, &x, &y);
 
-         if (x_index != 0 && data[y_index * x_max + (x_index - 1)] == hill) {
-             hill_type |= 1u;
-         }
-         if (y_index != 0 && data[(y_index - 1) * x_max + x_index] == hill) {
-             hill_type |= 2u;
-         }
-         if (x_index != x_max - 1 && data[y_index * x_max + (x_index + 1)] == hill) {
-             hill_type |= 4u;
-         }
-         if (y_index != y_max - 1 && data[(y_index + 1) * x_max + x_index] == hill) {
-             hill_type |= 8u;
-         }
+    switch (data[y_index * x_max + x_index]) {
+    case hill:
+        glTranslatef(x, y, 0.0f);
 
-         glCallList(display_lists_hills[hill_type]);
-         glTranslatef(-x, -y, 0.0f);
-         break;
-     case barrier:
-         glTranslatef(x, y, 0.0f);
-         glCallList(display_lists[plain]);
-         glCallList(display_lists[barrier]);
-         glTranslatef(-x, -y, 0.0f);
-         break;
-     case trap:
-         glTranslatef(x, y, 0.0f);
-         glCallList(display_lists[plain]);
-         glCallList(display_lists[trap]);
-         glTranslatef(-x, -y, 0.0f);
-         break;
-     case temple:
-         glTranslatef(x, y, 0.0f);
-         glCallList(display_lists[plain]);
-         glCallList(display_lists[temple]);
-         glTranslatef(-x, -y, 0.0f);
-         break;
-     case plain:
-         glTranslatef(x, y, 0.0f);
-         glCallList(display_lists[plain]);
-         glTranslatef(-x, -y, 0.0f);
-         break;
-     case facility:
-         glTranslatef(x, y, 0.0f);
-         glCallList(display_lists[plain]);
-         glCallList(display_lists[facility]);
-         glTranslatef(-x, -y, 0.0f);
-         break;
-     case cannon:
-         glTranslatef(x, y, 0.0f);
-         glCallList(display_lists[plain]);
-         glCallList(display_lists[cannon]);
-         glTranslatef(-x, -y, 0.0f);
-         break;
-     case forest:
-         glTranslatef(x, y, 0.0f);
-         glCallList(display_lists[plain]);
-         glRotatef(45.0f, 0.0f, 0.0f, 1.0f);
-         glCallList(display_lists[forest]);
-         glRotatef(-45.0f, 0.0f, 0.0f, 1.0f);
-         glCallList(display_lists[plain]);
-         glTranslatef(-x, -y, 0.0f);
-         break;
-     default:
-         break;
-     }
+        if (x_index != 0 && data[y_index * x_max + (x_index - 1)] == hill) {
+            hill_type |= 1u;
+        }
+        if (y_index != 0 && data[(y_index - 1) * x_max + x_index] == hill) {
+            hill_type |= 2u;
+        }
+        if (x_index != x_max - 1 && data[y_index * x_max + (x_index + 1)] == hill) {
+            hill_type |= 4u;
+        }
+        if (y_index != y_max - 1 && data[(y_index + 1) * x_max + x_index] == hill) {
+            hill_type |= 8u;
+        }
+
+        glCallList(display_lists_hills[hill_type]);
+        glTranslatef(-x, -y, 0.0f);
+        break;
+    case barrier:
+        glTranslatef(x, y, 0.0f);
+        glCallList(display_lists[plain]);
+        glCallList(display_lists[barrier]);
+        glTranslatef(-x, -y, 0.0f);
+        break;
+    case trap:
+        glTranslatef(x, y, 0.0f);
+        glCallList(display_lists[plain]);
+        glCallList(display_lists[trap]);
+        glTranslatef(-x, -y, 0.0f);
+        break;
+    case temple:
+        glTranslatef(x, y, 0.0f);
+        glCallList(display_lists[plain]);
+        glCallList(display_lists[temple]);
+        glTranslatef(-x, -y, 0.0f);
+        break;
+    case plain:
+        glTranslatef(x, y, 0.0f);
+        glCallList(display_lists[plain]);
+        glTranslatef(-x, -y, 0.0f);
+        break;
+    case facility:
+        glTranslatef(x, y, 0.0f);
+        glCallList(display_lists[plain]);
+        glCallList(display_lists[facility]);
+        glTranslatef(-x, -y, 0.0f);
+        break;
+    case cannon:
+        glTranslatef(x, y, 0.0f);
+        glCallList(display_lists[plain]);
+        glCallList(display_lists[cannon]);
+        glTranslatef(-x, -y, 0.0f);
+        break;
+    case forest:
+        glTranslatef(x, y, 0.0f);
+        glCallList(display_lists[plain]);
+        glRotatef(45.0f, 0.0f, 0.0f, 1.0f);
+        glCallList(display_lists[forest]);
+        glRotatef(-45.0f, 0.0f, 0.0f, 1.0f);
+        glCallList(display_lists[plain]);
+        glTranslatef(-x, -y, 0.0f);
+        break;
+    default:
+        break;
+    }
 }
 
 void DSMap::renderTiles() {
-	if (map != 0) {
-		glCallList(map);
-	}
+
     /*for (size_t x = 0; x < x_max; ++x)
         for (size_t y = 0; y < y_max; ++y) {
             renderTile(x, y);
@@ -392,7 +396,7 @@ void DSMap::dishi() {
         }
         size_t x, y;
         getXY(i, &x, &y);
-        for (int j = 0; j < 3; j++) {
+        for (int j = 0; j < 2; j++) {
             int fx = rand() % fenkuai;
             int fy = rand() % fenkuai;
             for (int cx = fx - 10; cx < fx + 10; cx++) {
@@ -401,7 +405,12 @@ void DSMap::dishi() {
                         continue;
                     }
                     if (heights[x * fenkuai + cx + (y * fenkuai + cy)*x_max * fenkuai] > 0) {
-                        heights[x * fenkuai + cx + (y * fenkuai + cy)*x_max * fenkuai] += 5.0f / (cx * cx + cy * cy + 1);
+                        float dis = (cx * cx + cy * cy);
+                        if (dis > 25) {
+                            heights[x * fenkuai + cx + (y * fenkuai + cy)*x_max * fenkuai] += 2 / sqrt(dis);
+                        } else {
+                            heights[x * fenkuai + cx + (y * fenkuai + cy)*x_max * fenkuai] += 1.4 - sqrt(dis)/5;
+                        }
                     }
                 }
             }
@@ -410,6 +419,7 @@ void DSMap::dishi() {
 
     map = glGenLists(1);
     glNewList(map, GL_COMPILE);
+    glBindTexture(GL_TEXTURE_2D, texture_ID_plain);
     float ds = grid_size / float(fenkuai);
     for (int i = 0; i < fenkuai * x_max - 1; i++) {
         for (int j = 0; j < fenkuai * y_max - 1; j++) {
