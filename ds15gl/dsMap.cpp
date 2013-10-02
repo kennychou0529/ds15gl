@@ -14,30 +14,30 @@ const GLfloat pi = 3.1415926f;
 
 GLfloat DSMap::grid_size = 10.0f;
 
-void DSMap::load(){
-	// 载入所有静态物体
-	object_manager.loadAllObjects();
+void DSMap::load() {
+    // 载入所有静态物体
+    object_manager.loadAllObjects();
 
-	// 载入平原贴图
-	texture_ID_plain = dsLoadTextureBMP2D("data/images/grass.bmp");
+    // 载入平原贴图
+    texture_ID_plain = dsLoadTextureBMP2D("data/images/grass.bmp");
 
-	// 载入所有山地贴图: begin
-	size_t A, B, C, D, temp;
-	std::ostringstream os;
-	for (size_t i = 0; i < 16; ++i) {
-		os.str("");
-		os << "data/images/hill_";
-		A = i & 1;
-		temp = i >> 1; // temp = DCB
-		B = temp & 1;
-		temp >>= 1;    // temp = DC
-		C = temp & 1;
-		D = temp >> 1;
-		os << D << C << B << A << ".bmp";
-		std::cout << os.str();
-		texture_ID_hill[i] = dsLoadTextureBMP2D(os.str());
-	}
-	// 载入所有山地贴图: end
+    // 载入所有山地贴图: begin
+    size_t A, B, C, D, temp;
+    std::ostringstream os;
+    for (size_t i = 0; i < 16; ++i) {
+        os.str("");
+        os << "data/images/hill_";
+        A = i & 1;
+        temp = i >> 1; // temp = DCB
+        B = temp & 1;
+        temp >>= 1;    // temp = DC
+        C = temp & 1;
+        D = temp >> 1;
+        os << D << C << B << A << ".bmp";
+        std::cout << os.str();
+        texture_ID_hill[i] = dsLoadTextureBMP2D(os.str());
+    }
+    // 载入所有山地贴图: end
 }
 
 // 从数组初始化一张地图
@@ -57,9 +57,9 @@ void DSMap::init(size_t _x_max, size_t _y_max, TileType* _data) {
     data[1] = plain;
     data[17] = plain;
 
-//     // 创建所有显示列表
-//     loadDisplayLists();
-	listLoaded = false;
+    //     // 创建所有显示列表
+    //     loadDisplayLists();
+    listLoaded = false;
     return;
     std::memcpy(data, _data, sizeof(TileType) * x_max * y_max);
 }
@@ -120,10 +120,10 @@ void DSMap::renderGrids(bool selectMode) {
 
 // 绘制地图，外部调用的唯一绘制函数
 void DSMap::render(bool selectMode) {
-	if (listLoaded == false)	{
-		loadDisplayLists();
-		listLoaded = true;
-	}
+    if (listLoaded == false)    {
+        loadDisplayLists();
+        listLoaded = true;
+    }
     renderHugeGround();
     renderTiles();
     if (selectMode) {
@@ -235,23 +235,74 @@ void DSMap::getCoords(
 }
 
 void DSMap::renderHugeGround(GLfloat radius) {
-    radius = 1000.0f;
-    GLfloat theta = 0.0f;
-    size_t num_edges = 20;
-    GLfloat dtheta = 2 * pi/ num_edges;
-    GLfloat x, y;
-    glBindTexture(GL_TEXTURE_2D, texture_ID_plain);
-    glBegin(GL_POLYGON);
-    glNormal3f(0.0f, 0.0f, 1.0f);
-    
-    for (size_t index = 0; index < num_edges; ++index) {
-        x = std::cos(theta);
-        y = std::sin(theta);
-        glTexCoord2f(x, y);
-        glVertex3f(radius * x, radius * y, -0.1f);
-        theta += dtheta;
+    static GLuint list = 0;
+    if (list == 0) {
+        list = glGenLists(1);
+        glNewList(list, GL_COMPILE);
+        int heights[20][20];
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < 20; j++) {
+                if ((i > 10 || i < 9) && (j < 9 || j > 10)) {
+                    heights[i][j] = rand() % 50 - 10;
+                } else {
+                    heights[i][j] = 0;
+                }
+            }
+        }
+        glBindTexture(GL_TEXTURE_2D, texture_ID_plain);
+
+        for (int i = 0; i < 19; i++) {
+            for (int j = 0; j < 19; j++) {
+
+                glPushMatrix();
+                glTranslatef((i - 9.5)*grid_size * x_max, (j - 9.5)*grid_size * y_max, -1);
+                glBegin(GL_POLYGON);
+                {
+                    GLfloat p1[] = {0, 0, heights[i][j]};
+                    GLfloat p2[] = {grid_size * x_max, 0, heights[i + 1][j]};
+                    GLfloat p3[] = {grid_size * x_max, grid_size * y_max, heights[i + 1][j + 1]};
+                    GLfloat res[3];
+                    dsNormalVectorOfTriangle3fv(p1, p2, p3, res);
+
+                    glNormal3f(res[0], res[1], res[2]);
+                    glTexCoord2f(0, 0);
+                    glVertex3f(0, 0, heights[i][j]);
+                    glTexCoord2f(1, 0);
+                    glVertex3f(grid_size * x_max, 0, heights[i + 1][j]);
+                    glTexCoord2f(1, 1);
+                    glVertex3f(grid_size * x_max, grid_size * y_max, heights[i + 1][j + 1]);
+                    glTexCoord2f(0, 1);
+                    glVertex3f(0, grid_size * y_max, heights[i][j + 1]);
+
+                }
+                glEnd();
+                glPopMatrix();
+
+            }
+        }
+        /*
+                radius = 1000.0f;
+                GLfloat theta = 0.0f;
+                size_t num_edges = 20;
+                GLfloat dtheta = 2 * pi / num_edges;
+                GLfloat x, y;
+                glBindTexture(GL_TEXTURE_2D, texture_ID_plain);
+                glBegin(GL_POLYGON);
+                glNormal3f(0.0f, 0.0f, 1.0f);
+
+                for (size_t index = 0; index < num_edges; ++index) {
+                    x = std::cos(theta);
+                    y = std::sin(theta);
+                    glTexCoord2f(x, y);
+                    glVertex3f(radius * x, radius * y, -0.1f);
+                    theta += dtheta;
+                }
+                glEnd();*/
+        glEndList();
+
     }
-    glEnd();
+    glCallList(list);
+
     //renderArrow(0, 0, 0.0f);
 }
 
@@ -312,12 +363,12 @@ void DSMap::renderArrow(size_t x_index, size_t y_index, GLfloat duration) {
 }
 
 void DSMap::loadDisplayLists() {
-	//clear
-	for (int i = 0; i < 8; i++) {
-		if (glIsList(display_lists[i])) {
-			glDeleteLists(1, display_lists[i]);
-		}
-	}
+    //clear
+    for (int i = 0; i < 8; i++) {
+        if (glIsList(display_lists[i])) {
+            glDeleteLists(1, display_lists[i]);
+        }
+    }
 
     // Hill: begin
     display_lists[hill] = glGenLists(1);

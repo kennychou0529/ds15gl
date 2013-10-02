@@ -24,7 +24,8 @@ void dsDisplay() {
 		frame.display();
 	}else
 	{
-
+		glColor3f(1,1,1);
+		dstext.print(200,200,L"载入中");
 	}
     glutSwapBuffers();
 
