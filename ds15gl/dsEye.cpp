@@ -222,6 +222,18 @@ void dsSetEye() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
+	if(eye_sphere[1]>1.5f)
+		eye_sphere[1]=1.5f;
+	if(center[0]>100)
+		center[0] = 100;
+	if(center[0]<-100)
+		center[0] = -100;
+	if(center[1]>100)
+		center[1] = 100;
+	if(center[1]<-100)
+		center[1] = -100;
+
+
     // 将球坐标转化为直角坐标
     dsSphereToOrtho3dv(eye_sphere, center, eye);
 

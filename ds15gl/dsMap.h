@@ -72,6 +72,8 @@ private:
     // 绘制一个超大的地面，延伸至很远很远
     void renderHugeGround(GLfloat radius = 5.0f);
 
+	GLuint map ;
+	void dishi();
     void loadDisplayLists();
 	bool listLoaded;
     DSObjectManager object_manager;

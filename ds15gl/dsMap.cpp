@@ -60,8 +60,10 @@ void DSMap::init(size_t _x_max, size_t _y_max, TileType* _data) {
     //     // 创建所有显示列表
     //     loadDisplayLists();
     listLoaded = false;
+    dishi();
     return;
     std::memcpy(data, _data, sizeof(TileType) * x_max * y_max);
+
 }
 
 DSMap::~DSMap() {
@@ -134,84 +136,88 @@ void DSMap::render(bool selectMode) {
 }
 
 void DSMap::renderTile(size_t x_index, size_t y_index) {
-    GLfloat x, y;
-    size_t hill_type = 0;
-    getCoords(x_index, y_index, &x, &y);
+    
+     GLfloat x, y;
+     size_t hill_type = 0;
+     getCoords(x_index, y_index, &x, &y);
 
-    switch (data[y_index * x_max + x_index]) {
-    case hill:
-        glTranslatef(x, y, 0.0f);
+     switch (data[y_index * x_max + x_index]) {
+     case hill:
+         glTranslatef(x, y, 0.0f);
 
-        if (x_index != 0 && data[y_index * x_max + (x_index - 1)] == hill) {
-            hill_type |= 1u;
-        }
-        if (y_index != 0 && data[(y_index - 1) * x_max + x_index] == hill) {
-            hill_type |= 2u;
-        }
-        if (x_index != x_max - 1 && data[y_index * x_max + (x_index + 1)] == hill) {
-            hill_type |= 4u;
-        }
-        if (y_index != y_max - 1 && data[(y_index + 1) * x_max + x_index] == hill) {
-            hill_type |= 8u;
-        }
+         if (x_index != 0 && data[y_index * x_max + (x_index - 1)] == hill) {
+             hill_type |= 1u;
+         }
+         if (y_index != 0 && data[(y_index - 1) * x_max + x_index] == hill) {
+             hill_type |= 2u;
+         }
+         if (x_index != x_max - 1 && data[y_index * x_max + (x_index + 1)] == hill) {
+             hill_type |= 4u;
+         }
+         if (y_index != y_max - 1 && data[(y_index + 1) * x_max + x_index] == hill) {
+             hill_type |= 8u;
+         }
 
-        glCallList(display_lists_hills[hill_type]);
-        glTranslatef(-x, -y, 0.0f);
-        break;
-    case barrier:
-        glTranslatef(x, y, 0.0f);
-        glCallList(display_lists[plain]);
-        glCallList(display_lists[barrier]);
-        glTranslatef(-x, -y, 0.0f);
-        break;
-    case trap:
-        glTranslatef(x, y, 0.0f);
-        glCallList(display_lists[plain]);
-        glCallList(display_lists[trap]);
-        glTranslatef(-x, -y, 0.0f);
-        break;
-    case temple:
-        glTranslatef(x, y, 0.0f);
-        glCallList(display_lists[plain]);
-        glCallList(display_lists[temple]);
-        glTranslatef(-x, -y, 0.0f);
-        break;
-    case plain:
-        glTranslatef(x, y, 0.0f);
-        glCallList(display_lists[plain]);
-        glTranslatef(-x, -y, 0.0f);
-        break;
-    case facility:
-        glTranslatef(x, y, 0.0f);
-        glCallList(display_lists[plain]);
-        glCallList(display_lists[facility]);
-        glTranslatef(-x, -y, 0.0f);
-        break;
-    case cannon:
-        glTranslatef(x, y, 0.0f);
-        glCallList(display_lists[plain]);
-        glCallList(display_lists[cannon]);
-        glTranslatef(-x, -y, 0.0f);
-        break;
-    case forest:
-        glTranslatef(x, y, 0.0f);
-        glCallList(display_lists[plain]);
-        glRotatef(45.0f, 0.0f, 0.0f, 1.0f);
-        glCallList(display_lists[forest]);
-        glRotatef(-45.0f, 0.0f, 0.0f, 1.0f);
-        glCallList(display_lists[plain]);
-        glTranslatef(-x, -y, 0.0f);
-        break;
-    default:
-        break;
-    }
+         glCallList(display_lists_hills[hill_type]);
+         glTranslatef(-x, -y, 0.0f);
+         break;
+     case barrier:
+         glTranslatef(x, y, 0.0f);
+         glCallList(display_lists[plain]);
+         glCallList(display_lists[barrier]);
+         glTranslatef(-x, -y, 0.0f);
+         break;
+     case trap:
+         glTranslatef(x, y, 0.0f);
+         glCallList(display_lists[plain]);
+         glCallList(display_lists[trap]);
+         glTranslatef(-x, -y, 0.0f);
+         break;
+     case temple:
+         glTranslatef(x, y, 0.0f);
+         glCallList(display_lists[plain]);
+         glCallList(display_lists[temple]);
+         glTranslatef(-x, -y, 0.0f);
+         break;
+     case plain:
+         glTranslatef(x, y, 0.0f);
+         glCallList(display_lists[plain]);
+         glTranslatef(-x, -y, 0.0f);
+         break;
+     case facility:
+         glTranslatef(x, y, 0.0f);
+         glCallList(display_lists[plain]);
+         glCallList(display_lists[facility]);
+         glTranslatef(-x, -y, 0.0f);
+         break;
+     case cannon:
+         glTranslatef(x, y, 0.0f);
+         glCallList(display_lists[plain]);
+         glCallList(display_lists[cannon]);
+         glTranslatef(-x, -y, 0.0f);
+         break;
+     case forest:
+         glTranslatef(x, y, 0.0f);
+         glCallList(display_lists[plain]);
+         glRotatef(45.0f, 0.0f, 0.0f, 1.0f);
+         glCallList(display_lists[forest]);
+         glRotatef(-45.0f, 0.0f, 0.0f, 1.0f);
+         glCallList(display_lists[plain]);
+         glTranslatef(-x, -y, 0.0f);
+         break;
+     default:
+         break;
+     }
 }
 
 void DSMap::renderTiles() {
-    for (size_t x = 0; x < x_max; ++x)
+	if (map != 0) {
+		glCallList(map);
+	}
+    /*for (size_t x = 0; x < x_max; ++x)
         for (size_t y = 0; y < y_max; ++y) {
             renderTile(x, y);
-        }
+        }*/
 }
 
 void DSMap::getCoords(
@@ -242,10 +248,10 @@ void DSMap::renderHugeGround(GLfloat radius) {
         int heights[20][20];
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 20; j++) {
-                if ((i > 10 || i < 9) && (j < 9 || j > 10)) {
-                    heights[i][j] = rand() % 50 - 10;
-                } else {
+                if ((i <= 10 && i >= 9) && (j >= 9 && j <= 10)) {
                     heights[i][j] = 0;
+                } else {
+                    heights[i][j] = rand() % 50 - 10;
                 }
             }
         }
@@ -253,7 +259,9 @@ void DSMap::renderHugeGround(GLfloat radius) {
 
         for (int i = 0; i < 19; i++) {
             for (int j = 0; j < 19; j++) {
-
+                if ((i == 9 && j == 9)) {
+                    continue;
+                }
                 glPushMatrix();
                 glTranslatef((i - 9.5)*grid_size * x_max, (j - 9.5)*grid_size * y_max, -1);
                 glBegin(GL_POLYGON);
@@ -360,6 +368,82 @@ void DSMap::renderArrow(size_t x_index, size_t y_index, GLfloat duration) {
     glRotated(-rr - 90.0, 0, 0, 1.0);
     glPopAttrib();
     glTranslatef(-x, -y, 0.0f);
+}
+
+void DSMap::dishi() {
+    int fenkuai = 20;
+    GLfloat* heights = new GLfloat[x_max * y_max * fenkuai * fenkuai];
+    for (int i = 0; i < x_max * y_max ; i++) {
+        size_t x, y;
+        getXY(i, &x, &y);
+        for (int cx = 0; cx < fenkuai; cx++) {
+            for (int cy = 0; cy < fenkuai; cy++) {
+                if (data[i] == hill) {
+                    heights[x * fenkuai + cx + (y * fenkuai + cy)*x_max * fenkuai] = 0.01f;
+                } else {
+                    heights[x * fenkuai + cx + (y * fenkuai + cy)*x_max * fenkuai] = 0;
+                }
+            }
+        }
+    }
+    for (int i = 0; i < x_max * y_max ; i++) {
+        if (data[i] != hill) {
+            continue;
+        }
+        size_t x, y;
+        getXY(i, &x, &y);
+        for (int j = 0; j < 3; j++) {
+            int fx = rand() % fenkuai;
+            int fy = rand() % fenkuai;
+            for (int cx = fx - 10; cx < fx + 10; cx++) {
+                for (int cy = fy - 10; cy < fy + 10; cy++) {
+                    if (x * fenkuai + cx + (y * fenkuai + cy)*x_max * fenkuai >= x_max * y_max * fenkuai * fenkuai) {
+                        continue;
+                    }
+                    if (heights[x * fenkuai + cx + (y * fenkuai + cy)*x_max * fenkuai] > 0) {
+                        heights[x * fenkuai + cx + (y * fenkuai + cy)*x_max * fenkuai] += 5.0f / (cx * cx + cy * cy + 1);
+                    }
+                }
+            }
+        }
+    }
+
+    map = glGenLists(1);
+    glNewList(map, GL_COMPILE);
+    float ds = grid_size / float(fenkuai);
+    for (int i = 0; i < fenkuai * x_max - 1; i++) {
+        for (int j = 0; j < fenkuai * y_max - 1; j++) {
+
+            glPushMatrix();
+            glTranslatef((i - fenkuai * x_max / 2) / float(fenkuai)*grid_size,
+                         (j - fenkuai * y_max / 2) / float(fenkuai)*grid_size,
+                         0);
+            glBegin(GL_POLYGON);
+            {
+
+                GLfloat p1[] = {0, 0, heights[i + j* fenkuai* x_max]};
+                GLfloat p2[] = {ds, 0, heights[i + 1 + j* fenkuai* x_max]};
+                GLfloat p3[] = {0, ds, heights[i + (j + 1)*fenkuai* x_max]};
+                GLfloat res[3];
+                dsNormalVectorOfTriangle3fv(p1, p2, p3, res);
+
+                glNormal3f(res[0], res[1], res[2]);
+                glTexCoord2f(0, 0);
+                glVertex3f(0, 0, heights[i + j * fenkuai * x_max]);
+                glTexCoord2f(1, 0);
+                glVertex3f(ds, 0, heights[i + 1 + j * fenkuai * x_max]);
+                glTexCoord2f(1, 1);
+                glVertex3f(ds, ds, heights[i + 1 + (j + 1)*fenkuai * x_max]);
+                glTexCoord2f(0, 1);
+                glVertex3f(0, ds, heights[i + (j + 1)*fenkuai * x_max]);
+
+            }
+            glEnd();
+            glPopMatrix();
+            // printf("%d,%d ", i, j);
+        }
+    }
+    glEndList();
 }
 
 void DSMap::loadDisplayLists() {
