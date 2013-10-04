@@ -425,8 +425,8 @@ void DSMap::dishi() {
         for (int j = 0; j < fenkuai * y_max - 1; j++) {
 
             glPushMatrix();
-            glTranslatef((i - fenkuai * x_max / 2) / float(fenkuai)*grid_size,
-                         (j - fenkuai * y_max / 2) / float(fenkuai)*grid_size,
+            glTranslatef((i - (GLfloat)fenkuai * x_max / 2) / float(fenkuai)*grid_size,
+                         (j - (GLfloat)fenkuai * y_max / 2) / float(fenkuai)*grid_size,
                          0);
             glBegin(GL_POLYGON);
             {
