@@ -149,7 +149,7 @@ void DSMap::renderTile(size_t x_index, size_t y_index) {
 
     switch (data[y_index * x_max + x_index]) {
     case hill:
-        glTranslatef(x, y, 0.0f);
+        /*glTranslatef(x, y, 0.0f);
 
         if (x_index != 0 && data[y_index * x_max + (x_index - 1)] == hill) {
             hill_type |= 1u;
@@ -165,7 +165,7 @@ void DSMap::renderTile(size_t x_index, size_t y_index) {
         }
 
         glCallList(display_lists_hills[hill_type]);
-        glTranslatef(-x, -y, 0.0f);
+        glTranslatef(-x, -y, 0.0f);*/
         break;
     case barrier:
         glTranslatef(x, y, 0.0f);
@@ -218,10 +218,10 @@ void DSMap::renderTile(size_t x_index, size_t y_index) {
 
 void DSMap::renderTiles() {
 
-    /*for (size_t x = 0; x < x_max; ++x)
+    for (size_t x = 0; x < x_max; ++x)
         for (size_t y = 0; y < y_max; ++y) {
             renderTile(x, y);
-        }*/
+        }
 }
 
 void DSMap::getCoords(
@@ -394,22 +394,24 @@ void DSMap::dishi() {
         if (data[i] != hill) {
             continue;
         }
-        size_t x, y;
-        getXY(i, &x, &y);
+        size_t _x, _y;
+        getXY(i, &_x, &_y);
+        int x = _x, y = _y, _x_max = x_max, _y_max = y_max;
         for (int j = 0; j < 2; j++) {
             int fx = rand() % fenkuai;
             int fy = rand() % fenkuai;
             for (int cx = fx - 10; cx < fx + 10; cx++) {
                 for (int cy = fy - 10; cy < fy + 10; cy++) {
-                    if (x * fenkuai + cx + (y * fenkuai + cy)*x_max * fenkuai >= x_max * y_max * fenkuai * fenkuai) {
+                    int index = x * fenkuai + cx + (y * fenkuai + cy) * _x_max * fenkuai;
+                    if (index < 0 || index >= _x_max * _y_max * fenkuai * fenkuai) {
                         continue;
                     }
-                    if (heights[x * fenkuai + cx + (y * fenkuai + cy)*x_max * fenkuai] > 0) {
-                        float dis = (cx * cx + cy * cy);
+                    if (heights[index] > 0) {
+                        float dis = (cx - fx) * (cx - fx) + (cy - fx) * (cy - fx);
                         if (dis > 25) {
-                            heights[x * fenkuai + cx + (y * fenkuai + cy)*x_max * fenkuai] += 2 / sqrt(dis);
+                            heights[index] += 2 / sqrt(dis);
                         } else {
-                            heights[x * fenkuai + cx + (y * fenkuai + cy)*x_max * fenkuai] += 1.4 - sqrt(dis)/5;
+                            heights[index] += 1.4 - sqrt(dis) / 5;
                         }
                     }
                 }
@@ -419,15 +421,23 @@ void DSMap::dishi() {
 
     map = glGenLists(1);
     glNewList(map, GL_COMPILE);
-    glBindTexture(GL_TEXTURE_2D, texture_ID_plain);
+    
+	float dsize = 1.0f/fenkuai;
+
     float ds = grid_size / float(fenkuai);
     for (int i = 0; i < fenkuai * x_max - 1; i++) {
         for (int j = 0; j < fenkuai * y_max - 1; j++) {
-
+			if(heights[i + j* fenkuai* x_max]>0.1){
+				glBindTexture(GL_TEXTURE_2D, texture_ID_hill[15]);
+			}
+			else{
+				glBindTexture(GL_TEXTURE_2D, texture_ID_plain);
+			}
+			//glBindTexture(GL_TEXTURE_2D, texture_ID_plain);
             glPushMatrix();
             glTranslatef((i - (GLfloat)fenkuai * x_max / 2) / float(fenkuai)*grid_size,
                          (j - (GLfloat)fenkuai * y_max / 2) / float(fenkuai)*grid_size,
-                         0);
+                         -1);
             glBegin(GL_POLYGON);
             {
 
@@ -437,14 +447,17 @@ void DSMap::dishi() {
                 GLfloat res[3];
                 dsNormalVectorOfTriangle3fv(p1, p2, p3, res);
 
+				float cx = (i%fenkuai)/float(fenkuai);
+				float cy = (j%fenkuai)/float(fenkuai);
+
                 glNormal3f(res[0], res[1], res[2]);
-                glTexCoord2f(0, 0);
+                glTexCoord2f(cx, cy);
                 glVertex3f(0, 0, heights[i + j * fenkuai * x_max]);
-                glTexCoord2f(1, 0);
+                glTexCoord2f(cx+dsize, cy);
                 glVertex3f(ds, 0, heights[i + 1 + j * fenkuai * x_max]);
-                glTexCoord2f(1, 1);
+                glTexCoord2f(cx+dsize, cy+dsize);
                 glVertex3f(ds, ds, heights[i + 1 + (j + 1)*fenkuai * x_max]);
-                glTexCoord2f(0, 1);
+                glTexCoord2f(cx, cy+dsize);
                 glVertex3f(0, ds, heights[i + (j + 1)*fenkuai * x_max]);
 
             }
