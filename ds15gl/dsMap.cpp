@@ -9,7 +9,7 @@
 #include <string>
 #include <sstream>
 #include <cmath>
-#include <time.h>
+#include <ctime>
 
 const GLfloat pi = 3.1415926f;
 
@@ -38,8 +38,10 @@ void DSMap::load() {
         std::cout << os.str();
         texture_ID_hill[i] = dsLoadTextureBMP2D(os.str());
     }
-    srand(time(NULL));
     // 载入所有山地贴图: end
+    
+    std::srand(std::time(nullptr));
+    
 }
 
 // 从数组初始化一张地图
@@ -54,10 +56,10 @@ void DSMap::init(size_t _x_max, size_t _y_max, TileType* _data) {
     }
     data = new TileType[x_max * y_max];
     for (size_t i = 0; i < x_max * y_max; ++i) {
-        data[i] = hill;
+        data[i] = plain;
     }
-    data[1] = plain;
-    data[17] = plain;
+    data[1] = hill;
+    data[17] = hill;
 
     //     // 创建所有显示列表
     //     loadDisplayLists();
@@ -375,21 +377,26 @@ void DSMap::renderArrow(size_t x_index, size_t y_index, GLfloat duration) {
 }
 
 void DSMap::dishi() {
-    int fenkuai = 20;
+    size_t fenkuai = 20;
     GLfloat* heights = new GLfloat[x_max * y_max * fenkuai * fenkuai];
-    for (int i = 0; i < x_max * y_max ; i++) {
-        size_t x, y;
-        getXY(i, &x, &y);
-        for (int cx = 0; cx < fenkuai; cx++) {
-            for (int cy = 0; cy < fenkuai; cy++) {
-                if (data[i] == hill) {
-                    heights[x * fenkuai + cx + (y * fenkuai + cy)*x_max * fenkuai] = 0.01f;
-                } else {
-                    heights[x * fenkuai + cx + (y * fenkuai + cy)*x_max * fenkuai] = 0;
+
+    for (size_t x_index = 0; x_index < x_max; ++x_index)
+        for (size_t y_index = 0; y_index < y_max; ++y_index) {
+            if (data[y_index * y_max + x_index] == hill) {
+                for (int cx = 0; cx < fenkuai; cx++) {
+                    for (int cy = 0; cy < fenkuai; cy++) {
+                        heights[x_index * fenkuai + cx + (y_index * fenkuai + cy) * x_max * fenkuai] = 0.01f;
+                    }
+                }
+            } else {
+                for (int cx = 0; cx < fenkuai; cx++) {
+                    for (int cy = 0; cy < fenkuai; cy++) {
+                        heights[x_index * fenkuai + cx + (y_index * fenkuai + cy) * x_max * fenkuai] = 0;
+                    }
                 }
             }
         }
-    }
+
     for (int i = 0; i < x_max * y_max ; i++) {
         if (data[i] != hill) {
             continue;
@@ -427,17 +434,19 @@ void DSMap::dishi() {
     float ds = grid_size / float(fenkuai);
     for (int i = 0; i < fenkuai * x_max - 1; i++) {
         for (int j = 0; j < fenkuai * y_max - 1; j++) {
-			if(heights[i + j* fenkuai* x_max]>0.1){
+			if (heights[i + j * fenkuai * x_max] > 0.1) {
 				glBindTexture(GL_TEXTURE_2D, texture_ID_hill[15]);
 			}
-			else{
+			else {
 				glBindTexture(GL_TEXTURE_2D, texture_ID_plain);
 			}
 			//glBindTexture(GL_TEXTURE_2D, texture_ID_plain);
-            glPushMatrix();
-            glTranslatef((i - (GLfloat)fenkuai * x_max / 2) / float(fenkuai)*grid_size,
-                         (j - (GLfloat)fenkuai * y_max / 2) / float(fenkuai)*grid_size,
-                         -1);
+            //glPushMatrix();
+            glTranslatef(
+                (i - (GLfloat)fenkuai * x_max / 2) / GLfloat(fenkuai) * grid_size,
+                (j - (GLfloat)fenkuai * y_max / 2) / GLfloat(fenkuai) * grid_size,
+                -1.0f
+            );
             glBegin(GL_POLYGON);
             {
 
@@ -456,21 +465,27 @@ void DSMap::dishi() {
                 glTexCoord2f(cx+dsize, cy);
                 glVertex3f(ds, 0, heights[i + 1 + j * fenkuai * x_max]);
                 glTexCoord2f(cx+dsize, cy+dsize);
-                glVertex3f(ds, ds, heights[i + 1 + (j + 1)*fenkuai * x_max]);
+                glVertex3f(ds, ds, heights[i + 1 + (j + 1) * fenkuai * x_max]);
                 glTexCoord2f(cx, cy+dsize);
-                glVertex3f(0, ds, heights[i + (j + 1)*fenkuai * x_max]);
+                glVertex3f(0, ds, heights[i + (j + 1) * fenkuai * x_max]);
 
             }
             glEnd();
-            glPopMatrix();
+            glTranslatef(
+                - (i - (GLfloat)fenkuai * x_max / 2) / GLfloat(fenkuai) * grid_size,
+                - (j - (GLfloat)fenkuai * y_max / 2) / GLfloat(fenkuai) * grid_size,
+                1.0f
+            );
+            //glPopMatrix();
             // printf("%d,%d ", i, j);
         }
     }
     glEndList();
+    delete[] heights;
 }
 
 void DSMap::loadDisplayLists() {
-    //clear
+    // Clear
     for (int i = 0; i < 8; i++) {
         if (glIsList(display_lists[i])) {
             glDeleteLists(1, display_lists[i]);
