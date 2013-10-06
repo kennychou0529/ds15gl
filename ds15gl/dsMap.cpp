@@ -411,6 +411,7 @@ void DSMap::dishi() {
 
     // 如果地块是山地，则地势全部设为 0.01f
     // 如果地块不是山地，则地势全部设为 0.0f
+    std::memset(heights, 0, sizeof(GLfloat) * x_max * y_max * fenkuai * fenkuai);
 
     for (size_t x_index = 0; x_index < x_max; ++x_index) {
         for (size_t y_index = 0; y_index < y_max; ++y_index) {
@@ -419,8 +420,13 @@ void DSMap::dishi() {
                 continue;
             }
 
-            for (size_t cx = 0; cx < fenkuai; cx++) {
-                for (size_t cy = 0; cy < fenkuai; cy++) {
+            size_t cx_begin = (x_index == 0) ? 1 : 0;
+            size_t cy_begin = (y_index == 0) ? 1 : 0;
+            size_t cx_max = (x_index == x_max - 1) ? (fenkuai - 1) : fenkuai;
+            size_t cy_max = (y_index == y_max - 1) ? (fenkuai) : fenkuai;
+
+            for (size_t cx = cy_begin; cx < cx_max; cx++) {
+                for (size_t cy = cy_begin; cy < cy_max; cy++) {
                     heights[x_index * fenkuai + cx + (y_index * fenkuai + cy) * x_max * fenkuai] = 0.01f;
                 }
             }
