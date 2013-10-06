@@ -92,13 +92,13 @@ void DSSkybox::load(GLuint index) {
         glBegin(GL_QUADS);
         {
             glTexCoord2d(0, 0);
-            glVertex3d(x, x, - depth);
+            glVertex3d(x, x + 1, - depth);
             glTexCoord2d(0, 1);
-            glVertex3d(x, x, height - depth);
+            glVertex3d(x, x + 1, height - depth);
             glTexCoord2d(1, 1);
-            glVertex3d(x, - x, height - depth);
+            glVertex3d(x, - x - 1, height - depth);
             glTexCoord2d(1, 0);
-            glVertex3d(x, - x, - depth);
+            glVertex3d(x, - x - 1, - depth);
         }
         glEnd();
 
@@ -107,13 +107,13 @@ void DSSkybox::load(GLuint index) {
         glBegin(GL_QUADS);
         {
             glTexCoord2d(0, 0);
-            glVertex3d(- x, - x, - depth);
+            glVertex3d(- x, - x - 1, - depth);
             glTexCoord2d(0, 1);
-            glVertex3d(- x, - x, height - depth);
+            glVertex3d(- x, - x - 1, height - depth);
             glTexCoord2d(1, 1);
-            glVertex3d(- x, x, height - depth);
+            glVertex3d(- x, x + 1, height - depth);
             glTexCoord2d(1, 0);
-            glVertex3d(- x, x, - depth);
+            glVertex3d(- x, x + 1, - depth);
         }
         glEnd();
 
@@ -122,13 +122,13 @@ void DSSkybox::load(GLuint index) {
         glBegin(GL_QUADS);
         {
             glTexCoord2d(0, 0);
-            glVertex3d(x, - x, - depth);
+            glVertex3d(x + 1, - x, - depth);
             glTexCoord2d(0, 1);
-            glVertex3d(x, - x, height - depth);
+            glVertex3d(x + 1, - x, height - depth);
             glTexCoord2d(1, 1);
-            glVertex3d(- x, - x, height - depth);
+            glVertex3d(- x - 1, - x, height - depth);
             glTexCoord2d(1, 0);
-            glVertex3d(- x, - x, - depth);
+            glVertex3d(- x - 1, - x, - depth);
         }
         glEnd();
 
@@ -137,13 +137,13 @@ void DSSkybox::load(GLuint index) {
         glBegin(GL_QUADS);
         {
             glTexCoord2d(0, 0);
-            glVertex3d(- x, x, - depth);
+            glVertex3d(- x - 1, x, - depth);
             glTexCoord2d(0, 1);
-            glVertex3d(- x, x, height - depth);
+            glVertex3d(- x - 1, x, height - depth);
             glTexCoord2d(1, 1);
-            glVertex3d(x, x, height - depth);
+            glVertex3d(x + 1, x, height - depth);
             glTexCoord2d(1, 0);
-            glVertex3d(x, x, - depth);
+            glVertex3d(x + 1, x, - depth);
         }
         glEnd();
 

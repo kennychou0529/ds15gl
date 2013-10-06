@@ -205,8 +205,8 @@ static void dsEyeRotate() {
 
     double duration = timer.getDurationSecd();
     eye_sphere[1] = eye_sphere_saved[1] + factor1 * rotateSpeed * duration;
-    if (eye_sphere[1] > pi - 0.01) {
-        eye_sphere[1] = pi - 0.01;
+    if (eye_sphere[1] > 1.5f) {
+        eye_sphere[1] = 1.5f;
     }
     if (eye_sphere[1] < 0.01) {
         eye_sphere[1] = 0.01;
@@ -222,16 +222,14 @@ void dsSetEye() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-	if(eye_sphere[1]>1.5f)
-		eye_sphere[1]=1.5f;
-	if(center[0]>100)
-		center[0] = 100;
-	if(center[0]<-100)
-		center[0] = -100;
-	if(center[1]>100)
-		center[1] = 100;
-	if(center[1]<-100)
-		center[1] = -100;
+    if (center[0] > 100)
+        center[0] = 100;
+    if (center[0] < -100)
+        center[0] = -100;
+    if (center[1] > 100)
+        center[1] = 100;
+    if (center[1] < -100)
+        center[1] = -100;
 
 
     // 将球坐标转化为直角坐标

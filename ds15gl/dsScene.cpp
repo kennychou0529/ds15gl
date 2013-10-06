@@ -36,5 +36,5 @@ void DSScene::show(bool selectMode) {
 }
 
 void DSScene::initialize() {
-    dsSkyBox.load(3);
+    dsSkyBox.load(0);
 }
