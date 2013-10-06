@@ -404,7 +404,9 @@ void DSMap::dishi() {
     // 每个地块都有 fenkuai * fenkuai 个点
     GLfloat* heights = new GLfloat[x_max * y_max * fenkuai * fenkuai];
 
-    for (size_t x_index = 0; x_index < x_max; ++x_index)
+    // 如果地块是山地，则地势全部设为 0.01f
+    // 如果地块不是山地，则地势全部设为 0.0f
+    for (size_t x_index = 0; x_index < x_max; ++x_index) {
         for (size_t y_index = 0; y_index < y_max; ++y_index) {
             if (data[y_index * x_max + x_index] == hill) {
                 for (size_t cx = 0; cx < fenkuai; cx++) {
@@ -415,12 +417,14 @@ void DSMap::dishi() {
             } else {
                 for (size_t cx = 0; cx < fenkuai; cx++) {
                     for (size_t cy = 0; cy < fenkuai; cy++) {
-                        heights[x_index * fenkuai + cx + (y_index * fenkuai + cy) * x_max * fenkuai] = 0;
+                        heights[x_index * fenkuai + cx + (y_index * fenkuai + cy) * x_max * fenkuai] = 0.0f;
                     }
                 }
             }
         }
+    }
 
+    // 这里是地势生成的部分，我还没看
     for (int i = 0; i < x_max * y_max; i++) {
         if (data[i] != hill) {
             continue;
@@ -530,8 +534,8 @@ void DSMap::dishi() {
         for (size_t j = 0; j < fenkuai * y_max - 1; j++) {
             size_t x_index = i / fenkuai;
             size_t y_index = j / fenkuai;
-            size_t cx = i % fenkuai;
-            size_t cy = j % fenkuai;
+            size_t cx_index = i % fenkuai;
+            size_t cy_index = j % fenkuai;
 
             if (data[y_index * x_max + x_index] == hill) {
                 glBindTexture(GL_TEXTURE_2D, texture_ID_hill[getHillType(x_index, y_index)]);
@@ -562,8 +566,8 @@ void DSMap::dishi() {
                 GLfloat res[3];
                 dsNormalVectorOfTriangle3fv(p1, p2, p3, res);
 
-				GLfloat cx = (i % fenkuai) / GLfloat(fenkuai);
-				GLfloat cy = (j % fenkuai) / GLfloat(fenkuai);
+				GLfloat cx = cx_index / GLfloat(fenkuai);
+				GLfloat cy = cy_index / GLfloat(fenkuai);
 
                 glNormal3f(res[0], res[1], res[2]);
 
