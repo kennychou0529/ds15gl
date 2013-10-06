@@ -58,8 +58,8 @@ void DSMap::init(size_t _x_max, size_t _y_max, TileType* _data) {
     for (size_t i = 0; i < x_max * y_max; ++i) {
         data[i] = plain;
     }
-    data[1] = hill;
-    data[14] = hill;
+    data[1] = temple;
+    data[14] = forest;
     data[28] = hill;
     data[2] = hill;
     data[3] = hill;
@@ -422,8 +422,8 @@ void DSMap::dishi() {
 
             size_t cx_begin = (x_index == 0) ? 1 : 0;
             size_t cy_begin = (y_index == 0) ? 1 : 0;
-            size_t cx_max = (x_index == x_max - 1) ? (fenkuai - 1) : fenkuai;
-            size_t cy_max = (y_index == y_max - 1) ? (fenkuai) : fenkuai;
+            size_t cx_max = (x_index == x_max - 1) ? fenkuai : (fenkuai + 1);
+            size_t cy_max = (y_index == y_max - 1) ? fenkuai : (fenkuai + 1);
 
             for (size_t cx = cy_begin; cx < cx_max; cx++) {
                 for (size_t cy = cy_begin; cy < cy_max; cy++) {
