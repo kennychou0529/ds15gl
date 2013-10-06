@@ -60,6 +60,9 @@ void DSMap::init(size_t _x_max, size_t _y_max, TileType* _data) {
     }
     data[1] = hill;
     data[17] = hill;
+    data[28] = hill;
+    data[2] = hill;
+    data[3] = hill;
 
     //     // 创建所有显示列表
     //     loadDisplayLists();
@@ -73,6 +76,25 @@ void DSMap::init(size_t _x_max, size_t _y_max, TileType* _data) {
 DSMap::~DSMap() {
     delete[] data;
 }
+
+// 求出应该用哪张山地贴图
+size_t DSMap::getHillType(size_t x_index, size_t y_index) {
+    size_t hill_type = 0;
+    if (x_index != 0 && data[y_index * x_max + (x_index - 1)] == hill) {
+        hill_type |= 1u;
+    }
+    if (y_index != 0 && data[(y_index - 1) * x_max + x_index] == hill) {
+        hill_type |= 2u;
+    }
+    if (x_index != x_max - 1 && data[y_index * x_max + (x_index + 1)] == hill) {
+        hill_type |= 4u;
+    }
+    if (y_index != y_max - 1 && data[(y_index + 1) * x_max + x_index] == hill) {
+        hill_type |= 8u;
+    }
+    return hill_type;
+}
+
 
 void DSMap::getSize(int* pwidth, int* pheight) const {
     if (pwidth != nullptr) {
@@ -166,7 +188,7 @@ void DSMap::renderTile(size_t x_index, size_t y_index) {
             hill_type |= 8u;
         }
 
-        glCallList(display_lists_hills[hill_type]);
+        glCallList(display_lists_hill[hill_type]);
         glTranslatef(-x, -y, 0.0f);*/
         break;
     case barrier:
@@ -384,7 +406,7 @@ void DSMap::dishi() {
 
     for (size_t x_index = 0; x_index < x_max; ++x_index)
         for (size_t y_index = 0; y_index < y_max; ++y_index) {
-            if (data[y_index * y_max + x_index] == hill) {
+            if (data[y_index * x_max + x_index] == hill) {
                 for (size_t cx = 0; cx < fenkuai; cx++) {
                     for (size_t cy = 0; cy < fenkuai; cy++) {
                         heights[x_index * fenkuai + cx + (y_index * fenkuai + cy) * x_max * fenkuai] = 0.01f;
@@ -512,10 +534,9 @@ void DSMap::dishi() {
             size_t cy = j % fenkuai;
 
             if (data[y_index * x_max + x_index] == hill) {
-                glBindTexture(GL_TEXTURE_2D, texture_ID_hill[15]);
+                glBindTexture(GL_TEXTURE_2D, texture_ID_hill[getHillType(x_index, y_index)]);
             } else {
                 continue;
-                glBindTexture(GL_TEXTURE_2D, texture_ID_plain);
             }
             
 
@@ -530,7 +551,7 @@ void DSMap::dishi() {
             glTranslatef(
                 (i - (GLfloat)fenkuai * x_max / 2) / GLfloat(fenkuai) * grid_size,
                 (j - (GLfloat)fenkuai * y_max / 2) / GLfloat(fenkuai) * grid_size,
-                -1.0f
+                - 0.0f
             );
             glBegin(GL_POLYGON);
             {
@@ -541,8 +562,8 @@ void DSMap::dishi() {
                 GLfloat res[3];
                 dsNormalVectorOfTriangle3fv(p1, p2, p3, res);
 
-				float cx = (i % fenkuai) / GLfloat(fenkuai);
-				float cy = (j % fenkuai) / GLfloat(fenkuai);
+				GLfloat cx = (i % fenkuai) / GLfloat(fenkuai);
+				GLfloat cy = (j % fenkuai) / GLfloat(fenkuai);
 
                 glNormal3f(res[0], res[1], res[2]);
 
@@ -563,7 +584,7 @@ void DSMap::dishi() {
             glTranslatef(
                 - (i - (GLfloat)fenkuai * x_max / 2) / GLfloat(fenkuai) * grid_size,
                 - (j - (GLfloat)fenkuai * y_max / 2) / GLfloat(fenkuai) * grid_size,
-                1.0f
+                0.0f
             );
             //glPopMatrix();
             // printf("%d,%d ", i, j);
@@ -716,8 +737,8 @@ void DSMap::loadDisplayLists() {
 
     // Hills: begin
     for (size_t index = 0; index < 16; ++index) {
-        display_lists_hills[index] = glGenLists(1);
-        glNewList(display_lists_hills[index], GL_COMPILE);
+        display_lists_hill[index] = glGenLists(1);
+        glNewList(display_lists_hill[index], GL_COMPILE);
         glPushAttrib(GL_ENABLE_BIT);
         glEnable(GL_LIGHTING);
         glEnable(GL_TEXTURE_2D);
