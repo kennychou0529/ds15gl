@@ -59,7 +59,7 @@ void DSMap::init(size_t _x_max, size_t _y_max, TileType* _data) {
         data[i] = plain;
     }
     data[1] = hill;
-    data[17] = hill;
+    data[14] = hill;
     data[28] = hill;
     data[2] = hill;
     data[3] = hill;
@@ -406,21 +406,21 @@ void DSMap::dishi() {
 
     // 如果地块是山地，则地势全部设为 0.01f
     // 如果地块不是山地，则地势全部设为 0.0f
+    std::memset(heights, 0, sizeof(GLfloat) * x_max * y_max * fenkuai * fenkuai);
+
     for (size_t x_index = 0; x_index < x_max; ++x_index) {
         for (size_t y_index = 0; y_index < y_max; ++y_index) {
-            if (data[y_index * x_max + x_index] == hill) {
-                for (size_t cx = 0; cx < fenkuai; cx++) {
-                    for (size_t cy = 0; cy < fenkuai; cy++) {
-                        heights[x_index * fenkuai + cx + (y_index * fenkuai + cy) * x_max * fenkuai] = 0.01f;
-                    }
-                }
-            } else {
-                for (size_t cx = 0; cx < fenkuai; cx++) {
-                    for (size_t cy = 0; cy < fenkuai; cy++) {
-                        heights[x_index * fenkuai + cx + (y_index * fenkuai + cy) * x_max * fenkuai] = 0.0f;
-                    }
+
+            if (data[y_index * x_max + x_index] != hill) {
+                continue;
+            }
+
+            for (size_t cx = 1; cx < fenkuai; cx++) {
+                for (size_t cy = 1; cy < fenkuai; cy++) {
+                    heights[x_index * fenkuai + cx + (y_index * fenkuai + cy) * x_max * fenkuai] = 0.01f;
                 }
             }
+
         }
     }
 
@@ -437,16 +437,20 @@ void DSMap::dishi() {
         int _y_max = y_max;
 
         for (int j = 0; j < 2; j++) {
-            int fx = rand() % fenkuai;
-            int fy = rand() % fenkuai;
+            int fx = rand() % fenkuai; // fx is 0 to fenkuai - 1
+            int fy = rand() % fenkuai; // fy is 0 to fenkuai - 1
+
             for (int cx = fx - 10; cx < fx + 10; cx++) {
                 for (int cy = fy - 10; cy < fy + 10; cy++) {
                     int index = x * fenkuai + cx + (y * fenkuai + cy) * _x_max * fenkuai;
+
                     if (index < 0 || index >= _x_max * _y_max * fenkuai * fenkuai) {
+                        // index is out of range
                         continue;
                     }
+
                     if (heights[index] > 0) {
-                        float dis = (cx - fx) * (cx - fx) + (cy - fx) * (cy - fx);
+                        GLfloat dis = (cx - fx) * (cx - fx) + (cy - fx) * (cy - fx);
                         if (dis > 25) {
                             heights[index] += 2 / sqrt(dis);
                         } else {
@@ -465,135 +469,69 @@ void DSMap::dishi() {
 
     GLfloat ds = grid_size / GLfloat(fenkuai);
 
+    for (size_t x_index = 0; x_index < x_max; ++x_index) {
+        for (size_t y_index = 0; y_index < y_max; ++y_index) {
 
-    //// i = x_index * fenkuai + cx
-    //// j = y_index * fenkuai + cy
-    //for (size_t x_index = 0; x_index < x_max; ++x_index) {
-    //    for (size_t y_index = 0; y_index < y_max; ++y_index) {
-    //        for (size_t cx_index = 0; cx_index < fenkuai; ++cx_index) {
-    //            for (size_t cy_index = 0; cy_index < fenkuai; ++cy_index) {
-    //                size_t i = x_index * fenkuai + cx_index;
-    //                size_t j = y_index * fenkuai + cy_index;
-
-    //                if (heights[i + j * fenkuai * x_max] > 0.1) {
-    //                    glBindTexture(GL_TEXTURE_2D, texture_ID_hill[15]);
-    //                } else {
-    //                    glBindTexture(GL_TEXTURE_2D, texture_ID_plain);
-    //                }
-    //                //glBindTexture(GL_TEXTURE_2D, texture_ID_plain);
-    //                //glPushMatrix();
-    //                glTranslatef(
-    //                    (GLfloat(i) - (GLfloat)fenkuai * x_max / 2) / GLfloat(fenkuai) * grid_size,
-    //                    (GLfloat(j) - (GLfloat)fenkuai * y_max / 2) / GLfloat(fenkuai) * grid_size,
-    //                    -1.0f
-    //                );
-    //                glBegin(GL_POLYGON);
-    //                {
-
-    //                    GLfloat p1[] = {0, 0, heights[i + j * fenkuai* x_max]};
-    //                    GLfloat p2[] = {ds, 0, heights[i + 1 + j* fenkuai* x_max]};
-    //                    GLfloat p3[] = {0, ds, heights[i + (j + 1)*fenkuai* x_max]};
-    //                    GLfloat res[3];
-    //                    dsNormalVectorOfTriangle3fv(p1, p2, p3, res);
-
-    //                    float cx = (i%fenkuai)/float(fenkuai);
-    //                    float cy = (j%fenkuai)/float(fenkuai);
-
-    //                    glNormal3f(res[0], res[1], res[2]);
-
-    //                    glTexCoord2f(cx, cy);
-    //                    glVertex3f(0, 0, heights[i + j * fenkuai * x_max]);
-
-    //                    glTexCoord2f(cx+dsize, cy);
-    //                    glVertex3f(ds, 0, heights[i + 1 + j * fenkuai * x_max]);
-
-    //                    glTexCoord2f(cx+dsize, cy+dsize);
-    //                    glVertex3f(ds, ds, heights[i + 1 + (j + 1) * fenkuai * x_max]);
-
-    //                    glTexCoord2f(cx, cy+dsize);
-    //                    glVertex3f(0, ds, heights[i + (j + 1) * fenkuai * x_max]);
-
-    //                }
-    //                glEnd();
-    //                glTranslatef(
-    //                    - (GLfloat(i) - (GLfloat)fenkuai * x_max / 2) / GLfloat(fenkuai) * grid_size,
-    //                    - (GLfloat(j) - (GLfloat)fenkuai * y_max / 2) / GLfloat(fenkuai) * grid_size,
-    //                    1.0f
-    //                    );
-    //                //glPopMatrix();
-    //                // printf("%d,%d ", i, j);
-
-    //            } // end for (size_t cy = 0; cy < fenkuai; ++cy)
-    //        } // end for (size_t cx = 0; cx < fenkuai; ++cx)
-    //    } // end for (size_t y_index = 0; y_index < y_max; ++y_index)
-    //} // end for (size_t x_index = 0; x_index < x_max; ++x_index)
-
-    // i = x_index * fenkuai + cx
-    // j = y_index * fenkuai + cy
-    for (size_t i = 0; i < fenkuai * x_max - 1; i++) {
-        for (size_t j = 0; j < fenkuai * y_max - 1; j++) {
-            size_t x_index = i / fenkuai;
-            size_t y_index = j / fenkuai;
-            size_t cx_index = i % fenkuai;
-            size_t cy_index = j % fenkuai;
-
-            if (data[y_index * x_max + x_index] == hill) {
-                glBindTexture(GL_TEXTURE_2D, texture_ID_hill[getHillType(x_index, y_index)]);
-            } else {
+            if (data[y_index * x_max + x_index] != hill) {
                 continue;
             }
-            
 
-			/*if (heights[i + j * fenkuai * x_max] > 0.1) {
-				glBindTexture(GL_TEXTURE_2D, texture_ID_hill[15]);
-			} else {
-				glBindTexture(GL_TEXTURE_2D, texture_ID_plain);
-			}*/
+            glBindTexture(GL_TEXTURE_2D, texture_ID_hill[getHillType(x_index, y_index)]);
 
-			//glBindTexture(GL_TEXTURE_2D, texture_ID_plain);
-            //glPushMatrix();
-            glTranslatef(
-                (i - (GLfloat)fenkuai * x_max / 2) / GLfloat(fenkuai) * grid_size,
-                (j - (GLfloat)fenkuai * y_max / 2) / GLfloat(fenkuai) * grid_size,
-                - 0.0f
-            );
-            glBegin(GL_POLYGON);
-            {
+            size_t cx_max = (x_index == x_max - 1) ? (fenkuai - 1) : fenkuai;
+            size_t cy_max = (y_index == y_max - 1) ? (fenkuai - 1) : fenkuai;
 
-                GLfloat p1[] = {0, 0, heights[i + j * fenkuai * x_max]};
-                GLfloat p2[] = {ds, 0, heights[i + 1 + j * fenkuai * x_max]};
-                GLfloat p3[] = {0, ds, heights[i + (j + 1) * fenkuai * x_max]};
-                GLfloat res[3];
-                dsNormalVectorOfTriangle3fv(p1, p2, p3, res);
+            for (size_t cx_index = 0; cx_index < cx_max; ++cx_index) {
+                for (size_t cy_index = 0; cy_index < cy_max; ++cy_index) {
+                    size_t i = x_index * fenkuai + cx_index;
+                    size_t j = y_index * fenkuai + cy_index;
 
-				GLfloat cx = cx_index / GLfloat(fenkuai);
-				GLfloat cy = cy_index / GLfloat(fenkuai);
+                    glTranslatef(
+                        (i - (GLfloat)fenkuai * x_max / 2) * ds,
+                        (j - (GLfloat)fenkuai * y_max / 2) * ds,
+                        - 0.0f
+                    );
 
-                glNormal3f(res[0], res[1], res[2]);
+                    glBegin(GL_POLYGON);
+                    {
 
-                glTexCoord2f(cx, cy);
-                glVertex3f(0, 0, heights[i + j * fenkuai * x_max]);
+                        GLfloat p1[] = {0, 0, heights[i + j * fenkuai * x_max]};
+                        GLfloat p2[] = {ds, 0, heights[i + 1 + j * fenkuai * x_max]};
+                        GLfloat p3[] = {0, ds, heights[i + (j + 1) * fenkuai * x_max]};
+                        GLfloat res[3];
+                        dsNormalVectorOfTriangle3fv(p1, p2, p3, res);
 
-                glTexCoord2f(cx + dsize, cy);
-                glVertex3f(ds, 0, heights[i + 1 + j * fenkuai * x_max]);
+                        GLfloat cx = cx_index / GLfloat(fenkuai);
+                        GLfloat cy = cy_index / GLfloat(fenkuai);
 
-                glTexCoord2f(cx + dsize, cy + dsize);
-                glVertex3f(ds, ds, heights[i + 1 + (j + 1) * fenkuai * x_max]);
+                        glNormal3f(res[0], res[1], res[2]);
 
-                glTexCoord2f(cx, cy + dsize);
-                glVertex3f(0, ds, heights[i + (j + 1) * fenkuai * x_max]);
+                        glTexCoord2f(cx, cy);
+                        glVertex3f(0, 0, heights[i + j * fenkuai * x_max]);
 
-            }
-            glEnd();
-            glTranslatef(
-                - (i - (GLfloat)fenkuai * x_max / 2) / GLfloat(fenkuai) * grid_size,
-                - (j - (GLfloat)fenkuai * y_max / 2) / GLfloat(fenkuai) * grid_size,
-                0.0f
-            );
-            //glPopMatrix();
-            // printf("%d,%d ", i, j);
-        }
-    }
+                        glTexCoord2f(cx + dsize, cy);
+                        glVertex3f(ds, 0, heights[i + 1 + j * fenkuai * x_max]);
+
+                        glTexCoord2f(cx + dsize, cy + dsize);
+                        glVertex3f(ds, ds, heights[i + 1 + (j + 1) * fenkuai * x_max]);
+
+                        glTexCoord2f(cx, cy + dsize);
+                        glVertex3f(0, ds, heights[i + (j + 1) * fenkuai * x_max]);
+
+                    }
+                    glEnd();
+                    glTranslatef(
+                        - (i - (GLfloat)fenkuai * x_max / 2) * ds,
+                        - (j - (GLfloat)fenkuai * y_max / 2) * ds,
+                        0.0f
+                    );
+
+                } // end for (size_t cy_index = 0; cy_index < cy_max; ++cy_index)
+            } // end for (size_t cx_index = 0; cx_index < cx_max; ++cx_index)
+
+        } // end for (size_t y_index = 0; y_index < y_max; ++y_index)
+    } // end for (size_t x_index = 0; x_index < x_max; ++x_index)
+
     glEndList();
     delete[] heights;
 }
@@ -710,9 +648,11 @@ void DSMap::loadDisplayLists() {
     display_lists[barrier] = glGenLists(1);
     glNewList(display_lists[barrier], GL_COMPILE);
     glPushMatrix();
-    object_manager.objects["hek"].render();
-    glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
-    object_manager.objects["hek"].render();
+    {
+        object_manager.objects["hek"].render();
+        glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
+        object_manager.objects["hek"].render();
+    }
     glPopMatrix();
     glEndList();
     // Barrier: end
@@ -721,21 +661,23 @@ void DSMap::loadDisplayLists() {
     GLfloat cannon_move = grid_size * 0.7f / 2;
     display_lists[cannon] = glGenLists(1);
     glNewList(display_lists[cannon], GL_COMPILE);
-    glTranslatef(0.0f, - cannon_move, 0.0f);
-    object_manager.objects["cannon"].render();
-    glTranslatef(cannon_move, cannon_move, 0.0f);
-    glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
-    object_manager.objects["cannon"].render();
-    glRotatef(-90.0f, 0.0f, 0.0f, 1.0f);
-    glTranslatef(- cannon_move, cannon_move, 0.0f);
-    glRotatef(180.0f, 0.0f, 0.0f, 1.0f);
-    object_manager.objects["cannon"].render();
-    glRotatef(-180.0f, 0.0f, 0.0f, 1.0f);
-    glTranslatef(- cannon_move, - cannon_move, 0.0f);
-    glRotatef(-90.0f, 0.0f, 0.0f, 1.0f);
-    object_manager.objects["cannon"].render();
-    glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
-    glTranslatef(cannon_move, 0.0f, 0.0f);
+    {
+        glTranslatef(0.0f, - cannon_move, 0.0f);
+        object_manager.objects["cannon"].render();
+        glTranslatef(cannon_move, cannon_move, 0.0f);
+        glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
+        object_manager.objects["cannon"].render();
+        glRotatef(-90.0f, 0.0f, 0.0f, 1.0f);
+        glTranslatef(- cannon_move, cannon_move, 0.0f);
+        glRotatef(180.0f, 0.0f, 0.0f, 1.0f);
+        object_manager.objects["cannon"].render();
+        glRotatef(-180.0f, 0.0f, 0.0f, 1.0f);
+        glTranslatef(- cannon_move, - cannon_move, 0.0f);
+        glRotatef(-90.0f, 0.0f, 0.0f, 1.0f);
+        object_manager.objects["cannon"].render();
+        glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
+        glTranslatef(cannon_move, 0.0f, 0.0f);
+    }
     glEndList();
     // Cannon: end
 
