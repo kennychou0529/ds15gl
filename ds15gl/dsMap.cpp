@@ -288,10 +288,11 @@ void DSMap::renderHugeGround(GLfloat radius) {
         for (int i = 0; i < 19; i++) {
             for (int j = 0; j < 19; j++) {
                 if ((i == 9 && j == 9)) {
-                    continue;
+                    // Still draw the ground.
                 }
+
                 glPushMatrix();
-                glTranslatef((i - 9.5)*grid_size * x_max, (j - 9.5)*grid_size * y_max, -1);
+                glTranslatef((i - 9.5) * grid_size * x_max, (j - 9.5) * grid_size * y_max, -0.01f);
                 glBegin(GL_POLYGON);
                 {
                     GLfloat p1[] = {0, 0, heights[i][j]};
@@ -301,12 +302,16 @@ void DSMap::renderHugeGround(GLfloat radius) {
                     dsNormalVectorOfTriangle3fv(p1, p2, p3, res);
 
                     glNormal3f(res[0], res[1], res[2]);
+
                     glTexCoord2f(0, 0);
                     glVertex3f(0, 0, heights[i][j]);
+
                     glTexCoord2f(1, 0);
                     glVertex3f(grid_size * x_max, 0, heights[i + 1][j]);
+
                     glTexCoord2f(1, 1);
                     glVertex3f(grid_size * x_max, grid_size * y_max, heights[i + 1][j + 1]);
+
                     glTexCoord2f(0, 1);
                     glVertex3f(0, grid_size * y_max, heights[i][j + 1]);
 
@@ -424,7 +429,7 @@ void DSMap::dishi() {
         }
     }
 
-    // 这里是地势生成的部分，我还没看
+    // 这里是地势生成的部分，我不打算看了~
     for (int i = 0; i < x_max * y_max; i++) {
         if (data[i] != hill) {
             continue;
