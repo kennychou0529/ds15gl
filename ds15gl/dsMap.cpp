@@ -58,11 +58,21 @@ void DSMap::init(size_t _x_max, size_t _y_max, TileType* _data) {
     for (size_t i = 0; i < x_max * y_max; ++i) {
         data[i] = plain;
     }
-    data[1] = temple;
-    data[14] = forest;
-    data[28] = hill;
-    data[2] = hill;
-    data[3] = hill;
+    data[6] = hill;
+    data[7] = hill;
+    data[8] = hill;
+    data[9] = hill;
+    data[14] = hill;
+    data[15] = forest;
+    data[16] = forest;
+    data[17] = forest;
+    //data[19] = cannon;
+    data[20] = hill;
+    data[21] = hill;
+    data[22] = temple;
+    data[25] = hill;
+    data[26] = hill;
+    data[27] = hill;
 
     //     // 创建所有显示列表
     //     loadDisplayLists();
@@ -288,8 +298,12 @@ void DSMap::renderHugeGround(GLfloat radius) {
         for (int i = 0; i < 19; i++) {
             for (int j = 0; j < 19; j++) {
                 if ((i == 9 && j == 9)) {
+                    glBindTexture(GL_TEXTURE_2D, texture_ID_plain);
                     // Still draw the ground.
+                } else {
+                    glBindTexture(GL_TEXTURE_2D, texture_ID_hill[15]);
                 }
+
 
                 glPushMatrix();
                 glTranslatef((i - 9.5) * grid_size * x_max, (j - 9.5) * grid_size * y_max, -0.01f);

@@ -9,13 +9,14 @@ void DSFrame::initialize() {
     //scene.map.init(15, 10);
 	sounds.loadSounds();
 	//把这些初始化工作集中在这里，以备Socket使用
-	scene.map.load();
-	scene.map.init(15, 10);
+	
+	scene.map.init(8, 8);
+    scene.map.load();
 	scene.actors.initialize();
     scene.initialize();   
 }
 void DSFrame::initialize2(){
-	scene.map.init(15, 10);
+	scene.map.init(8, 8);
 }
 
 

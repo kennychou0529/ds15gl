@@ -35,31 +35,39 @@ void DSActorManager::insertSoldier(const std::string& soldier_id, std::string so
 void DSActorManager::initialize() {
 
     insertSoldier("sword_man");
-    list["sword_man"].setPosition(0, 0);
+    list["sword_man"].setPosition(3, 2);
 
     insertSoldier("mage");
     list["mage"].setPosition(1, 1);
+    //list["mage"].enterStatus(dsSoldier::Status::disappear);
 
     insertSoldier("chastit");
     list["chastit"].setPosition(1, 5);
+    //list["chastit"].enterStatus(dsSoldier::Status::disappear);
 
     insertSoldier("gunman");
-    list["gunman"].setPosition(1, 6);
+    list["gunman"].setPosition(2, 5);
+    //list["gunman"].enterStatus(dsSoldier::Status::disappear);
 
     insertSoldier("bauul");
-    list["bauul"].setPosition(3, 6);
+    list["bauul"].setPosition(3, 5);
+    //list["bauul"].enterStatus(dsSoldier::Status::disappear);
 
     insertSoldier("fighter");
-    list["fighter"].setPosition(5, 6);
+    list["fighter"].setPosition(5, 5);
+    list["fighter"].enterStatus(dsSoldier::Status::disappear);
 
     insertSoldier("tank");
-    list["tank"].setPosition(6, 7);
+    list["tank"].setPosition(4, 4);
+    list["tank"].enterStatus(dsSoldier::Status::disappear);
 
     insertSoldier("disgustin");
-    list["disgustin"].setPosition(5, 7);
+    list["disgustin"].setPosition(2, 2);
+    //list["mage"].enterStatus(dsSoldier::Status::disappear);
 
     insertSoldier("monkey");
-    list["monkey"].setPosition(5, 8);
+    list["monkey"].setPosition(5, 2);
+    //list["monkey"].enterStatus(dsSoldier::Status::disappear);
 }
 
 //渲染
