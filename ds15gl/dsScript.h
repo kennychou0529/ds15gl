@@ -55,15 +55,47 @@ struct Record {
 class DSScript {
 public:
     DSScript(): emptyRecord(0, false, "", empty, 0, 0) {
-        scriptQue.push_back(Record(1, false, "sword_man", soldier_die, 3, 2));
-        scriptQue.push_back(Record(1, false, "disgustin", soldier_die, 5, 1));
-        scriptQue.push_back(Record(1, false, "chastit", soldier_die, 1, 2));
-        scriptQue.push_back(Record(1, false, "monkey", soldier_die, 5, 1));
-        scriptQue.push_back(Record(1, false, "mage", soldier_die, 1, 6));
-        scriptQue.push_back(Record(1, false, "gunman", soldier_die, 0, 1));
-        scriptQue.push_back(Record(1, false, "bauul", soldier_die, 5, 1));
+        scriptQue.push_back(Record(0, false, "sword_man", soldier_fight, 2, 2));
+        scriptQue.push_back(Record(0, false, "monkey", soldier_fight, 2, 2));
+        scriptQue.push_back(Record(0, false, "bauul", soldier_fight, 2, 2));
+        scriptQue.push_back(Record(0, false, "gunman", soldier_fight, 2, 2));
 
-        /*scriptQue.push_back(Record(1, false, "sword_man", soldier_move, 3, 2));
+        scriptQue.push_back(Record(1, false, "sword_man", soldier_move, 3, 2));
+        scriptQue.push_back(Record(1, false, "monkey", soldier_move, 2, 1));
+        scriptQue.push_back(Record(1, false, "bauul", soldier_move, 1, 2));
+        scriptQue.push_back(Record(1, false, "gunman", soldier_move, 2, 3));
+
+        scriptQue.push_back(Record(2, false, "sword_man", soldier_fight, 2, 2));
+        scriptQue.push_back(Record(2, true, "monkey", soldier_fight, 2, 2));
+        scriptQue.push_back(Record(2, true, "bauul", soldier_fight, 2, 2));
+        scriptQue.push_back(Record(2, true, "gunman", soldier_fight, 2, 2));
+
+        scriptQue.push_back(Record(2, false, "sword_man", soldier_fight, 2, 2));
+        scriptQue.push_back(Record(2, true, "monkey", soldier_fight, 2, 2));
+        scriptQue.push_back(Record(2, true, "bauul", soldier_fight, 2, 2));
+        scriptQue.push_back(Record(2, true, "gunman", soldier_fight, 2, 2));
+
+        scriptQue.push_back(Record(3, false, "tank", soldier_move, 3, 2));
+        scriptQue.push_back(Record(3, true, "sword_man", soldier_die, 3, 2));
+
+        scriptQue.push_back(Record(3, false, "tank", soldier_move, 2, 3));
+        scriptQue.push_back(Record(3, true, "gunman", soldier_die, 3, 2));
+
+        scriptQue.push_back(Record(3, false, "tank", soldier_move, 1, 2));
+        scriptQue.push_back(Record(3, true, "bauul", soldier_die, 3, 2));
+
+        scriptQue.push_back(Record(3, false, "tank", soldier_move, 2, 1));
+        scriptQue.push_back(Record(3, true, "monkey", soldier_die, 3, 2));
+
+        scriptQue.push_back(Record(1, false, "sword_man", soldier_fight, 3, 2));
+        scriptQue.push_back(Record(1, false, "disgustin", soldier_fight, 5, 1));
+        scriptQue.push_back(Record(1, false, "chastit", soldier_fight, 1, 2));
+        scriptQue.push_back(Record(1, false, "monkey", soldier_fight, 5, 1));
+        scriptQue.push_back(Record(1, false, "mage", soldier_fight, 1, 6));
+        scriptQue.push_back(Record(1, false, "gunman", soldier_fight, 0, 1));
+        scriptQue.push_back(Record(1, false, "bauul", soldier_fight, 5, 1));
+
+        scriptQue.push_back(Record(1, false, "sword_man", soldier_move, 3, 2));
 
         scriptQue.push_back(Record(1, false, "sword_man", soldier_fight, 1, 1));
 
@@ -91,7 +123,7 @@ public:
         scriptQue.push_back(Record(4, false, "mage", soldier_move, 1, 5));
         scriptQue.push_back(Record(4, false, "fighter", soldier_die, 2, 3));
 
-        scriptQue.push_back(Record(5, false, "sword_man", soldier_move, 2, 5));*/
+        scriptQue.push_back(Record(5, false, "sword_man", soldier_move, 2, 5));
     }
 
 

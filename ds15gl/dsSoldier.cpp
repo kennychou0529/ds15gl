@@ -134,7 +134,7 @@ void dsSoldier::animate(bool selectMode) {
             glRotatef(angle + default_angle, 0.0f, 0.0f, 1.0f);
             renderSmoothly(duration * fps);
             glPopMatrix();
-            hpBar(x, y, 12);
+            //hpBar(x, y, 12);
             drawAureole(x, y);
         };
 
@@ -435,6 +435,27 @@ void dsSoldier::hpBar2() {
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
+}
+
+GLfloat dsSoldier::setOrientation(size_t x, size_t y) {
+    dsVector2f dir(
+        (int)x - (int)current_position[0],
+        (int)y - (int)current_position[1]
+    );
+    dir.normalise();
+
+    if (dir[0] == 0.0 && dir[1] == 0.0) {
+        return 0.0;
+    }
+
+    angle = std::acos(dir.x) * 180.0f / pi;
+    if (std::abs(std::sin(angle / 180.0f * pi) - dir.y) > 0.01f) {
+        angle = -angle;
+    }
+
+    
+
+    return angle;
 }
 
 void dsSoldier::drawAureole(GLfloat x, GLfloat y) {

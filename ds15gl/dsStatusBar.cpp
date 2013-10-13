@@ -18,6 +18,8 @@ void DSStatusBar::init() {
     GLuint height, width;
     logo_tex = dsLoadTextureBMP2D("data/images/logo.bmp", &height, &width);
     ratio = static_cast<GLdouble>(height) / width;
+
+    bar_tex = dsLoadTextureBMP2D("data/images/bar.bmp", &bar_height, &width);
 }
 
 void DSStatusBar::show() {
@@ -42,6 +44,77 @@ void DSStatusBar::show() {
         gluLookAt(0.0, 0.0, 200.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
         glColor3d(1.0, 1.0, 1.0);
 
+        // Bar background start -----------------------------------
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, bar_tex);
+        glBegin(GL_POLYGON);
+        {
+            glTexCoord2f(0.0f, 0.0f);
+            glVertex2f(
+                0.0f,
+                static_cast<GLfloat>(window_height - (GLint)bar_height)
+            );
+
+            glTexCoord2f(1.0f, 0.0f);
+            glVertex2f(
+                static_cast<GLfloat>(status_bar_width),
+                static_cast<GLfloat>(window_height - (GLint)bar_height)
+            );
+
+            glTexCoord2f(1.0f, 1.0f);
+            glVertex2f(
+                static_cast<GLfloat>(status_bar_width),
+                static_cast<GLfloat>(window_height)
+            );
+
+            glTexCoord2f(0.0f, 1.0f);
+            glVertex2f(
+                0.0f,
+                static_cast<GLfloat>(window_height)
+            );
+        }
+        glEnd();
+
+        GLint need;
+        if (window_height > bar_height) {
+            need = window_height - bar_height + 100;
+        } else {
+            need = 100; 
+        }
+        glBegin(GL_POLYGON);
+        {
+            glTexCoord2f(0.0f, 0.0f);
+            glVertex2f(0.0f, 0.0f);
+
+            glTexCoord2f(1.0f, 0.0f);
+            glVertex2f(
+                static_cast<GLfloat>(status_bar_width),
+                0.0f
+            );
+
+            glTexCoord2f(
+                1.0f,
+                static_cast<GLfloat>(need) / bar_height
+            );
+            glVertex2f(
+                static_cast<GLfloat>(status_bar_width),
+                static_cast<GLfloat>(need)
+            );
+
+            glTexCoord2f(
+                0.0f,
+                static_cast<GLfloat>(need) / bar_height
+            );
+            glVertex2f(
+                0.0f,
+                static_cast<GLfloat>(need)
+            );
+        }
+        glEnd();
+
+        // Bar background end -------------------------------------
+
+
         //fillRectange2D(0, 0, status_bar_width, window_height);
 
         // 这里画小地图，战场，人物等状态信息
@@ -54,29 +127,31 @@ void DSStatusBar::show() {
         }
         glPopMatrix();
 
-		glPushMatrix();
-        {
-            glEnable(GL_TEXTURE_2D);
-            glBindTexture(GL_TEXTURE_2D, logo_tex);
-            glBegin(GL_QUADS);
+		//glPushMatrix();
+  //      {
+  //          glEnable(GL_TEXTURE_2D);
+  //          glBindTexture(GL_TEXTURE_2D, logo_tex);
+  //          glBegin(GL_QUADS);
 
-            glTexCoord2d(0, 1);
-            glVertex2d(0, window_height);
+  //          glTexCoord2d(0, 1);
+  //          glVertex2d(0, window_height);
 
-            glTexCoord2d(1, 1);
-            glVertex2d(status_bar_width, window_height);
+  //          glTexCoord2d(1, 1);
+  //          glVertex2d(status_bar_width, window_height);
 
-            glTexCoord2d(1, 0);
-            glVertex2d(
-                status_bar_width,
-                window_height - ratio * status_bar_width
-            );
+  //          glTexCoord2d(1, 0);
+  //          glVertex2d(
+  //              status_bar_width,
+  //              window_height - ratio * status_bar_width
+  //          );
 
-            glTexCoord2d(0, 0);
-            glVertex2d(0, window_height - ratio * status_bar_width);
-            glEnd();
-        }
-        glPopMatrix();
+  //          glTexCoord2d(0, 0);
+  //          glVertex2d(0, window_height - ratio * status_bar_width);
+  //          glEnd();
+  //      }
+  //      glPopMatrix();
+
+        
 
         // 让我们在这里写一下眼睛位置
         std::wostringstream os;

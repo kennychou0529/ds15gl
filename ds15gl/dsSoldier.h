@@ -112,8 +112,10 @@ public:
 		beSelected = _beSelected;
 	}
 
+    GLfloat setOrientation(size_t x, size_t y);
+
 	//为被选中的人物画一个光环
-	void drawAureole(GLfloat x,GLfloat y);
+	void drawAureole(GLfloat x, GLfloat y);
 
 private:
 	int idNumber;				//为了启用选择模式，应该有一个编号

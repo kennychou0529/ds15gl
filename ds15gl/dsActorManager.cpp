@@ -35,22 +35,22 @@ void DSActorManager::insertSoldier(const std::string& soldier_id, std::string so
 void DSActorManager::initialize() {
 
     insertSoldier("sword_man");
-    list["sword_man"].setPosition(3, 2);
+    list["sword_man"].setPosition(4, 2);
 
     insertSoldier("mage");
     list["mage"].setPosition(1, 1);
-    //list["mage"].enterStatus(dsSoldier::Status::disappear);
+    list["mage"].enterStatus(dsSoldier::Status::disappear);
 
     insertSoldier("chastit");
     list["chastit"].setPosition(1, 5);
-    //list["chastit"].enterStatus(dsSoldier::Status::disappear);
+    list["chastit"].enterStatus(dsSoldier::Status::disappear);
 
     insertSoldier("gunman");
-    list["gunman"].setPosition(2, 5);
+    list["gunman"].setPosition(2, 4);
     //list["gunman"].enterStatus(dsSoldier::Status::disappear);
 
     insertSoldier("bauul");
-    list["bauul"].setPosition(3, 5);
+    list["bauul"].setPosition(0, 2);
     //list["bauul"].enterStatus(dsSoldier::Status::disappear);
 
     insertSoldier("fighter");
@@ -58,15 +58,15 @@ void DSActorManager::initialize() {
     list["fighter"].enterStatus(dsSoldier::Status::disappear);
 
     insertSoldier("tank");
-    list["tank"].setPosition(4, 4);
-    list["tank"].enterStatus(dsSoldier::Status::disappear);
+    list["tank"].setPosition(2, 2);
+    //list["tank"].enterStatus(dsSoldier::Status::disappear);
 
     insertSoldier("disgustin");
-    list["disgustin"].setPosition(2, 2);
-    //list["mage"].enterStatus(dsSoldier::Status::disappear);
+    list["disgustin"].setPosition(0, 2);
+    list["disgustin"].enterStatus(dsSoldier::Status::disappear);
 
     insertSoldier("monkey");
-    list["monkey"].setPosition(5, 2);
+    list["monkey"].setPosition(2, 0);
     //list["monkey"].enterStatus(dsSoldier::Status::disappear);
 }
 
@@ -121,6 +121,7 @@ void DSActorManager::update() {
                         iter_soldier->second.enterStatus(
                             dsSoldier::Status::attacking, &script_playing
                         );
+                        iter_soldier->second.setOrientation(record.x, record.y);
                         break;
                     case soldier_die:
                         iter_soldier->second.enterStatus(

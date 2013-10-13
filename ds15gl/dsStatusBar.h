@@ -14,6 +14,10 @@ private:
     GLuint logo_tex;
     GLdouble ratio;
     GLuint logo_display_list;
+
+    GLuint bar_tex;
+    //GLuint bar_display_list;
+    GLuint bar_height;
 };
 
 #endif
