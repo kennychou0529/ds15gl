@@ -18,6 +18,7 @@ private:
     GLuint bar_tex;
     //GLuint bar_display_list;
     GLuint bar_height;
+    void renderBackground();
 };
 
 #endif
