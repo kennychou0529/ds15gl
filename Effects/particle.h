@@ -3,26 +3,53 @@
 
 
 #include <list>
+#include <cmath>
 using std::list;
 const int colorIndexLength = 256;
 
+
 struct Vector {
     float x, y, z;
-	Vector operator +(Vector& a){
-		Vector sum;
-		sum.x = x+a.x;
-		sum.y = y+a.y;
-		sum.z = z+a.z;
-		return sum;
-	}
-	Vector operator *(float m){
-		Vector product;
-		product.x = x*m;
-		product.y = y*m;
-		product.z = z*m;
-		return product;
-	}
+
+
+    Vector operator +(Vector& a) {
+        Vector sum;
+        sum.x = x + a.x;
+        sum.y = y + a.y;
+        sum.z = z + a.z;
+        return sum;
+    }
+    void unit() {
+        float l = sqrt(x * x + y * y + z + z);
+        if (l > 0) {
+            x /= l;
+            y /= l;
+            z /= l;
+        }
+    }
+    Vector operator -(Vector& a) {
+        Vector sum;
+        sum.x = x - a.x;
+        sum.y = y - a.y;
+        sum.z = z - a.z;
+        return sum;
+    }
+    Vector operator *(float m) {
+        Vector product;
+        product.x = x * m;
+        product.y = y * m;
+        product.z = z * m;
+        return product;
+    }
+    static Vector RotationToDirection(float yaw, float pitch) {
+        Vector t;
+        t.x = -sin(yaw) * cos(pitch);
+        t.y = sin(pitch);
+        t.z = cos(pitch) * cos(yaw);
+        return t;
+    }
 };
+
 
 struct Color {
     float r, g, b, a;
@@ -55,12 +82,18 @@ struct Particle
 
 };
 
+enum ForceType {
+    Gravity = 1,
+    Center = 2,
+    Z_Axle = 4
+};
+
 class  Emitter
 
 {
 public:
     Emitter();
-	void update(float duration);
+    void update(float duration);
     void draw() ;
 private:
     //  long id; //EMITTER ID
@@ -69,17 +102,17 @@ private:
     //
     //  long flags; //EMITTER FLAGS
 
-	float alive;
+    float alive;
     //TRANSFORMATION INFO
 
     Vector pos; //XYZ POSITION
 
-//     float yaw, yawVar;// YAW AND VARIATION
-// 
-//     float pitch, pitchVar; // PITCH AND VARIATION
+    //     float yaw, yawVar;// YAW AND VARIATION
+    //
+    //     float pitch, pitchVar; // PITCH AND VARIATION
 
-	Vector speed;
-	float speedVar;
+    Vector speed;
+    float speedVar;
 
     // Particle
 
@@ -96,8 +129,10 @@ private:
     float life, lifeVar; // LIFE COUNT AND VARIATION
 
 
-    Vector particleSpeed;
-    float particleSpeedVar;
+    //   Vector particleDir;
+    float particleSpeed;
+    float yaw, yawVar;// YAW AND VARIATION
+    float pitch, pitchVar; // PITCH AND VARIATION
     //Color startColor, startColorVar; // CURRENT COLOR OF PARTICLE
 
     //Color endColor,endColorVar; // CURRENT COLOR OF PARTICLE
@@ -106,8 +141,11 @@ private:
 
     // Physics
 
-    Vector force; //GLOBAL GRAVITY, WIND, ETC.
+    int forceType;
 
+    Vector force; //GLOBAL GRAVITY, WIND, ETC.
+    Vector center; //有心力中心
+    float centripetal;//向心加速度大小
 };
 
 #endif
