@@ -41,6 +41,14 @@ struct Vector {
         product.z = z * m;
         return product;
     }
+    //叉乘
+    Vector operator *(Vector m) {
+        Vector product;
+        product.x = y * m.z - z * m.y;
+        product.y = z * m.x - x * m.z;
+        product.z = z * m.y + y * m.x;
+        return product;
+    }
     static Vector RotationToDirection(float yaw, float pitch) {
         Vector t;
         t.x = -sin(yaw) * cos(pitch);
@@ -72,27 +80,97 @@ struct Particle
 
     unsigned int colorIndex;
 
-    Color* colors;
+    //Color* colors;
 
     //  Color color; //粒子当前颜色
     //
     //  Color prevColor; //粒子之前颜色
     //
     //  Color deltaColor; //颜色改变量
-
+    void init(Vector _pos, float _randLevel, Vector _dir, float _life) {
+        pos = _pos;
+        randLevel = _randLevel;
+        dir = _dir;
+        life = _life;
+        colorIndex = 0;
+        //colors = _colors;
+    }
 };
 
+
+
+//粒子池
+class ParticlePool {
+public:
+    ParticlePool();
+    ~ParticlePool();
+    void apend();
+    Particle* getParticle();
+    void recycle(Particle*);
+private:
+    //总数
+    int particleMax;
+    //剩余数量
+    int particles;
+
+    list<Particle*> pool;
+};
+
+//三种力
 enum ForceType {
-    Gravity = 1,
-    Center = 2,
-    Z_Axle = 4
+    Gravity = 1, //平行力
+    Center = 2,  //有心力
+    Z_Axle = 4, //水平力,指向z轴
+    Lorentz  = 8 //洛伦兹力
 };
 
+//发射器
 class  Emitter
 
 {
 public:
-    Emitter();
+    Emitter(//位置信息
+        float posx, float posy, float posz,
+        //发射角度
+        float _yaw , float _yawVar,
+        float _pich, float _pitchVar,
+        //粒子初设速度
+        float _particleSpeed,
+        //粒子寿命
+        float particleLife,
+        //粒子颜色变化
+        Color color[]
+    );
+    ~Emitter();
+
+    void setMagnetic(float x, float y, float z) {
+        forceType |= Lorentz;
+        mag.x = x;
+        mag.y = y;
+        mag.z = z;
+    }
+
+    void setGravity(float x, float y, float z) {
+        forceType |= Gravity;
+        force.x = x;
+        force.y = y;
+        force.z = z;
+    }
+
+	void setCenter(float x, float y, float z,float a) {
+		forceType |= Center;
+		center.x = x;
+		center.y = y;
+		center.z = z;
+		centripetal = a;
+	}
+
+	void setHoriForce(float a){
+		forceType |= Z_Axle;
+		centripetal = a;
+	}
+
+
     void update(float duration);
     void draw() ;
 private:
@@ -118,7 +196,7 @@ private:
 
     //  Particle* particle; // NULL TERMINATED LINKED LIST
 
-    list<Particle> particles;
+    list<Particle*> particles;
 
     //int totalParticles; // TOTAL EMITTED AT ANY TIME
 
@@ -137,7 +215,7 @@ private:
 
     //Color endColor,endColorVar; // CURRENT COLOR OF PARTICLE
 
-    Color colors[colorIndexLength];
+    Color* colors;
 
     // Physics
 
@@ -145,6 +223,7 @@ private:
 
     Vector force; //GLOBAL GRAVITY, WIND, ETC.
     Vector center; //有心力中心
+    Vector mag;//磁场
     float centripetal;//向心加速度大小
 };
 

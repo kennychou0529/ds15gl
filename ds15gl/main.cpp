@@ -91,6 +91,7 @@ int main(int argc, char* argv[]) {
     glutInitWindowPosition(0, 0);
     glutInitWindowSize(window_width, window_height);
     glutCreateWindow("DS 15th");
+	glutHideWindow();
     glutDisplayFunc(dsDisplay);
     glutMouseFunc(dsMouseFunc);
     // glutPassiveMotionFunc(dsPassiveMonitionFunc);
@@ -101,6 +102,7 @@ int main(int argc, char* argv[]) {
     glutKeyboardFunc(dsKeyDown);
     glutKeyboardUpFunc(dsKeyUp);
     dsInit();
+	glutShowWindow();
 	std::thread gameThread(dsGameInit);
 	gameThread.detach();
     glutMainLoop();
