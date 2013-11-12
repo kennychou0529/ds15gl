@@ -6,8 +6,6 @@ float randF() {
     return (rand() % 512 - 256) / 256.0f;
 }
 
-ParticlePool pPool;
-
 ParticlePool::ParticlePool() {
     //最开始有20000个粒子
     particles = particleMax = 20000;
@@ -45,6 +43,8 @@ void ParticlePool::recycle(Particle* p) {
     particles++;
 }
 
+
+
 Emitter::Emitter(//位置信息
     //float posx, float posy, float posz,
 
@@ -80,6 +80,7 @@ Emitter::Emitter(//位置信息
     plifeVar = 0.3;
     emitsPerFrame = 100;
     emitVar = 5;
+    //dlc = 256 / life;
     colors = _color;
     //     for (int i = 0; i < colorIndexLength; i++) {
     //         colors[i].r = i / 255.0f;
@@ -99,8 +100,8 @@ Emitter::Emitter(//位置信息
 }
 
 Emitter::~Emitter() {
-    for (Particle * p : particles) {
-        pPool.recycle(p);
+    for (Particle*& p : particles) {
+        pPool->recycle(p);
     }
     particles.clear();
 }
@@ -110,14 +111,15 @@ void Emitter::update(float duration) {
         return;
     }
 
-    pos = pos + speed;
+    pos = pos + speed * duration;
 
     while (!particles.empty() && particles.front()->life <= 0) {
-        pPool.recycle(particles.front());
+        pPool->recycle(particles.front());
         particles.pop_front();
     }
+
     for (Particle*& it : particles) {
-        it->colorIndex += (randF() + 1) * 128 * duration;
+        it->colorIndex += (1 - (float)(it->life) / plife) * 256;
         if (it->colorIndex < 0) {
             it->colorIndex = 0;
         } else if (it->colorIndex >= colorIndexLength) {
@@ -151,6 +153,7 @@ void Emitter::update(float duration) {
 
         it->life -= duration;
     }
+
     if (life > 0) {
         for (int i = 0; i < emitsPerFrame; i++) {
 
@@ -158,7 +161,7 @@ void Emitter::update(float duration) {
             //      Vector _speed = {0, 0, 0};
             Vector _particleSpeed =  Vector::RotationToDirection(yaw + yawVar * randF(), pitch + pitchVar * randF()) * particleSpeed ;
 
-            Particle* p = pPool.getParticle();
+            Particle* p = pPool->getParticle();
             p->init(pos, 4, _particleSpeed , plife + plifeVar * randF());
 
             particles.push_back(p);
@@ -203,8 +206,10 @@ void Emitter::draw() {
      glEnd();*/
     glBegin(GL_LINES);
     int s = 20;
-    for (Particle*& it : particles) {
-        Color& c = colors[it->colorIndex];
+    for (Particle * it : particles) {
+        int i = it->colorIndex;
+        Color& c = colors[i];
+
         glColor4f(c.r, c.g, c.b, c.a);
         glVertex3f(it->pos.x, it->pos.y, it->pos.z);
         glVertex3f(it->pos.x + it->dir.x / s, it->pos.y + it->dir.y / s, it->pos.z + it->dir.z / s);

@@ -136,10 +136,16 @@ public:
 	bool isalive(){
 		return alive;
 	}
+
+	void setPool(ParticlePool* pool){
+		pPool = pool;
+	}
+
 private:
+	ParticlePool *pPool;
     //  如果life为0，则不发射粒子但不死亡，当粒子为0时，改发射器死亡
     float life;
-
+	
     float alive;
     //TRANSFORMATION INFO
 

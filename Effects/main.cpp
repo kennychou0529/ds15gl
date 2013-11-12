@@ -67,9 +67,9 @@ void init() {
         colors[i].b = 1 - i / 255.0f;
         colors[i].a = 1 -  1.3f * (i / 256.0f)*(i / 256.0f);
     }
-    Emitter emm( 1, 0.1, 1,0.5, 4, 2, colors,2);
+    Emitter emm( 1, 0.1, 1,0.5, 4, 2, colors,200);
 	emm.setPosition(0,0,1);
-	emm.setSpeed(0,0,-1);
+	//emm.setSpeed(0,0,-4);
     //Vector mag = {0, 0.01, 0};
 	emm.setGravity(0,0,-1);
 	emm.setCenter(10,10,-1,3);
