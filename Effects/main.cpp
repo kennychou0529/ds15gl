@@ -58,7 +58,7 @@ void dsDisplay() {
 
 void init() {
     center.x = 0, center.y = 0, center.z = 0;
-    eye.x = 1, eye.y = 1, eye.z = 10;
+    eye.x = 1, eye.y = 1, eye.z = 30;
 
     Color* colors = new Color[256];
     for (int i = 0; i < colorIndexLength; i++) {
@@ -68,6 +68,8 @@ void init() {
         colors[i].a = 1 -  1.3f * (i / 256.0f)*(i / 256.0f);
     }
     Emitter emm( 1, 0.1, 1,0.5, 4, 2, colors,2);
+	emm.setPosition(0,0,1);
+	emm.setSpeed(0,0,-1);
     //Vector mag = {0, 0.01, 0};
 	emm.setGravity(0,0,-1);
 	emm.setCenter(10,10,-1,3);
@@ -146,7 +148,7 @@ void keyFunc(unsigned char c,int x,int y){
 		eye.y-=0.1;
 		break;
 	case 'q':
-		eye.z-=1;
+		eye.z+=1;
 		break;
 	case 'e':
 		eye.z-=1;

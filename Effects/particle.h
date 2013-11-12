@@ -91,7 +91,7 @@ public:
     );
     ~Emitter();
 
-    void setSpeed(float vx, float vy, float, float vz) {
+    void setSpeed(float vx, float vy,  float vz) {
         speed.x = vx;
         speed.y = vy;
         speed.z = vz;
