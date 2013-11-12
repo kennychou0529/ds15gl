@@ -57,7 +57,7 @@ Emitter::Emitter(//位置信息
     float particleLife,
     //粒子颜色变化
     Color _color[],
-    float life
+    float _life
 ) {
     this->life = life;
     Vector _pos = {0, 0, 0};
@@ -76,7 +76,8 @@ Emitter::Emitter(//位置信息
     pitchVar = _pitchVar;
     particleSpeed = _particleSpeed;
     //     particleSpeedVar = 15.f;
-    life = particleLife;
+    plife = particleLife;
+	life = _life;
     plifeVar = 0.3;
     emitsPerFrame = 100;
     emitVar = 5;
