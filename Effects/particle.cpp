@@ -46,8 +46,8 @@ void ParticlePool::recycle(Particle* p) {
 }
 
 Emitter::Emitter(//位置信息
-    float posx, float posy, float posz,
-   
+    //float posx, float posy, float posz,
+
     //发射角度
     float _yaw , float _yawVar,
     float _pich, float _pitchVar,
@@ -56,13 +56,15 @@ Emitter::Emitter(//位置信息
     //粒子寿命
     float particleLife,
     //粒子颜色变化
-    Color _color[]
+    Color _color[],
+    float life
 ) {
-    Vector _pos = {posx, posy, posz};
+    this->life = life;
+    Vector _pos = {0, 0, 0};
     Vector _speed = { 0, 0, 0};
     //    Vector _particleSpeed = {10, 10, 0};
-//     Vector _forcce = {forcex, forcey, forcez};
-//     Vector _center = {centerx, centery, centerz};
+    //     Vector _forcce = {forcex, forcey, forcez};
+    //     Vector _center = {centerx, centery, centerz};
     pos = _pos;
     speed = _speed;
     speedVar = 0;
@@ -75,8 +77,8 @@ Emitter::Emitter(//位置信息
     particleSpeed = _particleSpeed;
     //     particleSpeedVar = 15.f;
     life = particleLife;
-    lifeVar = 0.3;
-    emitsPerFrame = 200;
+    plifeVar = 0.3;
+    emitsPerFrame = 100;
     emitVar = 5;
     colors = _color;
     //     for (int i = 0; i < colorIndexLength; i++) {
@@ -87,20 +89,20 @@ Emitter::Emitter(//位置信息
     //     }
     srand(time(NULL));
 
-    forceType =0;
-//     force = _forcce;
-//     center = _center;
+    forceType = 0;
+    //     force = _forcce;
+    //     center = _center;
     //centripetal = _centripetal;
 
     alive = true;
 
 }
 
-Emitter::~Emitter(){
-	for (Particle* p : particles){
-		pPool.recycle(p);
-	}
-	particles.clear();
+Emitter::~Emitter() {
+    for (Particle * p : particles) {
+        pPool.recycle(p);
+    }
+    particles.clear();
 }
 
 void Emitter::update(float duration) {
@@ -124,11 +126,11 @@ void Emitter::update(float duration) {
         it->pos = it->pos + it->dir * duration;
         it->pos.x += randF() * it->randLevel * duration;
         it->pos.y += randF() * it->randLevel * duration;
-		it->pos.z += randF() * it->randLevel * duration;
-		if(forceType& Lorentz){
-			Vector v = it->dir*mag;
-			it->pos= it->pos+v;
-		}
+        it->pos.z += randF() * it->randLevel * duration;
+        if (forceType & Lorentz) {
+            Vector v = it->dir * mag;
+            it->pos = it->pos + v;
+        }
         if (forceType & Gravity) {
             it->dir = it->dir + force * duration;
         }
@@ -144,21 +146,28 @@ void Emitter::update(float duration) {
                 t.y = it->pos.y / l;
             }
             it->dir = it->dir + t * centripetal * duration;
-		}
-		
+        }
+
 
         it->life -= duration;
     }
-    for (int i = 0; i < emitsPerFrame; i++) {
+    if (life > 0) {
+        for (int i = 0; i < emitsPerFrame; i++) {
 
-        float _yaw, _pitch, _speed;
-        //      Vector _speed = {0, 0, 0};
-        Vector _particleSpeed =  Vector::RotationToDirection(yaw + yawVar * randF(), pitch + pitchVar * randF()) * particleSpeed ;
+            float _yaw, _pitch, _speed;
+            //      Vector _speed = {0, 0, 0};
+            Vector _particleSpeed =  Vector::RotationToDirection(yaw + yawVar * randF(), pitch + pitchVar * randF()) * particleSpeed ;
 
-        Particle* p = pPool.getParticle();
-        p->init(pos, 4, _particleSpeed , life + lifeVar * randF());
+            Particle* p = pPool.getParticle();
+            p->init(pos, 4, _particleSpeed , plife + plifeVar * randF());
 
-        particles.push_back(p);
+            particles.push_back(p);
+        }
+        life -= duration;
+    } else {
+        if (particles.empty()) {
+            alive = false;
+        }
     }
 }
 

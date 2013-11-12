@@ -2,10 +2,12 @@
 #include <iostream>
 //#include "tparticle.h"
 #include "particle.h"
+#include "EffectManager.h"
 
 using namespace std;
 //tEmitter* em;
-Emitter* emm;
+
+EffectManager em;
 Vector center;
 Vector eye;
 //tParticle* m_ParticlePool;
@@ -40,7 +42,7 @@ void dsDisplay() {
     //extern void renderParticles(tEmitter* emitter);
     //updateParticle()
     //renderParticles(em);
-    emm->draw();
+    em.render();
 
     glutSwapBuffers();
 
@@ -65,12 +67,17 @@ void init() {
         colors[i].b = 1 - i / 255.0f;
         colors[i].a = 1 -  1.3f * (i / 256.0f)*(i / 256.0f);
     }
-    emm = new Emitter(0, 0, 0, 1, 0.1, 1,0.5, 4, 2, colors);
+    Emitter emm( 1, 0.1, 1,0.5, 4, 2, colors,2);
     //Vector mag = {0, 0.01, 0};
-	emm->setGravity(0,0,-1);
-	emm->setCenter(10,10,-1,3);
+	emm.setGravity(0,0,-1);
+	emm.setCenter(10,10,-1,3);
 
-    emm->setMagnetic(0,0.5,0);
+    emm.setMagnetic(0,0.5,0);
+	em.addEmitter(emm);
+
+	Thurder t(0,0,0,3,0,3,10,2,0.2,100);
+	em.addThurder(t);
+
     //     em = new tEmitter;
     //     em->emitsPerFrame = 1000;
     //     em->emitVar = 50;
@@ -165,6 +172,6 @@ int main(int argc, char** argv) {
     glutIdleFunc(dsIdle);
     init();
     glutMainLoop();
-    delete emm;
+   // delete emm;
     return 0;
 }

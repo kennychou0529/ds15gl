@@ -4,64 +4,11 @@
 
 #include <list>
 #include <cmath>
+#include "vector.h"
+
 using std::list;
 const int colorIndexLength = 256;
 
-
-struct Vector {
-    float x, y, z;
-
-
-    Vector operator +(Vector& a) {
-        Vector sum;
-        sum.x = x + a.x;
-        sum.y = y + a.y;
-        sum.z = z + a.z;
-        return sum;
-    }
-    void unit() {
-        float l = sqrt(x * x + y * y + z + z);
-        if (l > 0) {
-            x /= l;
-            y /= l;
-            z /= l;
-        }
-    }
-    Vector operator -(Vector& a) {
-        Vector sum;
-        sum.x = x - a.x;
-        sum.y = y - a.y;
-        sum.z = z - a.z;
-        return sum;
-    }
-    Vector operator *(float m) {
-        Vector product;
-        product.x = x * m;
-        product.y = y * m;
-        product.z = z * m;
-        return product;
-    }
-    //叉乘
-    Vector operator *(Vector m) {
-        Vector product;
-        product.x = y * m.z - z * m.y;
-        product.y = z * m.x - x * m.z;
-        product.z = z * m.y + y * m.x;
-        return product;
-    }
-    static Vector RotationToDirection(float yaw, float pitch) {
-        Vector t;
-        t.x = -sin(yaw) * cos(pitch);
-        t.y = sin(pitch);
-        t.z = cos(pitch) * cos(yaw);
-        return t;
-    }
-};
-
-
-struct Color {
-    float r, g, b, a;
-};
 
 struct Particle
 
@@ -130,7 +77,7 @@ class  Emitter
 {
 public:
     Emitter(//位置信息
-        float posx, float posy, float posz,
+        /*float posx, float posy, float posz,*/
         //发射角度
         float _yaw , float _yawVar,
         float _pich, float _pitchVar,
@@ -139,9 +86,22 @@ public:
         //粒子寿命
         float particleLife,
         //粒子颜色变化
-        Color color[]
+        Color color[],
+        float life
     );
     ~Emitter();
+
+    void setSpeed(float vx, float vy, float, float vz) {
+        speed.x = vx;
+        speed.y = vy;
+        speed.z = vz;
+    }
+
+    void setPosition(float posx, float posy, float posz) {
+        pos.x = posx;
+        pos.y = posy;
+        pos.z = posz;
+    }
 
     void setMagnetic(float x, float y, float z) {
         forceType |= Lorentz;
@@ -157,28 +117,28 @@ public:
         force.z = z;
     }
 
-	void setCenter(float x, float y, float z,float a) {
-		forceType |= Center;
-		center.x = x;
-		center.y = y;
-		center.z = z;
-		centripetal = a;
-	}
+    void setCenter(float x, float y, float z, float a) {
+        forceType |= Center;
+        center.x = x;
+        center.y = y;
+        center.z = z;
+        centripetal = a;
+    }
 
-	void setHoriForce(float a){
-		forceType |= Z_Axle;
-		centripetal = a;
-	}
+    void setHoriForce(float a) {
+        forceType |= Z_Axle;
+        centripetal = a;
+    }
 
 
     void update(float duration);
     void draw() ;
+	bool isalive(){
+		return alive;
+	}
 private:
-    //  long id; //EMITTER ID
-    //
-    //  char name[80];// EMITTER NAME
-    //
-    //  long flags; //EMITTER FLAGS
+    //  如果life为0，则不发射粒子但不死亡，当粒子为0时，改发射器死亡
+    float life;
 
     float alive;
     //TRANSFORMATION INFO
@@ -204,7 +164,7 @@ private:
 
     int emitsPerFrame, emitVar; // EMITS PER FRAME AND VARIATION
 
-    float life, lifeVar; // LIFE COUNT AND VARIATION
+    float plife, plifeVar; // LIFE COUNT AND VARIATION
 
 
     //   Vector particleDir;
