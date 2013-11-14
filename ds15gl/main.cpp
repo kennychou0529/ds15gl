@@ -7,6 +7,7 @@
 #include "dsEye.h"
 #include <alut.h>
 #include "dsSoundManager.h"
+#include "display_basic.h"
 
 //
 //// 这可以避免在 Windows 下出现命令行窗口
@@ -19,14 +20,13 @@ bool isReady = false;
 
 void dsDisplay() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	if(isReady){
-		dsSetEye(); // 设置视角
-		frame.display();
-	}else
-	{
-		glColor3f(1,1,1);
-		dstext.print(200,200,L"载入中");
-	}
+    if (isReady) {
+        dsSetEye(); // 设置视角
+        frame.display();
+    } else {
+        glColor3f(1, 1, 1);
+        dstext.print(200, 200, L"载入中");
+    }
     glutSwapBuffers();
 
     // 打印 GL 错误
@@ -39,10 +39,10 @@ void dsDisplay() {
     }
 }
 
-void dsInit() {
+void dsInit(const std::string& rep_file_name) {
     dsSetMaterial();
     dsSetLight();
-    frame.initialize();
+    frame.initialize(rep_file_name);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_LIGHTING);
@@ -54,14 +54,14 @@ void dsInit() {
     glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
     dstext.init(font_file_name, font_height);
     dstext_small.init(font_file_name, font_height_small);
-	
+
     //this object must be initialized after main function
     //soundManager = DSSoundManager::getSoundManager();
 }
 
-void dsGameInit(){
-	frame.initialize2();
-	isReady = true;
+void dsGameInit() {
+    frame.initialize2();
+    isReady = true;
 }
 
 // 当窗口大小被修改时自动调用此函数
@@ -91,7 +91,7 @@ int main(int argc, char* argv[]) {
     glutInitWindowPosition(0, 0);
     glutInitWindowSize(window_width, window_height);
     glutCreateWindow("DS 15th");
-	glutHideWindow();
+    glutHideWindow();
     glutDisplayFunc(dsDisplay);
     glutMouseFunc(dsMouseFunc);
     // glutPassiveMotionFunc(dsPassiveMonitionFunc);
@@ -101,10 +101,10 @@ int main(int argc, char* argv[]) {
     glutIdleFunc(dsIdle);
     glutKeyboardFunc(dsKeyDown);
     glutKeyboardUpFunc(dsKeyUp);
-    dsInit();
-	glutShowWindow();
-	std::thread gameThread(dsGameInit);
-	gameThread.detach();
+    dsInit("DisplayFiles/display.rep");
+    glutShowWindow();
+    std::thread gameThread(dsGameInit);
+    gameThread.detach();
     glutMainLoop();
     destroy();
     return 0;

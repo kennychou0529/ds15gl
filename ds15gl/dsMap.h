@@ -3,6 +3,7 @@
 
 #include <GL/glut.h>
 #include "dsObject.h"
+#include "display_basic.h"
 
 enum TileType {
     plain,    // 平原
@@ -22,6 +23,8 @@ public:
 	void load();
 
     void init(size_t x_max = 10, size_t y_max = 10, TileType* data = nullptr);
+
+    void init(Game_Info* game_info);
 
     ~DSMap();
 
@@ -95,7 +98,7 @@ private:
     // 地图每块的大小
     static GLfloat grid_size;
 
-    // 地图数据
+    // 地图数据 data[y_index * x_max + x_index]
     TileType* data;
 
     // 多种地形

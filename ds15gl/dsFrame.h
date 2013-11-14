@@ -11,7 +11,7 @@ class DSFrame {
 public:
     DSFrame();
     ~DSFrame() {}
-    void initialize();
+    void initialize(const std::string& file_name);
 	void initialize2();
     void display(bool selectMode = false);
     size_t getFPS() { return fps; }

@@ -83,6 +83,49 @@ void DSMap::init(size_t _x_max, size_t _y_max, TileType* _data) {
 
 }
 
+void DSMap::init(Game_Info* game_info) {
+    x_max = game_info->map_size[0];
+    y_max = game_info->map_size[1];
+
+    // 建立地图数据
+    if (data != nullptr) {
+        delete[] data;
+    }
+    data = new TileType[x_max * y_max];
+
+    for (size_t x_index = 0; x_index < x_max; ++x_index)
+    for (size_t y_index = 0; y_index < y_max; ++y_index) {
+        auto& this_data = data[y_index * x_max + x_index];
+        switch (game_info->map[x_index][y_index]) {
+        case PLAIN:
+            this_data = plain;
+            break;
+        case MOUNTAIN:
+            this_data = hill;
+            break;
+        case FOREST:
+            this_data = forest;
+            break;
+        case BARRIER:
+            this_data = barrier;
+            break;
+        case TURRET:
+            this_data = cannon;
+            break;
+        case TEMPLE:
+            this_data = temple;
+            break;
+        case MIRROR:
+            this_data = plain;
+            break;
+        }
+    }
+
+    listLoaded = false;
+    map = 0;
+
+}
+
 DSMap::~DSMap() {
     delete[] data;
 }
