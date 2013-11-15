@@ -457,7 +457,7 @@ void DSMap::renderArrow(size_t x_index, size_t y_index, GLfloat duration) {
     //glEnd();
     glRotated(-rr - 90.0, 0, 0, 1.0);
     glPopAttrib();
-    glTranslatef(-x, -y, 0.0f);
+    glTranslatef(-x, -y, -z);
 }
 
 void DSMap::dishi() {
