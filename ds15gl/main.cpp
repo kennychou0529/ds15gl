@@ -15,6 +15,8 @@
 //#pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"")
 //#endif
 
+void server();
+
 DSFrame frame;
 bool isReady = false;
 
@@ -59,9 +61,15 @@ void dsInit(const std::string& rep_file_name) {
     //soundManager = DSSoundManager::getSoundManager();
 }
 
-void dsGameInit() {
-    frame.initialize2();
-    isReady = true;
+void dsGameInit(const std::string& rep_file_name) {
+	frame.initialize2(rep_file_name);
+	isReady = true;
+}
+extern void server();
+void serverThread(){
+	while(1){
+		server();
+	}
 }
 
 // 当窗口大小被修改时自动调用此函数
@@ -103,9 +111,9 @@ int main(int argc, char* argv[]) {
     glutKeyboardUpFunc(dsKeyUp);
     dsInit("DisplayFiles/display.rep");
     glutShowWindow();
-    std::thread gameThread(dsGameInit);
-    gameThread.detach();
-    glutMainLoop();
-    destroy();
+    std::thread gameThread(serverThread);
+	gameThread.detach();
+	glutMainLoop();
+//     destroy();
     return 0;
 }
