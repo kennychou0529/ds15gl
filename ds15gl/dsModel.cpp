@@ -208,9 +208,13 @@ int MD2Model::load(
 
 void MD2Model::clear() {
     delete[] triangles;
+    triangles = NULL;
     delete[] normal_vecs;
+    normal_vecs = NULL;
     delete[] tex_coords;
+    tex_coords = NULL;
     delete[] vertices;
+    vertices = NULL;
 }
 
 void MD2Model::renderFrame(size_t frame_index) const {

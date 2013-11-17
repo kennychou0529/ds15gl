@@ -10,7 +10,17 @@ DSActorManager::DSActorManager() :
     all_finished(false) {}
 
 
-DSActorManager::~DSActorManager() {}
+DSActorManager::~DSActorManager() {
+    //list.clear();
+    //两个map保存了同一个对象，必然有一个析构出问题
+    //list = *(new SOLDIERS);
+    clearAll();
+//     for (auto i : pool) {
+//         delete i.second;
+//     }
+
+    pool.clear();
+}
 
 extern DSFrame frame;
 
@@ -19,55 +29,71 @@ void DSActorManager::insertSoldier(const std::string& soldier_id, std::string so
     if (soldier_type.empty()) {
         soldier_type = soldier_id;
     }
-    list.insert(std::make_pair(soldier_id, dsSoldier(counter)));
-    list[soldier_id].load(soldier_type);
-    list[soldier_id].enterStatus(dsSoldier::Status::idle);
+    dsSoldier* sol = new dsSoldier(counter);
+
+    sol->load(soldier_type);
+    sol->setID(soldier_id);
+    sol->enterStatus(dsSoldier::Status::idle);
     intToString[counter++] = soldier_id;
 
     if (frame.sounds.soundgroups.find(soldier_type) != frame.sounds.soundgroups.end()) {
-        list[soldier_id].setSounds(frame.sounds.soundgroups[soldier_type]);
+        sol->setSounds(frame.sounds.soundgroups[soldier_type]);
     } else {
-        list[soldier_id].setSounds(DSSoundManager::defaultSoundGroup);
+        sol->setSounds(DSSoundManager::defaultSoundGroup);
     }
+
+    pool.insert(std::make_pair(soldier_type, sol));
 }
 
 //加载人物
 void DSActorManager::initialize() {
 
-    insertSoldier("sword_man");
-    list["sword_man"].setPosition(4, 2);
+    insertSoldier("sword_man1", "sword_man");
+    //list["sword_man"].setPosition(4, 2);
+    insertSoldier("sword_man2", "sword_man");
+    //list["sword_man"].setPosition(4, 2);
 
-    insertSoldier("mage");
-    list["mage"].setPosition(1, 1);
-    list["mage"].enterStatus(dsSoldier::Status::disappear);
+    insertSoldier("mage1", "mage");
+    insertSoldier("mage2", "mage");
 
-    insertSoldier("chastit");
-    list["chastit"].setPosition(1, 5);
-    list["chastit"].enterStatus(dsSoldier::Status::disappear);
+    //     list["mage"].setPosition(1, 1);
+    //     list["mage"].enterStatus(dsSoldier::Status::disappear);
 
-    insertSoldier("gunman");
-    list["gunman"].setPosition(2, 4);
+    insertSoldier("chastit1", "chastit");
+    insertSoldier("chastit2", "chastit");
+    //     list["chastit"].setPosition(1, 5);
+    //     list["chastit"].enterStatus(dsSoldier::Status::disappear);
+
+    insertSoldier("gunman1", "gunman");
+    insertSoldier("gunman2""gunman");
+    /*  list["gunman"].setPosition(2, 4);*/
     //list["gunman"].enterStatus(dsSoldier::Status::disappear);
 
-    insertSoldier("bauul");
-    list["bauul"].setPosition(0, 2);
+    insertSoldier("bauul1", "bauul");
+    insertSoldier("bauul2", "bauul");
+    //list["bauul"].setPosition(0, 2);
     //list["bauul"].enterStatus(dsSoldier::Status::disappear);
 
-    insertSoldier("fighter");
-    list["fighter"].setPosition(5, 5);
-    list["fighter"].enterStatus(dsSoldier::Status::disappear);
+    insertSoldier("fighter1", "fighter");
+    insertSoldier("fighter2", "fighter");
+    //     list["fighter"].setPosition(5, 5);
+    //     list["fighter"].enterStatus(dsSoldier::Status::disappear);
 
-    insertSoldier("tank");
-    list["tank"].setPosition(2, 2);
+    insertSoldier("tank1", "tank");
+    insertSoldier("tank2", "tank");
+    //    list["tank"].setPosition(2, 2);
     //list["tank"].enterStatus(dsSoldier::Status::disappear);
 
-    insertSoldier("disgustin");
-    list["disgustin"].setPosition(0, 2);
-    list["disgustin"].enterStatus(dsSoldier::Status::disappear);
+    insertSoldier("disgustin1", "disgustin");
+    insertSoldier("disgustin2", "disgustin");
+    //     list["disgustin"].setPosition(0, 2);
+    //     list["disgustin"].enterStatus(dsSoldier::Status::disappear);
 
-    insertSoldier("monkey");
-    list["monkey"].setPosition(2, 0);
+    insertSoldier("monkey1", "monkey");
+    insertSoldier("monkey2", "monkey");
+    //list["monkey"].setPosition(2, 0);
     //list["monkey"].enterStatus(dsSoldier::Status::disappear);
+    //mvAlltoPool();
 }
 
 //渲染

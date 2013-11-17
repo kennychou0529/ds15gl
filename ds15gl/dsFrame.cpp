@@ -13,37 +13,37 @@ void DSFrame::initialize(const std::string& file_name) {
     //scene.map.init(15, 10);
     sounds.loadSounds();
     //把这些初始化工作集中在这里，以备Socket使用
-// 
-//     Game_Info info;
-//     Round_Begin_Info begin_info;
-//     Command cmd;
-//     Round_End_Info end_info;
-// 
-//     // 回放文件读入
-//     std::ifstream is(file_name);
-// 
-//     // 读入地图信息
-//     is >> info.map_size[0] >> info.map_size[1];
-//     for (size_t i = 0; i < info.map_size[0]; i++)
-//         for (size_t j = 0; j < info.map_size[1]; j++) {
-//             is >> info.map[i][j];
-//         }
-// 
-//     is >> info.team_name[0] >> info.team_name[1];
-//     for (size_t i = 0; i < 2; ++i) {
-//         is >> info.soldier_number[i];
-//         for (size_t j = 0; j < info.soldier_number[i]; ++j)
-//             is >> info.soldier[j][i].kind
-//                >> info.soldier[j][i].life
-//                >> info.soldier[j][i].strength
-//                >> info.soldier[j][i].defence
-//                >> info.soldier[j][i].move_range
-//                >> info.soldier[j][i].attack_range[0]
-//                >> info.soldier[j][i].attack_range[1]
-//                >> info.soldier[j][i].duration
-//                >> info.soldier[j][i].pos.x
-//                >> info.soldier[j][i].pos.y;
-//     }
+    //
+    //     Game_Info info;
+    //     Round_Begin_Info begin_info;
+    //     Command cmd;
+    //     Round_End_Info end_info;
+    //
+    //     // 回放文件读入
+    //     std::ifstream is(file_name);
+    //
+    //     // 读入地图信息
+    //     is >> info.map_size[0] >> info.map_size[1];
+    //     for (size_t i = 0; i < info.map_size[0]; i++)
+    //         for (size_t j = 0; j < info.map_size[1]; j++) {
+    //             is >> info.map[i][j];
+    //         }
+    //
+    //     is >> info.team_name[0] >> info.team_name[1];
+    //     for (size_t i = 0; i < 2; ++i) {
+    //         is >> info.soldier_number[i];
+    //         for (size_t j = 0; j < info.soldier_number[i]; ++j)
+    //             is >> info.soldier[j][i].kind
+    //                >> info.soldier[j][i].life
+    //                >> info.soldier[j][i].strength
+    //                >> info.soldier[j][i].defence
+    //                >> info.soldier[j][i].move_range
+    //                >> info.soldier[j][i].attack_range[0]
+    //                >> info.soldier[j][i].attack_range[1]
+    //                >> info.soldier[j][i].duration
+    //                >> info.soldier[j][i].pos.x
+    //                >> info.soldier[j][i].pos.y;
+    //     }
 
     // 初始信息读入完成
 
@@ -54,41 +54,58 @@ void DSFrame::initialize(const std::string& file_name) {
     scene.initialize();
 }
 void DSFrame::initialize2(const std::string& rep_file_name) {
-	Game_Info info;
-	Round_Begin_Info begin_info;
-	Command cmd;
-	Round_End_Info end_info;
+    Game_Info info;
+    Round_Begin_Info begin_info;
+    Command cmd;
+    Round_End_Info end_info;
 
-	// 回放文件读入
-	std::ifstream is(rep_file_name);
+    // 回放文件读入
+    std::ifstream is(rep_file_name);
 
-	// 读入地图信息
-	is >> info.map_size[0] >> info.map_size[1];
-	for (size_t i = 0; i < info.map_size[0]; i++)
-		for (size_t j = 0; j < info.map_size[1]; j++) {
-			is >> info.map[i][j];
-		}
+    // 读入地图信息
+    is >> info.map_size[0] >> info.map_size[1];
+    for (size_t i = 0; i < info.map_size[0]; i++)
+        for (size_t j = 0; j < info.map_size[1]; j++) {
+            is >> info.map[i][j];
+        }
 
-		is >> info.team_name[0] >> info.team_name[1];
-		for (size_t i = 0; i < 2; ++i) {
-			is >> info.soldier_number[i];
-			for (size_t j = 0; j < info.soldier_number[i]; ++j)
-				is >> info.soldier[j][i].kind
-				>> info.soldier[j][i].life
-				>> info.soldier[j][i].strength
-				>> info.soldier[j][i].defence
-				>> info.soldier[j][i].move_range
-				>> info.soldier[j][i].attack_range[0]
-			>> info.soldier[j][i].attack_range[1]
-			>> info.soldier[j][i].duration
-				>> info.soldier[j][i].pos.x
-				>> info.soldier[j][i].pos.y;
-		}
+    is >> info.team_name[0] >> info.team_name[1];
+    for (size_t i = 0; i < 2; ++i) {
+        is >> info.soldier_number[i];
+        for (size_t j = 0; j < info.soldier_number[i]; ++j)
+            is >> info.soldier[j][i].kind
+               >> info.soldier[j][i].life
+               >> info.soldier[j][i].strength
+               >> info.soldier[j][i].defence
+               >> info.soldier[j][i].move_range
+               >> info.soldier[j][i].attack_range[0]
+               >> info.soldier[j][i].attack_range[1]
+               >> info.soldier[j][i].duration
+               >> info.soldier[j][i].pos.x
+               >> info.soldier[j][i].pos.y;
+    }
 
-		// 初始信息读入完成
+    // 初始信息读入完成
 
-		//scene.map.init(8, 8);
-		scene.map.init(&info);
+    //处理人物
+    //全部隐藏
+    actors.clearAll();
+
+    //依次载入
+    for (size_t i = 0; i < 2; ++i) {
+        for (size_t j = 0; j < info.soldier_number[i]; ++j) {
+            try {
+                string soldier = actors.getSoldierByKind(info.soldier[j][i].kind);
+                actors.list[soldier].setHP(info.soldier[j][i].life, info.soldier[j][i].life);
+                actors.list[soldier].setPosition(info.soldier[j][i].pos.x, info.soldier[j][i].pos.y) ;
+            } catch (char* err) {
+                cerr << err;
+            }
+        }
+    }
+
+    //scene.map.init(8, 8);
+    scene.map.init(&info);
 }
 
 

@@ -7,14 +7,16 @@
 #include "dsModel.h"
 #include "dsTimer.h"
 #include <sstream>
+#include "display_basic.h"
 
+extern char kind[9][10];
 
-struct SoundIDandSource{
-	int _run;
-	unsigned int _run_record;
-	int _pain;
-	int _fight;
-	int _dying;
+struct SoundIDandSource {
+    int _run;
+    unsigned int _run_record;
+    int _pain;
+    int _fight;
+    int _dying;
 };
 
 //unsigned int footsteps;     //脚步声
@@ -34,9 +36,9 @@ public:
 
     dsSoldier(int _idNumber  = 0);
 
-	void setSounds(SoundIDandSource _soundsGroup){
-		sound = _soundsGroup;
-	}
+    void setSounds(SoundIDandSource _soundsGroup) {
+        sound = _soundsGroup;
+    }
 
     // 绘制帧 frame_index
     void renderFrame(size_t frame_index) const;
@@ -101,30 +103,41 @@ public:
 
     void hpBar2();
 
-	std::wstring getInfo(){
-		std::wostringstream os;
-		os<< L"HP     :"<<hp<<" / "<<hp_max<<L"\n";
-		os<< "Location:"<<current_position[0]<<","<<current_position[1]<<"\n";
-		return os.str();
-	}
+    std::wstring getInfo() {
+        std::wostringstream os;
+        os << L"HP     :" << hp << " / " << hp_max << L"\n";
+        os << "Location:" << current_position[0] << "," << current_position[1] << "\n";
+        return os.str();
+    }
 
-	void setSelected(bool _beSelected){
-		beSelected = _beSelected;
-	}
+    void setSelected(bool _beSelected) {
+        beSelected = _beSelected;
+    }
 
     GLfloat setOrientation(size_t x, size_t y);
 
-	//为被选中的人物画一个光环
-	void drawAureole(GLfloat x, GLfloat y);
+    //为被选中的人物画一个光环
+    void drawAureole(GLfloat x, GLfloat y);
+    friend class DSActorManager;
+
+    void setHP(int max, int current) {
+        hp_max = max;
+        hp = current;
+    }
+
+	void setID(string _id){
+		id=_id;
+	}
 
 private:
-	int idNumber;				//为了启用选择模式，应该有一个编号
-
+    int idNumber;               //为了启用选择模式，应该有一个编号
+    string kind;
+	string id;
     int hp;
     int hp_max;
 
-	bool beSelected;			//是否被选中
-	//static GLuint aureole;		//光环的贴图
+    bool beSelected;            //是否被选中
+    //static GLuint aureole;        //光环的贴图
 
     bool has_weapon;            // 是否含有武器模型
     Status status;              // 当前状态
@@ -153,9 +166,9 @@ private:
     // 各个状态的起止帧号与播放速度 <frame_beg, frame_end, fps>
     std::tuple<size_t, size_t, size_t> frame_set[6];
 
-	SoundIDandSource sound;
+    SoundIDandSource sound;
 
-   };
+};
 
 
 #endif

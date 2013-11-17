@@ -9,6 +9,22 @@
 #include <iostream>
 #include "dsTexture.h"
 
+/*
+const int SABER = 0;              // 剑士
+const int SOLDIER = 1;            // 突击兵
+const int ARCHER = 2;             // 狙击手
+const int AIRPLANE = 3;           // 战机
+const int TANK = 4;               // 坦克
+const int WIZARD = 5;             // 治疗师
+const int BERSERKER = 6;          // 狂战士
+const int ASSASSIN = 7;           // 暗杀者
+const int ARCHMAGE = 8;           // 大法师
+*/
+
+//这里需要排一下
+char kind[9][10]= {"sword_man","gunman","chastit","bauul","fighter","tank","disgustin","monkey","mage"};
+
+
 static const GLfloat pi = 3.1415926f;
 
 extern DSFrame frame;
@@ -233,6 +249,7 @@ void dsSoldier::load(
 
 void dsSoldier::load(const std::string& soldier_name) {
     tinyxml2::XMLDocument doc;
+	kind = soldier_name;
     doc.LoadFile("soldiers.xml");
     auto root = doc.FirstChildElement();
     auto soldier = root->FirstChildElement("soldier");
