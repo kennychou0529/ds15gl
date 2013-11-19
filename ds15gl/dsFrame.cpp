@@ -4,7 +4,9 @@
 
 DSFrame::DSFrame() {}
 
+
 void DSFrame::initialize(const std::string& file_name) {
+
 
     num_frames = 0;
     fps = 0;
@@ -53,7 +55,15 @@ void DSFrame::initialize(const std::string& file_name) {
     scene.actors.initialize();
     scene.initialize();
 }
+
+extern bool isReady;
+bool canRefresh = false;
 void DSFrame::initialize2(const std::string& rep_file_name) {
+    isReady = false;
+	//必须等frame停止渲染才能重设场景
+	while(!canRefresh){
+		Sleep(100);
+	}	
     Game_Info info;
     Round_Begin_Info begin_info;
     Command cmd;
@@ -96,8 +106,8 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
         for (size_t j = 0; j < info.soldier_number[i]; ++j) {
             try {
                 string soldier = actors.getSoldierByKind(info.soldier[j][i].kind);
-                actors.list[soldier].setHP(info.soldier[j][i].life, info.soldier[j][i].life);
-                actors.list[soldier].setPosition(info.soldier[j][i].pos.x, info.soldier[j][i].pos.y) ;
+                actors.list[soldier]->setHP(info.soldier[j][i].life, info.soldier[j][i].life);
+                actors.list[soldier]->setPosition(info.soldier[j][i].pos.x, info.soldier[j][i].pos.y) ;
             } catch (char* err) {
                 cerr << err;
             }
@@ -106,6 +116,7 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
 
     //scene.map.init(8, 8);
     scene.map.init(&info);
+	is.close();
 }
 
 

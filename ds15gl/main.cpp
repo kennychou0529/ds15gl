@@ -15,17 +15,20 @@
 //#pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"")
 //#endif
 
-void server();
-
 DSFrame frame;
+
 bool isReady = false;
 
+extern bool canRefresh;
 void dsDisplay() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     if (isReady) {
+		canRefresh = false;
         dsSetEye(); // 设置视角
         frame.display();
     } else {
+		
+		canRefresh = true;
         glColor3f(1, 1, 1);
         dstext.print(200, 200, L"载入中");
     }
@@ -65,7 +68,7 @@ void dsGameInit(const std::string& rep_file_name) {
 	frame.initialize2(rep_file_name);
 	isReady = true;
 }
-extern void server();
+extern int server();
 void serverThread(){
 	while(1){
 		server();

@@ -8,7 +8,7 @@
 #include <iostream>
 #include <sstream>
 
-typedef std::map<std::string, dsSoldier> SOLDIERS;
+typedef std::map<std::string, dsSoldier*> SOLDIERS;
 
 class DSActorManager {
 public:
@@ -44,21 +44,21 @@ public:
             return L"NOT SELECT";
         }
         info << selectSoldierId.c_str() << ":\n";
-        info << list[selectSoldierId].getInfo();
+        info << list[selectSoldierId]->getInfo();
         return info.str();
     }
 
     void selectSoldier(int IdNum) {
         if (selectSoldierId.length() > 0) {
-            list[selectSoldierId].setSelected(false);
+            list[selectSoldierId]->setSelected(false);
         }
         selectSoldierId = intToString[IdNum];
-        list[selectSoldierId].setSelected(true);
+        list[selectSoldierId]->setSelected(true);
     }
 
     void cancelSelect() {
         if (selectSoldierId.length() > 0) {
-            list[selectSoldierId].setSelected(false);
+            list[selectSoldierId]->setSelected(false);
         }
         selectSoldierId = "";
     }
@@ -80,7 +80,7 @@ public:
             if (s->second->status == dsSoldier::Status::disappear) {
                 dsSoldier* solder = s->second;
                 solder->enterStatus(dsSoldier::Status::idle);
-                list[solder->id] = *solder;
+                list[solder->id] = solder;
                 //pool.erase(s);
                 return solder->id;
             }

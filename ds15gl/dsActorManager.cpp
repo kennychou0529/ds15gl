@@ -15,9 +15,9 @@ DSActorManager::~DSActorManager() {
     //两个map保存了同一个对象，必然有一个析构出问题
     //list = *(new SOLDIERS);
     clearAll();
-//     for (auto i : pool) {
-//         delete i.second;
-//     }
+    for (auto i : pool) {
+        delete i.second;
+    }
 
     pool.clear();
 }
@@ -102,8 +102,8 @@ void DSActorManager::render(bool selectMode) {
 
     for (auto & soldier : list) {
         glEnable(GL_LIGHTING);
-        soldier.second.animate(selectMode);
-        //soldier.second.hpBar2();
+        soldier.second->animate(selectMode);
+        //soldier.second->hpBar2();
     }
     //list["mage"].hpBar2();
 }
@@ -138,27 +138,27 @@ void DSActorManager::update() {
                 if (iter_soldier != list.end()) {
                     switch (record.type) {
                     case soldier_move:
-                        iter_soldier->second.setTarget(record.x, record.y);
-                        iter_soldier->second.enterStatus(
+                        iter_soldier->second->setTarget(record.x, record.y);
+                        iter_soldier->second->enterStatus(
                             dsSoldier::Status::running, &script_playing
                         );
                         break;
                     case soldier_fight:
-                        iter_soldier->second.enterStatus(
+                        iter_soldier->second->enterStatus(
                             dsSoldier::Status::attacking, &script_playing
                         );
-                        iter_soldier->second.setOrientation(record.x, record.y);
+                        iter_soldier->second->setOrientation(record.x, record.y);
                         break;
                     case soldier_die:
-                        iter_soldier->second.enterStatus(
+                        iter_soldier->second->enterStatus(
                             dsSoldier::Status::dying, &script_playing
                         );
                         break;
                     case soldier_pain:
-                        iter_soldier->second.enterStatus(
+                        iter_soldier->second->enterStatus(
                             dsSoldier::Status::pain, &script_playing
                         );
-                        iter_soldier->second.hpReduce(record.x);
+                        iter_soldier->second->hpReduce(record.x);
                         break;
                     default:
                         break;
