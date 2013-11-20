@@ -150,7 +150,7 @@ void dsSoldier::animate(bool selectMode) {
             glRotatef(angle + default_angle, 0.0f, 0.0f, 1.0f);
             renderSmoothly(duration * fps);
             glPopMatrix();
-            //hpBar(x, y, 12);
+            hpBar(x, y, 12);
             drawAureole(x, y);
         };
 
@@ -193,14 +193,15 @@ void dsSoldier::animate(bool selectMode) {
             y = pos.y;
 
             render();
+			//声源跟随人物
+            DSSoundManager::changePosition(sound._run_record, x, y);
             if (move_speed * duration > length) {
                 pos = target;
                 setPosition(target_position[0], target_position[1]);
                 enterStatus(idle, playing);
                 frame.sounds.stop(sound._run_record); //结束脚步声
             }
-            //声源跟随人物
-            DSSoundManager::changePosition(sound._run_record, x, y);
+            
 
         } else if (status == attacking || status == pain) {
             frame.scene.map.getCoords(

@@ -132,6 +132,13 @@ public:
 		return id;
 	}
 
+	int x(){
+		return current_position[0];
+	}
+	int y(){
+		return current_position[1];
+	}
+
 private:
     int idNumber;               //为了启用选择模式，应该有一个编号
     string kind;

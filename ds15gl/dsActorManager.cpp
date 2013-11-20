@@ -176,7 +176,9 @@ void DSActorManager::update() {
             // 当下一条指令也是本回合的，且下一条指令要求同步播放，
             // 那么将下一条指令也下达
 
-        }
+        }else{
+			enterNextRound();
+		}
     }
 }
 
