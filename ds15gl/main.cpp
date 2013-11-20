@@ -9,6 +9,8 @@
 #include "dsSoundManager.h"
 #include "display_basic.h"
 
+#define _DEBUG_MODE
+
 //
 //// 这可以避免在 Windows 下出现命令行窗口
 //#ifdef WIN32
@@ -114,8 +116,14 @@ int main(int argc, char* argv[]) {
     glutKeyboardUpFunc(dsKeyUp);
     dsInit("DisplayFiles/display.rep");
     glutShowWindow();
+
+#ifdef _DEBUG_MODE
+    dsGameInit("DisplayFiles/display.rep");
+#else
     std::thread gameThread(serverThread);
 	gameThread.detach();
+#endif
+
 	glutMainLoop();
 //     destroy();
     return 0;

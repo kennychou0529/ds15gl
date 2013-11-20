@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include <direct.h>
+// #include <direct.h>
 #include <string.h>
 #include <string>
 #include <vector>
@@ -13,16 +13,17 @@ Command cmd = {};
 round_End_Info reinfo = {};
 
 int main1() {
-    char* path = getcwd(NULL, 0);
-    strcat(path, "\\\DisplayFiles\\\display.rep");
-    ifstream fin(path);
+    //char* path = getcwd(NULL, 0);
+    // strcat(path, "//display.rep");
+    ifstream fin("display.rep");
 
     fin >> info.map_size[0] >> info.map_size[1];
     for (int i = 0; i < info.map_size[0]; i++)
         for (int j = 0; j < info.map_size[1]; j++) {
             fin >> info.map[i][j];
         }
-    fin >> info.team_name[0] >> info.team_name[1];
+    fin >> info.team_name[0];
+    fin >> info.team_name[1];
     for (int i = 0; i < 2; i++) {
         fin >> info.soldier_number[i];
         for (int j = 0; j < info.soldier_number[i]; j++)
@@ -34,9 +35,8 @@ int main1() {
     }
     //////////////以上为读入初始信息
 
-    rbinfo.temple.resize(info.temple_number);
 
-    while (!reinfo.over) {
+    while (1) {
         fin >> rbinfo.move_team >> rbinfo.move_id;
         fin >> rbinfo.range_num;
         rbinfo.range.resize(rbinfo.range_num);
@@ -44,14 +44,15 @@ int main1() {
             fin >> rbinfo.range[i].x >> rbinfo.range[i].y;
         }
         for (int i = 0; i < 2; i++) {
-            fin >> rbinfo.soldier_number[i];
-            for (int j = 0; j < rbinfo.soldier_number[i]; j++)
+            for (int j = 0; j < info.soldier_number[i]; j++)
                 fin >> rbinfo.soldier[j][i].kind >> rbinfo.soldier[j][i].life
                     >> rbinfo.soldier[j][i].strength >> rbinfo.soldier[j][i].defence
                     >> rbinfo.soldier[j][i].move_range >> rbinfo.soldier[j][i].attack_range[0]
                     >> rbinfo.soldier[j][i].attack_range[1] >> rbinfo.soldier[j][i].duration
                     >> rbinfo.soldier[j][i].pos.x >> rbinfo.soldier[j][i].pos.y;
         }
+        fin >> info.temple_number;
+        rbinfo.temple.resize(info.temple_number);
         for (int i = 0; i < info.temple_number; i++) {
             fin >> rbinfo.temple[i].pos.x >> rbinfo.temple[i].pos.y >> rbinfo.temple[i].state;
         }
@@ -64,8 +65,7 @@ int main1() {
         ////////////////展示组操作
 
         for (int i = 0; i < 2; i++) {
-            fin >> reinfo.soldier_number[i];
-            for (int j = 0; j < reinfo.soldier_number[i]; j++)
+            for (int j = 0; j < info.soldier_number[i]; j++)
                 fin >> reinfo.soldier[j][i].kind >> reinfo.soldier[j][i].life
                     >> reinfo.soldier[j][i].strength >> reinfo.soldier[j][i].defence
                     >> reinfo.soldier[j][i].move_range >> reinfo.soldier[j][i].attack_range[0]
@@ -80,7 +80,9 @@ int main1() {
         fin >> reinfo.score[0] >> reinfo.score[1];
         fin >> reinfo.attack_effect[0] >> reinfo.attack_effect[1];
         fin >> reinfo.trans >> reinfo.over;
-
+        if (reinfo.over == true) {
+            break;
+        }
         ///////////////展示操作
     }
     return 0;

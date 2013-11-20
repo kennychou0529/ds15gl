@@ -60,10 +60,10 @@ extern bool isReady;
 bool canRefresh = false;
 void DSFrame::initialize2(const std::string& rep_file_name) {
     isReady = false;
-	//必须等frame停止渲染才能重设场景
-	while(!canRefresh){
-		Sleep(100);
-	}	
+    //必须等frame停止渲染才能重设场景
+    while (!canRefresh) {
+        Sleep(100);
+    }
     Game_Info info;
     Round_Begin_Info begin_info;
     Command cmd;
@@ -79,7 +79,8 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
             is >> info.map[i][j];
         }
 
-    is >> info.team_name[0] >> info.team_name[1];
+    is >> info.team_name[0];
+    is >> info.team_name[1];
     for (size_t i = 0; i < 2; ++i) {
         is >> info.soldier_number[i];
         for (size_t j = 0; j < info.soldier_number[i]; ++j)
@@ -114,9 +115,77 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
         }
     }
 
+    while (1) {
+        is >> begin_info.move_team >> begin_info.move_id;
+        is >> begin_info.range_num;
+        begin_info.range.resize(begin_info.range_num);
+        for (int i = 0; i < begin_info.range_num; i++) {
+            is >> begin_info.range[i].x >> begin_info.range[i].y;
+        }
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < info.soldier_number[i]; j++)
+                is >> begin_info.soldier[j][i].kind
+                   >> begin_info.soldier[j][i].life
+                   >> begin_info.soldier[j][i].strength
+                   >> begin_info.soldier[j][i].defence
+                   >> begin_info.soldier[j][i].move_range
+                   >> begin_info.soldier[j][i].attack_range[0]
+                   >> begin_info.soldier[j][i].attack_range[1]
+                   >> begin_info.soldier[j][i].duration
+                   >> begin_info.soldier[j][i].pos.x
+                   >> begin_info.soldier[j][i].pos.y;
+        }
+        is >> info.temple_number;
+        begin_info.temple.resize(info.temple_number);
+        for (int i = 0; i < info.temple_number; i++) {
+            is >> begin_info.temple[i].pos.x
+               >> begin_info.temple[i].pos.y
+               >> begin_info.temple[i].state;
+        }
+
+        ////////////////展示组操作
+
+        is >> cmd.destination.x
+           >> cmd.destination.y
+           >> cmd.order
+           >> cmd.target_team
+           >> cmd.target_id;
+
+        ////////////////展示组操作
+
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < info.soldier_number[i]; j++)
+                is >> end_info.soldier[j][i].kind
+                   >> end_info.soldier[j][i].life
+                   >> end_info.soldier[j][i].strength
+                   >> end_info.soldier[j][i].defence
+                   >> end_info.soldier[j][i].move_range
+                   >> end_info.soldier[j][i].attack_range[0]
+                   >> end_info.soldier[j][i].attack_range[1]
+                   >> end_info.soldier[j][i].duration
+                   >> end_info.soldier[j][i].pos.x
+                   >> end_info.soldier[j][i].pos.y;
+        }
+        is >> end_info.route_len;
+        end_info.route.resize(end_info.route_len);
+        for (int i = 0; i < end_info.route_len; i++) {
+            is >> end_info.route[i].x >> end_info.route[i].y;
+        }
+        is >> end_info.score[0]
+           >> end_info.score[1];
+        is >> end_info.attack_effect[0]
+           >> end_info.attack_effect[1];
+        is >> end_info.trans
+           >> end_info.over;
+        if (end_info.over == true) {
+            break;
+        }
+        ///////////////展示操作
+    }
+
     //scene.map.init(8, 8);
     scene.map.init(&info);
-	is.close();
+    is.close();
 }
 
 

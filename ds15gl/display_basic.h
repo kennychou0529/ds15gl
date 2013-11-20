@@ -1,5 +1,6 @@
 #ifndef _BASIC_H
 #define _BASIC_H
+
 #include <vector>
 
 using namespace std;
@@ -116,7 +117,7 @@ typedef struct mirror { // 魔镜结构体
 } Mirror;
 
 typedef struct game_info { // 游戏信息结构体，每回合选手从中获取必要的信息
-    int team_number;                              // 队伍号(0或1)
+    int team_number;                          // 队伍号(0或1)
     string team_name[2];
     int map[COORDINATE_X_MAX][COORDINATE_Y_MAX];  // 地图各点类型
     int map_size[2];                              // 地图行[0]、列[1]
@@ -127,7 +128,7 @@ typedef struct game_info { // 游戏信息结构体，每回合选手从中获取必要的信息
     int score[2];                                 // 两队当前积分(不包括存活士兵所占）
     int turn;                                     // 当前总回合数
     int temple_number;                            // 神庙数量
-    Temple temple[TEMPLE_MAX];                    // 各神庙的位置及状态
+    struct temple temple[TEMPLE_MAX];                    // 各神庙的位置及状态
     Soldier_Basic soldier[SOLDIERS_NUMBER][2];    // 双方单位的信息
 } Game_Info;
 
@@ -137,8 +138,8 @@ typedef struct round_Begin_Info {
     int move_team;
     int move_id;
     int range_num;
-    vector<Position> range;   //移动范围
-    vector<Temple> temple;
+    std::vector<struct position> range;   //移动范围
+    vector<struct temple> temple;
 } Round_Begin_Info;
 
 typedef struct round_End_Info {
