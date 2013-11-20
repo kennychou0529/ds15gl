@@ -65,7 +65,7 @@ void DSActorManager::initialize() {
     //     list["chastit"].enterStatus(dsSoldier::Status::disappear);
 
     insertSoldier("gunman1", "gunman");
-    insertSoldier("gunman2""gunman");
+    insertSoldier("gunman2","gunman");
     /*  list["gunman"].setPosition(2, 4);*/
     //list["gunman"].enterStatus(dsSoldier::Status::disappear);
 
