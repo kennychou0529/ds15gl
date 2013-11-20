@@ -115,8 +115,14 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
         }
     }
 
+    std::string soldier_to_move;
+    
     while (1) {
         is >> begin_info.move_team >> begin_info.move_id;
+
+        soldier_to_move = kind[info.soldier[begin_info.move_id][begin_info.move_team].kind];
+        soldier_to_move += char(begin_info.move_team + 1 + '0');
+
         is >> begin_info.range_num;
         begin_info.range.resize(begin_info.range_num);
         for (int i = 0; i < begin_info.range_num; i++) {
@@ -143,6 +149,7 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
                >> begin_info.temple[i].state;
         }
 
+        scene.actors.script.scriptQue.push_back(Record(1, false, "sword_man1", soldier_fight, 2, 2));
         ////////////////展示组操作
 
         is >> cmd.destination.x
@@ -150,6 +157,8 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
            >> cmd.order
            >> cmd.target_team
            >> cmd.target_id;
+        
+        
 
         ////////////////展示组操作
 

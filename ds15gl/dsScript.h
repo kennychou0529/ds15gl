@@ -55,7 +55,7 @@ struct Record {
 class DSScript {
 public:
     DSScript(): emptyRecord(0, false, "", empty, 0, 0) {
-        scriptQue.push_back(Record(0, false, "sword_man", soldier_fight, 2, 2));
+        /*scriptQue.push_back(Record(0, false, "sword_man", soldier_fight, 2, 2));
         scriptQue.push_back(Record(0, false, "monkey", soldier_fight, 2, 2));
         scriptQue.push_back(Record(0, false, "bauul", soldier_fight, 2, 2));
         scriptQue.push_back(Record(0, false, "gunman", soldier_fight, 2, 2));
@@ -123,7 +123,7 @@ public:
         scriptQue.push_back(Record(4, false, "mage", soldier_move, 1, 5));
         scriptQue.push_back(Record(4, false, "fighter", soldier_die, 2, 3));
 
-        scriptQue.push_back(Record(5, false, "sword_man", soldier_move, 2, 5));
+        scriptQue.push_back(Record(5, false, "sword_man", soldier_move, 2, 5));*/
     }
 
 
@@ -157,7 +157,7 @@ public:
         return scriptQue.front().round;
     }
 
-private:
+public:
     //脚本队列
     std::list<Record> scriptQue;
 
