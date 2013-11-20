@@ -64,10 +64,13 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
     while (!canRefresh) {
         Sleep(100);
     }
+    int roundNum = 0;
     Game_Info info;
     Round_Begin_Info begin_info;
     Command cmd;
     Round_End_Info end_info;
+    //从数字索引到stringID的映射
+    map<int, string> index;
 
     // 回放文件读入
     std::ifstream is(rep_file_name);
@@ -95,8 +98,9 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
                >> info.soldier[j][i].pos.x
                >> info.soldier[j][i].pos.y;
     }
-
-    // 初始信息读入完成
+    //初始化地图
+    scene.map.init(&info);
+    //scene.initialize();
 
     //处理人物
     //全部隐藏
@@ -107,13 +111,79 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
         for (size_t j = 0; j < info.soldier_number[i]; ++j) {
             try {
                 string soldier = actors.getSoldierByKind(info.soldier[j][i].kind);
+                index[(i << 4) + j] = soldier;
                 actors.list[soldier]->setHP(info.soldier[j][i].life, info.soldier[j][i].life);
                 actors.list[soldier]->setPosition(info.soldier[j][i].pos.x, info.soldier[j][i].pos.y) ;
             } catch (char* err) {
-                cerr << err;
+                fprintf(stderr, "%s", err);
             }
         }
     }
+    // 初始信息读入完成
+
+    //begin_info.temple.resize(info.temple_number);
+    //清除原有
+    actors.script.clear();
+
+    end_info.over = false;
+    while (!end_info.over) {
+        is >> begin_info.move_team >> begin_info.move_id;
+        is >> begin_info.range_num;
+        begin_info.range.resize(begin_info.range_num);
+        for (int i = 0; i < begin_info.range_num; i++) {
+            is >> begin_info.range[i].x >> begin_info.range[i].y;
+        }
+        for (int i = 0; i < 2; i++) {
+            //is >> begin_info.soldier_number[i];
+            for (int j = 0; j < info.soldier_number[i]; j++)
+                is >> begin_info.soldier[j][i].kind >> begin_info.soldier[j][i].life
+                   >> begin_info.soldier[j][i].strength >> begin_info.soldier[j][i].defence
+                   >> begin_info.soldier[j][i].move_range >> begin_info.soldier[j][i].attack_range[0]
+                   >> begin_info.soldier[j][i].attack_range[1] >> begin_info.soldier[j][i].duration
+                   >> begin_info.soldier[j][i].pos.x >> begin_info.soldier[j][i].pos.y;
+        }
+        is >> info.temple_number;
+        begin_info.temple.resize(info.temple_number);
+        for (int i = 0; i < info.temple_number; i++) {
+            is >> begin_info.temple[i].pos.x >> begin_info.temple[i].pos.y >> begin_info.temple[i].state;
+        }
+
+        ////////////////展示组操作
+
+        is >> cmd.destination.x >> cmd.destination.y >> cmd.order
+           >> cmd.target_team >> cmd.target_id;
+
+        ////////////////展示组操作
+
+        for (int i = 0; i < 2; i++) {
+            //is >> end_info.soldier_number[i];
+            for (int j = 0; j < info.soldier_number[i]; j++)
+                is >> end_info.soldier[j][i].kind >> end_info.soldier[j][i].life
+                   >> end_info.soldier[j][i].strength >> end_info.soldier[j][i].defence
+                   >> end_info.soldier[j][i].move_range >> end_info.soldier[j][i].attack_range[0]
+                   >> end_info.soldier[j][i].attack_range[1] >> end_info.soldier[j][i].duration
+                   >> end_info.soldier[j][i].pos.x >> end_info.soldier[j][i].pos.y;
+        }
+        is >> end_info.route_len;
+        end_info.route.resize(end_info.route_len);
+        //end_info.route.clear();
+        for (int i = 0; i < end_info.route_len; i++) {
+            is >> end_info.route[i].x >> end_info.route[i].y;
+        }
+        is >> end_info.score[0] >> end_info.score[1];
+        is >> end_info.attack_effect[0] >> end_info.attack_effect[1];
+        is >> end_info.trans >> end_info.over;
+
+        ///////////////展示操作
+        roundNum++;
+
+        for (Position p : end_info.route) {
+            dsSoldier* soldier = actors.list[index[begin_info.move_id + (begin_info.move_team << 4)]];
+            actors.script.add(roundNum, false, soldier->getID(), soldier_move, p.x, p.y);
+        }
+
+    }
+
 
     std::string soldier_to_move;
     
@@ -192,8 +262,6 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
         ///////////////展示操作
     }
 
-    //scene.map.init(8, 8);
-    scene.map.init(&info);
     is.close();
 }
 

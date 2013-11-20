@@ -128,6 +128,9 @@ public:
 	void setID(string _id){
 		id=_id;
 	}
+	string getID(){
+		return id;
+	}
 
 private:
     int idNumber;               //为了启用选择模式，应该有一个编号

@@ -126,7 +126,19 @@ public:
         scriptQue.push_back(Record(5, false, "sword_man", soldier_move, 2, 5));*/
     }
 
+	void add(
+		int _round,
+		bool _sync,
+		string _id,
+		ScriptType _type,
+		size_t _x,
+		size_t _y){
+		scriptQue.push_back(Record(_round,_sync,_id,_type,_x,_y));
+	}
 
+	void clear(){
+		scriptQue.clear();
+	}
 
     // 窥探接下来的一条记录，但是不将该记录挤出队列
     Record peekNextRecord() {

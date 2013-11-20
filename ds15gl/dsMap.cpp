@@ -120,7 +120,14 @@ void DSMap::init(Game_Info* game_info) {
             break;
         }
     }
-
+	if(glIsList(map)){
+		glDeleteLists(map,1);
+	}
+	
+	if(glIsList(display_list_huge_ground)){
+		glDeleteLists(display_list_huge_ground,1);
+	}
+	display_list_huge_ground = 0;
     listLoaded = false;
     map = 0;
 
@@ -322,10 +329,10 @@ void DSMap::getCoords(
 }
 
 void DSMap::renderHugeGround(GLfloat radius) {
-    static GLuint list = 0;
-    if (list == 0) {
-        list = glGenLists(1);
-        glNewList(list, GL_COMPILE);
+    //static GLuint list = 0;
+    if (display_list_huge_ground == 0) {
+        display_list_huge_ground = glGenLists(1);
+        glNewList(display_list_huge_ground, GL_COMPILE);
         int heights[20][20];
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 20; j++) {
@@ -399,7 +406,7 @@ void DSMap::renderHugeGround(GLfloat radius) {
         glEndList();
 
     }
-    glCallList(list);
+    glCallList(display_list_huge_ground);
 
     //renderArrow(0, 0, 0.0f);
 }
@@ -626,9 +633,12 @@ void DSMap::loadDisplayLists() {
     // Clear
     for (int i = 0; i < 8; i++) {
         if (glIsList(display_lists[i])) {
-            glDeleteLists(1, display_lists[i]);
+            glDeleteLists( display_lists[i],1);
         }
     }
+	if(glIsList(display_list_grids)){
+		glDeleteLists(display_list_grids,1);
+	}
 
     // Hill: begin
     display_lists[hill] = glGenLists(1);
