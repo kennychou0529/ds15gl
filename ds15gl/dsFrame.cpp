@@ -199,7 +199,7 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
             //伤害
             if (begin_info.soldier[cmd.target_id][cmd.target_team].life > 0) {
                 int hurt = begin_info.soldier[cmd.target_id][cmd.target_team].life - end_info.soldier[cmd.target_id][cmd.target_team].life;
-                actors.script.add(roundNum, true, target_soldier->getID(), soldier_pain, hurt, 0);
+                actors.script.add(roundNum, true, target_soldier->getID(), soldier_pain, hurt, end_info.soldier[cmd.target_id][cmd.target_team].life);
                 //死亡
                 if (end_info.soldier[cmd.target_id][cmd.target_team].life <= 0) {
                     actors.script.add(roundNum, true, target_soldier->getID(), soldier_die, 0, 0);
@@ -208,7 +208,7 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
                 //反击
                 int hurt2 = begin_info.soldier[begin_info.move_id ][begin_info.move_team].life - end_info.soldier[begin_info.move_id ][begin_info.move_team].life;
                 if (hurt2 > 0) {
-                    actors.script.add(roundNum, false, soldier->getID(), soldier_pain, hurt, 0);
+                    actors.script.add(roundNum, false, soldier->getID(), soldier_pain, hurt, end_info.soldier[begin_info.move_id ][begin_info.move_team].life);
                     //死亡
                     if (end_info.soldier[begin_info.move_id ][begin_info.move_team].life <= 0) {
                         actors.script.add(roundNum, false, soldier->getID(), soldier_die, 0, 0);

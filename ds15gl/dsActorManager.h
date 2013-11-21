@@ -7,6 +7,7 @@
 #include "dsScript.h"
 #include <iostream>
 #include <sstream>
+#include "effect/EffectManager.h"
 
 typedef std::map<std::string, dsSoldier*> SOLDIERS;
 
@@ -98,6 +99,7 @@ private:
     //回合数
     int round;
     //std::map<string,SoundIDandSource> soundGroups;
+	EffectManager effects;
 };
 
 #endif // !_DSACTORMANAGER_H

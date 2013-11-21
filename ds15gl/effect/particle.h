@@ -146,7 +146,7 @@ private:
     //  如果life为0，则不发射粒子但不死亡，当粒子为0时，改发射器死亡
     float life;
 	
-    bool alive;
+    float alive;
     //TRANSFORMATION INFO
 
     Vector pos; //XYZ POSITION

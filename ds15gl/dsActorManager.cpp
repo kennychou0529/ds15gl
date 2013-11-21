@@ -48,51 +48,51 @@ void DSActorManager::insertSoldier(const std::string& soldier_id, std::string so
 //加载人物
 void DSActorManager::initialize() {
 
-    insertSoldier("sword_man1", "sword_man");
-    //list["sword_man"].setPosition(4, 2);
-    insertSoldier("sword_man2", "sword_man");
-    //list["sword_man"].setPosition(4, 2);
+    insertSoldier("SABER1", "SABER");
+    //list["SABER"].setPosition(4, 2);
+    insertSoldier("SABER2", "SABER");
+    //list["SABER"].setPosition(4, 2);
 
-    insertSoldier("mage1", "mage");
-    insertSoldier("mage2", "mage");
+    insertSoldier("SOLDIER1", "SOLDIER");
+    insertSoldier("SOLDIER2", "SOLDIER");
 
-    //     list["mage"].setPosition(1, 1);
-    //     list["mage"].enterStatus(dsSoldier::Status::disappear);
+    //     list["SOLDIER"].setPosition(1, 1);
+    //     list["SOLDIER"].enterStatus(dsSoldier::Status::disappear);
 
-    insertSoldier("chastit1", "chastit");
-    insertSoldier("chastit2", "chastit");
-    //     list["chastit"].setPosition(1, 5);
-    //     list["chastit"].enterStatus(dsSoldier::Status::disappear);
+    insertSoldier("ARCHER1", "ARCHER");
+    insertSoldier("ARCHER2", "ARCHER");
+    //     list["ARCHER"].setPosition(1, 5);
+    //     list["ARCHER"].enterStatus(dsSoldier::Status::disappear);
 
-    insertSoldier("gunman1", "gunman");
-    insertSoldier("gunman2","gunman");
-    /*  list["gunman"].setPosition(2, 4);*/
-    //list["gunman"].enterStatus(dsSoldier::Status::disappear);
+    insertSoldier("AIRPLANE1", "AIRPLANE");
+    insertSoldier("AIRPLANE2", "AIRPLANE");
+    /*  list["AIRPLANE"].setPosition(2, 4);*/
+    //list["AIRPLANE"].enterStatus(dsSoldier::Status::disappear);
 
-    insertSoldier("bauul1", "bauul");
-    insertSoldier("bauul2", "bauul");
-    //list["bauul"].setPosition(0, 2);
-    //list["bauul"].enterStatus(dsSoldier::Status::disappear);
+    insertSoldier("TANK1", "TANK");
+    insertSoldier("TANK2", "TANK");
+    //list["TANK"].setPosition(0, 2);
+    //list["TANK"].enterStatus(dsSoldier::Status::disappear);
 
-    insertSoldier("fighter1", "fighter");
-    insertSoldier("fighter2", "fighter");
-    //     list["fighter"].setPosition(5, 5);
-    //     list["fighter"].enterStatus(dsSoldier::Status::disappear);
+    insertSoldier("WIZARD1", "WIZARD");
+    insertSoldier("WIZARD2", "WIZARD");
+    //     list["WIZARD"].setPosition(5, 5);
+    //     list["WIZARD"].enterStatus(dsSoldier::Status::disappear);
 
-    insertSoldier("tank1", "tank");
-    insertSoldier("tank2", "tank");
-    //    list["tank"].setPosition(2, 2);
-    //list["tank"].enterStatus(dsSoldier::Status::disappear);
+    insertSoldier("BERSERKER1", "BERSERKER");
+    insertSoldier("BERSERKER2", "BERSERKER");
+    //    list["BERSERKER"].setPosition(2, 2);
+    //list["BERSERKER"].enterStatus(dsSoldier::Status::disappear);
 
-    insertSoldier("disgustin1", "disgustin");
-    insertSoldier("disgustin2", "disgustin");
-    //     list["disgustin"].setPosition(0, 2);
-    //     list["disgustin"].enterStatus(dsSoldier::Status::disappear);
+    insertSoldier("BERSERKER1", "BERSERKER");
+    insertSoldier("BERSERKER2", "BERSERKER");
+    //     list["BERSERKER"].setPosition(0, 2);
+    //     list["BERSERKER"].enterStatus(dsSoldier::Status::disappear);
 
-    insertSoldier("monkey1", "monkey");
-    insertSoldier("monkey2", "monkey");
-    //list["monkey"].setPosition(2, 0);
-    //list["monkey"].enterStatus(dsSoldier::Status::disappear);
+    insertSoldier("BERSERKER1", "BERSERKER");
+    insertSoldier("BERSERKER2", "BERSERKER");
+    //list["BERSERKER"].setPosition(2, 0);
+    //list["BERSERKER"].enterStatus(dsSoldier::Status::disappear);
     //mvAlltoPool();
 }
 
@@ -105,7 +105,8 @@ void DSActorManager::render(bool selectMode) {
         soldier.second->animate(selectMode);
         //soldier.second->hpBar2();
     }
-    //list["mage"].hpBar2();
+    effects.render();
+    //list["SOLDIER"].hpBar2();
 }
 
 void DSActorManager::update() {
@@ -158,7 +159,37 @@ void DSActorManager::update() {
                         iter_soldier->second->enterStatus(
                             dsSoldier::Status::pain, &script_playing
                         );
-                        iter_soldier->second->hpReduce(record.x);
+                        iter_soldier->second->hpReduce(record.y);
+
+                        //转化为实际坐标
+                        float x, y;
+                        frame.scene.map.getCoords(
+                            iter_soldier->second->current_position[0],
+                            iter_soldier->second->current_position[1],
+                            &x, &y
+                        );
+                        if (record.x > 0) {
+                            std::wostringstream os;
+                            os << "-" << record.x;
+                            Text t(os.str(), 2);
+                            t.setPosition(x, y, 10);
+                            t.setColor(1, 0, 0);
+                            effects.addText(t);
+                        } else if (record.x < 0) {
+                            std::wostringstream os;
+                            os << "+" << -record.x;
+                            Text t(os.str(), 2);
+                            t.setPosition(x, y, 10);
+                            t.setColor(0, 1, 0);
+                            effects.addText(t);
+                        } else {
+                            std::wostringstream os;
+                            os << "MISS";
+                            Text t(os.str(), 2);
+                            t.setPosition(x, y, 10);
+                            t.setColor(0, 0, 1);
+                            effects.addText(t);
+                        }
                         break;
                     default:
                         break;
@@ -176,9 +207,9 @@ void DSActorManager::update() {
             // 当下一条指令也是本回合的，且下一条指令要求同步播放，
             // 那么将下一条指令也下达
 
-        }else{
-			enterNextRound();
-		}
+        } else {
+            enterNextRound();
+        }
     }
 }
 

@@ -70,8 +70,8 @@ public:
 
     void animate(bool selectMode);
 
-    void hpReduce(size_t reduce) {
-        hp -= reduce;
+    void hpReduce(int reduce) {
+        hp = reduce;
         if (hp < 0) {
             hp = 0;
         }

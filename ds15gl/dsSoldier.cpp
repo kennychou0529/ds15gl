@@ -22,7 +22,8 @@ const int ARCHMAGE = 8;           // 大法师
 */
 
 //这里需要排一下
-char kind[9][10]= {"sword_man","gunman","chastit","bauul","fighter","tank","disgustin","monkey","mage"};
+char kind[9][10]= {"SABER","SOLDIER","ARCHER","AIRPLANE",
+	"TANK","WIZARD","BERSERKER","ASSASSIN","ARCHMAGE"};
 
 
 static const GLfloat pi = 3.1415926f;
