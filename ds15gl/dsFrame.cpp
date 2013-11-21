@@ -111,7 +111,7 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
         for (size_t j = 0; j < info.soldier_number[i]; ++j) {
             try {
                 string soldier = actors.getSoldierByKind(info.soldier[j][i].kind);
-                index[(i << 4) + j] = soldier;
+                index[(i << 5) + j] = soldier;
                 actors.list[soldier]->setHP(info.soldier[j][i].life, info.soldier[j][i].life);
                 actors.list[soldier]->setPosition(info.soldier[j][i].pos.x, info.soldier[j][i].pos.y) ;
             } catch (char* err) {
@@ -176,7 +176,7 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
 
         ///////////////展示操作
         roundNum++;
-        dsSoldier* soldier = actors.list[index[begin_info.move_id + (begin_info.move_team << 4)]];
+        dsSoldier* soldier = actors.list[index[begin_info.move_id + (begin_info.move_team << 5)]];
 		
 		if(begin_info.soldier[begin_info.move_id ][begin_info.move_team].life <=0){
 			continue;
@@ -192,7 +192,7 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
 			}
 		}
         if (cmd.order == 1||cmd.order == 2) {
-            dsSoldier* target_soldier = actors.list[index[cmd.target_id + (cmd.target_team << 4)]];
+            dsSoldier* target_soldier = actors.list[index[cmd.target_id + (cmd.target_team << 5)]];
             //攻击动作
 
             actors.script.add(roundNum, false, soldier->getID(), soldier_fight, target_soldier->x(), target_soldier->y());
