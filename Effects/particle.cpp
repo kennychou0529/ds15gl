@@ -120,7 +120,7 @@ void Emitter::update(float duration) {
     }
 
     for (Particle*& it : particles) {
-        it->colorIndex += (1 - (float)(it->life) / plife) * 256;
+        it->colorIndex = (1 - it->life / plife) * 256;
         if (it->colorIndex < 0) {
             it->colorIndex = 0;
         } else if (it->colorIndex >= colorIndexLength) {

@@ -137,6 +137,7 @@ void DSActorManager::update() {
                 // 下达指令
                 auto iter_soldier = list.find(record.id);
                 if (iter_soldier != list.end()) {
+
                     switch (record.type) {
                     case soldier_move:
                         iter_soldier->second->setTarget(record.x, record.y);
@@ -149,6 +150,41 @@ void DSActorManager::update() {
                             dsSoldier::Status::attacking, &script_playing
                         );
                         iter_soldier->second->setOrientation(record.x, record.y);
+
+                        float x1, y1, x2, y2;
+                        frame.scene.map.getCoords(
+                            iter_soldier->second->current_position[0],
+                            iter_soldier->second->current_position[1],
+                            &x1, &y1
+                        );
+                        frame.scene.map.getCoords(
+                            record.x,
+                            record.y,
+                            &x2, &y2
+                        );
+
+                        if (iter_soldier->second->kind == "AIRPLANE") {
+                            Thurder* t = new Thurder(x1, y1, 6, x2, y2, 2, 10, 3, 1, 1);
+                            effects.addThurder(*t);
+
+                            Color* colors = new Color[256];
+                            for (int i = 0; i < 200; i++) {
+                                colors[i].r = 1;
+                                colors[i].g = 1;
+                                colors[i].b = 0;
+                                colors[i].a = 1 -  1.3f * (i / 200.0f) * (i / 200.0f);
+                            }
+
+                            Emitter emm(0, 6.28f, 0, 0.5, 2, 2, colors, 0.2);
+                            emm.setPosition(x2, y2, 0);
+                            //emm.setSpeed(0,0,-4);
+                            //Vector mag = {0, 0.01, 0};
+                            emm.setGravity(0, 0, 1);
+                            emm.setCenter(0, 0, 10, 1);
+
+                            //emm.setMagnetic(0, 0.5, 0);
+                            effects.addEmitter(emm);
+                        }
                         break;
                     case soldier_die:
                         iter_soldier->second->enterStatus(
@@ -168,29 +204,58 @@ void DSActorManager::update() {
                             iter_soldier->second->current_position[1],
                             &x, &y
                         );
-                        if (record.x > 0) {
-                            std::wostringstream os;
-                            os << "-" << record.x;
-                            Text t(os.str(), 2);
-                            t.setPosition(x, y, 10);
-                            t.setColor(1, 0, 0);
-                            effects.addText(t);
-                        } else if (record.x < 0) {
-                            std::wostringstream os;
-                            os << "+" << -record.x;
-                            Text t(os.str(), 2);
-                            t.setPosition(x, y, 10);
-                            t.setColor(0, 1, 0);
-                            effects.addText(t);
-                        } else {
-                            std::wostringstream os;
-                            os << "MISS";
-                            Text t(os.str(), 2);
-                            t.setPosition(x, y, 10);
-                            t.setColor(0, 0, 1);
-                            effects.addText(t);
-                        }
+                        //文字画不出来
+                        //                         if (record.x > 0) {
+                        //                             std::stringstream os;
+                        //                             os << "-" << record.x;
+                        //                             Text *t=new Text(os.str(), 2);
+                        //                             t->setPosition(x, y, 10);
+                        //                             t->setColor(1, 0, 0);
+                        //                             effects.addText(*t);
+                        //                         } else if (record.x < 0) {
+                        //                             std::stringstream os;
+                        //                             os << "+" << -record.x;
+                        //                             Text *t=new Text(os.str(), 2);
+                        //                             t->setPosition(x, y, 10);
+                        //                             t->setColor(0, 1, 0);
+                        //                             effects.addText(*t);
+                        //                         } else {
+                        //                             std::stringstream os;
+                        //                             os << "MISS";
+                        //                             Text* t=new Text(os.str(), 2);
+                        //                             t->setPosition(x, y, 10);
+                        //                             t->setColor(0, 0, 1);
+                        //                             effects.addText(*t);
+                        //                         }
                         break;
+                    case soldier_trans: {
+                        float x3, y3;
+                        frame.scene.map.getCoords(
+                            iter_soldier->second->current_position[0],
+                            iter_soldier->second->current_position[1],
+                            &x3, &y3
+                        );
+                        iter_soldier->second->setPosition(record.x, record.y);
+
+                        Color* colors = new Color[256];
+                        for (int i = 0; i < 200; i++) {
+                            colors[i].r = 1;
+                            colors[i].g = 1;
+                            colors[i].b = 0;
+                            colors[i].a = 1 -  1.3f * (i / 200.0f) * (i / 200.0f);
+                        }
+
+                        Emitter emm(0, 6.28f, 0, 0.5, 2, 2, colors, 0.3);
+                        emm.setPosition(x3, y3, 0);
+                        //emm.setSpeed(0,0,-4);
+                        //Vector mag = {0, 0.01, 0};
+                        emm.setGravity(0, 0, 1);
+                        //emm.setCenter(0, 0, 10, 1);
+
+                        //emm.setMagnetic(0, 0.5, 0);
+                        effects.addEmitter(emm);
+                    }
+                    break;
                     default:
                         break;
                     }

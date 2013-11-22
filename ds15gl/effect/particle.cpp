@@ -79,7 +79,7 @@ Emitter::Emitter(//Î»ÖÃÐÅÏ¢
     plife = particleLife;
     life = _life;
     plifeVar = 0.3;
-    emitsPerFrame = 100;
+    emitsPerFrame = 30;
     emitVar = 5;
     //dlc = 256 / life;
     colors = _color;
@@ -120,7 +120,7 @@ void Emitter::update(float duration) {
     }
 
     for (Particle*& it : particles) {
-        it->colorIndex += (1 - (float)(it->life) / plife) * 256;
+        it->colorIndex = (1 - it->life / plife) * 256;
         if (it->colorIndex < 0) {
             it->colorIndex = 0;
         } else if (it->colorIndex >= colorIndexLength) {
@@ -189,12 +189,12 @@ void Emitter::draw() {
     glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
     glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
 
-    glEnable(GL_ALPHA_TEST);
-    glAlphaFunc(GL_GREATER, 2 / 255.0);
-
-    glDisable(GL_DEPTH_TEST);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    //     glEnable(GL_ALPHA_TEST);
+    //     glAlphaFunc(GL_GREATER, 2 / 255.0);
+    //
+    //     glDisable(GL_DEPTH_TEST);
+    //     glEnable(GL_BLEND);
+    //     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     //glEnable(GL_POINT_SPRITE_ARB);
 
@@ -218,9 +218,9 @@ void Emitter::draw() {
     }
     glEnd();
     glPopMatrix();
-    glDisable(GL_BLEND);
-    glDisable(GL_ALPHA_TEST);
-    glEnable(GL_DEPTH_TEST);
+    //     glDisable(GL_BLEND);
+    //     glDisable(GL_ALPHA_TEST);
+    //     glEnable(GL_DEPTH_TEST);
     glHint(GL_LINE_SMOOTH_HINT, GL_DONT_CARE);
     glHint(GL_POINT_SMOOTH_HINT, GL_DONT_CARE);
 

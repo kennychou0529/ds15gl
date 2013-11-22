@@ -31,6 +31,7 @@ Vector eye;
 
 
 void dsDisplay() {
+	glClearColor(1,1,1,1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
     Vector eyeP;
@@ -61,24 +62,31 @@ void init() {
     eye.x = 1, eye.y = 1, eye.z = 30;
 
     Color* colors = new Color[256];
-    for (int i = 0; i < colorIndexLength; i++) {
-        colors[i].r = i / 255.0f;
-        colors[i].g = i / 255.0f;
-        colors[i].b = 1 - i / 255.0f;
-        colors[i].a = 1 -  1.3f * (i / 256.0f)*(i / 256.0f);
+    for (int i = 0; i < 200; i++) {
+        colors[i].r = 1;
+        colors[i].g = 1;
+        colors[i].b = 0;
+        colors[i].a = 1 -  1.3f * (i / 200.0f) * (i / 200.0f);
     }
-    Emitter emm( 1, 0.1, 1,0.5, 4, 2, colors,200);
-	emm.setPosition(0,0,1);
-	//emm.setSpeed(0,0,-4);
+    for (int i = 200; i < 256; i++) {
+        colors[i].r = 1-i/256.f;
+        colors[i].g = 1-i/256.f;
+        colors[i].b = 1-i/256.f;
+        colors[i].a = i/128.f-0.5;
+    }
+
+    Emitter emm(0, 6.28f, 0, 0.5, 2, 2, colors, 2);
+    emm.setPosition(0, 0, 0);
+    //emm.setSpeed(0,0,-4);
     //Vector mag = {0, 0.01, 0};
-	emm.setGravity(0,0,-1);
-	emm.setCenter(10,10,-1,3);
+    emm.setGravity(0, 0, 1);
+    emm.setCenter(0, 0,10, 1);
 
-    emm.setMagnetic(0,0.5,0);
-	em.addEmitter(emm);
+    //emm.setMagnetic(0, 0.5, 0);
+    em.addEmitter(emm);
 
-	Thurder t(0,0,0,3,0,3,10,2,0.2,100);
-	em.addThurder(t);
+    Thurder t(0, 0, 0, 3, 0, 3, 10, 2, 0.2, 2);
+    em.addThurder(t);
 
     //     em = new tEmitter;
     //     em->emitsPerFrame = 1000;
@@ -132,30 +140,29 @@ void dsIdle() {
     glutPostRedisplay();
 }
 
-void keyFunc(unsigned char c,int x,int y){
-	switch (c)
-	{
-	case 'a':
-		eye.x+=0.1;
-		break;
-	case 'd':
-		eye.x-=0.1;
-		break;
-	case 'w':
-		eye.y+=0.1;
-		break;
-	case 's':
-		eye.y-=0.1;
-		break;
-	case 'q':
-		eye.z+=1;
-		break;
-	case 'e':
-		eye.z-=1;
-		break;
-	default:
-		break;
-	}
+void keyFunc(unsigned char c, int x, int y) {
+    switch (c) {
+    case 'a':
+        eye.x += 0.1;
+        break;
+    case 'd':
+        eye.x -= 0.1;
+        break;
+    case 'w':
+        eye.y += 0.1;
+        break;
+    case 's':
+        eye.y -= 0.1;
+        break;
+    case 'q':
+        eye.z += 1;
+        break;
+    case 'e':
+        eye.z -= 1;
+        break;
+    default:
+        break;
+    }
 
 }
 
@@ -169,11 +176,11 @@ int main(int argc, char** argv) {
     glutCreateWindow("DS 15th Effect Test");
 
     glutDisplayFunc(dsDisplay);
-	glutKeyboardFunc(keyFunc);
+    glutKeyboardFunc(keyFunc);
     glutReshapeFunc(dsReshape);
     glutIdleFunc(dsIdle);
     init();
     glutMainLoop();
-   // delete emm;
+    // delete emm;
     return 0;
 }

@@ -177,21 +177,29 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
         ///////////////展示操作
         roundNum++;
         dsSoldier* soldier = actors.list[index[begin_info.move_id + (begin_info.move_team << 5)]];
-		
-		if(begin_info.soldier[begin_info.move_id ][begin_info.move_team].life <=0){
-			continue;
-		}
-		//是否没动
+
+        if (begin_info.soldier[begin_info.move_id ][begin_info.move_team].life <= 0) {
+            continue;
+        }
+        //是否没动
         if (!(begin_info.soldier[begin_info.move_id ][begin_info.move_team].pos.x
                 == end_info.soldier[begin_info.move_id ][begin_info.move_team].pos.x
                 && begin_info.soldier[begin_info.move_id ][begin_info.move_team].pos.y
-                == end_info.soldier[begin_info.move_id ][begin_info.move_team].pos.y)){
-			//移动
+                == end_info.soldier[begin_info.move_id ][begin_info.move_team].pos.y)) {
+
+            //移动
             for (Position p : end_info.route) {
                 actors.script.add(roundNum, false, soldier->getID(), soldier_move, p.x, p.y);
+               
 			}
-		}
-        if (cmd.order == 1||cmd.order == 2) {
+			// 这里 
+			if (end_info.trans) {
+				Record r=actors.script.pop();
+				actors.script.add(roundNum, false, soldier->getID(), soldier_trans, r.x, r.y);
+			}
+
+        }
+        if (cmd.order == 1 || cmd.order == 2) {
             dsSoldier* target_soldier = actors.list[index[cmd.target_id + (cmd.target_team << 5)]];
             //攻击动作
 
@@ -208,6 +216,7 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
                 //反击
                 int hurt2 = begin_info.soldier[begin_info.move_id ][begin_info.move_team].life - end_info.soldier[begin_info.move_id ][begin_info.move_team].life;
                 if (hurt2 > 0) {
+                    actors.script.add(roundNum, false, target_soldier->getID(), soldier_fight, soldier->x(), soldier->y());
                     actors.script.add(roundNum, false, soldier->getID(), soldier_pain, hurt, end_info.soldier[begin_info.move_id ][begin_info.move_team].life);
                     //死亡
                     if (end_info.soldier[begin_info.move_id ][begin_info.move_team].life <= 0) {
@@ -219,7 +228,6 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
         } else if (cmd.order == 2) {
             //待添加
         }
-
     }
     //
     //

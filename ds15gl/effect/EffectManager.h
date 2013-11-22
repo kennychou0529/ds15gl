@@ -24,7 +24,7 @@ public:
     void render() {
         //粒子特效
         if (!emitters.empty()) {
-            for (Emitter & e : emitters) {
+            for (Emitter &e : emitters) {
                 e.draw();
             }
             while (!emitters.empty() && !emitters.front().isalive()) {
@@ -33,7 +33,7 @@ public:
         }
         //点击效果
         if (!thurders.empty()) {
-            for (Thurder t : thurders) {
+            for (Thurder &t : thurders) {
                 t.draw();
             }
             while (!thurders.empty() && !thurders.front().alive()) {
@@ -43,7 +43,7 @@ public:
         }
         //文字
         if (!tex.empty()) {
-            for (Text t : tex) {
+            for (Text &t : tex) {
                 t.draw();
             }
             while (!tex.empty() && !tex.front().alive()) {

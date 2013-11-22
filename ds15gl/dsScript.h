@@ -13,6 +13,8 @@ enum ScriptType {
     soldier_fight,
     soldier_die,
     soldier_pain,
+	//传送
+	soldier_trans,
     view_move,
     empty
 };
@@ -168,6 +170,15 @@ public:
         }
         return scriptQue.front().round;
     }
+	//弹出刚入列的记录
+	Record pop() {
+		if (scriptQue.empty()) {
+			return emptyRecord;
+		}
+		Record r = scriptQue.back();
+		scriptQue.pop_back();
+		return r;
+	}
 
 public:
     //脚本队列
