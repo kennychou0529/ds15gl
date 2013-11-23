@@ -1,7 +1,8 @@
 ﻿<soldiers>
   <soldier name="SABER">
     <tris>data/sword_man/tris.md2</tris>
-    <tris_skin>data/sword_man/tris.bmp</tris_skin>
+    <tris_skin>data/sword_man/tris1.bmp</tris_skin>
+    <tris_skin2>data/sword_man/tris2.bmp</tris_skin2>
     <weapon>data/sword_man/weapon.md2</weapon>
     <weapon_skin>data/sword_man/weapon.bmp</weapon_skin>
     <frame_set>
@@ -19,7 +20,8 @@
   
   <soldier name="SOLDIER">
     <tris>data/disgustin/tris.md2</tris>
-    <tris_skin>data/disgustin/tris.bmp</tris_skin>
+    <tris_skin>data/disgustin/tris1.bmp</tris_skin>
+    <tris_skin2>data/disgustin/tris2.bmp</tris_skin2>
     <weapon>data/disgustin/weapon.md2</weapon>
     <weapon_skin>data/disgustin/weapon.bmp</weapon_skin>
     <frame_set>
@@ -37,7 +39,8 @@
   
   <soldier name="ARCHER">
     <tris>data/gunman/tris.md2</tris>
-    <tris_skin>data/gunman/tris.bmp</tris_skin>
+    <tris_skin>data/gunman/tris1.bmp</tris_skin>
+    <tris_skin2>data/gunman/tris2.bmp</tris_skin2>
     <weapon>data/gunman/weapon.md2</weapon>
     <weapon_skin>data/gunman/weapon.bmp</weapon_skin>
     <frame_set>
@@ -55,7 +58,8 @@
 
   <soldier name="AIRPLANE">
     <tris>data/fighter/fighter.md2</tris>
-    <tris_skin>data/fighter/fighter.bmp</tris_skin>
+    <tris_skin>data/fighter/fighter1.bmp</tris_skin>
+    <tris_skin2>data/fighter/fighter2.bmp</tris_skin2>
     <frame_set>
       <idle beg="0" end="0" fps="10"/>
       <running beg="0" end="0" fps="5"/>
@@ -71,7 +75,8 @@
   
   <soldier name="TANK">
     <tris>data/tank/tris.md2</tris>
-    <tris_skin>data/tank/tris.bmp</tris_skin>
+    <tris_skin>data/tank/tris1.bmp</tris_skin>
+    <tris_skin2>data/tank/tris2.bmp</tris_skin2>
     <frame_set>
       <idle beg="0" end="0" fps="10"/>
       <running beg="0" end="0" fps="5"/>
@@ -87,7 +92,8 @@
   
   <soldier name="WIZARD">
     <tris>data/mage/tris.md2</tris>
-    <tris_skin>data/mage/tris.bmp</tris_skin>
+    <tris_skin>data/mage/tris1.bmp</tris_skin>
+    <tris_skin2>data/mage/tris2.bmp</tris_skin2>
     <weapon>data/mage/weapon.md2</weapon>
     <weapon_skin>data/mage/weapon.bmp</weapon_skin>
     <frame_set>
@@ -106,6 +112,7 @@
   <soldier name="BERSERKER">
     <tris>data/bauul/tris.md2</tris>
     <tris_skin>data/bauul/tris.bmp</tris_skin>
+    <tris_skin2>data/bauul/tris2.bmp</tris_skin2>
     <weapon>data/bauul/weapon.md2</weapon>
     <weapon_skin>data/bauul/weapon.bmp</weapon_skin>
     <frame_set>
@@ -123,7 +130,8 @@
   
   <soldier name="ASSASSIN">
     <tris>data/monkey/monkey.md2</tris>
-    <tris_skin>data/monkey/brute.bmp</tris_skin>
+    <tris_skin>data/monkey/brute1.bmp</tris_skin>
+    <tris_skin2>data/monkey/brute2.bmp</tris_skin2>
     <frame_set>
       <idle beg="0" end="1" fps="1"/>
       <running beg="2" end="8" fps="5"/>
@@ -139,7 +147,8 @@
   
   <soldier name="ARCHMAGE">
     <tris>data/chastit/tris.md2</tris>
-    <tris_skin>data/chastit/tris.bmp</tris_skin>
+    <tris_skin>data/chastit/tris1.bmp</tris_skin>
+    <tris_skin2>data/chastit/tris2.bmp</tris_skin2>
     <weapon>data/chastit/weapon.md2</weapon>
     <weapon_skin>data/chastit/weapon.bmp</weapon_skin>
     <frame_set>
