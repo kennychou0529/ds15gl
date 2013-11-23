@@ -29,9 +29,16 @@ void DSActorManager::insertSoldier(const std::string& soldier_id, std::string so
     if (soldier_type.empty()) {
         soldier_type = soldier_id;
     }
+    size_t team;
+    if (soldier_id[soldier_id.length() - 1] == '1') {
+        team = 1;
+    } else {
+        team = 2;
+    }
+    //size_t team = soldier_id[soldier_id.length() - 1] - '0';
     dsSoldier* sol = new dsSoldier(counter);
 
-    sol->load(soldier_type);
+    sol->load(soldier_type, team);
     sol->setID(soldier_id);
     sol->enterStatus(dsSoldier::Status::idle);
     intToString[counter++] = soldier_id;

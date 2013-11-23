@@ -249,7 +249,7 @@ void dsSoldier::load(
     person.load(model_file, skin_file);
 }
 
-void dsSoldier::load(const std::string& soldier_name) {
+void dsSoldier::load(const std::string& soldier_name, size_t team) {
     tinyxml2::XMLDocument doc;
 	kind = soldier_name;
     doc.LoadFile("soldiers.xml");
@@ -259,18 +259,34 @@ void dsSoldier::load(const std::string& soldier_name) {
         if (soldier_name == soldier->Attribute("name")) {
             if (soldier->FirstChildElement("weapon") == nullptr) {
                 // 该士兵没有武器模型
-                load(
-                    soldier->FirstChildElement("tris")->GetText(),
-                    soldier->FirstChildElement("tris_skin")->GetText()
-                );
+                if (team == 1) {
+                    load(
+                        soldier->FirstChildElement("tris")->GetText(),
+                        soldier->FirstChildElement("tris_skin")->GetText()
+                        );
+                } else {
+                    load(
+                        soldier->FirstChildElement("tris")->GetText(),
+                        soldier->FirstChildElement("tris_skin2")->GetText()
+                        );
+                }
             } else {
                 // 该士兵有武器模型
-                load(
-                    soldier->FirstChildElement("tris")->GetText(),
-                    soldier->FirstChildElement("tris_skin")->GetText(),
-                    soldier->FirstChildElement("weapon")->GetText(),
-                    soldier->FirstChildElement("weapon_skin")->GetText()
-                );
+                if (team == 1) {
+                    load(
+                        soldier->FirstChildElement("tris")->GetText(),
+                        soldier->FirstChildElement("tris_skin")->GetText(),
+                        soldier->FirstChildElement("weapon")->GetText(),
+                        soldier->FirstChildElement("weapon_skin")->GetText()
+                        );
+                } else {
+                    load(
+                        soldier->FirstChildElement("tris")->GetText(),
+                        soldier->FirstChildElement("tris_skin2")->GetText(),
+                        soldier->FirstChildElement("weapon")->GetText(),
+                        soldier->FirstChildElement("weapon_skin")->GetText()
+                        );
+                }
             }
             auto xml_frame_set = soldier->FirstChildElement("frame_set");
             if (xml_frame_set == nullptr) {

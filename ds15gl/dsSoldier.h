@@ -91,7 +91,7 @@ public:
     );
 
     // 根据 XML 文件中的信息载入士兵模型文件
-    void load(const std::string& soldier_name);
+    void load(const std::string& soldier_name, size_t team = 1);
 
     dsTimer timer;
 
