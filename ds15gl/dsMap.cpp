@@ -39,9 +39,9 @@ void DSMap::load() {
         texture_ID_hill[i] = dsLoadTextureBMP2D(os.str());
     }
     // 载入所有山地贴图: end
-    
+
     std::srand(std::time(nullptr));
-    
+
 }
 
 // 从数组初始化一张地图
@@ -94,40 +94,40 @@ void DSMap::init(Game_Info* game_info) {
     data = new TileType[x_max * y_max];
 
     for (size_t x_index = 0; x_index < x_max; ++x_index)
-    for (size_t y_index = 0; y_index < y_max; ++y_index) {
-        auto& this_data = data[y_index * x_max + x_index];
-        switch (game_info->map[x_index][y_index]) {
-        case PLAIN:
-            this_data = plain;
-            break;
-        case MOUNTAIN:
-            this_data = hill;
-            break;
-        case FOREST:
-            this_data = forest;
-            break;
-        case BARRIER:
-            this_data = barrier;
-            break;
-        case TURRET:
-            this_data = cannon;
-            break;
-        case TEMPLE:
-            this_data = temple;
-            break;
-        case MIRROR:
-            this_data = plain;
-            break;
+        for (size_t y_index = 0; y_index < y_max; ++y_index) {
+            auto& this_data = data[y_index * x_max + x_index];
+            switch (game_info->map[x_index][y_index]) {
+            case PLAIN:
+                this_data = plain;
+                break;
+            case MOUNTAIN:
+                this_data = hill;
+                break;
+            case FOREST:
+                this_data = forest;
+                break;
+            case BARRIER:
+                this_data = barrier;
+                break;
+            case TURRET:
+                this_data = cannon;
+                break;
+            case TEMPLE:
+                this_data = temple;
+                break;
+            case MIRROR:
+                this_data = plain;
+                break;
+            }
         }
+    if (glIsList(map)) {
+        glDeleteLists(map, 1);
     }
-	if(glIsList(map)){
-		glDeleteLists(map,1);
-	}
-	
-	if(glIsList(display_list_huge_ground)){
-		glDeleteLists(display_list_huge_ground,1);
-	}
-	display_list_huge_ground = 0;
+
+    if (glIsList(display_list_huge_ground)) {
+        glDeleteLists(display_list_huge_ground, 1);
+    }
+    display_list_huge_ground = 0;
     listLoaded = false;
     map = 0;
 
@@ -343,22 +343,40 @@ void DSMap::renderHugeGround(GLfloat radius) {
                 }
             }
         }
-        glBindTexture(GL_TEXTURE_2D, texture_ID_plain);
+        //glBindTexture(GL_TEXTURE_2D, texture_ID_plain);
 
         for (int i = 0; i < 19; i++) {
             for (int j = 0; j < 19; j++) {
-                if ((i == 9 && j == 9)) {
-                    glBindTexture(GL_TEXTURE_2D, texture_ID_plain);
-                    // Still draw the ground.
-                } else {
-                    glBindTexture(GL_TEXTURE_2D, texture_ID_hill[15]);
+                //                 if ((i == 9 && j == 9)) {
+                //                     glBindTexture(GL_TEXTURE_2D, texture_ID_plain);
+                //                     // Still draw the ground.
+                //                 } else {
+                //                     glBindTexture(GL_TEXTURE_2D, texture_ID_hill[15]);
+                //                 }
+                //决定贴图
+                int index = 0;
+                float th = 20;
+                if (heights[i][j] > th) {
+                    index |= 3;
                 }
+                if (heights[i + 1][j] > th) {
+                    index |= 6;
+                }
+                if (heights[i][j + 1] > th) {
+                    index |= 9;
+                }
+                if (heights[i + 1][j + 1] > th) {
+                    index |= 12;
+                }
+                glBindTexture(GL_TEXTURE_2D, texture_ID_hill[index]);
 
 
                 glPushMatrix();
                 glTranslatef((i - 9.5) * grid_size * x_max, (j - 9.5) * grid_size * y_max, -0.01f);
                 glBegin(GL_POLYGON);
                 {
+
+
                     GLfloat p1[] = {0, 0, heights[i][j]};
                     GLfloat p2[] = {grid_size * x_max, 0, heights[i + 1][j]};
                     GLfloat p3[] = {grid_size * x_max, grid_size * y_max, heights[i + 1][j + 1]};
@@ -406,9 +424,17 @@ void DSMap::renderHugeGround(GLfloat radius) {
         glEndList();
 
     }
-    glCallList(display_list_huge_ground);
 
-    //renderArrow(0, 0, 0.0f);
+    glCallList(display_list_huge_ground);
+    //打印 GL 错误
+    //    GLenum errCode;
+    //    const GLubyte* errString;
+    //
+    //    while ((errCode = glGetError()) != GL_NO_ERROR) {
+    //        errString = gluErrorString(errCode);
+    //        std::cerr << errString << std::endl;
+    //    }
+    //    //renderArrow(0, 0, 0.0f);
 }
 
 void DSMap::renderArrow(size_t x_index, size_t y_index, GLfloat duration) {
@@ -557,8 +583,8 @@ void DSMap::dishi() {
 
     map = glGenLists(1);
     glNewList(map, GL_COMPILE);
-    
-	GLfloat dsize = 1.0f / fenkuai;
+
+    GLfloat dsize = 1.0f / fenkuai;
 
     GLfloat ds = grid_size / GLfloat(fenkuai);
 
@@ -588,9 +614,9 @@ void DSMap::dishi() {
                     glBegin(GL_POLYGON);
                     {
 
-                        GLfloat p1[] = {0, 0, heights[i + j * fenkuai * x_max]};
-                        GLfloat p2[] = {ds, 0, heights[i + 1 + j * fenkuai * x_max]};
-                        GLfloat p3[] = {0, ds, heights[i + (j + 1) * fenkuai * x_max]};
+                        GLfloat p1[] = {0, 0, heights[i + j* fenkuai* x_max]};
+                        GLfloat p2[] = {ds, 0, heights[i + 1 + j* fenkuai* x_max]};
+                        GLfloat p3[] = {0, ds, heights[i + (j + 1) * fenkuai* x_max]};
                         GLfloat res[3];
                         dsNormalVectorOfTriangle3fv(p1, p2, p3, res);
 
@@ -633,12 +659,12 @@ void DSMap::loadDisplayLists() {
     // Clear
     for (int i = 0; i < 8; i++) {
         if (glIsList(display_lists[i])) {
-            glDeleteLists( display_lists[i],1);
+            glDeleteLists(display_lists[i], 1);
         }
     }
-	if(glIsList(display_list_grids)){
-		glDeleteLists(display_list_grids,1);
-	}
+    if (glIsList(display_list_grids)) {
+        glDeleteLists(display_list_grids, 1);
+    }
 
     // Hill: begin
     display_lists[hill] = glGenLists(1);
