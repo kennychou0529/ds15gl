@@ -16,6 +16,7 @@ enum ScriptType {
 	//传送
 	soldier_trans,
     view_move,
+	game_over,
     empty
 };
 

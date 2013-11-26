@@ -64,6 +64,7 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
     while (!canRefresh) {
         Sleep(100);
     }
+    gameOver = false;
     int roundNum = 0;
     Game_Info info;
     Round_Begin_Info begin_info;
@@ -311,7 +312,7 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
     //         }
     //         ///////////////展示操作
     //     }
-
+    actors.script.add(roundNum, false, "END", game_over, end_info.score[0], end_info.score[1]);
     is.close();
 }
 

@@ -100,6 +100,9 @@ private:
     int round;
     //std::map<string,SoundIDandSource> soundGroups;
 	EffectManager effects;
+	//
 };
+
+extern bool gameOver;
 
 #endif // !_DSACTORMANAGER_H

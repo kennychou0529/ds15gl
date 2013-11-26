@@ -57,7 +57,15 @@ int  main(int argc, char** argv) {
         //
         recv(clientSocket, receiveBuf, 1001, 0);
         send(clientSocket, fileDir, strlen(fileDir) + 1, 0);
-
+		
+		int timeout=3000;
+		setsockopt(clientSocket,SOL_SOCKET,SO_RCVTIMEO,(const char*)&timeout,sizeof(int));
+		setsockopt(clientSocket,SOL_SOCKET,SO_SNDTIMEO,(const char*)&timeout,sizeof(int));
+		
+		while(1){
+			recv(clientSocket, receiveBuf, 2, 0);
+			send(clientSocket, "1", 2, 0);
+		}
 
         printf("%s\n", receiveBuf);
 

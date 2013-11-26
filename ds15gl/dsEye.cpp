@@ -36,7 +36,7 @@ static GLfloat targetX, targetY;
 // 眼睛位置，用球坐标 (r, phi, theta) 表示
 // 其中，phi 表示与 z 轴的夹角
 // theta 表示在 xy 平面的投影的旋转角
-GLdouble eye_sphere[3] = { 25.0, pi / 4, -pi / 2 };
+GLdouble eye_sphere[3] = { 75.0, pi / 4, pi * 3 / 4 };
 
 static GLdouble eye_sphere_saved[3];
 
@@ -222,14 +222,18 @@ void dsSetEye() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    if (center[0] > 100)
+    if (center[0] > 100) {
         center[0] = 100;
-    if (center[0] < -100)
+    }
+    if (center[0] < -100) {
         center[0] = -100;
-    if (center[1] > 100)
+    }
+    if (center[1] > 100) {
         center[1] = 100;
-    if (center[1] < -100)
+    }
+    if (center[1] < -100) {
         center[1] = -100;
+    }
 
 
     // 将球坐标转化为直角坐标

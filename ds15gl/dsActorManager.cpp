@@ -3,11 +3,15 @@
 #include "dsEye.h"
 #include "dsFrame.h"
 
+bool gameOver;
+
 DSActorManager::DSActorManager() :
     round(0),
     script_playing(0),
     round_finished(false),
-    all_finished(false) {}
+    all_finished(false) {
+		gameOver = true;
+}
 
 
 DSActorManager::~DSActorManager() {
@@ -140,7 +144,10 @@ void DSActorManager::update() {
             do {
                 // 指令出队
                 Record record = script.getNextRecord();
-
+				if(record.type=game_over){
+					gameOver = true;
+					return;
+				}
                 // 下达指令
                 auto iter_soldier = list.find(record.id);
                 if (iter_soldier != list.end()) {

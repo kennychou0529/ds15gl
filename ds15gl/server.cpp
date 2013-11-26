@@ -8,6 +8,8 @@ using std::cout;
 using std::endl;
 
 extern void dsGameInit(const std::string& rep_file_name);
+extern bool gameOver;
+
 
 int server() {
 	WSADATA wsaData;
@@ -49,6 +51,10 @@ int server() {
 		// 接受一个新连接
 		sClient = accept(sListen, (SOCKADDR*)&remoteAddr, &nAddrLen);
 		//accept函数调用失败则继续等待连接。
+		
+		int timeout=3000;
+		setsockopt(sClient,SOL_SOCKET,SO_RCVTIMEO,(const char*)&timeout,sizeof(int));
+		setsockopt(sClient,SOL_SOCKET,SO_SNDTIMEO,(const char*)&timeout,sizeof(int));
 		if (sClient == INVALID_SOCKET) {
 			printf("accept() error");
 			continue;
@@ -61,7 +67,7 @@ int server() {
 
 		//          while(1)
 		//          {
-		char buff[256]="231";
+		char buff[256]="0";
 
 		//发送数据
 		send(sClient, buff, strlen(buff)+1, 0);
@@ -76,6 +82,10 @@ int server() {
 		}
 		
 		dsGameInit(revData);
+		while(!gameOver){
+			send(sClient, "1", 2, 0);
+			int ret = recv(sClient, revData, 2, 0);
+		}
 
 	}
 	closesocket(sListen);
