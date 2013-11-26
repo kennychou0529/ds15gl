@@ -101,7 +101,7 @@ public:
 
     void hpBar(GLfloat x, GLfloat y, GLfloat z);
 
-    void hpBar2();
+    void hpBar2(float x,float y);
 
     std::wstring getInfo() {
         std::wostringstream os;

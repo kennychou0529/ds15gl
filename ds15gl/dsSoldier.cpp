@@ -151,7 +151,9 @@ void dsSoldier::animate(bool selectMode) {
             glRotatef(angle + default_angle, 0.0f, 0.0f, 1.0f);
             renderSmoothly(duration * fps);
             glPopMatrix();
-            hpBar(x, y, 12);
+			//hpBar(x, y, 12);
+			hpBar2(x,y);
+
             drawAureole(x, y);
         };
 
@@ -404,13 +406,15 @@ void dsSoldier::hpBar(GLfloat x, GLfloat y, GLfloat z) {
 
 }
 
-void dsSoldier::hpBar2() {
+void dsSoldier::hpBar2(float x,float y) {
     GLdouble winx, winy, winz;
     GLdouble point[3];
+	point[0]=x;
+	point[1]=y;
     point[2] = 11;
-    frame.scene.map.getCoords(
+    /*frame.scene.map.getCoords(
         current_position[0], current_position[1], point, point + 1
-    );
+    );*/
 
     GLdouble dir1[3];
     GLdouble dir2[3];
