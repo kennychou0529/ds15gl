@@ -298,5 +298,5 @@ void DSActorManager::enterNextRound() {
     std::wostringstream os;
     os.str(L"");
     os << L"第 " << round << L" 回合";
-    frame.scene.mboxes.addMessage(os.str().c_str(), 230.0f);
+    frame.scene.mboxes.addMessage(os.str().c_str(), 250.0f);
 }

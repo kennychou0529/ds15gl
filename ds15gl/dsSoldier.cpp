@@ -459,12 +459,22 @@ void dsSoldier::hpBar2(float x,float y) {
         glDisable(GL_LIGHTING);
         glDisable(GL_TEXTURE_2D);
         glLoadIdentity();
+        glColor3d(0, 0, 0);
         glBegin(GL_POLYGON);
         {
             glVertex2d(winx - 40, winy);
             glVertex2d(winx + 40, winy);
             glVertex2d(winx + 40, winy + 5);
             glVertex2d(winx - 40, winy + 5);
+        }
+        glEnd();
+        glColor3d(1, 0, 0);
+        glBegin(GL_POLYGON);
+        {
+            glVertex2d(winx - 39, winy + 1);
+            glVertex2d(winx - 39 + 78.0 * hp / hp_max, winy + 1);
+            glVertex2d(winx - 39 + 78.0 * hp / hp_max, winy + 4);
+            glVertex2d(winx - 39, winy + 4);
         }
         glEnd();
     }

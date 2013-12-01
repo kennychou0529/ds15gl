@@ -13,7 +13,7 @@ dsMessageBox::dsMessageBox(
     GLfloat height
 ):
     message(_message),
-    status(appearing),
+    status(showing),
     width(width),
     height(height),
     lasting_time(default_lasting_time) {
@@ -111,6 +111,7 @@ void dsMessageBoxManager::addMessage(
     GLfloat width,
     GLfloat height
 ) {
+    message_boxes.clear();
     message_boxes.push_back(
         dsMessageBox(message, width, height)
     );
