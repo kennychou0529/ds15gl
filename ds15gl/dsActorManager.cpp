@@ -144,7 +144,7 @@ void DSActorManager::update() {
             do {
                 // 指令出队
                 Record record = script.getNextRecord();
-				if(record.type=game_over){
+				if(record.type==game_over){
 					gameOver = true;
 					return;
 				}
