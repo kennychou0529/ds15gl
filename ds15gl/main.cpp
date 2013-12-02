@@ -25,12 +25,12 @@ extern bool canRefresh;
 void dsDisplay() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     if (isReady) {
-		canRefresh = false;
+        canRefresh = false;
         dsSetEye(); // 设置视角
         frame.display();
     } else {
-		
-		canRefresh = true;
+
+        canRefresh = true;
         glColor3f(1, 1, 1);
         dstext.print(200, 200, L"载入中");
     }
@@ -67,14 +67,14 @@ void dsInit(const std::string& rep_file_name) {
 }
 
 void dsGameInit(const std::string& rep_file_name) {
-	frame.initialize2(rep_file_name);
-	isReady = true;
+    frame.initialize2(rep_file_name);
+    isReady = true;
 }
 extern int server();
-void serverThread(){
-	while(1){
-		server();
-	}
+void serverThread() {
+    while (1) {
+        server();
+    }
 }
 
 // 当窗口大小被修改时自动调用此函数
@@ -98,6 +98,17 @@ void destroy() {
 }
 
 int main(int argc, char* argv[]) {
+
+    if (argc > 1) {
+        //检查文件是否存在
+        FILE* f = fopen(argv[1], "r");
+        if (!f) {
+            fprintf(stderr, "file %s is not exist", argv[1]);
+            return 2;
+        }
+        fclose(f);
+    }
+
     glutInit(&argc, argv);
     // alutInit(&argc,argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
@@ -117,14 +128,15 @@ int main(int argc, char* argv[]) {
     dsInit("DisplayFiles/display.rep");
     glutShowWindow();
 
-#ifdef _DEBUG_MODE
-    dsGameInit("DisplayFiles/display.rep");
-#else
-    std::thread gameThread(serverThread);
-	gameThread.detach();
-#endif
-
-	glutMainLoop();
-//     destroy();
+    //
+    //     std::thread gameThread(serverThread);
+    //  gameThread.detach();
+    if (argc < 2) {
+        dsGameInit("DisplayFiles/display.rep");
+    } else {
+        dsGameInit(argv[1]);
+    }
+    glutMainLoop();
+    //     destroy();
     return 0;
 }

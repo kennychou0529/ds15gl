@@ -64,6 +64,8 @@ int  main(int argc, char** argv) {
 		
 		while(1){
 			recv(clientSocket, receiveBuf, 2, 0);
+			if(receiveBuf[0]=='0')
+				break;
 			send(clientSocket, "1", 2, 0);
 		}
 

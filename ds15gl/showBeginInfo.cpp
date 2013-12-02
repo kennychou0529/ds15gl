@@ -1,5 +1,6 @@
 #include "dsActorManager.h"
 #include "display_basic.h"
+#include "dsTools.h"
 
 extern Game_Info info;
 extern Round_End_Info end_info;
@@ -31,8 +32,21 @@ void DSActorManager::showBeginInfo(float time, float totalTime) {
     glVertex2f(724, 100);
     glEnd();
 
-    glColor4f(0.0f, 0.0f, 0.0f, alpha * 1.5);
-    //dstext.print(x  - width / 2 + 20.0f, y + 13.0f, message);
+    
+	std::wostringstream os;
+	os << info.team_name[0].c_str();
+	glColor4f(0.0f, 0.0f, 0.0f, alpha * 1.2);
+    dstext.print(150, 150, os.str());
+
+	os.str(L"");
+	os << info.team_name[1].c_str();
+	glColor4f(0.0f, 0.0f, 0.0f, alpha * 1.2);
+	dstext.print(500, 500, os.str());
+
+	os.str(L"");
+	os << "VS";
+	glColor4f(1.0f, 0.0f, 0.0f, alpha * 1.2);
+	dstext.print(330, 330, os.str());
 
     glPopMatrix();
     glPopAttrib();
@@ -66,6 +80,20 @@ void DSActorManager::showEndInfo(float time, float totalTime) {
 
 	glColor4f(0.0f, 0.0f, 0.0f, alpha * 1.5);
 	//dstext.print(x  - width / 2 + 20.0f, y + 13.0f, message);
+
+	std::wostringstream os;
+	os << info.team_name[0].c_str()<<"\n\n"<<end_info.score[0]<<"\n";
+	glColor4f(0.0f, 0.0f, 0.0f, alpha * 1.2);
+	dstext.print(150, 600, os.str());
+
+
+
+	os.str(L"");
+	os << info.team_name[1].c_str()<<"\n\n"<<end_info.score[1]<<"\n";
+	glColor4f(0.0f, 0.0f, 0.0f, alpha * 1.2);
+	dstext.print(500, 600, os.str());
+
+		
 
 	glPopMatrix();
 	glPopAttrib();

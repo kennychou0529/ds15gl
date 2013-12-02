@@ -254,6 +254,7 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
     }
 
     actors.script.add(roundNum, false, "END", game_over, 10, 0);
+
     is.close();
 }
 

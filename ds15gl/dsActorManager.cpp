@@ -176,6 +176,7 @@ void DSActorManager::update() {
                     timer.recordTime();
                     script_playing++;
 					frame.sounds.replay();
+					glutShowWindow();
                     return;
                 }
                 // 下达指令
