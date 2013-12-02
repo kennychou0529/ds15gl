@@ -126,7 +126,7 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
     }
 
     actors.script.clear();
-    actors.script.add(0, false, index[0], soldier_move, info.soldier[0][0].pos.x, info.soldier[0][0].pos.y);
+    //actors.script.add(0, false, index[0], soldier_move, info.soldier[0][0].pos.x, info.soldier[0][0].pos.y);
     actors.script.add(0, false, "BEGIN", game_begin, 5, 0);
 
     // 初始信息读入完成

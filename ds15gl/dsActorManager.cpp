@@ -113,36 +113,35 @@ float delay_time = 0;
 void DSActorManager::render(bool selectMode) {
     update();
 
+    for (auto & soldier : list) {
+        glEnable(GL_LIGHTING);
+        soldier.second->animate(selectMode);
+        //soldier.second->hpBar2();
+    }
+
+    effects.render();
+
     if (delay_time > 0) {
         if (delay_time > timer.getDurationSecf()) {
             float duration =  timer.getDurationSecf();
             if (gameOver) {
-				showEndInfo(duration, delay_time);
+                showEndInfo(duration, delay_time);
             } else {
                 showBeginInfo(duration, delay_time);
             }
-            return;
         } else {
             delay_time = 0;
             script_playing --;
         }
     }
 
-    for (auto & soldier : list) {
-        glEnable(GL_LIGHTING);
-        soldier.second->animate(selectMode);
-        //soldier.second->hpBar2();
-    }
-    effects.render();
+
     //list["SOLDIER"].hpBar2();
 }
 
 //#include "dsTimer.h"
 
 void DSActorManager::update() {
-
-
-
 
     // 只有当当前指令已经完成播放时，才需要 update
     // 否则应该继续播放
@@ -176,6 +175,7 @@ void DSActorManager::update() {
                     delay_time = record.x;
                     timer.recordTime();
                     script_playing++;
+					frame.sounds.replay();
                     return;
                 }
                 // 下达指令

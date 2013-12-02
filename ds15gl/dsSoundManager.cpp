@@ -56,7 +56,8 @@ void Clip::append() {
 
 Clip::Clip(const char* fileName, bool loop) {
     this->loop = loop;
-    strcpy_s(this->fileName , fileName);
+	stopped = true;
+	strcpy_s(this->fileName , fileName);
     append();
     //append();
 
@@ -119,10 +120,11 @@ ALuint Clip::play(float x, float y, float z, float vx, float vy, float vz) {
         }
         return sourceIndex;
     } else if (type == 1) {
+
         //播放mp3音乐
-        int playMP3(char*, bool*);
-        this->isPlaying = true;
-        std::thread t(playMP3, fileName, &(this->isPlaying));
+        int playMP3(char*, bool*, bool*);
+        //this->isPlaying = true;
+        std::thread t(playMP3, fileName, &(this->isPlaying), &(this->stopped));
         t.detach();
     }
     return 0;
@@ -130,7 +132,12 @@ ALuint Clip::play(float x, float y, float z, float vx, float vy, float vz) {
 
 #define NUM_BUFFERS 4
 
-int playMP3(char* fileName, bool* running) {
+int playMP3(char* fileName, bool* running, bool* stopped) {
+    while (!*stopped) {
+        Sleep(100);
+    }
+	*running = true;
+    *stopped = false;
     ALuint g_Buffers[NUM_BUFFERS];
     ALuint uiSource;
     ALuint uiBuffer;
@@ -246,9 +253,8 @@ int playMP3(char* fileName, bool* running) {
 
     free(pData);
     pData = NULL;
-
+    *stopped = true;
     return 0;
-
 }
 
 
@@ -338,8 +344,10 @@ void DSSoundManager::loadSounds() {
     doc.LoadFile("sounds.xml");
     auto root = doc.FirstChildElement();
     auto background = root->FirstChildElement("sound");
+    backGroundSoundFile = background->GetText();
+    backGroundSoundIndex = atoi(background->Attribute("id"));
     if (background != nullptr) {
-        addSound(atoi(background->Attribute("id")), background->GetText());
+        addSound(backGroundSoundIndex, backGroundSoundFile.c_str());
     }
 
     auto group = root->FirstChildElement("sound_group");
@@ -360,15 +368,15 @@ void DSSoundManager::loadSounds() {
             }
             if (soundType == "pain") {
                 pSound->_pain = atoi(sound->Attribute("id"));
-                addSound(pSound->_pain, sound->GetText(),false);
+                addSound(pSound->_pain, sound->GetText(), false);
             }
             if (soundType == "fight") {
                 pSound->_fight = atoi(sound->Attribute("id"));
-                addSound(pSound->_fight, sound->GetText(),false);
+                addSound(pSound->_fight, sound->GetText(), false);
             }
             if (soundType == "dying") {
                 pSound->_dying = atoi(sound->Attribute("id"));
-                addSound(pSound->_dying, sound->GetText(),false);
+                addSound(pSound->_dying, sound->GetText(), false);
             }
             soundgroups[id] = *pSound;
         }

@@ -28,8 +28,7 @@ public:
     //x,y,z 声源位置
     //vx,vy,vz 声源速度
     ALuint play(float x, float y, float z, float vx = 0, float vy = 0, float vz = 0);
-
-    void playMP3(bool* running);
+	//void playMP3(bool* running);
 private:
     char fileName[256];
     std::vector<ALuint> sources;
@@ -37,6 +36,8 @@ private:
     bool isPlaying;
     bool loop;
     ALenum alError;
+	bool stopped;
+	friend class DSSoundManager;
 };
 
 typedef std::map<unsigned int, Clip*> ClipMap;
@@ -56,6 +57,11 @@ public:
     // 暂时只能载入一个MP3作为背景音乐
     void addSound(unsigned int id, const char* fileName, bool loop = true);
 
+	//重新播放背景音乐
+	void replay(){
+		clipMap[backGroundSoundIndex]->isPlaying = false;
+		clipMap[backGroundSoundIndex]->play(0,0,0);
+	}
     // x,y,z 声源位置
     // vx,vy,vz 声源速度
     // 返回所播放声源的索引
@@ -85,10 +91,12 @@ private:
 
     ClipMap clipMap;
 
-    ALuint backgroundSound;
+    //ALuint backgroundSound;
 
     ALboolean g_bEAX;
     ALenum alError;
-    int iMpg123_error;	
+    int iMpg123_error;
+	string backGroundSoundFile;
+	int backGroundSoundIndex;
 };
 
