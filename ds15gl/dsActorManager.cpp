@@ -10,7 +10,7 @@ DSActorManager::DSActorManager() :
     script_playing(0),
     round_finished(false),
     all_finished(false) {
-		gameOver = true;
+    gameOver = true;
 }
 
 
@@ -108,8 +108,25 @@ void DSActorManager::initialize() {
 }
 
 //渲染
+dsTimer timer;
+float delay_time = 0;
 void DSActorManager::render(bool selectMode) {
     update();
+
+    if (delay_time > 0) {
+        if (delay_time > timer.getDurationSecf()) {
+            float duration =  timer.getDurationSecf();
+            if (gameOver) {
+				showEndInfo(duration, delay_time);
+            } else {
+                showBeginInfo(duration, delay_time);
+            }
+            return;
+        } else {
+            delay_time = 0;
+            script_playing --;
+        }
+    }
 
     for (auto & soldier : list) {
         glEnable(GL_LIGHTING);
@@ -120,7 +137,12 @@ void DSActorManager::render(bool selectMode) {
     //list["SOLDIER"].hpBar2();
 }
 
+//#include "dsTimer.h"
+
 void DSActorManager::update() {
+
+
+
 
     // 只有当当前指令已经完成播放时，才需要 update
     // 否则应该继续播放
@@ -144,10 +166,18 @@ void DSActorManager::update() {
             do {
                 // 指令出队
                 Record record = script.getNextRecord();
-				if(record.type==game_over){
-					gameOver = true;
-					return;
-				}
+                if (record.type == game_over) {
+                    gameOver = true;
+                    delay_time = record.x;
+                    timer.recordTime();
+                    script_playing++;
+                    return;
+                } else if (record.type == game_begin) {
+                    delay_time = record.x;
+                    timer.recordTime();
+                    script_playing++;
+                    return;
+                }
                 // 下达指令
                 auto iter_soldier = list.find(record.id);
                 if (iter_soldier != list.end()) {

@@ -58,6 +58,11 @@ void DSFrame::initialize(const std::string& file_name) {
 
 extern bool isReady;
 bool canRefresh = false;
+
+
+Game_Info info;
+Round_End_Info end_info;
+
 void DSFrame::initialize2(const std::string& rep_file_name) {
     isReady = false;
     //必须等frame停止渲染才能重设场景
@@ -66,10 +71,9 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
     }
     gameOver = false;
     int roundNum = 0;
-    Game_Info info;
     Round_Begin_Info begin_info;
     Command cmd;
-    Round_End_Info end_info;
+    
     //从数字索引到stringID的映射
     map<int, string> index;
 
@@ -120,11 +124,16 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
             }
         }
     }
+
+    actors.script.clear();
+    actors.script.add(0, false, index[0], soldier_move, info.soldier[0][0].pos.x, info.soldier[0][0].pos.y);
+    actors.script.add(0, false, "BEGIN", game_begin, 5, 0);
+
     // 初始信息读入完成
 
     //begin_info.temple.resize(info.temple_number);
     //清除原有
-    actors.script.clear();
+
 
     end_info.over = false;
     while (!end_info.over) {
@@ -202,27 +211,36 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
         }
         if (cmd.order == 1 || cmd.order == 2) {
             dsSoldier* target_soldier = actors.list[index[cmd.target_id + (cmd.target_team << 5)]];
-            //攻击动作
 
-            actors.script.add(roundNum, false, soldier->getID(), soldier_fight,
-                              end_info.soldier[cmd.target_id][cmd.target_team].pos.x,
-                              end_info.soldier[cmd.target_id][cmd.target_team].pos.y);
-            //伤害
+
+            //禁止鞭尸
             if (begin_info.soldier[cmd.target_id][cmd.target_team].life > 0) {
-                int hurt = begin_info.soldier[cmd.target_id][cmd.target_team].life - end_info.soldier[cmd.target_id][cmd.target_team].life;
-                actors.script.add(roundNum, true, target_soldier->getID(), soldier_pain, hurt, end_info.soldier[cmd.target_id][cmd.target_team].life);
-                //死亡
-                if (end_info.soldier[cmd.target_id][cmd.target_team].life <= 0) {
-                    actors.script.add(roundNum, true, target_soldier->getID(), soldier_die, 0, 0);
+                //攻击动作
+                actors.script.add(roundNum, false, soldier->getID(), soldier_fight,
+                                  end_info.soldier[cmd.target_id][cmd.target_team].pos.x,
+                                  end_info.soldier[cmd.target_id][cmd.target_team].pos.y);
+
+
+
+                if (end_info.attack_effect[0] != -1) {
+                    //伤害
+                    int hurt = begin_info.soldier[cmd.target_id][cmd.target_team].life - end_info.soldier[cmd.target_id][cmd.target_team].life;
+
+                    actors.script.add(roundNum, true, target_soldier->getID(), soldier_pain, hurt, end_info.soldier[cmd.target_id][cmd.target_team].life);
+                    //死亡
+                    if (end_info.soldier[cmd.target_id][cmd.target_team].life <= 0) {
+                        actors.script.add(roundNum, true, target_soldier->getID(), soldier_die, 0, 0);
+                    }
                 }
 
                 //反击
                 int hurt2 = begin_info.soldier[begin_info.move_id ][begin_info.move_team].life - end_info.soldier[begin_info.move_id ][begin_info.move_team].life;
-                if (hurt2 > 0) {
+
+                if (end_info.attack_effect[1] != -1 && hurt2 > 0) {
                     actors.script.add(roundNum, false, target_soldier->getID(), soldier_fight,
                                       end_info.soldier[begin_info.move_id ][begin_info.move_team].pos.x,
                                       end_info.soldier[begin_info.move_id ][begin_info.move_team].pos.y);
-                    actors.script.add(roundNum, false, soldier->getID(), soldier_pain, hurt, end_info.soldier[begin_info.move_id ][begin_info.move_team].life);
+                    actors.script.add(roundNum, false, soldier->getID(), soldier_pain, hurt2, end_info.soldier[begin_info.move_id ][begin_info.move_team].life);
                     //死亡
                     if (end_info.soldier[begin_info.move_id ][begin_info.move_team].life <= 0) {
                         actors.script.add(roundNum, false, soldier->getID(), soldier_die, 0, 0);
@@ -234,85 +252,8 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
             //待添加
         }
     }
-    //
-    //
-    //     std::string soldier_to_move;
-    //
-    //     while (1) {
-    //         is >> begin_info.move_team >> begin_info.move_id;
-    //
-    //         soldier_to_move = kind[info.soldier[begin_info.move_id][begin_info.move_team].kind];
-    //         soldier_to_move += char(begin_info.move_team + 1 + '0');
-    //
-    //         is >> begin_info.range_num;
-    //         begin_info.range.resize(begin_info.range_num);
-    //         for (int i = 0; i < begin_info.range_num; i++) {
-    //             is >> begin_info.range[i].x >> begin_info.range[i].y;
-    //         }
-    //         for (int i = 0; i < 2; i++) {
-    //             for (int j = 0; j < info.soldier_number[i]; j++)
-    //                 is >> begin_info.soldier[j][i].kind
-    //                    >> begin_info.soldier[j][i].life
-    //                    >> begin_info.soldier[j][i].strength
-    //                    >> begin_info.soldier[j][i].defence
-    //                    >> begin_info.soldier[j][i].move_range
-    //                    >> begin_info.soldier[j][i].attack_range[0]
-    //                    >> begin_info.soldier[j][i].attack_range[1]
-    //                    >> begin_info.soldier[j][i].duration
-    //                    >> begin_info.soldier[j][i].pos.x
-    //                    >> begin_info.soldier[j][i].pos.y;
-    //         }
-    //         is >> info.temple_number;
-    //         begin_info.temple.resize(info.temple_number);
-    //         for (int i = 0; i < info.temple_number; i++) {
-    //             is >> begin_info.temple[i].pos.x
-    //                >> begin_info.temple[i].pos.y
-    //                >> begin_info.temple[i].state;
-    //         }
-    //
-    //         //scene.actors.script.scriptQue.push_back(Record(1, false, "sword_man1", soldier_fight, 2, 2));
-    //         ////////////////展示组操作
-    //
-    //         is >> cmd.destination.x
-    //            >> cmd.destination.y
-    //            >> cmd.order
-    //            >> cmd.target_team
-    //            >> cmd.target_id;
-    //
-    //
-    //
-    //         ////////////////展示组操作
-    //
-    //         for (int i = 0; i < 2; i++) {
-    //             for (int j = 0; j < info.soldier_number[i]; j++)
-    //                 is >> end_info.soldier[j][i].kind
-    //                    >> end_info.soldier[j][i].life
-    //                    >> end_info.soldier[j][i].strength
-    //                    >> end_info.soldier[j][i].defence
-    //                    >> end_info.soldier[j][i].move_range
-    //                    >> end_info.soldier[j][i].attack_range[0]
-    //                    >> end_info.soldier[j][i].attack_range[1]
-    //                    >> end_info.soldier[j][i].duration
-    //                    >> end_info.soldier[j][i].pos.x
-    //                    >> end_info.soldier[j][i].pos.y;
-    //         }
-    //         is >> end_info.route_len;
-    //         end_info.route.resize(end_info.route_len);
-    //         for (int i = 0; i < end_info.route_len; i++) {
-    //             is >> end_info.route[i].x >> end_info.route[i].y;
-    //         }
-    //         is >> end_info.score[0]
-    //            >> end_info.score[1];
-    //         is >> end_info.attack_effect[0]
-    //            >> end_info.attack_effect[1];
-    //         is >> end_info.trans
-    //            >> end_info.over;
-    //         if (end_info.over == true) {
-    //             break;
-    //         }
-    //         ///////////////展示操作
-    //     }
-    actors.script.add(roundNum, false, "END", game_over, end_info.score[0], end_info.score[1]);
+
+    actors.script.add(roundNum, false, "END", game_over, 10, 0);
     is.close();
 }
 

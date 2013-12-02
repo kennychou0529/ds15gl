@@ -28,8 +28,8 @@ void DSScene::show(bool selectMode) {
         //object_manager.objects["banana"].render();
        
     }
-	actors.render(selectMode);
     map.render(selectMode);
+	actors.render(selectMode);
     mboxes.render();
     //dsShowLightSource();    
 	dsShowAxes();

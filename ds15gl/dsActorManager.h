@@ -27,6 +27,9 @@ public:
     //每回合读脚本，更新人物信息，
     void update();
 
+	void showBeginInfo(float time,float totalTime);
+	void showEndInfo(float time,float totalTime);
+
     int getCurrentRound() {
         return round;
     }

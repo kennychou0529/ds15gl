@@ -17,6 +17,7 @@ enum ScriptType {
 	soldier_trans,
     view_move,
 	game_over,
+	game_begin,
     empty
 };
 
@@ -141,6 +142,7 @@ public:
 
 	void clear(){
 		scriptQue.clear();
+		
 	}
 
     // 窥探接下来的一条记录，但是不将该记录挤出队列
