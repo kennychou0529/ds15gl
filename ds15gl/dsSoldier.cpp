@@ -45,8 +45,8 @@ dsSoldier::dsSoldier(int _idNumber) :
 }
 
 void dsSoldier::renderFrame(size_t frame_index) const {
-    person.renderFrame(frame_index);
-    weapon.renderFrame(frame_index);
+    person[0].renderFrame(frame_index);
+    weapon[0].renderFrame(frame_index);
 }
 
 void dsSoldier::renderSmoothly(
@@ -54,13 +54,13 @@ void dsSoldier::renderSmoothly(
     size_t frame2_index,
     GLfloat percentage
 ) const {
-    person.renderSmoothly(frame1_index, frame2_index, percentage);
+    person[0].renderSmoothly(frame1_index, frame2_index, percentage);
 
     // 测试表明，武器模型的死亡动画有问题，所以不画了
     if (status == dying || status == died || !has_weapon) {
         return;
     }
-    weapon.renderSmoothly(frame1_index, frame2_index, percentage);
+    weapon[0].renderSmoothly(frame1_index, frame2_index, percentage);
 }
 
 void dsSoldier::renderSmoothly(GLfloat progress) const {
@@ -232,24 +232,53 @@ void dsSoldier::animate(bool selectMode) {
     }
 }
 
-void dsSoldier::load(
-    const std::string& person_model_file,
-    const std::string& person_skin_file,
-    const std::string& weapon_model_file,
-    const std::string& weapon_skin_file
-) {
+//void dsSoldier::load(
+//    const std::string& person_model_file,
+//    const std::string& person_skin_file,
+//    const std::string& weapon_model_file,
+//    const std::string& weapon_skin_file
+//) {
+//    has_weapon = true;
+//    person.load(person_model_file, person_skin_file);
+//    weapon.load(weapon_model_file, weapon_skin_file);
+//}
+
+void dsSoldier::doubleLoad(
+    const std::string& person_model_file1,
+    const std::string& person_skin_file1,
+    const std::string& weapon_model_file1,
+    const std::string& weapon_skin_file1,
+    const std::string& person_model_file2,
+    const std::string& person_skin_file2,
+    const std::string& weapon_model_file2,
+    const std::string& weapon_skin_file2
+    ) {
     has_weapon = true;
-    person.load(person_model_file, person_skin_file);
-    weapon.load(weapon_model_file, weapon_skin_file);
+    person[0].load(person_model_file1, person_skin_file1);
+    weapon[0].load(weapon_model_file1, weapon_skin_file1);
+    person[1].load(person_model_file2, person_skin_file2);
+    weapon[1].load(weapon_model_file2, weapon_skin_file2);
 }
 
-void dsSoldier::load(
-    const std::string& model_file,
-    const std::string& skin_file
-) {
+void dsSoldier::doubleLoad(
+    const std::string& person_model_file1,
+    const std::string& person_skin_file1,
+    const std::string& person_model_file2,
+    const std::string& person_skin_file2
+    ) {
     has_weapon = false;
-    person.load(model_file, skin_file);
+    person[0].load(person_model_file1, person_skin_file1);
+    person[1].load(person_model_file2, person_skin_file2);
 }
+
+
+//void dsSoldier::load(
+//    const std::string& model_file,
+//    const std::string& skin_file
+//) {
+//    has_weapon = false;
+//    person.load(model_file, skin_file);
+//}
 
 void dsSoldier::load(const std::string& soldier_name, size_t team) {
     tinyxml2::XMLDocument doc;
@@ -261,7 +290,7 @@ void dsSoldier::load(const std::string& soldier_name, size_t team) {
         if (soldier_name == soldier->Attribute("name")) {
             if (soldier->FirstChildElement("weapon") == nullptr) {
                 // 该士兵没有武器模型
-                if (team == 1) {
+                /*if (team == 1) {
                     load(
                         soldier->FirstChildElement("tris")->GetText(),
                         soldier->FirstChildElement("tris_skin")->GetText()
@@ -271,10 +300,16 @@ void dsSoldier::load(const std::string& soldier_name, size_t team) {
                         soldier->FirstChildElement("tris")->GetText(),
                         soldier->FirstChildElement("tris_skin2")->GetText()
                         );
-                }
+                }*/
+                doubleLoad(
+                    soldier->FirstChildElement("tris")->GetText(),
+                    soldier->FirstChildElement("tris_skin")->GetText(),
+                    soldier->FirstChildElement("tris")->GetText(),
+                    soldier->FirstChildElement("tris_skin2")->GetText()
+                    );
             } else {
                 // 该士兵有武器模型
-                if (team == 1) {
+                /*if (team == 1) {
                     load(
                         soldier->FirstChildElement("tris")->GetText(),
                         soldier->FirstChildElement("tris_skin")->GetText(),
@@ -288,7 +323,17 @@ void dsSoldier::load(const std::string& soldier_name, size_t team) {
                         soldier->FirstChildElement("weapon")->GetText(),
                         soldier->FirstChildElement("weapon_skin")->GetText()
                         );
-                }
+                }*/
+                doubleLoad(
+                    soldier->FirstChildElement("tris")->GetText(),
+                    soldier->FirstChildElement("tris_skin")->GetText(),
+                    soldier->FirstChildElement("weapon")->GetText(),
+                    soldier->FirstChildElement("weapon_skin")->GetText(),
+                    soldier->FirstChildElement("tris")->GetText(),
+                    soldier->FirstChildElement("tris_skin2")->GetText(),
+                    soldier->FirstChildElement("weapon")->GetText(),
+                    soldier->FirstChildElement("weapon_skin")->GetText()
+                    );
             }
             auto xml_frame_set = soldier->FirstChildElement("frame_set");
             if (xml_frame_set == nullptr) {

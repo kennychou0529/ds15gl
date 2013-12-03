@@ -90,6 +90,24 @@ public:
         const std::string& skin_file
     );
 
+    void doubleLoad(
+        const std::string& person_model_file1,
+        const std::string& person_skin_file1,
+        const std::string& weapon_model_file1,
+        const std::string& weapon_skin_file1,
+        const std::string& person_model_file2,
+        const std::string& person_skin_file2,
+        const std::string& weapon_model_file2,
+        const std::string& weapon_skin_file2
+        );
+
+    void doubleLoad(
+        const std::string& person_model_file1,
+        const std::string& person_skin_file1,
+        const std::string& person_model_file2,
+        const std::string& person_skin_file2
+        );
+
     // 根据 XML 文件中的信息载入士兵模型文件
     void load(const std::string& soldier_name, size_t team = 1);
 
@@ -152,8 +170,8 @@ private:
     bool has_weapon;            // 是否含有武器模型
     Status status;              // 当前状态
 
-    MD2Model person;            // 人物模型
-    MD2Model weapon;            // 武器模型
+    MD2Model person[2];            // 人物模型
+    MD2Model weapon[2];            // 武器模型
 
     GLfloat move_speed;         // 移动速度
     GLfloat scale;              // 缩放倍数
