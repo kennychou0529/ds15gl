@@ -516,7 +516,11 @@ void dsSoldier::hpBar2(float x,float y) {
             glVertex2d(winx - 40, winy + 5);
         }
         glEnd();
-        glColor3d(1, 0, 0);
+		if(team == 1){
+			glColor3d(1, 0, 0);
+		}else{
+			glColor3d(0,1,0);
+		}
         glBegin(GL_POLYGON);
         {
             glVertex2d(winx - 39, winy + 1);

@@ -119,6 +119,7 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
                 index[(i << 5) + j] = soldier;
                 actors.list[soldier]->setHP(info.soldier[j][i].life, info.soldier[j][i].life);
                 actors.list[soldier]->setPosition(info.soldier[j][i].pos.x, info.soldier[j][i].pos.y) ;
+				actors.list[soldier]->setTeam(i+1); 
             } catch (char* err) {
                 fprintf(stderr, "%s", err);
             }

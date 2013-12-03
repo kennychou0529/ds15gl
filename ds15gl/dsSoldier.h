@@ -156,6 +156,9 @@ public:
 	int y(){
 		return current_position[1];
 	}
+	void setTeam(int i){
+		team = i;
+	}
 
 private:
     int idNumber;               //为了启用选择模式，应该有一个编号

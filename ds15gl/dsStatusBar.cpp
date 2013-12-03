@@ -177,6 +177,18 @@ void DSStatusBar::show() {
             dstext_small.print(8.0, 400.0, os.str());
         }
         glPopMatrix();
+
+
+		//提示消息
+		glPushMatrix();
+		{
+			//std::stringstream o;
+			os.str(L"");
+			os << L"F1 拉近镜头\nF2 推远镜头\nup,down,left,right\n视线平移";
+			glLoadIdentity();
+			dstext_small.print(8.0, 200.0, os.str());
+		}
+		glPopMatrix();
         /*os.str(L"");
         os << frame.actors.list["mage"].winx << L", "
             << frame.actors.list["mage"].winy << L", "
