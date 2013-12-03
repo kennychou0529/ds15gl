@@ -407,6 +407,8 @@ void dsSoldier::hpBar(GLfloat x, GLfloat y, GLfloat z) {
 }
 
 void dsSoldier::hpBar2(float x,float y) {
+	if(hp<=0)
+		return;
     GLdouble winx, winy, winz;
     GLdouble point[3];
 	point[0]=x;
