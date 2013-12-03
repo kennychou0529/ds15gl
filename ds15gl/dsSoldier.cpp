@@ -221,7 +221,11 @@ void dsSoldier::animate(bool selectMode) {
             );
             render();
             if (fps * duration > (frame_end - frame_beg)) {
-                enterStatus(died, playing);
+                if (kind == "AIRPLANE") {
+                    enterStatus(disappear, playing);
+                } else {
+                    enterStatus(died, playing);
+                }
             }
 
         } // endif
