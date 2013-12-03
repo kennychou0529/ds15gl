@@ -121,40 +121,7 @@ void DSStatusBar::show() {
         //fillRectange2D(0, 0, status_bar_width, window_height);
 
         // 这里画小地图，战场，人物等状态信息
-        // 例如
-        glPushMatrix();
-        {
-            glTranslated(status_bar_width / 2, status_bar_width / 2, 0.0);
-            glColor3f(1.0f, 1.0f, 1.0f);
-            glutSolidTeapot(50);
-        }
-        glPopMatrix();
-
-        //glPushMatrix();
-        //      {
-        //          glEnable(GL_TEXTURE_2D);
-        //          glBindTexture(GL_TEXTURE_2D, logo_tex);
-        //          glBegin(GL_QUADS);
-
-        //          glTexCoord2d(0, 1);
-        //          glVertex2d(0, window_height);
-
-        //          glTexCoord2d(1, 1);
-        //          glVertex2d(status_bar_width, window_height);
-
-        //          glTexCoord2d(1, 0);
-        //          glVertex2d(
-        //              status_bar_width,
-        //              window_height - ratio * status_bar_width
-        //          );
-
-        //          glTexCoord2d(0, 0);
-        //          glVertex2d(0, window_height - ratio * status_bar_width);
-        //          glEnd();
-        //      }
-        //      glPopMatrix();
-
-
+        		
 
         // 让我们在这里写一下眼睛位置
         std::wostringstream os;
@@ -174,7 +141,7 @@ void DSStatusBar::show() {
             os.str(L"");
             os << frame.actors.selectInfo();
             glLoadIdentity();
-            dstext_small.print(8.0, 400.0, os.str());
+            dstext_small.print(12.0, 400.0, os.str());
         }
         glPopMatrix();
 
@@ -184,9 +151,9 @@ void DSStatusBar::show() {
 		{
 			//std::stringstream o;
 			os.str(L"");
-			os << L"F1 拉近镜头\nF2 推远镜头\nup,down,left,right\n视线平移";
+			os << L"帮助\nF1 拉近镜头\nF2 推远镜头\nup,down,left,right\n视线平移";
 			glLoadIdentity();
-			dstext_small.print(8.0, 200.0, os.str());
+			dstext_small.print(12.0, (GLfloat)window_height - 100, os.str());
 		}
 		glPopMatrix();
         /*os.str(L"");
@@ -206,7 +173,7 @@ void DSStatusBar::show() {
             os << L"FPS " << frame.getFPS();
             glLoadIdentity();
             glScalef(0.5, 0.5, 0.5);
-            dstext.print(5, (GLfloat)window_height - 70, os.str());
+            dstext.print(12, (GLfloat)window_height - 70, os.str());
         }
         glPopMatrix();
 
