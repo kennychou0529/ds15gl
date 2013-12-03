@@ -45,8 +45,8 @@ dsSoldier::dsSoldier(int _idNumber) :
 }
 
 void dsSoldier::renderFrame(size_t frame_index) const {
-    person[0].renderFrame(frame_index);
-    weapon[0].renderFrame(frame_index);
+    person[team - 1].renderFrame(frame_index);
+    weapon[team - 1].renderFrame(frame_index);
 }
 
 void dsSoldier::renderSmoothly(
@@ -54,13 +54,13 @@ void dsSoldier::renderSmoothly(
     size_t frame2_index,
     GLfloat percentage
 ) const {
-    person[0].renderSmoothly(frame1_index, frame2_index, percentage);
+    person[team - 1].renderSmoothly(frame1_index, frame2_index, percentage);
 
     // 测试表明，武器模型的死亡动画有问题，所以不画了
     if (status == dying || status == died || !has_weapon) {
         return;
     }
-    weapon[0].renderSmoothly(frame1_index, frame2_index, percentage);
+    weapon[team - 1].renderSmoothly(frame1_index, frame2_index, percentage);
 }
 
 void dsSoldier::renderSmoothly(GLfloat progress) const {
@@ -281,6 +281,7 @@ void dsSoldier::doubleLoad(
 //}
 
 void dsSoldier::load(const std::string& soldier_name, size_t team) {
+    this->team = team;
     tinyxml2::XMLDocument doc;
 	kind = soldier_name;
     doc.LoadFile("soldiers.xml");

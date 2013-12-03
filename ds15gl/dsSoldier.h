@@ -161,6 +161,7 @@ private:
     int idNumber;               //为了启用选择模式，应该有一个编号
     string kind;
 	string id;
+    size_t team;                // 队伍，1 或 2
     int hp;
     int hp_max;
 
