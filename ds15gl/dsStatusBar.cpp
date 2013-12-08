@@ -125,7 +125,7 @@ void DSStatusBar::show() {
 
         // 让我们在这里写一下眼睛位置
         std::wostringstream os;
-        os << "(" << std::fixed << std::setprecision(2) << eye[0]
+        /*os << "(" << std::fixed << std::setprecision(2) << eye[0]
            << ", " << eye[1] << ", " << eye[2] << ")";
         glPushMatrix();
         {
@@ -133,7 +133,9 @@ void DSStatusBar::show() {
             dstext_small.print(8.0, 8.0, os.str());
             dstext_small.print(40.0, 30.0, L"Eye position");
         }
-        glPopMatrix();
+        glPopMatrix();*/
+
+
         //让我们写一下被选中人物的信息
         glPushMatrix();
         {
@@ -151,9 +153,14 @@ void DSStatusBar::show() {
 		{
 			//std::stringstream o;
 			os.str(L"");
-			os << L"帮助：\nF1 拉近镜头\nF2 推远镜头\n↑ ↓ → ← 视线平移\nF4 切换手动/自动";
-			glLoadIdentity();
-			dstext_small.print(15.0f, (GLfloat)window_height - 100, os.str());
+			os << L"帮助：\nF1 拉近镜头\nF2 推远镜头\n↑ ↓ → ← 视角旋转\nW S A D 视线平移\n";
+            if (frame.actors.paused) {
+                os << L"F4 切换为自动";
+            } else {
+                os << L"F4 切换为手动";
+            }
+            glLoadIdentity();
+			dstext_small.print(15.0f, (GLfloat)window_height - 120, os.str());
 		}
 		glPopMatrix();
         /*os.str(L"");
@@ -182,7 +189,7 @@ void DSStatusBar::show() {
             os.str(L"");
             os << L"回合 " << frame.actors.getCurrentRound();
             if (frame.actors.round_finished) {
-                os << L"\nF3: 进入下一回合";
+                os << L"\nF3 进入下一回合";
             }
             if (frame.actors.script_playing != 0) {
                 os << L"\n" << frame.actors.script_playing << L" 个动作正在播放";
@@ -192,7 +199,7 @@ void DSStatusBar::show() {
             }
 
             glLoadIdentity();
-            dstext_small.print(12, 220, os.str());
+            dstext_small.print(15.0f, 220, os.str());
         }
         glPopMatrix();
 
