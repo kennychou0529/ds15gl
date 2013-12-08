@@ -130,7 +130,7 @@ void DSMap::init(Game_Info* game_info) {
     display_list_huge_ground = 0;
     listLoaded = false;
     map = 0;
-
+    
 }
 
 DSMap::~DSMap() {

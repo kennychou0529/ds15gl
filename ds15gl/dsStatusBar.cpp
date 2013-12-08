@@ -151,9 +151,9 @@ void DSStatusBar::show() {
 		{
 			//std::stringstream o;
 			os.str(L"");
-			os << L"帮助\nF1 拉近镜头\nF2 推远镜头\nup,down,left,right\n视线平移";
+			os << L"帮助：\nF1 拉近镜头\nF2 推远镜头\n↑ ↓ → ← 视线平移\nF4 切换手动/自动";
 			glLoadIdentity();
-			dstext_small.print(12.0, (GLfloat)window_height - 100, os.str());
+			dstext_small.print(15.0f, (GLfloat)window_height - 100, os.str());
 		}
 		glPopMatrix();
         /*os.str(L"");
@@ -170,29 +170,29 @@ void DSStatusBar::show() {
         glPushMatrix();
         {
             os.str(L"");
-            os << L"FPS " << frame.getFPS();
+            os << L"FPS: " << frame.getFPS();
             glLoadIdentity();
             glScalef(0.5, 0.5, 0.5);
-            dstext.print(12, (GLfloat)window_height - 70, os.str());
+            dstext.print(15.0f, (GLfloat)window_height - 80, os.str());
         }
         glPopMatrix();
 
         glPushMatrix();
         {
             os.str(L"");
-            os << L"Round " << frame.actors.getCurrentRound();
+            os << L"回合 " << frame.actors.getCurrentRound();
             if (frame.actors.round_finished) {
-                os << L"\nF3: next round";
+                os << L"\nF3: 进入下一回合";
             }
             if (frame.actors.script_playing != 0) {
-                os << L"\n" << frame.actors.script_playing << L" playing";
+                os << L"\n" << frame.actors.script_playing << L" 个动作正在播放";
             }
             if (frame.actors.all_finished) {
-                os << L"\nFinished";
+                os << L"\n已结束";
             }
 
             glLoadIdentity();
-            dstext_small.print(5, 220, os.str());
+            dstext_small.print(12, 220, os.str());
         }
         glPopMatrix();
 

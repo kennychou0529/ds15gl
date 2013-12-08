@@ -65,7 +65,10 @@ void dsSpecialKeyDown(int key, int x, int y) {
         if (frame.actors.round_finished) {
             frame.actors.enterNextRound();
         }
-
+        break;
+    case GLUT_KEY_F4:
+        frame.actors.paused = !frame.actors.paused;
+        break;
     default:
         break;
     }
