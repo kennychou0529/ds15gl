@@ -385,6 +385,70 @@ void DSActorManager::update() {
                         effects.addEmitter(emm);
                     }
                     break;
+                    case soldier_skill: {
+                        //                      iter_soldier->second->enterStatus(
+                        //                          dsSoldier::Status::attacking, &script_playing
+                        //                          );
+                        iter_soldier->second->setOrientation(record.x, record.y);
+
+                        float x1, y1, x2, y2;
+                        frame.scene.map.getCoords(
+                            iter_soldier->second->current_position[0],
+                            iter_soldier->second->current_position[1],
+                            &x1, &y1
+                        );
+                        frame.scene.map.getCoords(
+                            record.x,
+                            record.y,
+                            &x2, &y2
+                        );
+                        if (iter_soldier->second->kind == "BERSERKER") {
+                            //减少5点生命
+                            iter_soldier->second->hpReduce(iter_soldier->second->hp - 5);
+
+                            Thurder* t2 = new Thurder(x2, y2, 5, x2, y2, 100, 2, 1, 15, 1.0);
+                            if (iter_soldier->second->team == 1) {
+                                t2->setColor(1, 0, 0);
+                            } else {
+                                t2->setColor(0, 1, 0);
+                            }
+                            effects.addThurder(*t2);
+
+                            Thurder* t1 = new Thurder(x1, y1, 5, x1, y1, 100, 2, 1, 15, 1.0);
+                            if (iter_soldier->second->team == 1) {
+                                t1->setColor(1, 0, 0, 0.3);
+                            } else {
+                                t1->setColor(0, 1, 0, 0.3);
+                            }
+                            effects.addThurder(*t1);
+                        } else if (iter_soldier->second->kind == "ASSASSIN") {
+                            iter_soldier->second->enterStatus(
+                                dsSoldier::Status::attacking, &script_playing
+                            );
+                        } else if (iter_soldier->second->kind == "ARCHMAGE") {
+                            Color c = {0, 0, 0};
+                            if (iter_soldier->second->team == 1) {
+                                c.r = 1;
+                            } else {
+                                c.g = 1;
+                            }
+                            Color* colors = new Color[256];
+                            for (int i = 0; i < 256; i++) {
+                                colors[i] = c;
+                            }
+
+                            Emitter emm(0, 6.28f, 1.57, 0.2, 2, 2, colors, 0.5);
+                            emm.setPosition(x1, y1, 5);
+                            //emm.setSpeed(0,0,-4);
+                            //Vector mag = {0, 0.01, 0};
+                            //emm.setGravity(0, 0, 1);
+                            emm.setCenter(x1, y1, 6, 1);
+
+                            //emm.setMagnetic(0, 0.5, 0);
+                            effects.addEmitter(emm);
+                        }
+                    }
+                    break;
                     default:
                         break;
                     }
@@ -424,6 +488,9 @@ void DSActorManager::update() {
 }
 
 void DSActorManager::enterNextRound() {
+    if (all_finished) {
+        return;
+    }
     ++round;
     round_finished = false;
     std::wostringstream os;

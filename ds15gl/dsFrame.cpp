@@ -131,7 +131,7 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
 
     actors.script.clear();
     //actors.script.add(0, false, index[0], soldier_move, info.soldier[0][0].pos.x, info.soldier[0][0].pos.y);
-    actors.script.add(0, false, "BEGIN", game_begin, 5, 0);
+    actors.script.add(0, false, "BEGIN", game_begin,3, 0);
 
     // 初始信息读入完成
 
@@ -222,7 +222,7 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
             }
 
         }
-        if (cmd.order == 1 || cmd.order == 2) {
+        if (cmd.order == 1) {
             dsSoldier* target_soldier = actors.list[index[cmd.target_id + (cmd.target_team << 5)]];
 
 
@@ -253,7 +253,7 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
                     //反击
                     int hurt2 = begin_info.soldier[begin_info.move_id ][begin_info.move_team].life - end_info.soldier[begin_info.move_id ][begin_info.move_team].life;
 
-                    if (end_info.attack_effect[1] ==1) {
+                    if (end_info.attack_effect[1] == 1) {
 
                         actors.script.add(roundNum, false, soldier->getID(), soldier_pain, hurt2, end_info.soldier[begin_info.move_id ][begin_info.move_team].life);
                         //死亡
@@ -265,7 +265,66 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
                 }
             }
         } else if (cmd.order == 2) {
-            //待添加
+
+            if (end_info.attack_effect[0] != -1) {
+                break;
+            }
+            dsSoldier* target_soldier = actors.list[index[cmd.target_id + (cmd.target_team << 5)]];
+            switch (begin_info.soldier[cmd.target_id][cmd.target_team].kind) {
+            case BERSERKER:
+                if (end_info.attack_effect[0] != 1) {
+                    actors.script.add(roundNum, false, soldier->getID(), soldier_skill,
+                                      end_info.soldier[cmd.target_id][cmd.target_team].pos.x,
+                                      end_info.soldier[cmd.target_id][cmd.target_team].pos.y);
+                    int recover = begin_info.soldier[cmd.target_id][cmd.target_team].life - end_info.soldier[cmd.target_id][cmd.target_team].life;
+                    if (recover < 0) {
+                        actors.script.add(roundNum, false, target_soldier->getID(), soldier_pain,
+                                          recover,
+                                          end_info.soldier[cmd.target_id][cmd.target_team].life);
+                    }
+                }
+                break;
+            case ASSASSIN:
+                actors.script.add(roundNum, false, soldier->getID(), soldier_skill,
+                                  end_info.soldier[cmd.target_id][cmd.target_team].pos.x,
+                                  end_info.soldier[cmd.target_id][cmd.target_team].pos.y);
+                if (end_info.attack_effect[0] == 1) {
+                    //伤害
+                    int hurt = begin_info.soldier[cmd.target_id][cmd.target_team].life - end_info.soldier[cmd.target_id][cmd.target_team].life;
+
+                    actors.script.add(roundNum, true, target_soldier->getID(), soldier_pain, hurt, end_info.soldier[cmd.target_id][cmd.target_team].life);
+                    //死亡
+                    if (end_info.soldier[cmd.target_id][cmd.target_team].life <= 0) {
+                        actors.script.add(roundNum, true, target_soldier->getID(), soldier_die, 0, 0);
+                    }
+                }
+
+                if (end_info.attack_effect[1] != -1) {
+                    actors.script.add(roundNum, false, target_soldier->getID(), soldier_fight,
+                                      end_info.soldier[begin_info.move_id ][begin_info.move_team].pos.x,
+                                      end_info.soldier[begin_info.move_id ][begin_info.move_team].pos.y);
+                    //反击
+                    int hurt2 = begin_info.soldier[begin_info.move_id ][begin_info.move_team].life - end_info.soldier[begin_info.move_id ][begin_info.move_team].life;
+
+                    if (end_info.attack_effect[1] == 1) {
+
+                        actors.script.add(roundNum, false, soldier->getID(), soldier_pain, hurt2, end_info.soldier[begin_info.move_id ][begin_info.move_team].life);
+                        //死亡
+                        if (end_info.soldier[begin_info.move_id ][begin_info.move_team].life <= 0) {
+                            actors.script.add(roundNum, false, soldier->getID(), soldier_die, 0, 0);
+                        }
+
+                    }
+                }
+                break;
+            case ARCHMAGE:
+                actors.script.add(roundNum, false, soldier->getID(), soldier_skill,
+                                  end_info.soldier[cmd.target_id][cmd.target_team].pos.x,
+                                  end_info.soldier[cmd.target_id][cmd.target_team].pos.y);
+                break;
+            default:
+                break;
+            }
         }
     }
 

@@ -13,6 +13,7 @@ enum ScriptType {
     soldier_fight,
     soldier_die,
     soldier_pain,
+	soldier_skill,
 	//传送
 	soldier_trans,
     view_move,
