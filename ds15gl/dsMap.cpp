@@ -22,6 +22,7 @@ void DSMap::load() {
     // 载入平原贴图
     texture_ID_plain = dsLoadTextureBMP2D("data/images/grass.bmp");
 
+    texture_ID_mirror = dsLoadTextureBMP2D("data/images/mirror.bmp");
     // 载入所有山地贴图: begin
     size_t A, B, C, D, temp;
     std::ostringstream os;
@@ -116,7 +117,7 @@ void DSMap::init(Game_Info* game_info) {
                 this_data = temple;
                 break;
             case MIRROR:
-                this_data = plain;
+                this_data = mirror;
                 break;
             }
         }
@@ -295,6 +296,10 @@ void DSMap::renderTile(size_t x_index, size_t y_index) {
         glCallList(display_lists[plain]);
         glTranslatef(-x, -y, 0.0f);
         break;
+    case mirror:
+        glTranslatef(x, y, 0.0f);
+        glCallList(display_lists[mirror]);
+        glTranslatef(-x, -y, 0.0f);
     default:
         break;
     }
@@ -721,6 +726,34 @@ void DSMap::loadDisplayLists() {
     glPopAttrib();
     glEndList();
     // Plain: end
+
+    // Mirror: begin
+    display_lists[mirror] = glGenLists(1);
+    glNewList(display_lists[mirror], GL_COMPILE);
+    glPushAttrib(GL_ENABLE_BIT);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture_ID_mirror);
+    glBegin(GL_QUADS);
+    {
+        glNormal3f(0.0f, 0.0f, 1.0f);
+
+        glTexCoord2f(0.0f, 0.0f);
+        glVertex3f(-grid_size / 2.0f, -grid_size / 2.0f, 0.0f);
+
+        glTexCoord2f(1.0f, 0.0f);
+        glVertex3f(+grid_size / 2.0f, -grid_size / 2.0f, 0.0f);
+
+        glTexCoord2f(1.0f, 1.0f);
+        glVertex3f(+grid_size / 2.0f, +grid_size / 2.0f, 0.0f);
+
+        glTexCoord2f(0.0f, 1.0f);
+        glVertex3f(-grid_size / 2.0f, +grid_size / 2.0f, 0.0f);
+    }
+    glEnd();
+    glPopAttrib();
+    glEndList();
+    // Mirror: end
 
     // Forest: begin
     display_lists[forest] = glGenLists(1);

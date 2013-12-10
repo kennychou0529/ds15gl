@@ -14,6 +14,7 @@ enum TileType {
     temple,   // 神庙
     trap,     // 陷阱
     facility, // 机关
+    mirror,   // 镜子
     invalid   // 返回错误
 };
 
@@ -102,7 +103,7 @@ private:
     TileType* data;
 
     // 多种地形
-    GLuint display_lists[8];
+    GLuint display_lists[10];
 
     // 线状网格
     GLuint display_list_grids;
@@ -115,6 +116,9 @@ private:
 
     // 平原贴图编号
     GLuint texture_ID_plain;
+
+    // 镜子贴图编号
+    GLuint texture_ID_mirror;
 
     // 山地贴图详解：
     // 一块山地分为四个边
