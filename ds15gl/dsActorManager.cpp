@@ -8,6 +8,7 @@ bool gameOver;
 DSActorManager::DSActorManager() :
     round(0),
     script_playing(0),
+    paused(false),
     round_finished(false),
     all_finished(false) {
     gameOver = true;
@@ -362,7 +363,9 @@ void DSActorManager::update() {
             // 那么将下一条指令也下达
 
         } else {
-            enterNextRound();
+            if (!paused) {
+                enterNextRound();
+            }
         }
     }
 }

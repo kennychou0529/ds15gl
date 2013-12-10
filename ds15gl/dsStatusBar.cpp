@@ -127,7 +127,7 @@ void DSStatusBar::show() {
 
         // 让我们在这里写一下眼睛位置
         std::wostringstream os;
-        os << "(" << std::fixed << std::setprecision(2) << eye[0]
+        /*os << "(" << std::fixed << std::setprecision(2) << eye[0]
            << ", " << eye[1] << ", " << eye[2] << ")";
         glPushMatrix();
         {
@@ -135,7 +135,9 @@ void DSStatusBar::show() {
             dstext_small.print(8.0, 8.0, os.str());
             dstext_small.print(40.0, 30.0, L"Eye position");
         }
-        glPopMatrix();
+        glPopMatrix();*/
+
+
         //让我们写一下被选中人物的信息
         glPushMatrix();
         {
@@ -155,8 +157,14 @@ void DSStatusBar::show() {
 			//std::stringstream o;
 			os.str(L"");
 			os << L"帮助\nF1 拉近镜头\nF2 推远镜头\nup,down,left,right\n视角旋转\nw,a,s,d 视线平移\n鼠标点击 选择人物\n鼠标右键 取消选择";
-			glLoadIdentity();
-			dstext_small.print(12.0, (GLfloat)window_height - 100, os.str());
+			os << L"帮助：\nF1 拉近镜头\nF2 推远镜头\n↑ ↓ → ← 视角旋转\nW S A D 视线平移\n";
+            if (frame.actors.paused) {
+                os << L"F4 切换为自动";
+            } else {
+                os << L"F4 切换为手动";
+            }
+            glLoadIdentity();
+			dstext_small.print(15.0f, (GLfloat)window_height - 120, os.str());
 		}
 		glPopMatrix();
         /*os.str(L"");
@@ -174,29 +182,29 @@ void DSStatusBar::show() {
         {
 			//glColor3f(0,0,1);
             os.str(L"");
-            os << L"FPS " << frame.getFPS();
+            os << L"FPS: " << frame.getFPS();
             glLoadIdentity();
             glScalef(0.5, 0.5, 0.5);
-            dstext.print(13, (GLfloat)window_height -75, os.str());
+            dstext.print(15.0f, (GLfloat)window_height - 80, os.str());
         }
         glPopMatrix();
 
         glPushMatrix();
         {
             os.str(L"");
-            os << L"Round " << frame.actors.getCurrentRound();
+            os << L"回合 " << frame.actors.getCurrentRound();
             if (frame.actors.round_finished) {
-                os << L"\nF3: next round";
+                os << L"\nF3 进入下一回合";
             }
             if (frame.actors.script_playing != 0) {
-                os << L"\n" << frame.actors.script_playing << L" playing";
+                os << L"\n" << frame.actors.script_playing << L" 个动作正在播放";
             }
             if (frame.actors.all_finished) {
-                os << L"\nFinished";
+                os << L"\n已结束";
             }
 
             glLoadIdentity();
-            dstext_small.print(12, 220, os.str());
+            dstext_small.print(15.0f, 220, os.str());
         }
         glPopMatrix();
 

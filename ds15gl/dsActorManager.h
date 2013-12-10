@@ -39,6 +39,7 @@ public:
     int script_playing;
     bool round_finished;
     bool all_finished;
+    bool paused; // 若为 false，则无需按键即可进入下一轮
     std::map<int, string> intToString;
     string selectSoldierId;
 
