@@ -224,3 +224,4 @@ CharactorTest/*
 *.orig
 *.exe
 SocketServerTest/main.cpp
+ds15gl/ds15gl.zip

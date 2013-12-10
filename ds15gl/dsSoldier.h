@@ -99,14 +99,14 @@ public:
         const std::string& person_skin_file2,
         const std::string& weapon_model_file2,
         const std::string& weapon_skin_file2
-        );
+    );
 
     void doubleLoad(
         const std::string& person_model_file1,
         const std::string& person_skin_file1,
         const std::string& person_model_file2,
         const std::string& person_skin_file2
-        );
+    );
 
     // 根据 XML 文件中的信息载入士兵模型文件
     void load(const std::string& soldier_name, size_t team = 1);
@@ -119,12 +119,17 @@ public:
 
     void hpBar(GLfloat x, GLfloat y, GLfloat z);
 
-    void hpBar2(float x,float y);
+    void hpBar2(float x, float y);
 
     std::wstring getInfo() {
         std::wostringstream os;
+        os << L"Team " << team << "\n";
         os << L"HP     :" << hp << " / " << hp_max << L"\n";
-        os << "Location:" << current_position[0] << "," << current_position[1] << "\n";
+		os<<L"攻击力： "<<attack<<"\n";
+		os<< L"防御："<<defence<<"\n";
+		os<<L" 移动力： "<<moveability<<"\n";
+		os<<L"技能cd: "<<cd<<"\n";
+        os << L"Location:" << current_position[0] << "," << current_position[1] << "\n";
         return os.str();
     }
 
@@ -143,30 +148,42 @@ public:
         hp = current;
     }
 
-	void setID(string _id){
-		id=_id;
-	}
-	string getID(){
-		return id;
-	}
+    void setID(string _id) {
+        id = _id;
+    }
+    string getID() {
+        return id;
+    }
 
-	int x(){
-		return current_position[0];
-	}
-	int y(){
-		return current_position[1];
-	}
-	void setTeam(int i){
-		team = i;
-	}
+    int x() {
+        return current_position[0];
+    }
+    int y() {
+        return current_position[1];
+    }
+    void setTeam(int i) {
+        team = i;
+    }
+
+    void updateInfo(int _attack,int _defence, int _moveability,int _cd) {
+        defence = _defence;
+        cd = _cd;
+		attack = _attack;
+		moveability = _moveability;
+    }
 
 private:
     int idNumber;               //为了启用选择模式，应该有一个编号
     string kind;
-	string id;
+    string id;
     size_t team;                // 队伍，1 或 2
     int hp;
     int hp_max;
+
+	int attack;
+	int moveability;
+    int defence;
+    int cd;
 
     bool beSelected;            //是否被选中
     //static GLuint aureole;        //光环的贴图

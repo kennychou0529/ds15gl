@@ -123,6 +123,8 @@ void DSStatusBar::show() {
         // 这里画小地图，战场，人物等状态信息
         		
 
+		glColor3f(0,1,1);
+
         // 让我们在这里写一下眼睛位置
         std::wostringstream os;
         os << "(" << std::fixed << std::setprecision(2) << eye[0]
@@ -149,9 +151,10 @@ void DSStatusBar::show() {
 		//提示消息
 		glPushMatrix();
 		{
+			
 			//std::stringstream o;
 			os.str(L"");
-			os << L"帮助\nF1 拉近镜头\nF2 推远镜头\nup,down,left,right\n视线平移";
+			os << L"帮助\nF1 拉近镜头\nF2 推远镜头\nup,down,left,right\n视角旋转\nw,a,s,d 视线平移\n鼠标点击 选择人物\n鼠标右键 取消选择";
 			glLoadIdentity();
 			dstext_small.print(12.0, (GLfloat)window_height - 100, os.str());
 		}
@@ -169,11 +172,12 @@ void DSStatusBar::show() {
 
         glPushMatrix();
         {
+			//glColor3f(0,0,1);
             os.str(L"");
             os << L"FPS " << frame.getFPS();
             glLoadIdentity();
             glScalef(0.5, 0.5, 0.5);
-            dstext.print(12, (GLfloat)window_height - 70, os.str());
+            dstext.print(13, (GLfloat)window_height -75, os.str());
         }
         glPopMatrix();
 
@@ -192,7 +196,7 @@ void DSStatusBar::show() {
             }
 
             glLoadIdentity();
-            dstext_small.print(5, 220, os.str());
+            dstext_small.print(12, 220, os.str());
         }
         glPopMatrix();
 

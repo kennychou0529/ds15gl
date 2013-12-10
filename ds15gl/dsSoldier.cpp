@@ -22,8 +22,9 @@ const int ARCHMAGE = 8;           // 大法师
 */
 
 //这里需要排一下
-char kind[9][10]= {"SABER","SOLDIER","ARCHER","AIRPLANE",
-	"TANK","WIZARD","BERSERKER","ASSASSIN","ARCHMAGE"};
+char kind[9][10] = {"SABER", "SOLDIER", "ARCHER", "AIRPLANE",
+                    "TANK", "WIZARD", "BERSERKER", "ASSASSIN", "ARCHMAGE"
+                   };
 
 
 static const GLfloat pi = 3.1415926f;
@@ -42,6 +43,7 @@ dsSoldier::dsSoldier(int _idNumber) :
     hp = 15;
     hp_max = 15;
     beSelected = false;
+    attack = moveability = defence = cd = 0;
 }
 
 void dsSoldier::renderFrame(size_t frame_index) const {
@@ -151,8 +153,8 @@ void dsSoldier::animate(bool selectMode) {
             glRotatef(angle + default_angle, 0.0f, 0.0f, 1.0f);
             renderSmoothly(duration * fps);
             glPopMatrix();
-			//hpBar(x, y, 12);
-			hpBar2(x,y);
+            //hpBar(x, y, 12);
+            hpBar2(x, y);
 
             drawAureole(x, y);
         };
@@ -196,7 +198,7 @@ void dsSoldier::animate(bool selectMode) {
             y = pos.y;
 
             render();
-			//声源跟随人物
+            //声源跟随人物
             DSSoundManager::changePosition(sound._run_record, x, y);
             if (move_speed * duration > length) {
                 pos = target;
@@ -204,7 +206,7 @@ void dsSoldier::animate(bool selectMode) {
                 enterStatus(idle, playing);
                 frame.sounds.stop(sound._run_record); //结束脚步声
             }
-            
+
 
         } else if (status == attacking || status == pain) {
             frame.scene.map.getCoords(
@@ -256,7 +258,7 @@ void dsSoldier::doubleLoad(
     const std::string& person_skin_file2,
     const std::string& weapon_model_file2,
     const std::string& weapon_skin_file2
-    ) {
+) {
     has_weapon = true;
     person[0].load(person_model_file1, person_skin_file1);
     weapon[0].load(weapon_model_file1, weapon_skin_file1);
@@ -269,7 +271,7 @@ void dsSoldier::doubleLoad(
     const std::string& person_skin_file1,
     const std::string& person_model_file2,
     const std::string& person_skin_file2
-    ) {
+) {
     has_weapon = false;
     person[0].load(person_model_file1, person_skin_file1);
     person[1].load(person_model_file2, person_skin_file2);
@@ -287,7 +289,7 @@ void dsSoldier::doubleLoad(
 void dsSoldier::load(const std::string& soldier_name, size_t team) {
     this->team = team;
     tinyxml2::XMLDocument doc;
-	kind = soldier_name;
+    kind = soldier_name;
     doc.LoadFile("soldiers.xml");
     auto root = doc.FirstChildElement();
     auto soldier = root->FirstChildElement("soldier");
@@ -311,7 +313,7 @@ void dsSoldier::load(const std::string& soldier_name, size_t team) {
                     soldier->FirstChildElement("tris_skin")->GetText(),
                     soldier->FirstChildElement("tris")->GetText(),
                     soldier->FirstChildElement("tris_skin2")->GetText()
-                    );
+                );
             } else {
                 // 该士兵有武器模型
                 /*if (team == 1) {
@@ -338,7 +340,7 @@ void dsSoldier::load(const std::string& soldier_name, size_t team) {
                     soldier->FirstChildElement("tris_skin2")->GetText(),
                     soldier->FirstChildElement("weapon")->GetText(),
                     soldier->FirstChildElement("weapon_skin")->GetText()
-                    );
+                );
             }
             auto xml_frame_set = soldier->FirstChildElement("frame_set");
             if (xml_frame_set == nullptr) {
@@ -456,13 +458,14 @@ void dsSoldier::hpBar(GLfloat x, GLfloat y, GLfloat z) {
 
 }
 
-void dsSoldier::hpBar2(float x,float y) {
-	if(hp<=0)
-		return;
+void dsSoldier::hpBar2(float x, float y) {
+    if (hp <= 0) {
+        return;
+    }
     GLdouble winx, winy, winz;
     GLdouble point[3];
-	point[0]=x;
-	point[1]=y;
+    point[0] = x;
+    point[1] = y;
     point[2] = 11;
     /*frame.scene.map.getCoords(
         current_position[0], current_position[1], point, point + 1
@@ -520,11 +523,11 @@ void dsSoldier::hpBar2(float x,float y) {
             glVertex2d(winx - 40, winy + 5);
         }
         glEnd();
-		if(team == 1){
-			glColor3d(1, 0, 0);
-		}else{
-			glColor3d(0,1,0);
-		}
+        if (team == 1) {
+            glColor3d(1, 0, 0);
+        } else {
+            glColor3d(0, 1, 0);
+        }
         glBegin(GL_POLYGON);
         {
             glVertex2d(winx - 39, winy + 1);
@@ -558,7 +561,7 @@ GLfloat dsSoldier::setOrientation(size_t x, size_t y) {
         angle = -angle;
     }
 
-    
+
 
     return angle;
 }
@@ -580,8 +583,8 @@ void dsSoldier::drawAureole(GLfloat x, GLfloat y) {
     glDisable(GL_TEXTURE_2D);
     glDisable(GL_LIGHTING);
     //glBindTexture(GL_TEXTURE_2D,aureole);
-    glColor4f(1.f, 1.f, 0.f,0.5f);
-	glLineWidth(6);
+    glColor4f(1.f, 1.f, 0.f, 0.5f);
+    glLineWidth(6);
     glBegin(GL_LINE_LOOP);
     {
 
@@ -591,7 +594,7 @@ void dsSoldier::drawAureole(GLfloat x, GLfloat y) {
 
     }
     glEnd();
-	//glRotatef(-2*angle, 0, 0, 1);
+    //glRotatef(-2*angle, 0, 0, 1);
     glBegin(GL_LINE_LOOP);
     {
         glVertex2d(0.f, -6.f);
@@ -599,8 +602,8 @@ void dsSoldier::drawAureole(GLfloat x, GLfloat y) {
         glVertex2d(-5.2, 3.f);
     }
     glEnd();
-	glRotatef(-2*angle, 0, 0, 1);
-	glRectf(-2.f,-2.f,2.f,2.f);
+    glRotatef(-2 * angle, 0, 0, 1);
+    glRectf(-2.f, -2.f, 2.f, 2.f);
     glPopAttrib();
     //  glEnable(GL_TEXTURE_2D);
     //  glEnable(GL_LIGHTING);

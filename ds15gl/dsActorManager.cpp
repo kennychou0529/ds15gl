@@ -172,8 +172,12 @@ void DSActorManager::render(bool selectMode) {
         } else {
             delay_time = 0;
             script_playing --;
+			
         }
     }
+	if (gameOver) {
+         showEndInfo(2, 2);
+	}
 
 
     //list["SOLDIER"].hpBar2();
