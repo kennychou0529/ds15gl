@@ -10,7 +10,7 @@ DSActorManager::DSActorManager() :
     paused(false),
     round_finished(false),
     all_finished(false) {
-    round = 0;
+    round_number = 0;
     gameOver = true;
 }
 
@@ -186,7 +186,7 @@ void DSActorManager::render(bool selectMode) {
 
 //#include "dsTimer.h"
 
-int round = 0;
+int round_number = 0;
 
 void DSActorManager::update() {
 
@@ -203,7 +203,7 @@ void DSActorManager::update() {
         // 如果窥探到接下来的一条指令对应的回合数大于当前回合
         // 说明当前回合的所有指令都已播放完成
         // 于是标记 round_finished
-        if (script.nextRound() > round) {
+        if (script.nextRound() > round_number) {
             round_finished = true;
         }
 
@@ -395,7 +395,7 @@ void DSActorManager::update() {
                 }
 
             } while (
-                (script.nextRound() == round)
+                (script.nextRound() == round_number)
                 && (script.peekNextRecord().sync)
             );
             // 当下一条指令也是本回合的，且下一条指令要求同步播放，
@@ -409,10 +409,10 @@ void DSActorManager::update() {
                         if (info.soldier[j][i].life > 0) {
                             dsSoldier* soldier = list[index[j + (i << 5)]];
                             if (soldier) {
-                                soldier->updateInfo(begin_infos[round].soldier[j][i].strength,
-                                                    begin_infos[round].soldier[j][i].defence,
-                                                    begin_infos[round].soldier[j][i].move_range,
-                                                    begin_infos[round].soldier[j][i].duration);
+                                soldier->updateInfo(begin_infos[round_number].soldier[j][i].strength,
+                                                    begin_infos[round_number].soldier[j][i].defence,
+                                                    begin_infos[round_number].soldier[j][i].move_range,
+                                                    begin_infos[round_number].soldier[j][i].duration);
                             }
                         }
                     }
@@ -424,10 +424,10 @@ void DSActorManager::update() {
 }
 
 void DSActorManager::enterNextRound() {
-    ++round;
+    ++round_number;
     round_finished = false;
     std::wostringstream os;
     os.str(L"");
-    os << L"第 " << round << L" 回合";
+    os << L"第 " << round_number << L" 回合";
     frame.scene.mboxes.addMessage(os.str().c_str(), 250.0f);
 }

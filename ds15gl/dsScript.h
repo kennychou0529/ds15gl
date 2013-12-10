@@ -22,7 +22,7 @@ enum ScriptType {
 };
 
 struct Record {
-    int round;       // 回合数
+    int round_number;       // 回合数
     bool sync;       // 是否与上一条指令同时发出
     string id;       // 对象id;
     ScriptType type; // 动作
@@ -33,7 +33,7 @@ struct Record {
 
     Record() {}
     Record(Record& record):
-        round(record.round),
+        round_number(record.round_number),
         sync(record.sync),
         id(record.id),
         type(record.type),
@@ -48,7 +48,7 @@ struct Record {
         size_t _x,
         size_t _y
     ):
-        round(_round),
+        round_number(_round),
         sync(_sync),
         id(_id),
         type(_type),
@@ -171,7 +171,7 @@ public:
         if (scriptQue.empty()) {
             return 0;
         }
-        return scriptQue.front().round;
+        return scriptQue.front().round_number;
     }
 	//弹出刚入列的记录
 	Record pop() {
