@@ -10,7 +10,7 @@
 #include "effect/EffectManager.h"
 
 typedef std::map<std::string, dsSoldier*> SOLDIERS;
-
+extern int round;
 class DSActorManager {
 public:
     DSActorManager();
@@ -101,7 +101,7 @@ private:
     //脚本
     DSScript script;
     //回合数
-    int round;
+    
     //std::map<string,SoundIDandSource> soundGroups;
 	EffectManager effects;
 	//

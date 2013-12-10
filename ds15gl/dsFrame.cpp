@@ -62,6 +62,8 @@ bool canRefresh = false;
 
 Game_Info info;
 Round_End_Info end_info;
+Round_End_Info end_infos[600];
+map<int, string> index;
 
 void DSFrame::initialize2(const std::string& rep_file_name) {
     isReady = false;
@@ -73,7 +75,7 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
     int roundNum = 0;
     Round_Begin_Info begin_info;
     Command cmd;
-    
+
     //从数字索引到stringID的映射
     map<int, string> index;
 
@@ -119,7 +121,7 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
                 index[(i << 5) + j] = soldier;
                 actors.list[soldier]->setHP(info.soldier[j][i].life, info.soldier[j][i].life);
                 actors.list[soldier]->setPosition(info.soldier[j][i].pos.x, info.soldier[j][i].pos.y) ;
-				actors.list[soldier]->setTeam(i+1); 
+                actors.list[soldier]->setTeam(i + 1);
             } catch (char* err) {
                 fprintf(stderr, "%s", err);
             }
@@ -187,6 +189,7 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
 
         ///////////////展示操作
         roundNum++;
+        end_infos[roundNum] = end_info;
         dsSoldier* soldier = actors.list[index[begin_info.move_id + (begin_info.move_team << 5)]];
 
         if (begin_info.soldier[begin_info.move_id ][begin_info.move_team].life <= 0) {
@@ -205,8 +208,10 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
             }
             // 这里
             if (end_info.trans) {
-                Record r = actors.script.pop();
-                actors.script.add(roundNum, false, soldier->getID(), soldier_trans, r.x, r.y);
+                //Record r = actors.script.pop();
+                actors.script.add(roundNum, false, soldier->getID(), soldier_trans,
+                                  end_info.soldier[begin_info.move_id ][begin_info.move_team].pos.x,
+                                  end_info.soldier[begin_info.move_id ][begin_info.move_team].pos.y);
             }
 
         }

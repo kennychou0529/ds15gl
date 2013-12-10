@@ -94,6 +94,9 @@ void DSStatusBar::renderBackground() {
     glEnd();
 }
 
+extern Round_End_Info end_infos[600];
+extern int round;
+
 void DSStatusBar::show() {
     // 更改投影方式为 2D 平行投影
     glMatrixMode(GL_PROJECTION);
@@ -156,13 +159,13 @@ void DSStatusBar::show() {
 			
 			//std::stringstream o;
 			os.str(L"");
-			os << L"帮助\nF1 拉近镜头\nF2 推远镜头\nup,down,left,right\n视角旋转\nw,a,s,d 视线平移\n鼠标点击 选择人物\n鼠标右键 取消选择";
-			os << L"帮助：\nF1 拉近镜头\nF2 推远镜头\n↑ ↓ → ← 视角旋转\nW S A D 视线平移\n";
-            if (frame.actors.paused) {
-                os << L"F4 切换为自动";
-            } else {
-                os << L"F4 切换为手动";
-            }
+			//os << L"帮助\nF1 拉近镜头\nF2 推远镜头\nup,down,left,right\n视角旋转\nw,a,s,d 视线平移\n鼠标点击 选择人物\n鼠标右键 取消选择";
+			//os << L"帮助：\nF1 拉近镜头\nF2 推远镜头\n↑ ↓ → ← 视角旋转\nW S A D 视线平移\n";
+			/*if (frame.actors.paused) {
+			os << L"F4 切换为自动";
+			} else {
+			os << L"F4 切换为手动";
+			}*/
             glLoadIdentity();
 			dstext_small.print(15.0f, (GLfloat)window_height - 120, os.str());
 		}

@@ -6,11 +6,11 @@
 bool gameOver;
 
 DSActorManager::DSActorManager() :
-    round(0),
     script_playing(0),
     paused(false),
     round_finished(false),
     all_finished(false) {
+    round = 0;
     gameOver = true;
 }
 
@@ -62,89 +62,89 @@ void DSActorManager::initialize() {
 
     insertSoldier("SABER1", "SABER");
     insertSoldier("SABER2", "SABER");
-	insertSoldier("SABER3", "SABER");
-	insertSoldier("SABER4", "SABER");
-	insertSoldier("SABER5", "SABER");
-	insertSoldier("SABER6", "SABER");
-	insertSoldier("SABER7", "SABER");
-	insertSoldier("SABER8", "SABER");
-	insertSoldier("SABER9", "SABER");
+    insertSoldier("SABER3", "SABER");
+    insertSoldier("SABER4", "SABER");
+    insertSoldier("SABER5", "SABER");
+    insertSoldier("SABER6", "SABER");
+    insertSoldier("SABER7", "SABER");
+    insertSoldier("SABER8", "SABER");
+    insertSoldier("SABER9", "SABER");
 
     insertSoldier("SOLDIER1", "SOLDIER");
     insertSoldier("SOLDIER2", "SOLDIER");
-	insertSoldier("SOLDIER3", "SOLDIER");
-	insertSoldier("SOLDIER4", "SOLDIER");
-	insertSoldier("SOLDIER5", "SOLDIER");
-	insertSoldier("SOLDIER6", "SOLDIER");
-	insertSoldier("SOLDIER7", "SOLDIER");
-	insertSoldier("SOLDIER8", "SOLDIER");
-	insertSoldier("SOLDIER9", "SOLDIER");
+    insertSoldier("SOLDIER3", "SOLDIER");
+    insertSoldier("SOLDIER4", "SOLDIER");
+    insertSoldier("SOLDIER5", "SOLDIER");
+    insertSoldier("SOLDIER6", "SOLDIER");
+    insertSoldier("SOLDIER7", "SOLDIER");
+    insertSoldier("SOLDIER8", "SOLDIER");
+    insertSoldier("SOLDIER9", "SOLDIER");
 
     //     list["SOLDIER"].setPosition(1, 1);
     //     list["SOLDIER"].enterStatus(dsSoldier::Status::disappear);
 
     insertSoldier("ARCHER1", "ARCHER");
     insertSoldier("ARCHER2", "ARCHER");
-	insertSoldier("ARCHER3", "ARCHER");
-	insertSoldier("ARCHER4", "ARCHER");
-	insertSoldier("ARCHER5", "ARCHER");
-	insertSoldier("ARCHER6", "ARCHER");
-	insertSoldier("ARCHER7", "ARCHER");
-	insertSoldier("ARCHER8", "ARCHER");
-	insertSoldier("ARCHER9", "ARCHER");
-	
+    insertSoldier("ARCHER3", "ARCHER");
+    insertSoldier("ARCHER4", "ARCHER");
+    insertSoldier("ARCHER5", "ARCHER");
+    insertSoldier("ARCHER6", "ARCHER");
+    insertSoldier("ARCHER7", "ARCHER");
+    insertSoldier("ARCHER8", "ARCHER");
+    insertSoldier("ARCHER9", "ARCHER");
+
     //     list["ARCHER"].setPosition(1, 5);
     //     list["ARCHER"].enterStatus(dsSoldier::Status::disappear);
 
-   
-	insertSoldier("AIRPLANE1", "AIRPLANE");
-	insertSoldier("AIRPLANE2", "AIRPLANE");
-	insertSoldier("AIRPLANE3", "AIRPLANE");
-	insertSoldier("AIRPLANE4", "AIRPLANE");
-	insertSoldier("AIRPLANE5", "AIRPLANE");
-	insertSoldier("AIRPLANE6", "AIRPLANE");
-	insertSoldier("AIRPLANE7", "AIRPLANE");
-	insertSoldier("AIRPLANE8", "AIRPLANE");
-	insertSoldier("AIRPLANE9", "AIRPLANE");
-	
+
+    insertSoldier("AIRPLANE1", "AIRPLANE");
+    insertSoldier("AIRPLANE2", "AIRPLANE");
+    insertSoldier("AIRPLANE3", "AIRPLANE");
+    insertSoldier("AIRPLANE4", "AIRPLANE");
+    insertSoldier("AIRPLANE5", "AIRPLANE");
+    insertSoldier("AIRPLANE6", "AIRPLANE");
+    insertSoldier("AIRPLANE7", "AIRPLANE");
+    insertSoldier("AIRPLANE8", "AIRPLANE");
+    insertSoldier("AIRPLANE9", "AIRPLANE");
+
     /*  list["AIRPLANE"].setPosition(2, 4);*/
     //list["AIRPLANE"].enterStatus(dsSoldier::Status::disappear);
 
     insertSoldier("TANK1", "TANK");
     insertSoldier("TANK2", "TANK");
-	insertSoldier("TANK3", "TANK");
-	insertSoldier("TANK4", "TANK");
-	insertSoldier("TANK5", "TANK");
-	insertSoldier("TANK6", "TANK");
-	insertSoldier("TANK7", "TANK");
-	insertSoldier("TANK8", "TANK");
-	insertSoldier("TANK9", "TANK");
-	
+    insertSoldier("TANK3", "TANK");
+    insertSoldier("TANK4", "TANK");
+    insertSoldier("TANK5", "TANK");
+    insertSoldier("TANK6", "TANK");
+    insertSoldier("TANK7", "TANK");
+    insertSoldier("TANK8", "TANK");
+    insertSoldier("TANK9", "TANK");
+
     //list["TANK"].setPosition(0, 2);
     //list["TANK"].enterStatus(dsSoldier::Status::disappear);
 
     insertSoldier("WIZARD1", "WIZARD");
     insertSoldier("WIZARD2", "WIZARD");
-	insertSoldier("WIZARD3", "WIZARD");
-	insertSoldier("WIZARD4", "WIZARD");
-	insertSoldier("WIZARD5", "WIZARD");
-	insertSoldier("WIZARD6", "WIZARD");
-	insertSoldier("WIZARD7", "WIZARD");
-	insertSoldier("WIZARD8", "WIZARD");
-	insertSoldier("WIZARD9", "WIZARD");
-	
+    insertSoldier("WIZARD3", "WIZARD");
+    insertSoldier("WIZARD4", "WIZARD");
+    insertSoldier("WIZARD5", "WIZARD");
+    insertSoldier("WIZARD6", "WIZARD");
+    insertSoldier("WIZARD7", "WIZARD");
+    insertSoldier("WIZARD8", "WIZARD");
+    insertSoldier("WIZARD9", "WIZARD");
+
     //     list["WIZARD"].setPosition(5, 5);
     //     list["WIZARD"].enterStatus(dsSoldier::Status::disappear);
 
     insertSoldier("BERSERKER1", "BERSERKER");
     insertSoldier("BERSERKER2", "BERSERKER");
 
-	insertSoldier("ASSASSIN1", "ASSASSIN");
-	insertSoldier("ASSASSIN2", "ASSASSIN");
+    insertSoldier("ASSASSIN1", "ASSASSIN");
+    insertSoldier("ASSASSIN2", "ASSASSIN");
 
-	insertSoldier("ARCHMAGE1", "ARCHMAGE");
-	insertSoldier("ARCHMAGE2", "ARCHMAGE");
-    
+    insertSoldier("ARCHMAGE1", "ARCHMAGE");
+    insertSoldier("ARCHMAGE2", "ARCHMAGE");
+
 
 }
 
@@ -173,18 +173,20 @@ void DSActorManager::render(bool selectMode) {
         } else {
             delay_time = 0;
             script_playing --;
-			
+
         }
     }
-	if (gameOver) {
-         showEndInfo(2, 2);
-	}
+    if (gameOver) {
+        showEndInfo(2, 2);
+    }
 
 
     //list["SOLDIER"].hpBar2();
 }
 
 //#include "dsTimer.h"
+
+int round = 0;
 
 void DSActorManager::update() {
 
@@ -220,8 +222,8 @@ void DSActorManager::update() {
                     delay_time = record.x;
                     timer.recordTime();
                     script_playing++;
-					frame.sounds.replay();
-					glutShowWindow();
+                    frame.sounds.replay();
+                    glutShowWindow();
                     return;
                 }
                 // 下达指令
@@ -325,6 +327,10 @@ void DSActorManager::update() {
                             iter_soldier->second->current_position[1],
                             &x3, &y3
                         );
+                        //                         iter_soldier->second->setTarget(record.x, record.y);
+                        //                         iter_soldier->second->enterStatus(
+                        //                             dsSoldier::Status::running, &script_playing
+                        //                         );
                         iter_soldier->second->setPosition(record.x, record.y);
 
                         Color* colors = new Color[256];

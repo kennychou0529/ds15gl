@@ -34,7 +34,7 @@ extern DSFrame frame;
 //GLuint dsSoldier::aureole = dsLoadTextureBMP2D("data/images/aureole.bmp");
 
 dsSoldier::dsSoldier(int _idNumber) :
-    move_speed(20.0f),
+    move_speed(120.0f),
     scale(0.2f),
     angle(0.0f),
     playing(nullptr),
