@@ -96,7 +96,7 @@ void DSStatusBar::renderBackground() {
 
 extern Round_End_Info end_infos[600];
 extern Round_Begin_Info begin_infos[600];
-extern int round;
+extern int round_number;
 
 void DSStatusBar::show() {
     // 更改投影方式为 2D 平行投影

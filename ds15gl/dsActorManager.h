@@ -10,7 +10,7 @@
 #include "effect/EffectManager.h"
 
 typedef std::map<std::string, dsSoldier*> SOLDIERS;
-extern int round;
+extern int round_number;
 extern Game_Info info;
 extern Round_End_Info end_infos[600];
 extern Round_Begin_Info begin_infos[600];
@@ -36,7 +36,7 @@ public:
 	void showEndInfo(float time,float totalTime);
 
     int getCurrentRound() {
-        return round;
+        return round_number;
     }
 
     void enterNextRound();
