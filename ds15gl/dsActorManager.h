@@ -53,7 +53,7 @@ public:
         if (selectSoldierId.empty()) {
             return L"没有选择人物";
         }
-        info << selectSoldierId.c_str() << ":\n";
+        info << selectSoldierId.c_str() << ":\n\n";
         info << list[selectSoldierId]->getInfo();
         return info.str();
     }

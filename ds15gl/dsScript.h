@@ -29,7 +29,7 @@ struct Record {
    // 目标
 	/*令soldier_pan的x,代表所受伤害
 	*/
-	size_t x, y;     
+	int x, y;     
 
     Record() {}
     Record(Record& record):

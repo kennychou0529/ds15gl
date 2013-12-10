@@ -169,5 +169,6 @@ void DSSkybox::load(GLuint index) {
 }
 
 void DSSkybox::show() {
+	glColor3f(1,1,1);
     glCallList(display_list);
 }

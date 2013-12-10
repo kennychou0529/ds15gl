@@ -97,6 +97,7 @@ Emitter::Emitter(//Œª÷√–≈œ¢
     //centripetal = _centripetal;
 
     alive = true;
+    lastTime = clock();
 
 }
 
@@ -176,7 +177,7 @@ void Emitter::update(float duration) {
 }
 
 void Emitter::draw() {
-    static clock_t lastTime = clock();
+    //static clock_t lastTime = clock();
     clock_t nowTime = clock();
     float duration = (nowTime - lastTime) / 1000.0f;
     update(duration);
@@ -189,12 +190,12 @@ void Emitter::draw() {
     glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
     glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
 
-    //     glEnable(GL_ALPHA_TEST);
-    //     glAlphaFunc(GL_GREATER, 2 / 255.0);
-    //
-    //     glDisable(GL_DEPTH_TEST);
-    //     glEnable(GL_BLEND);
-    //     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER, 2 / 255.0);
+
+    glDisable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     //glEnable(GL_POINT_SPRITE_ARB);
 
@@ -218,9 +219,9 @@ void Emitter::draw() {
     }
     glEnd();
     glPopMatrix();
-    //     glDisable(GL_BLEND);
-    //     glDisable(GL_ALPHA_TEST);
-    //     glEnable(GL_DEPTH_TEST);
+    glDisable(GL_BLEND);
+    glDisable(GL_ALPHA_TEST);
+    glEnable(GL_DEPTH_TEST);
     glHint(GL_LINE_SMOOTH_HINT, GL_DONT_CARE);
     glHint(GL_POINT_SMOOTH_HINT, GL_DONT_CARE);
 

@@ -78,7 +78,7 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
     Round_Begin_Info begin_info;
     Command cmd;
 
-   
+
 
     // 回放文件读入
     std::ifstream is(rep_file_name);
@@ -190,13 +190,13 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
 
         ///////////////展示操作
         roundNum++;
-		if(roundNum==1){
-			end_infos[0] = end_info;
-			begin_infos[0] = begin_info;			
-		}
+        if (roundNum == 1) {
+            end_infos[0] = end_info;
+            begin_infos[0] = begin_info;
+        }
 
         end_infos[roundNum] = end_info;
-		begin_infos[roundNum] = begin_info;
+        begin_infos[roundNum] = begin_info;
         dsSoldier* soldier = actors.list[index[begin_info.move_id + (begin_info.move_team << 5)]];
 
         if (begin_info.soldier[begin_info.move_id ][begin_info.move_team].life <= 0) {
@@ -227,15 +227,15 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
 
 
             //禁止鞭尸
-            if (begin_info.soldier[cmd.target_id][cmd.target_team].life > 0) {
+            if (end_info.attack_effect[0] != -1 && begin_info.soldier[cmd.target_id][cmd.target_team].life > 0) {
                 //攻击动作
                 actors.script.add(roundNum, false, soldier->getID(), soldier_fight,
                                   end_info.soldier[cmd.target_id][cmd.target_team].pos.x,
                                   end_info.soldier[cmd.target_id][cmd.target_team].pos.y);
 
 
-
-                if (end_info.attack_effect[0] != -1) {
+                //攻击命中
+                if (end_info.attack_effect[0] == 1) {
                     //伤害
                     int hurt = begin_info.soldier[cmd.target_id][cmd.target_team].life - end_info.soldier[cmd.target_id][cmd.target_team].life;
 
@@ -246,19 +246,22 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
                     }
                 }
 
-                //反击
-                int hurt2 = begin_info.soldier[begin_info.move_id ][begin_info.move_team].life - end_info.soldier[begin_info.move_id ][begin_info.move_team].life;
-
-                if (end_info.attack_effect[1] != -1 && hurt2 > 0) {
+                if (end_info.attack_effect[1] != -1) {
                     actors.script.add(roundNum, false, target_soldier->getID(), soldier_fight,
                                       end_info.soldier[begin_info.move_id ][begin_info.move_team].pos.x,
                                       end_info.soldier[begin_info.move_id ][begin_info.move_team].pos.y);
-                    actors.script.add(roundNum, false, soldier->getID(), soldier_pain, hurt2, end_info.soldier[begin_info.move_id ][begin_info.move_team].life);
-                    //死亡
-                    if (end_info.soldier[begin_info.move_id ][begin_info.move_team].life <= 0) {
-                        actors.script.add(roundNum, false, soldier->getID(), soldier_die, 0, 0);
-                    }
+                    //反击
+                    int hurt2 = begin_info.soldier[begin_info.move_id ][begin_info.move_team].life - end_info.soldier[begin_info.move_id ][begin_info.move_team].life;
 
+                    if (end_info.attack_effect[1] ==1) {
+
+                        actors.script.add(roundNum, false, soldier->getID(), soldier_pain, hurt2, end_info.soldier[begin_info.move_id ][begin_info.move_team].life);
+                        //死亡
+                        if (end_info.soldier[begin_info.move_id ][begin_info.move_team].life <= 0) {
+                            actors.script.add(roundNum, false, soldier->getID(), soldier_die, 0, 0);
+                        }
+
+                    }
                 }
             }
         } else if (cmd.order == 2) {

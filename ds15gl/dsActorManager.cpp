@@ -266,6 +266,12 @@ void DSActorManager::update() {
                                 colors[i].b = 0;
                                 colors[i].a = 1 -  1.3f * (i / 200.0f) * (i / 200.0f);
                             }
+                            for (int i = 200; i < 255; i++) {
+                                colors[i].r = (i - 200) / 56;
+                                colors[i].g = (i - 200) / 56;
+                                colors[i].b = (i - 200) / 56;
+                                colors[i].a = (i - 100) / 156 ;
+                            }
 
                             Emitter emm(0, 6.28f, 0, 0.5, 2, 2, colors, 0.2);
                             emm.setPosition(x2, y2, 0);
@@ -276,7 +282,32 @@ void DSActorManager::update() {
 
                             //emm.setMagnetic(0, 0.5, 0);
                             effects.addEmitter(emm);
+                        } else if (iter_soldier->second->kind == "ARCHER" || iter_soldier->second->kind == "SOLDIER") {
+                            Thurder* t = new Thurder(x1, y1, 7.5f, x2, y2, 5, 2, 1, 1, 0.1);
+                            if (iter_soldier->second->team == 1) {
+                                t->setColor(1, 0, 0);
+                            } else {
+                                t->setColor(0, 1, 0);
+                            }
+                            effects.addThurder(*t);
+                        } else if (iter_soldier->second->kind == "WIZARD") {
+                            Thurder* t2 = new Thurder(x2, y2, 5, x2, y2, 100, 2, 1, 15, 1.0);
+                            if (iter_soldier->second->team == 1) {
+                                t2->setColor(1, 0, 0);
+                            } else {
+                                t2->setColor(0, 1, 0);
+                            }
+                            effects.addThurder(*t2);
+
+                            Thurder* t1 = new Thurder(x1, y1, 5, x1, y1, 100, 2, 1, 15, 1.0);
+                            if (iter_soldier->second->team == 1) {
+                                t1->setColor(1, 0, 0, 0.3);
+                            } else {
+                                t1->setColor(0, 1, 0, 0.3);
+                            }
+                            effects.addThurder(*t1);
                         }
+
                         break;
                     case soldier_die:
                         iter_soldier->second->enterStatus(
@@ -284,9 +315,11 @@ void DSActorManager::update() {
                         );
                         break;
                     case soldier_pain:
-                        iter_soldier->second->enterStatus(
-                            dsSoldier::Status::pain, &script_playing
-                        );
+                        if (record.x > 0) {
+                            iter_soldier->second->enterStatus(
+                                dsSoldier::Status::pain, &script_playing
+                            );
+                        }
                         iter_soldier->second->hpReduce(record.y);
 
                         //转化为实际坐标
@@ -297,28 +330,28 @@ void DSActorManager::update() {
                             &x, &y
                         );
                         //文字画不出来
-                        //                         if (record.x > 0) {
-                        //                             std::stringstream os;
-                        //                             os << "-" << record.x;
-                        //                             Text *t=new Text(os.str(), 2);
-                        //                             t->setPosition(x, y, 10);
-                        //                             t->setColor(1, 0, 0);
-                        //                             effects.addText(*t);
-                        //                         } else if (record.x < 0) {
-                        //                             std::stringstream os;
-                        //                             os << "+" << -record.x;
-                        //                             Text *t=new Text(os.str(), 2);
-                        //                             t->setPosition(x, y, 10);
-                        //                             t->setColor(0, 1, 0);
-                        //                             effects.addText(*t);
-                        //                         } else {
-                        //                             std::stringstream os;
-                        //                             os << "MISS";
-                        //                             Text* t=new Text(os.str(), 2);
-                        //                             t->setPosition(x, y, 10);
-                        //                             t->setColor(0, 0, 1);
-                        //                             effects.addText(*t);
-                        //                         }
+                        if (record.x > 0) {
+                            std::stringstream os;
+                            os << "-" << record.x;
+                            Text* t = new Text(os.str(), 2);
+                            t->setPosition(x, y, 10);
+                            t->setColor(1, 0, 0);
+                            effects.addText(*t);
+                        } else if (record.x < 0) {
+                            std::stringstream os;
+                            os << "+" << -record.x;
+                            Text* t = new Text(os.str(), 2);
+                            t->setPosition(x, y, 10);
+                            t->setColor(0, 1, 0);
+                            effects.addText(*t);
+                        } else {
+                            std::stringstream os;
+                            os << "MISS";
+                            Text* t = new Text(os.str(), 2);
+                            t->setPosition(x, y, 10);
+                            t->setColor(0, 0, 1);
+                            effects.addText(*t);
+                        }
                         break;
                     case soldier_trans: {
                         float x3, y3;

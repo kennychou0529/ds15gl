@@ -5,6 +5,7 @@
 #include <list>
 #include <cmath>
 #include "vector.h"
+#include <ctime>
 
 using std::list;
 const int colorIndexLength = 256;
@@ -191,6 +192,7 @@ private:
     Vector center; //有心力中心
     Vector mag;//磁场
     float centripetal;//向心加速度大小
+	clock_t lastTime ;
 };
 
 #endif

@@ -22,6 +22,8 @@ public:
 		tex.push_back(t);
 	}
     void render() {
+
+		glDisable(GL_LIGHTING);
         //СЃзгЬиаЇ
         if (!emitters.empty()) {
             for (Emitter &e : emitters) {
@@ -51,6 +53,7 @@ public:
             }
 
         }
+		glEnable(GL_LIGHTING);
     }
 private:
     ParticlePool pool;
