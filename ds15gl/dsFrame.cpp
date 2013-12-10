@@ -63,6 +63,8 @@ bool canRefresh = false;
 Game_Info info;
 Round_End_Info end_info;
 Round_End_Info end_infos[600];
+Round_Begin_Info begin_infos[600];
+//从数字索引到stringID的映射
 map<int, string> index;
 
 void DSFrame::initialize2(const std::string& rep_file_name) {
@@ -76,8 +78,7 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
     Round_Begin_Info begin_info;
     Command cmd;
 
-    //从数字索引到stringID的映射
-    map<int, string> index;
+   
 
     // 回放文件读入
     std::ifstream is(rep_file_name);
@@ -189,7 +190,13 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
 
         ///////////////展示操作
         roundNum++;
+		if(roundNum==1){
+			end_infos[0] = end_info;
+			begin_infos[0] = begin_info;			
+		}
+
         end_infos[roundNum] = end_info;
+		begin_infos[roundNum] = begin_info;
         dsSoldier* soldier = actors.list[index[begin_info.move_id + (begin_info.move_team << 5)]];
 
         if (begin_info.soldier[begin_info.move_id ][begin_info.move_team].life <= 0) {

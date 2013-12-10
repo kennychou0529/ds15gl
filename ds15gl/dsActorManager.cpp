@@ -370,7 +370,21 @@ void DSActorManager::update() {
 
         } else {
             if (!paused) {
-                enterNextRound();
+                for (int i = 0; i < 2; i++) {
+                    //is >> end_info.soldier_number[i];
+                    for (int j = 0; j < info.soldier_number[i]; j++) {
+                        if (info.soldier[j][i].life > 0) {
+                            dsSoldier* soldier = list[index[j + (i << 5)]];
+                            if (soldier) {
+                                soldier->updateInfo(begin_infos[round].soldier[j][i].strength,
+                                                    begin_infos[round].soldier[j][i].defence,
+                                                    begin_infos[round].soldier[j][i].move_range,
+                                                    begin_infos[round].soldier[j][i].duration);
+                            }
+                        }
+                    }
+                    enterNextRound();
+                }
             }
         }
     }

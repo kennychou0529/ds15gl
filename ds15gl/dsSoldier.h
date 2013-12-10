@@ -10,6 +10,7 @@
 #include "display_basic.h"
 
 extern char kind[9][10];
+extern Game_Info info;
 
 struct SoundIDandSource {
     int _run;
@@ -123,13 +124,13 @@ public:
 
     std::wstring getInfo() {
         std::wostringstream os;
-        os << L"Team " << team << "\n";
-        os << L"HP     :" << hp << " / " << hp_max << L"\n";
-		os<<L"攻击力： "<<attack<<"\n";
-		os<< L"防御："<<defence<<"\n";
-		os<<L" 移动力： "<<moveability<<"\n";
-		os<<L"技能cd: "<<cd<<"\n";
-        os << L"Location:" << current_position[0] << "," << current_position[1] << "\n";
+        os << L"队伍名 ：" << info.team_name[team-1].c_str() << "\n";
+        os << L"血量    ：" << hp << " / " << hp_max << L"\n";
+		os<<  L"攻击力 ："<<attack<<"\n";
+		os<<  L"防御    ："<<defence<<"\n";
+		os<<  L"移动力 ： "<<moveability<<"\n";
+		os<<  L"被强化时间: "<<cd<<"\n";
+        os << L"位置    :" << current_position[0] << "," << current_position[1] << "\n";
         return os.str();
     }
 

@@ -11,6 +11,11 @@
 
 typedef std::map<std::string, dsSoldier*> SOLDIERS;
 extern int round;
+extern Game_Info info;
+extern Round_End_Info end_infos[600];
+extern Round_Begin_Info begin_infos[600];
+extern map<int, string> index;
+
 class DSActorManager {
 public:
     DSActorManager();
@@ -46,7 +51,7 @@ public:
     std::wstring selectInfo() {
         std::wostringstream info;
         if (selectSoldierId.empty()) {
-            return L"NOT SELECT";
+            return L"没有选择人物";
         }
         info << selectSoldierId.c_str() << ":\n";
         info << list[selectSoldierId]->getInfo();

@@ -95,6 +95,7 @@ void DSStatusBar::renderBackground() {
 }
 
 extern Round_End_Info end_infos[600];
+extern Round_Begin_Info begin_infos[600];
 extern int round;
 
 void DSStatusBar::show() {
