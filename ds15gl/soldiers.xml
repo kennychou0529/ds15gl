@@ -1,5 +1,5 @@
 ﻿<soldiers>
-  <soldier name="SABER">
+  <soldier name="SABER"> <!-- 剑士 -->
     <tris>data/sword_man/tris.md2</tris>
     <tris_skin>data/sword_man/tris1.bmp</tris_skin>
     <tris_skin2>data/sword_man/tris2.bmp</tris_skin2>

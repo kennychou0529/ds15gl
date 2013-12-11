@@ -158,8 +158,8 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
         is >> info.temple_number;
         begin_info.temple.resize(info.temple_number);
         std::cout << "TEMPLE" << info.temple_number << std::endl;
-        scene.map.data[0] = temple;
-        info.map[0][0] = TEMPLE;
+        //scene.map.data[0] = temple;
+        //info.map[0][0] = TEMPLE;
         for (int i = 0; i < info.temple_number; i++) {
             is >> begin_info.temple[i].pos.x >> begin_info.temple[i].pos.y >> begin_info.temple[i].state;
             size_t x = begin_info.temple[i].pos.x;
