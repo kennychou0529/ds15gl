@@ -36,6 +36,8 @@ const char* font_file_name = "/usr/share/fonts/truetype/wqy/wqy-microhei.ttc";
 const int font_height = 32;
 const int font_height_small = 13;
 
+extern GLfloat move_speed; 
+
 GLdouble axeLength = eye_sphere[0] * 0.5;
 
 void dsSpecialKeyDown(int key, int x, int y) {
@@ -152,6 +154,20 @@ void dsKeyDown(unsigned char key, int x, int y) {
     case 'S':
         idir |= DOWN;
         break;
+	case 'Q':
+	case 'q':
+		move_speed-=20;
+		if(move_speed<20){
+			move_speed=20;
+		}
+		break;
+	case 'E':
+	case 'e':
+		move_speed+=20;
+		if(move_speed>120){
+			move_speed=120;
+		}
+		break;
     case 'm':
         centerMoveTof(10, 10);
         break;

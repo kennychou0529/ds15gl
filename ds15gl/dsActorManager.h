@@ -12,8 +12,8 @@
 typedef std::map<std::string, dsSoldier*> SOLDIERS;
 extern int round_number;
 extern Game_Info info;
-extern Round_End_Info end_infos[600];
-extern Round_Begin_Info begin_infos[600];
+extern Round_End_Info end_infos[700];
+extern Round_Begin_Info begin_infos[700];
 extern map<int, string> index;
 
 class DSActorManager {
@@ -110,6 +110,10 @@ private:
     //std::map<string,SoundIDandSource> soundGroups;
 	EffectManager effects;
 	//
+	GLint beginBmp;
+	GLint endBmp;
+
+
 };
 
 extern bool gameOver;

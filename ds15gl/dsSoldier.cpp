@@ -31,10 +31,12 @@ static const GLfloat pi = 3.1415926f;
 
 extern DSFrame frame;
 
+
+GLfloat move_speed;         // 移动速度
 //GLuint dsSoldier::aureole = dsLoadTextureBMP2D("data/images/aureole.bmp");
 
 dsSoldier::dsSoldier(int _idNumber) :
-    move_speed(120.0f),
+    
     scale(0.2f),
     angle(0.0f),
     playing(nullptr),
@@ -44,6 +46,7 @@ dsSoldier::dsSoldier(int _idNumber) :
     hp_max = 15;
     beSelected = false;
     attack = moveability = defence = cd = 0;
+	move_speed=20.0f;
 }
 
 void dsSoldier::renderFrame(size_t frame_index) const {

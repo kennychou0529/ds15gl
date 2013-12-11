@@ -195,7 +195,7 @@ private:
     MD2Model person[2];            // 人物模型
     MD2Model weapon[2];            // 武器模型
 
-    GLfloat move_speed;         // 移动速度
+    
     GLfloat scale;              // 缩放倍数
     GLfloat angle;              // 当前旋转角
     GLfloat default_angle;      // 默认旋转角
@@ -203,6 +203,7 @@ private:
     // 使得默认方向为 x 轴 正方向
     GLfloat translate;          // 高度移动值
 
+	
     int* playing;               // 正在播放中的对象个数
 
     size_t frame_beg;           // 起始帧

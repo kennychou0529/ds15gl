@@ -62,8 +62,8 @@ bool canRefresh = false;
 
 Game_Info info;
 Round_End_Info end_info;
-Round_End_Info end_infos[600];
-Round_Begin_Info begin_infos[600];
+Round_End_Info end_infos[700];
+Round_Begin_Info begin_infos[700];
 //从数字索引到stringID的映射
 map<int, string> index;
 
@@ -195,6 +195,7 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
             begin_infos[0] = begin_info;
         }
 
+		
         end_infos[roundNum] = end_info;
         begin_infos[roundNum] = begin_info;
         dsSoldier* soldier = actors.list[index[begin_info.move_id + (begin_info.move_team << 5)]];
@@ -326,6 +327,9 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
                 break;
             }
         }
+		if(is.eof()||roundNum>600){
+			break;
+		}
     }
 
     actors.script.add(roundNum, false, "END", game_over, 10, 0);

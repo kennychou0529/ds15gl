@@ -2,6 +2,7 @@
 #include "dsSoundManager.h"
 #include "dsEye.h"
 #include "dsFrame.h"
+#include "dsTexture.h"
 
 bool gameOver;
 
@@ -145,6 +146,9 @@ void DSActorManager::initialize() {
     insertSoldier("ARCHMAGE1", "ARCHMAGE");
     insertSoldier("ARCHMAGE2", "ARCHMAGE");
 
+
+    beginBmp = dsLoadTextureBMP2D("data/images/begin.bmp");
+    endBmp = dsLoadTextureBMP2D("data/images/end.bmp");
 
 }
 
@@ -306,6 +310,28 @@ void DSActorManager::update() {
                                 t1->setColor(0, 1, 0, 0.3);
                             }
                             effects.addThurder(*t1);
+                        } else if (iter_soldier->second->kind == "TANK") {
+                            Color c = {0.7f, 0.7f, 0.7f, 0.8};
+                            Color* colors = new Color[256];
+                            for (int i = 0; i < 256; i++) {
+                                colors[i] = c;
+                            }
+                            float speed = 10;
+                            dsVector2f dir = dsVector2f(x2, y2) - dsVector2f(x1, y1);
+                            //dir.getLenth();
+                            float life = dir.getLenth();
+
+                            Emitter emm(0, 6.28f, 0, 0.5, 2, 0.01, colors, life);
+                            emm.setPosition(x1, y1, 3);
+                            dir.normalise();
+                            emm.setSpeed(dir.x * speed, dir.y * speed, 5);
+                            //emm.setSpeed(0,0,-4);
+                            //Vector mag = {0, 0.01, 0};
+                            emm.setGravity(0, 0, -10 / life);
+                            //emm.setCenter(0, 0, 10, 1);
+
+                            //emm.setMagnetic(0, 0.5, 0);
+                            effects.addEmitter(emm);
                         }
 
                         break;
