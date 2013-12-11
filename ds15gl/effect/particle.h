@@ -134,19 +134,23 @@ public:
 
     void update(float duration);
     void draw() ;
-	bool isalive(){
-		return alive;
-	}
+    bool isalive() {
+        return alive;
+    }
 
-	void setPool(ParticlePool* pool){
-		pPool = pool;
-	}
+    void setPool(ParticlePool* pool) {
+        pPool = pool;
+    }
+
+    void setG2e(bool flag) {
+        g2e = flag;
+    }
 
 private:
-	ParticlePool *pPool;
+    ParticlePool* pPool;
     //  如果life为0，则不发射粒子但不死亡，当粒子为0时，改发射器死亡
     float life;
-	
+
     bool alive;
     //TRANSFORMATION INFO
 
@@ -192,7 +196,8 @@ private:
     Vector center; //有心力中心
     Vector mag;//磁场
     float centripetal;//向心加速度大小
-	clock_t lastTime ;
+    clock_t lastTime ;
+    bool g2e; //重力是否作用于发射器
 };
 
 #endif

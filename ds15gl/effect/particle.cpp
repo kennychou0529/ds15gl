@@ -174,6 +174,10 @@ void Emitter::update(float duration) {
             alive = false;
         }
     }
+	if (g2e||forceType & Gravity) {
+		speed = speed + force * duration;
+	}
+
 }
 
 void Emitter::draw() {
@@ -196,6 +200,7 @@ void Emitter::draw() {
     glDisable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glDisable(GL_LIGHTING);
 
     //glEnable(GL_POINT_SPRITE_ARB);
 
@@ -219,6 +224,8 @@ void Emitter::draw() {
     }
     glEnd();
     glPopMatrix();
+
+	glEnable(GL_LIGHTING);
     glDisable(GL_BLEND);
     glDisable(GL_ALPHA_TEST);
     glEnable(GL_DEPTH_TEST);

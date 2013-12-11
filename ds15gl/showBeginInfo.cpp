@@ -26,6 +26,7 @@ void DSActorManager::showBeginInfo(float time, float totalTime) {
     glDisable(GL_LIGHTING);
     if (beginBmp) {
         glEnable(GL_TEXTURE);
+		glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, beginBmp);
     } else {
         glColor4f(0.7f, 0.7f, 0.7f, alpha);
