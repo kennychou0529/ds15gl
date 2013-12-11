@@ -222,6 +222,7 @@ void DSMap::render(bool selectMode) {
     if (selectMode) {
         renderGrids(true);
     } else {
+		glEnable(GL_LIGHTING);
         glCallList(display_list_grids);
     }
 }

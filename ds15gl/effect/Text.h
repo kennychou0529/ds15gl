@@ -36,7 +36,7 @@ public:
         static clock_t lastTime = clock();
         clock_t nowTime = clock();
         float duration = (nowTime - lastTime) / 1000.0f;
-
+		glPushAttrib(GL_ALL_ATTRIB_BITS);
         glPushMatrix();
 
         glLoadIdentity();
@@ -50,7 +50,7 @@ public:
         }
 
         glPopMatrix();
-
+		glPopAttrib();
         life -= duration;
         lastTime = nowTime;
     }

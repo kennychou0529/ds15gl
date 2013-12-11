@@ -189,6 +189,7 @@ void Emitter::draw() {
         return;
     }
 
+	glPushAttrib(GL_ALL_ATTRIB_BITS);
     glLineWidth(2.0);
     glPointSize(1.0);
     glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
@@ -232,6 +233,7 @@ void Emitter::draw() {
     glHint(GL_LINE_SMOOTH_HINT, GL_DONT_CARE);
     glHint(GL_POINT_SMOOTH_HINT, GL_DONT_CARE);
 
+	glPopAttrib();
     lastTime = nowTime;
 }
 

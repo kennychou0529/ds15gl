@@ -36,6 +36,7 @@ public:
         //static clock_t lastTime = clock();
         clock_t nowTime = clock();
         float duration = (nowTime - lastTime) / 1000.0f;
+		glPushAttrib(GL_ALL_ATTRIB_BITS);
 		glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 		glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
 
@@ -79,7 +80,7 @@ public:
 		glHint(GL_LINE_SMOOTH_HINT, GL_DONT_CARE);
 		glHint(GL_POINT_SMOOTH_HINT, GL_DONT_CARE);
 
-
+		glPopAttrib();
         life -= duration;
 
         lastTime = nowTime;
