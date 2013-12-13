@@ -40,6 +40,7 @@ public:
 		glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 		glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
 
+		glDisable(GL_LIGHTING);
 		glEnable(GL_ALPHA_TEST);
 		glAlphaFunc(GL_GREATER, 2 / 255.0);
 
@@ -76,6 +77,7 @@ public:
         glPopMatrix();
 		glDisable(GL_BLEND);
 		glDisable(GL_ALPHA_TEST);
+		glEnable(GL_LIGHTING);
 		glEnable(GL_DEPTH_TEST);
 		glHint(GL_LINE_SMOOTH_HINT, GL_DONT_CARE);
 		glHint(GL_POINT_SMOOTH_HINT, GL_DONT_CARE);

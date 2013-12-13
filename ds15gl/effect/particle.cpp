@@ -194,7 +194,7 @@ void Emitter::draw() {
     glPointSize(1.0);
     glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
     glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
-
+	
     glEnable(GL_ALPHA_TEST);
     glAlphaFunc(GL_GREATER, 2 / 255.0);
 

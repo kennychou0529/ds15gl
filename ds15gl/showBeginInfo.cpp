@@ -126,7 +126,7 @@ void DSActorManager::showEndInfo(float time, float totalTime) {
 		os << info.team_name[0].c_str() << "\n\n" << end_info.score[0] << "\n";
 
 		glColor4f(0.0f, 0.0f, 0.0f, alpha * 1.2);
-		dstext.print(250, 400, os.str());
+		dstext.print(250, 600, os.str());
 	}
 
     glPopMatrix();

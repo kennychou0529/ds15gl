@@ -286,55 +286,55 @@ void DSActorManager::update() {
 
                             //emm.setMagnetic(0, 0.5, 0);
                             effects.addEmitter(emm);
-                        } else if (iter_soldier->second->kind == "ARCHER" || iter_soldier->second->kind == "SOLDIER") {                            
-							if(iter_soldier->second->kind == "ARCHER"
-								&&info.map[iter_soldier->second->current_position[0]][iter_soldier->second->current_position[1]]==cannon){
-									Color c = {0.7f, 0.7f, 0.f, 0.8};
-									Color* colors = new Color[256];
-									for (int i = 0; i < 256; i++) {
-										colors[i] = c;
-									}
-									float speed = 50;
-									dsVector2f dir = dsVector2f(x2, y2) - dsVector2f(x1, y1);
-									//dir.getLenth();
-									float life = dir.getLenth() / speed;
+                        } else if (iter_soldier->second->kind == "ARCHER" || iter_soldier->second->kind == "SOLDIER") {
+                            if (iter_soldier->second->kind == "ARCHER"
+                                    && info.map[iter_soldier->second->current_position[0]][iter_soldier->second->current_position[1]] == cannon) {
+                                Color c = {0.7f, 0.7f, 0.f, 0.8};
+                                Color* colors = new Color[256];
+                                for (int i = 0; i < 256; i++) {
+                                    colors[i] = c;
+                                }
+                                float speed = 50;
+                                dsVector2f dir = dsVector2f(x2, y2) - dsVector2f(x1, y1);
+                                //dir.getLenth();
+                                float life = dir.getLenth() / speed;
 
-									Emitter emm(0, 6.28f, 0, 0.5, 2, 0.01, colors, life);
-									emm.setPosition(x1, y1, 3);
-									dir.normalise();
-									emm.setSpeed(dir.x * speed, dir.y * speed, 5*life);
-									//emm.setSpeed(0,0,-4);
-									//Vector mag = {0, 0.01, 0};
-									emm.setGravity(0, 0, -10);
-									emm.setG2e(true);
-									//emm.setCenter(0, 0, 10, 1);
+                                Emitter emm(0, 6.28f, 0, 0.5, 2, 0.01, colors, life);
+                                emm.setPosition(x1, y1, 0);
+                                dir.normalise();
+                                emm.setSpeed(dir.x * speed, dir.y * speed, 5 * life);
+                                //emm.setSpeed(0,0,-4);
+                                //Vector mag = {0, 0.01, 0};
+                                emm.setGravity(0, 0, -10);
+                                emm.setG2e(true);
+                                //emm.setCenter(0, 0, 10, 1);
 
-									//emm.setMagnetic(0, 0.5, 0);
-									effects.addEmitter(emm);
-							}else{
-								Thurder* t = new Thurder(x1, y1, 7.5f, x2, y2, 5, 2, 1, 1, 0.1);
-								if (iter_soldier->second->team == 1) {
-									t->setColor(1, 0, 0);
-								} else {
-									t->setColor(0, 1, 0);
-								}
-								effects.addThurder(*t);
-							}
+                                //emm.setMagnetic(0, 0.5, 0);
+                                effects.addEmitter(emm);
+                            } else {
+                                Thurder* t = new Thurder(x1, y1, 7.5f, x2, y2, 5, 2, 1, 1, 0.1);
+                                if (iter_soldier->second->team == 1) {
+                                    t->setColor(1, 0, 0);
+                                } else {
+                                    t->setColor(0, 1, 0);
+                                }
+                                effects.addThurder(*t);
+                            }
 
                         } else if (iter_soldier->second->kind == "WIZARD") {
-                            Thurder* t2 = new Thurder(x2, y2, 5, x2, y2, 100, 2, 1, 15, 1.0);
+                            Thurder* t2 = new Thurder(x2, y2, 0, x2, y2, 100, 2, 1, 30, 1.0);
                             if (iter_soldier->second->team == 1) {
-                                t2->setColor(1, 0, 0);
+                                t2->setColor(1, 0, 0, 0.1);
                             } else {
-                                t2->setColor(0, 1, 0);
+                                t2->setColor(0, 1, 0, 0.1);
                             }
                             effects.addThurder(*t2);
 
-                            Thurder* t1 = new Thurder(x1, y1, 5, x1, y1, 100, 2, 1, 15, 1.0);
+                            Thurder* t1 = new Thurder(x1, y1, 0, x1, y1, 100, 2, 1, 30, 1.0);
                             if (iter_soldier->second->team == 1) {
-                                t1->setColor(1, 0, 0, 0.3);
+                                t1->setColor(1, 0, 0, 0.1);
                             } else {
-                                t1->setColor(0, 1, 0, 0.3);
+                                t1->setColor(0, 1, 0, 0.1);
                             }
                             effects.addThurder(*t1);
                         } else if (iter_soldier->second->kind == "TANK") {
@@ -343,7 +343,7 @@ void DSActorManager::update() {
                             for (int i = 0; i < 256; i++) {
                                 colors[i] = c;
                             }
-                            float speed = 50;
+                            float speed = 100;
                             dsVector2f dir = dsVector2f(x2, y2) - dsVector2f(x1, y1);
                             //dir.getLenth();
                             float life = dir.getLenth() / speed;
@@ -351,11 +351,11 @@ void DSActorManager::update() {
                             Emitter emm(0, 6.28f, 0, 0.5, 2, 0.01, colors, life);
                             emm.setPosition(x1, y1, 3);
                             dir.normalise();
-                            emm.setSpeed(dir.x * speed, dir.y * speed, 5*life);
+                            emm.setSpeed(dir.x * speed, dir.y * speed, 5 * life);
                             //emm.setSpeed(0,0,-4);
                             //Vector mag = {0, 0.01, 0};
                             emm.setGravity(0, 0, -10);
-							emm.setG2e(true);
+                            emm.setG2e(true);
                             //emm.setCenter(0, 0, 10, 1);
 
                             //emm.setMagnetic(0, 0.5, 0);
@@ -460,15 +460,15 @@ void DSActorManager::update() {
                             //减少5点生命
                             iter_soldier->second->hpReduce(iter_soldier->second->hp - 5);
 
-                            Thurder* t2 = new Thurder(x2, y2, 5, x2, y2, 100, 2, 1, 15, 1.0);
+                            Thurder* t2 = new Thurder(x2, y2, 0, x2, y2, 100, 2, 1, 30, 1.0);
                             if (iter_soldier->second->team == 1) {
-                                t2->setColor(1, 0, 0);
+                                t2->setColor(1, 0, 0, 0.3);
                             } else {
-                                t2->setColor(0, 1, 0);
+                                t2->setColor(0, 1, 0, 0.3);
                             }
                             effects.addThurder(*t2);
 
-                            Thurder* t1 = new Thurder(x1, y1, 5, x1, y1, 100, 2, 1, 15, 1.0);
+                            Thurder* t1 = new Thurder(x1, y1, 5, x1, y1, 100, 2, 1, 30, 1.0);
                             if (iter_soldier->second->team == 1) {
                                 t1->setColor(1, 0, 0, 0.3);
                             } else {
