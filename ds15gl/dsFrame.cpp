@@ -106,8 +106,7 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
                >> info.soldier[j][i].pos.x
                >> info.soldier[j][i].pos.y;
     }
-    //初始化地图
-    scene.map.init(&info);
+    
     //scene.initialize();
 
     //处理人物
@@ -158,8 +157,18 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
         }
         is >> info.temple_number;
         begin_info.temple.resize(info.temple_number);
+        std::cout << "TEMPLE" << info.temple_number << std::endl;
+        //scene.map.data[0] = temple;
+        //info.map[0][0] = TEMPLE;
         for (int i = 0; i < info.temple_number; i++) {
             is >> begin_info.temple[i].pos.x >> begin_info.temple[i].pos.y >> begin_info.temple[i].state;
+            size_t x = begin_info.temple[i].pos.x;
+            size_t y = begin_info.temple[i].pos.y;
+            size_t x_max = scene.map.x_max;
+            //scene.map.data[y * x_max + x] = temple;
+            info.map[x][y] = TEMPLE;
+            
+            //scene.map.listLoaded = false;
         }
 
         ////////////////展示组操作
@@ -339,6 +348,9 @@ void DSFrame::initialize2(const std::string& rep_file_name) {
         }
     }
 
+    //初始化地图
+    scene.map.init(&info);
+    //scene.map.loadDisplayLists();
     actors.script.add(roundNum, false, "END", game_over, 10, 0);
 
     is.close();

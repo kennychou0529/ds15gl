@@ -22,7 +22,7 @@ void DSActorManager::showBeginInfo(float time, float totalTime) {
 
     glPushMatrix();
     glLoadIdentity();
-
+    glColor4d(1.0, 1.0, 1.0, alpha);
     glDisable(GL_LIGHTING);
     if (beginBmp) {
         glEnable(GL_TEXTURE);
@@ -32,9 +32,13 @@ void DSActorManager::showBeginInfo(float time, float totalTime) {
         glColor4f(0.7f, 0.7f, 0.7f, alpha);
     }
     glBegin(GL_QUADS);
+    glTexCoord2d(0.0, 0.0);
     glVertex2f(100 , 100);
+    glTexCoord2d(0.0, 1.0);
     glVertex2f(100, 668);
+    glTexCoord2d(1.0, 1.0);
     glVertex2f(724, 669);
+    glTexCoord2d(1.0, 0.0);
     glVertex2f(724, 100);
     glEnd();
     glDisable(GL_TEXTURE_2D);

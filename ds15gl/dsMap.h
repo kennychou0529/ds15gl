@@ -64,6 +64,7 @@ public:
     void renderArrow(size_t x_index, size_t y_index, GLfloat duration);
 
 private:
+public:
     // 求出应该用哪张山地贴图
     size_t getHillType(size_t x_index, size_t y_index);
 

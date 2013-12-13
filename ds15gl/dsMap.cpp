@@ -182,6 +182,16 @@ void DSMap::renderGrids(bool selectMode) {
     if (selectMode) {
         glPushName(0);
     }
+
+    glPushAttrib(GL_ALL_ATTRIB_BITS);
+    glDisable(GL_LIGHTING);
+    //glEnable(GL_LIGHTING);
+    glDisable(GL_TEXTURE_2D);
+    glLineWidth(1.0);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    
+    
+
     for (size_t x_index = 0; x_index < x_max; ++x_index) {
         y = - grid_size * y_max / 2;
         for (size_t y_index = 0; y_index < y_max; ++y_index) {
@@ -189,6 +199,7 @@ void DSMap::renderGrids(bool selectMode) {
                 glLoadName(y_index * x_max + x_index);
             }
             glColor4ub(255, 255, 255, 150);
+
             glBegin(GL_POLYGON);
             {
                 glVertex3f(x,             y,             0.1f);
@@ -201,6 +212,7 @@ void DSMap::renderGrids(bool selectMode) {
         }
         x += grid_size;
     }
+    glPopAttrib();
     if (selectMode) {
         glPopName();
     }
