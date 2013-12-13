@@ -16,21 +16,23 @@ void DSActorManager::showBeginInfo(float time, float totalTime) {
     glMatrixMode(GL_MODELVIEW);
     glEnable(GL_BLEND);
     glDisable(GL_LIGHTING);
-    glDisable(GL_TEXTURE_2D);
+    //glDisable(GL_TEXTURE_2D);
     glDisable(GL_DEPTH_TEST);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glPushMatrix();
     glLoadIdentity();
     glColor4d(1.0, 1.0, 1.0, alpha);
-    glDisable(GL_LIGHTING);
+	
+	glDisable(GL_LIGHTING);
     if (beginBmp) {
-        glEnable(GL_TEXTURE);
-		glEnable(GL_TEXTURE_2D);
+        glEnable(GL_TEXTURE_2D);
+		//glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, beginBmp);
     } else {
         glColor4f(0.7f, 0.7f, 0.7f, alpha);
     }
+	
     glBegin(GL_QUADS);
     glTexCoord2d(0.0, 0.0);
     glVertex2f(100 , 100);
@@ -41,8 +43,7 @@ void DSActorManager::showBeginInfo(float time, float totalTime) {
     glTexCoord2d(1.0, 0.0);
     glVertex2f(724, 100);
     glEnd();
-    glDisable(GL_TEXTURE_2D);
-
+    //glDisable(GL_TEXTURE_2D);
     std::wostringstream os;
     os << info.team_name[0].c_str();
     glColor4f(0.0f, 0.0f, 0.0f, alpha * 1.2);
@@ -58,6 +59,7 @@ void DSActorManager::showBeginInfo(float time, float totalTime) {
     glColor4f(1.0f, 0.0f, 0.0f, alpha * 1.2);
     dstext.print(330, 330, os.str());
 
+
     glPopMatrix();
     glPopAttrib();
     pop_projection_matrix();
@@ -72,7 +74,7 @@ void DSActorManager::showEndInfo(float time, float totalTime) {
     glMatrixMode(GL_MODELVIEW);
     glEnable(GL_BLEND);
     glDisable(GL_LIGHTING);
-    glDisable(GL_TEXTURE_2D);
+    //glDisable(GL_TEXTURE_2D);
     glDisable(GL_DEPTH_TEST);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -82,7 +84,7 @@ void DSActorManager::showEndInfo(float time, float totalTime) {
 
     glDisable(GL_LIGHTING);
     if (endBmp) {
-        glEnable(GL_TEXTURE);
+        glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, endBmp);
     } else {
         glColor4f(0.7f, 0.7f, 0.7f, alpha);
